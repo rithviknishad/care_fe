@@ -63,6 +63,16 @@ import InvestigationBuilder, {
   InvestigationType,
 } from "../Common/prescription-builder/InvestigationBuilder";
 import { ICD11DiagnosisModel } from "./models";
+import TextFormField from "../Common/components/FormFields/TextFormField";
+import { Form } from "../Common/components/FormFields/Form";
+import { scrollTo } from "../../Utils/utils";
+import { TextAreaFormField } from "../Common/components/FormFields/TextAreaFormField";
+import {
+  FormFieldChangeEventHandler,
+  FormReducer,
+  formReducer,
+  FormState,
+} from "../Common/components/FormFields/Utils";
 
 const Loading = loadable(() => import("../Common/Loading"));
 const PageTitle = loadable(() => import("../Common/PageTitle"));
@@ -192,15 +202,22 @@ const goBack = () => {
   window.history.go(-1);
 };
 
-const scrollTo = (id: any) => {
-  const element = document.querySelector(`#${id}-div`);
-  element?.scrollIntoView({ behavior: "smooth", block: "center" });
-};
+type Props = { facilityId: string; patientId: string; id?: string };
 
-export const ConsultationForm = (props: any) => {
+const formDetailsReducer: FormReducer<FormDetails> = formReducer;
+
+export const ConsultationForm = ({ facilityId, patientId, id }: Props) => {
   const dispatchAction: any = useDispatch();
-  const { facilityId, patientId, id } = props;
-  const [state, dispatch] = useReducer(consultationFormReducer, initialState);
+  const [oldState, oldDispatch] = useReducer(
+    consultationFormReducer,
+    initialState
+  );
+
+  const [state, dispatch] = useReducer(
+    formReducer,
+    initialState as FormState<FormDetails>
+  );
+
   const [bed, setBed] = useState<BedModel | BedModel[] | null>(null);
   const [dischargeAdvice, setDischargeAdvice] = useState<PrescriptionType[]>(
     []
@@ -238,7 +255,7 @@ export const ConsultationForm = (props: any) => {
   const fetchData = useCallback(
     async (status: statusType) => {
       setIsLoading(true);
-      const res = await dispatchAction(getConsultation(id));
+      const res = id && (await dispatchAction(getConsultation(id)));
       setDischargeAdvice(res && res.data && res.data.discharge_advice);
       setPRNAdvice(
         !Array.isArray(res.data.prn_prescription)
@@ -276,7 +293,7 @@ export const ConsultationForm = (props: any) => {
             height: res.data.height ? res.data.height : "",
             bed: res.data?.current_bed?.bed_object?.id || null,
           };
-          dispatch({ type: "set_form", form: formData });
+          oldDispatch({ type: "set_form", form: formData });
         } else {
           goBack();
         }
@@ -292,7 +309,7 @@ export const ConsultationForm = (props: any) => {
         fetchData(status);
       }
     },
-    [dispatch, fetchData]
+    [oldDispatch, fetchData]
   );
 
   const validateForm = () => {
@@ -300,10 +317,10 @@ export const ConsultationForm = (props: any) => {
     let invalidForm = false;
     let error_div = "";
 
-    Object.keys(state.form).forEach((field) => {
+    Object.keys(oldState.form).forEach((field) => {
       switch (field) {
         case "symptoms":
-          if (!state.form[field] || !state.form[field].length) {
+          if (!oldState.form[field] || !oldState.form[field].length) {
             errors[field] = "Please select the symptoms";
             if (!error_div) error_div = field;
             invalidForm = true;
@@ -311,8 +328,8 @@ export const ConsultationForm = (props: any) => {
           return;
         case "category":
           if (
-            !state.form[field] ||
-            !PATIENT_CATEGORIES.includes(state.form[field])
+            !oldState.form[field] ||
+            !PATIENT_CATEGORIES.includes(oldState.form[field])
           ) {
             errors[field] = "Please select a category";
             if (!error_div) error_div = field;
@@ -320,32 +337,32 @@ export const ConsultationForm = (props: any) => {
           }
           return;
         case "suggestion":
-          if (!state.form[field]) {
+          if (!oldState.form[field]) {
             errors[field] = "Please enter the decision";
             if (!error_div) error_div = field;
             invalidForm = true;
           }
           return;
         case "ip_no":
-          if (!state.form[field]) {
+          if (!oldState.form[field]) {
             errors[field] = "Please enter IP Number";
             if (!error_div) error_div = field;
             invalidForm = true;
-          } else if (!state.form[field].replace(/\s/g, "").length) {
+          } else if (!oldState.form[field].replace(/\s/g, "").length) {
             errors[field] = "IP can not be empty";
             if (!error_div) error_div = field;
             invalidForm = true;
           }
           return;
         case "other_symptoms":
-          if (state.form.otherSymptom && !state.form[field]) {
+          if (oldState.form.otherSymptom && !oldState.form[field]) {
             errors[field] = "Please enter the other symptom details";
             if (!error_div) error_div = field;
             invalidForm = true;
           }
           return;
         case "symptoms_onset_date":
-          if (state.form.hasSymptom && !state.form[field]) {
+          if (oldState.form.hasSymptom && !oldState.form[field]) {
             errors[field] = "Please enter date of onset of the above symptoms";
             if (!error_div) error_div = field;
             invalidForm = true;
@@ -353,25 +370,25 @@ export const ConsultationForm = (props: any) => {
           return;
         // case "admitted_to":
         case "admission_date":
-          if (state.form.suggestion === "A" && !state.form[field]) {
+          if (oldState.form.suggestion === "A" && !oldState.form[field]) {
             errors[field] = "Field is required as person is admitted";
             if (!error_div) error_div = field;
             invalidForm = true;
           }
           return;
         case "referred_to":
-          if (state.form.suggestion === "R" && !state.form[field]) {
+          if (oldState.form.suggestion === "R" && !oldState.form[field]) {
             errors[field] = "Please select the referred to facility";
             if (!error_div) error_div = field;
             invalidForm = true;
           }
           return;
         case "consultation_notes":
-          if (!state.form[field]) {
+          if (!oldState.form[field]) {
             errors[field] = "Required *";
             if (!error_div) error_div = field;
             invalidForm = true;
-          } else if (!state.form[field].replace(/\s/g, "").length) {
+          } else if (!oldState.form[field].replace(/\s/g, "").length) {
             errors[field] = "Consultation notes can not be empty";
             if (!error_div) error_div = field;
             invalidForm = true;
@@ -379,8 +396,8 @@ export const ConsultationForm = (props: any) => {
           return;
         case "is_telemedicine":
           if (
-            state.form.admitted_to === "Home Isolation" &&
-            state.form[field] === "false"
+            oldState.form.admitted_to === "Home Isolation" &&
+            oldState.form[field] === "false"
           ) {
             errors[field] =
               "Telemedicine should be `Yes` when Admitted To is Home Isolation";
@@ -389,7 +406,7 @@ export const ConsultationForm = (props: any) => {
           }
           return;
         case "is_kasp":
-          if (!state.form[field]) {
+          if (!oldState.form[field]) {
             errors[
               field
             ] = `Please select an option, ${KASP_STRING} is mandatory`;
@@ -460,7 +477,7 @@ export const ConsultationForm = (props: any) => {
           return;
       }
     });
-    dispatch({ type: "set_error", errors });
+    oldDispatch({ type: "set_error", errors });
     return [!invalidForm, error_div];
   };
 
@@ -469,50 +486,55 @@ export const ConsultationForm = (props: any) => {
     const [validForm, error_div] = validateForm();
 
     if (!validForm) {
-      scrollTo(error_div);
+      scrollTo(`${error_div}-div`);
     } else {
       setIsLoading(true);
       const data = {
-        symptoms: state.form.symptoms,
-        other_symptoms: state.form.otherSymptom
-          ? state.form.other_symptoms
+        symptoms: oldState.form.symptoms,
+        other_symptoms: oldState.form.otherSymptom
+          ? oldState.form.other_symptoms
           : undefined,
-        symptoms_onset_date: state.form.hasSymptom
-          ? state.form.symptoms_onset_date
+        symptoms_onset_date: oldState.form.hasSymptom
+          ? oldState.form.symptoms_onset_date
           : undefined,
-        suggestion: state.form.suggestion,
-        admitted: state.form.suggestion === "A",
-        // admitted_to: JSON.parse(state.form.admitted)
-        //   ? state.form.admitted_to
-        //   : undefined,
+        suggestion: oldState.form.suggestion,
+        admitted: oldState.form.suggestion === "A",
         admission_date:
-          state.form.suggestion === "A" ? state.form.admission_date : undefined,
-        category: state.form.category,
-        is_kasp: state.form.is_kasp,
-        kasp_enabled_date: JSON.parse(state.form.is_kasp) ? new Date() : null,
-        examination_details: state.form.examination_details,
-        history_of_present_illness: state.form.history_of_present_illness,
-        prescribed_medication: state.form.prescribed_medication,
-        discharge_date: state.form.discharge_date,
-        ip_no: state.form.ip_no,
-        icd11_diagnoses: state.form.icd11_diagnoses,
-        verified_by: state.form.verified_by,
+          oldState.form.suggestion === "A"
+            ? oldState.form.admission_date
+            : undefined,
+        category: oldState.form.category,
+        is_kasp: oldState.form.is_kasp,
+        kasp_enabled_date: JSON.parse(oldState.form.is_kasp)
+          ? new Date()
+          : null,
+        examination_details: oldState.form.examination_details,
+        history_of_present_illness: oldState.form.history_of_present_illness,
+        prescribed_medication: oldState.form.prescribed_medication,
+        discharge_date: oldState.form.discharge_date,
+        ip_no: oldState.form.ip_no,
+        icd11_diagnoses: oldState.form.icd11_diagnoses,
+        verified_by: oldState.form.verified_by,
         discharge_advice: dischargeAdvice,
         prn_prescription: PRNAdvice,
         investigation: InvestigationAdvice,
         patient: patientId,
         facility: facilityId,
         referred_to:
-          state.form.suggestion === "R" ? state.form.referred_to : undefined,
-        consultation_notes: state.form.consultation_notes,
-        is_telemedicine: state.form.is_telemedicine,
-        action: state.form.action,
-        review_time: state.form.review_time,
+          oldState.form.suggestion === "R"
+            ? oldState.form.referred_to
+            : undefined,
+        consultation_notes: oldState.form.consultation_notes,
+        is_telemedicine: oldState.form.is_telemedicine,
+        action: oldState.form.action,
+        review_time: oldState.form.review_time,
         assigned_to:
-          state.form.is_telemedicine === "true" ? state.form.assigned_to : "",
-        special_instruction: state.form.special_instruction,
-        weight: Number(state.form.weight),
-        height: Number(state.form.height),
+          oldState.form.is_telemedicine === "true"
+            ? oldState.form.assigned_to
+            : "",
+        special_instruction: oldState.form.special_instruction,
+        weight: Number(oldState.form.weight),
+        height: Number(oldState.form.height),
         bed: bed && bed instanceof Array ? bed[0]?.id : bed?.id,
       };
       const res = await dispatchAction(
@@ -520,7 +542,7 @@ export const ConsultationForm = (props: any) => {
       );
       setIsLoading(false);
       if (res && res.data && res.status !== 400) {
-        dispatch({ type: "set_form", form: initForm });
+        oldDispatch({ type: "set_form", form: initForm });
         if (id) {
           Notification.Success({
             msg: "Consultation updated successfully",
@@ -545,9 +567,9 @@ export const ConsultationForm = (props: any) => {
     | ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement> = (e: any) => {
     e &&
       e.target &&
-      dispatch({
+      oldDispatch({
         type: "set_form",
-        form: { ...state.form, [e.target.name]: e.target.value },
+        form: { ...oldState.form, [e.target.name]: e.target.value },
       });
   };
 
@@ -556,12 +578,12 @@ export const ConsultationForm = (props: any) => {
   ) => {
     e &&
       e.target &&
-      dispatch({
+      oldDispatch({
         type: "set_form",
         form: {
-          ...state.form,
+          ...oldState.form,
           [e.target.name]: e.target.value,
-          action: e.target.value === "false" ? "PENDING" : state.form.action,
+          action: e.target.value === "false" ? "PENDING" : oldState.form.action,
         },
       });
   };
@@ -569,10 +591,10 @@ export const ConsultationForm = (props: any) => {
   const handleDecisionChange = (e: any) => {
     e &&
       e.target &&
-      dispatch({
+      oldDispatch({
         type: "set_form",
         form: {
-          ...state.form,
+          ...oldState.form,
           [e.target.name]: e.target.value,
           // admitted: e.target.value === "A" ? "true" : "false",
         },
@@ -580,7 +602,7 @@ export const ConsultationForm = (props: any) => {
   };
 
   const handleSymptomChange = (e: any, child?: any) => {
-    const form = { ...state.form };
+    const form = { ...oldState.form };
     const { value } = e?.target;
     const otherSymptoms = value.filter((i: number) => i !== 1);
     // prevent user from selecting asymptomatic along with other options
@@ -592,37 +614,32 @@ export const ConsultationForm = (props: any) => {
         : otherSymptoms;
     form.hasSymptom = !!form.symptoms.filter((i: number) => i !== 1).length;
     form.otherSymptom = !!form.symptoms.filter((i: number) => i === 9).length;
-    dispatch({ type: "set_form", form });
+    oldDispatch({ type: "set_form", form });
   };
-
-  // ------------- DEPRECATED -------------
-  // const handleDateChange = (date: any, key: string) => {
-  //   if (moment(date).isValid()) {
-  //     const form = { ...state.form };
-  //     form[key] = date;
-  //     dispatch({ type: "set_form", form });
-  //   }
 
   const handleDateChange = (date: MaterialUiPickersDate, key: string) => {
     moment(date).isValid() &&
-      dispatch({ type: "set_form", form: { ...state.form, [key]: date } });
+      oldDispatch({
+        type: "set_form",
+        form: { ...oldState.form, [key]: date },
+      });
   };
 
   const handleDoctorSelect = (doctor: UserModel | null) => {
     if (doctor?.id) {
-      dispatch({
+      oldDispatch({
         type: "set_form",
         form: {
-          ...state.form,
+          ...oldState.form,
           assigned_to: doctor.id.toString(),
           assigned_to_object: doctor,
         },
       });
     } else {
-      dispatch({
+      oldDispatch({
         type: "set_form",
         form: {
-          ...state.form,
+          ...oldState.form,
           assigned_to: "",
           assigned_to_object: null,
         },
@@ -633,19 +650,25 @@ export const ConsultationForm = (props: any) => {
   const setFacility = (selected: FacilityModel | FacilityModel[] | null) => {
     const selectedFacility = selected as FacilityModel;
     setSelectedFacility(selectedFacility);
-    const form: FormDetails = { ...state.form };
+    const form: FormDetails = { ...oldState.form };
     if (selectedFacility && selectedFacility.id) {
       form.referred_to = selectedFacility.id.toString() || "";
     }
-    dispatch({ type: "set_form", form });
+    oldDispatch({ type: "set_form", form });
   };
 
   if (isLoading) {
     return <Loading />;
   }
 
+  const handleChangeV2: FormFieldChangeEventHandler = ({ name, value }) =>
+    oldDispatch({
+      type: "set_form",
+      form: { ...oldState.form, [name]: value },
+    });
+
   return (
-    <div className="px-2 pb-2 max-w-3xl mx-auto">
+    <div className="px-2 pb-2 w-full">
       <PageTitle
         title={headerText}
         crumbsReplacements={{
@@ -653,502 +676,478 @@ export const ConsultationForm = (props: any) => {
           [patientId]: { name: patientName },
         }}
       />
-      <div className="mt-4">
-        <div className="bg-white rounded shadow">
-          <form onSubmit={(e) => handleSubmit(e)}>
-            <CardContent>
-              <div className="grid gap-4 grid-cols-1">
-                <div id="symptoms-div">
-                  <InputLabel id="symptoms-label">Symptoms*</InputLabel>
-                  <MultiSelectField
-                    name="symptoms"
-                    variant="outlined"
-                    value={state.form.symptoms}
-                    options={symptomChoices}
-                    onChange={handleSymptomChange}
-                  />
-                  <ErrorHelperText error={state.errors.symptoms} />
-                </div>
+      <Form className="mt-10 max-w-[51rem] mx-auto" onSubmit={handleSubmit}>
+        <div id="symptoms-div">
+          <InputLabel id="symptoms-label">Symptoms*</InputLabel>
+          <MultiSelectField
+            name="symptoms"
+            variant="outlined"
+            value={oldState.form.symptoms}
+            options={symptomChoices}
+            onChange={handleSymptomChange}
+          />
+          <ErrorHelperText error={oldState.errors.symptoms} />
+        </div>
 
-                {state.form.otherSymptom && (
-                  <div id="other_symptoms-div">
-                    <InputLabel id="other-symptoms-label">
-                      Other Symptom Details
-                    </InputLabel>
-                    <MultilineInputField
-                      rows={5}
-                      name="other_symptoms"
-                      variant="outlined"
-                      margin="dense"
-                      type="text"
-                      placeholder="Enter the other symptoms here"
-                      InputLabelProps={{ shrink: !!state.form.other_symptoms }}
-                      value={state.form.other_symptoms}
-                      onChange={handleChange}
-                      errors={state.errors.other_symptoms}
-                    />
-                  </div>
-                )}
+        {oldState.form.otherSymptom && (
+          <div id="other_symptoms-div">
+            <InputLabel id="other-symptoms-label">
+              Other Symptom Details
+            </InputLabel>
+            <MultilineInputField
+              rows={5}
+              name="other_symptoms"
+              variant="outlined"
+              margin="dense"
+              type="text"
+              placeholder="Enter the other symptoms here"
+              InputLabelProps={{ shrink: !!oldState.form.other_symptoms }}
+              value={oldState.form.other_symptoms}
+              onChange={handleChange}
+              errors={oldState.errors.other_symptoms}
+            />
+          </div>
+        )}
 
-                {state.form.hasSymptom && (
-                  <div id="symptoms_onset_date-div">
-                    <DateInputField
-                      label="Date of onset of the symptoms*"
-                      value={state.form?.symptoms_onset_date}
-                      onChange={(date) =>
-                        handleDateChange(date, "symptoms_onset_date")
-                      }
-                      disableFuture={true}
-                      errors={state.errors.symptoms_onset_date}
-                      InputLabelProps={{ shrink: true }}
-                    />
-                  </div>
-                )}
-                <div id="existing-medication-div">
-                  <InputLabel id="existing-medication-label">
-                    History of present illness
-                  </InputLabel>
-                  <MultilineInputField
-                    rows={5}
-                    name="history_of_present_illness"
-                    variant="outlined"
-                    margin="dense"
-                    type="text"
-                    placeholder="Information optional"
-                    InputLabelProps={{
-                      shrink: !!state.form.history_of_present_illness,
-                    }}
-                    value={state.form.history_of_present_illness}
-                    onChange={handleChange}
-                    errors={state.errors.history_of_present_illness}
-                  />
-                </div>
+        {oldState.form.hasSymptom && (
+          <div id="symptoms_onset_date-div">
+            <DateInputField
+              label="Date of onset of the symptoms*"
+              value={oldState.form?.symptoms_onset_date}
+              onChange={(date) => handleDateChange(date, "symptoms_onset_date")}
+              disableFuture={true}
+              errors={oldState.errors.symptoms_onset_date}
+              InputLabelProps={{ shrink: true }}
+            />
+          </div>
+        )}
 
-                <div id="examination_details-div">
-                  <InputLabel id="exam-details-label">
-                    Examination details and Clinical conditions
-                  </InputLabel>
-                  <MultilineInputField
-                    rows={5}
-                    name="examination_details"
-                    variant="outlined"
-                    margin="dense"
-                    type="text"
-                    placeholder="Information optional"
-                    InputLabelProps={{
-                      shrink: !!state.form.examination_details,
-                    }}
-                    value={state.form.examination_details}
-                    onChange={handleChange}
-                    errors={state.errors.examination_details}
-                  />
-                </div>
+        <TextAreaFormField
+          id="history_of_present_illness"
+          label="History of present illness"
+          name="history_of_present_illness"
+          placeholder="Information Optional"
+          reducerProps={{ state: oldState, dispatch: oldDispatch }}
+          value={oldState.form.history_of_present_illness}
+          error={oldState.errors.history_of_present_illness}
+          onChange={handleChangeV2}
+        />
 
-                <div id="prescribed_medication-div">
-                  <InputLabel id="prescribed-medication-label">
-                    Treatment Plan / Treatment Summary
-                  </InputLabel>
-                  <MultilineInputField
-                    rows={5}
-                    name="prescribed_medication"
-                    variant="outlined"
-                    margin="dense"
-                    type="text"
-                    placeholder="Information optional"
-                    InputLabelProps={{
-                      shrink: !!state.form.prescribed_medication,
-                    }}
-                    value={state.form.prescribed_medication}
-                    onChange={handleChange}
-                    errors={state.errors.prescribed_medication}
-                  />
-                </div>
-                <div className="flex-1" id="category-div">
-                  <InputLabel id="category-label" required>
-                    Category
-                  </InputLabel>
-                  <SelectField
-                    name="category"
-                    variant="standard"
-                    value={state.form.category}
-                    options={PATIENT_CATEGORIES.map((c) => {
-                      return {
-                        id: c,
-                        text: c,
-                      };
-                    })}
-                    onChange={handleChange}
-                    errors={state.errors.category}
-                  />
-                </div>
+        <TextAreaFormField
+          id="examination_details"
+          label="Examination details and Clinical conditions"
+          name="examination_details"
+          placeholder="Information Optional"
+          value={oldState.form.examination_details}
+          onChange={handleChangeV2}
+        />
 
-                <div id="suggestion-div">
-                  <InputLabel
-                    id="suggestion-label"
-                    style={{ fontWeight: "bold", fontSize: "18px" }}
-                  >
-                    Decision after Consultation*
-                  </InputLabel>
-                  <NativeSelectField
-                    name="suggestion"
-                    variant="outlined"
-                    value={state.form.suggestion}
-                    options={suggestionTypes}
-                    onChange={handleDecisionChange}
-                  />
-                  <ErrorHelperText error={state.errors.suggestion} />
-                </div>
+        <div id="examination_details-div">
+          <InputLabel id="exam-details-label">
+            Examination details and Clinical conditions
+          </InputLabel>
+          <MultilineInputField
+            rows={5}
+            name="examination_details"
+            variant="outlined"
+            margin="dense"
+            type="text"
+            placeholder="Information optional"
+            InputLabelProps={{
+              shrink: !!oldState.form.examination_details,
+            }}
+            value={oldState.form.examination_details}
+            onChange={handleChange}
+            errors={oldState.errors.examination_details}
+          />
+        </div>
 
-                {state.form.suggestion === "R" && (
-                  <div id="referred_to-div">
-                    <InputLabel>Referred To Facility</InputLabel>
-                    <FacilitySelect
-                      name="referred_to"
-                      searchAll={true}
-                      selected={selectedFacility}
-                      setSelected={setFacility}
-                      errors={state.errors.referred_to}
-                    />
-                  </div>
-                )}
+        <div id="prescribed_medication-div">
+          <InputLabel id="prescribed-medication-label">
+            Treatment Plan / Treatment Summary
+          </InputLabel>
+          <MultilineInputField
+            rows={5}
+            name="prescribed_medication"
+            variant="outlined"
+            margin="dense"
+            type="text"
+            placeholder="Information optional"
+            InputLabelProps={{
+              shrink: !!oldState.form.prescribed_medication,
+            }}
+            value={oldState.form.prescribed_medication}
+            onChange={handleChange}
+            errors={oldState.errors.prescribed_medication}
+          />
+        </div>
+        <div className="flex-1" id="category-div">
+          <InputLabel id="category-label" required>
+            Category
+          </InputLabel>
+          <SelectField
+            name="category"
+            variant="standard"
+            value={oldState.form.category}
+            options={PATIENT_CATEGORIES.map((c) => {
+              return {
+                id: c,
+                text: c,
+              };
+            })}
+            onChange={handleChange}
+            errors={oldState.errors.category}
+          />
+        </div>
 
-                {/* {JSON.parse(state.form.admitted) && (
-                    <div className="flex-1" id="admitted_to-div">
-                      <SelectField
-                        optionArray={true}
-                        name="admitted_to"
-                        variant="standard"
-                        value={state.form.admitted_to}
-                        options={admittedToChoices}
-                        onChange={handleChange}
-                        label="Admitted To*"
-                        labelId="admitted-to-label"
-                        errors={state.errors.admitted_to}
-                      />
-                    </div>
-                  )}
-                */}
-                {state.form.suggestion === "A" && (
-                  <>
-                    <div className="flex">
-                      <div className="flex-1" id="admission_date-div">
-                        <DateInputField
-                          id="admission_date"
-                          label="Admission Date*"
-                          margin="dense"
-                          value={state.form.admission_date}
-                          disableFuture={true}
-                          onChange={(date) =>
-                            handleDateChange(date, "admission_date")
-                          }
-                          errors={state.errors.admission_date}
-                        />
-                      </div>
-                    </div>
-                    <div>
-                      <InputLabel id="asset-type">Bed</InputLabel>
-                      <BedSelect
-                        name="bed"
-                        setSelected={setBed}
-                        selected={bed}
-                        errors=""
-                        multiple={false}
-                        margin="dense"
-                        // location={state.form.}
-                        facility={facilityId}
-                      />
-                    </div>
-                  </>
-                )}
-              </div>
+        <div id="suggestion-div">
+          <InputLabel
+            id="suggestion-label"
+            style={{ fontWeight: "bold", fontSize: "18px" }}
+          >
+            Decision after Consultation*
+          </InputLabel>
+          <NativeSelectField
+            name="suggestion"
+            variant="outlined"
+            value={oldState.form.suggestion}
+            options={suggestionTypes}
+            onChange={handleDecisionChange}
+          />
+          <ErrorHelperText error={oldState.errors.suggestion} />
+        </div>
 
-              <div className="mt-4" id="consultation_notes-div">
-                <InputLabel>General Instructions (Advice)*</InputLabel>
-                <MultilineInputField
-                  rows={5}
-                  className="mt-2"
-                  name="consultation_notes"
-                  variant="outlined"
+        {oldState.form.suggestion === "R" && (
+          <div id="referred_to-div">
+            <InputLabel>Referred To Facility</InputLabel>
+            <FacilitySelect
+              name="referred_to"
+              searchAll={true}
+              selected={selectedFacility}
+              setSelected={setFacility}
+              errors={oldState.errors.referred_to}
+            />
+          </div>
+        )}
+
+        {oldState.form.suggestion === "A" && (
+          <>
+            <div className="flex">
+              <div className="flex-1" id="admission_date-div">
+                <DateInputField
+                  id="admission_date"
+                  label="Admission Date*"
                   margin="dense"
-                  type="text"
-                  placeholder="Consultation Notes..."
-                  InputLabelProps={{
-                    shrink: !!state.form.consultation_notes,
-                  }}
-                  value={state.form.consultation_notes}
-                  onChange={handleChange}
-                  errors={state.errors.consultation_notes}
+                  value={oldState.form.admission_date}
+                  disableFuture={true}
+                  onChange={(date) => handleDateChange(date, "admission_date")}
+                  errors={oldState.errors.admission_date}
                 />
               </div>
-              <div id="investigation-div" className="mt-4">
-                <InputLabel>Investigation Suggestions</InputLabel>
-                <InvestigationBuilder
-                  investigations={InvestigationAdvice}
-                  setInvestigations={setInvestigationAdvice}
-                />
-                <br />
-                <ErrorHelperText error={state.errors.investigation} />
-              </div>
-              <div id="discharge_advice-div" className="mt-4">
-                <InputLabel>Prescription Medication</InputLabel>
-                {/*<PrescriptionBuilderOld
+            </div>
+            <div>
+              <InputLabel id="asset-type">Bed</InputLabel>
+              <BedSelect
+                name="bed"
+                setSelected={setBed}
+                selected={bed}
+                errors=""
+                multiple={false}
+                margin="dense"
+                facility={facilityId}
+              />
+            </div>
+          </>
+        )}
+
+        <div className="mt-4" id="consultation_notes-div">
+          <InputLabel>General Instructions (Advice)*</InputLabel>
+          <MultilineInputField
+            rows={5}
+            className="mt-2"
+            name="consultation_notes"
+            variant="outlined"
+            margin="dense"
+            type="text"
+            placeholder="Consultation Notes..."
+            InputLabelProps={{
+              shrink: !!oldState.form.consultation_notes,
+            }}
+            value={oldState.form.consultation_notes}
+            onChange={handleChange}
+            errors={oldState.errors.consultation_notes}
+          />
+        </div>
+        <div id="investigation-div" className="mt-4">
+          <InputLabel>Investigation Suggestions</InputLabel>
+          <InvestigationBuilder
+            investigations={InvestigationAdvice}
+            setInvestigations={setInvestigationAdvice}
+          />
+          <br />
+          <ErrorHelperText error={oldState.errors.investigation} />
+        </div>
+        <div id="discharge_advice-div" className="mt-4">
+          <InputLabel>Prescription Medication</InputLabel>
+          {/*<PrescriptionBuilderOld
                   prescriptions={dischargeAdvice as Prescription__Prescription_t[]}
                   setPrescriptions={setDischargeAdvice}
                 />*/}
-                <PrescriptionBuilder
-                  prescriptions={dischargeAdvice}
-                  setPrescriptions={setDischargeAdvice}
-                />
-                <br />
-                <ErrorHelperText error={state.errors.discharge_advice} />
-              </div>
-              <div id="discharge_advice-div" className="mt-4">
-                <InputLabel>PRN Prescription</InputLabel>
-                <PRNPrescriptionBuilder
-                  prescriptions={PRNAdvice}
-                  setPrescriptions={setPRNAdvice}
-                />
-                <br />
-                <ErrorHelperText error={state.errors.prn_prescription} />
-              </div>
-              <div id="ip_no-div" className="mt-4">
-                <InputLabel id="refered-label">IP number*</InputLabel>
-                <TextInputField
-                  name="ip_no"
-                  variant="outlined"
-                  margin="dense"
-                  type="string"
-                  InputLabelProps={{ shrink: !!state.form.ip_no }}
-                  value={state.form.ip_no}
-                  onChange={handleChange}
-                  errors={state.errors.ip_no}
-                  required
-                />
-              </div>
-              <div id="verified_by-div">
-                <InputLabel id="exam-details-label">Verified By</InputLabel>
-                <MultilineInputField
-                  rows={3}
-                  name="verified_by"
-                  variant="outlined"
-                  margin="dense"
-                  type="text"
-                  placeholder="Attending Doctors Name and Designation"
-                  InputLabelProps={{
-                    shrink: !!state.form.verified_by,
-                  }}
-                  value={state.form.verified_by}
-                  onChange={handleChange}
-                  errors={state.errors.verified_by}
-                />
-              </div>
-              <div id="diagnosis-div" className="mt-4">
-                <InputLabel id="diagnosis-label">Diagnosis</InputLabel>
-                <DiagnosisSelect
-                  name="icd11_diagnoses"
-                  selected={state.form.icd11_diagnoses_object}
-                  setSelected={(selected: ICD11DiagnosisModel[] | null) => {
-                    dispatch({
-                      type: "set_form",
-                      form: {
-                        ...state.form,
-                        icd11_diagnoses:
-                          selected?.map(
-                            (diagnosis: ICD11DiagnosisModel) => diagnosis.id
-                          ) || [],
-                      },
-                    });
-                  }}
-                />
-              </div>
-
-              {KASP_ENABLED && (
-                <div className="flex-1" id="is_kasp-div">
-                  <InputLabel id="admitted-label">{KASP_STRING}*</InputLabel>
-                  <RadioGroup
-                    aria-label="covid"
-                    name="is_kasp"
-                    value={state.form.is_kasp}
-                    onChange={handleTelemedicineChange}
-                    style={{ padding: "0px 5px" }}
-                  >
-                    <Box display="flex" flexDirection="row">
-                      <FormControlLabel
-                        value="true"
-                        control={<Radio />}
-                        label="Yes"
-                      />
-                      <FormControlLabel
-                        value="false"
-                        control={<Radio />}
-                        label="No"
-                      />
-                    </Box>
-                  </RadioGroup>
-                  <ErrorHelperText error={state.errors.is_kasp} />
-                </div>
-              )}
-              {/* Telemedicine Fields */}
-              <div className="flex mt-4">
-                <div className="flex-1" id="is_telemedicine-div">
-                  <InputLabel id="admitted-label">Telemedicine</InputLabel>
-                  <RadioGroup
-                    aria-label="covid"
-                    name="is_telemedicine"
-                    value={state.form.is_telemedicine}
-                    onChange={handleTelemedicineChange}
-                    style={{ padding: "0px 5px" }}
-                  >
-                    <Box display="flex" flexDirection="row">
-                      <FormControlLabel
-                        value="true"
-                        control={<Radio />}
-                        label="Yes"
-                      />
-                      <FormControlLabel
-                        value="false"
-                        control={<Radio />}
-                        label="No"
-                      />
-                    </Box>
-                  </RadioGroup>
-                  <ErrorHelperText error={state.errors.is_telemedicine} />
-                </div>
-
-                {JSON.parse(state.form.is_telemedicine) && (
-                  <div className="flex-1" id="review_time">
-                    <InputLabel id="review_time-label">
-                      Review After{" "}
-                    </InputLabel>
-                    <SelectField
-                      name="review_time"
-                      variant="standard"
-                      value={state.form.review_time}
-                      options={[
-                        { id: "", text: "select" },
-                        ...REVIEW_AT_CHOICES,
-                      ]}
-                      onChange={handleChange}
-                      errors={state.errors.review_time}
-                    />
-                  </div>
-                )}
-              </div>
-              {JSON.parse(state.form.is_telemedicine) && (
-                <div className="md:col-span-1" id="assigned_to-div">
-                  <OnlineUsersSelect
-                    userId={state.form.assigned_to}
-                    selectedUser={state.form.assigned_to_object}
-                    onSelect={handleDoctorSelect}
-                    user_type={"Doctor"}
-                    outline={false}
-                  />
-                </div>
-              )}
-              {JSON.parse(state.form.is_telemedicine) && (
-                <div id="action-div">
-                  <InputLabel
-                    id="action-label"
-                    style={{ fontWeight: "bold", fontSize: "18px" }}
-                  >
-                    Action
-                  </InputLabel>
-                  <NativeSelectField
-                    name="action"
-                    variant="outlined"
-                    value={state.form.action}
-                    optionKey="text"
-                    optionValue="desc"
-                    options={TELEMEDICINE_ACTIONS}
-                    onChange={handleChange}
-                  />
-                  <ErrorHelperText error={state.errors.action} />
-                </div>
-              )}
-              <div id="special_instruction-div" className="mt-2">
-                <InputLabel id="special-instruction-label">
-                  Special Instructions
-                </InputLabel>
-                <MultilineInputField
-                  rows={5}
-                  name="special_instruction"
-                  variant="outlined"
-                  margin="dense"
-                  type="text"
-                  placeholder="Information optional"
-                  InputLabelProps={{
-                    shrink: !!state.form.special_instruction,
-                  }}
-                  value={state.form.special_instruction}
-                  onChange={handleChange}
-                  errors={state.errors.special_instruction}
-                />
-              </div>
-
-              <div className="flex flex-col md:flex-row justify-between md:gap-5 mt-4">
-                <div id="weight-div" className="flex-1">
-                  <InputLabel id="refered-label">Weight (in Kg)</InputLabel>
-                  <TextInputField
-                    name="weight"
-                    variant="outlined"
-                    margin="dense"
-                    type="number"
-                    InputLabelProps={{ shrink: !!state.form.weight }}
-                    value={state.form.weight}
-                    onChange={handleChange}
-                    errors={state.errors.weight}
-                  />
-                </div>
-                <div id="height-div" className="flex-1">
-                  <InputLabel id="refered-label">Height (in cm)</InputLabel>
-                  <TextInputField
-                    name="height"
-                    variant="outlined"
-                    margin="dense"
-                    type="number"
-                    InputLabelProps={{ shrink: !!state.form.height }}
-                    value={state.form.height}
-                    onChange={handleChange}
-                    errors={state.errors.height}
-                  />
-                </div>
-              </div>
-              <div id="body_surface-div" className="flex-1">
-                Body Surface area :{" "}
-                {Math.sqrt(
-                  (Number(state.form.weight) * Number(state.form.height)) / 3600
-                ).toFixed(2)}{" "}
-                m<sup>2</sup>
-              </div>
-              {/* End of Telemedicine fields */}
-              <div className="mt-4 flex justify-between">
-                <Button
-                  color="default"
-                  variant="contained"
-                  type="button"
-                  onClick={() =>
-                    navigate(`/facility/${facilityId}/patient/${patientId}`)
-                  }
-                >
-                  Cancel{" "}
-                </Button>
-                <Button
-                  color="primary"
-                  variant="contained"
-                  type="submit"
-                  style={{ marginLeft: "auto" }}
-                  startIcon={
-                    <CheckCircleOutlineIcon>save</CheckCircleOutlineIcon>
-                  }
-                  onClick={(e) => handleSubmit(e)}
-                >
-                  {buttonText}
-                </Button>
-              </div>
-            </CardContent>
-          </form>
+          <PrescriptionBuilder
+            prescriptions={dischargeAdvice}
+            setPrescriptions={setDischargeAdvice}
+          />
+          <br />
+          <ErrorHelperText error={oldState.errors.discharge_advice} />
         </div>
-      </div>
+        <div id="discharge_advice-div" className="mt-4">
+          <InputLabel>PRN Prescription</InputLabel>
+          <PRNPrescriptionBuilder
+            prescriptions={PRNAdvice}
+            setPrescriptions={setPRNAdvice}
+          />
+          <br />
+          <ErrorHelperText error={oldState.errors.prn_prescription} />
+        </div>
+        <div id="ip-test-_no-div" className="mt-4">
+          <TextFormField
+            name="ip_no"
+            value={oldState.form.ip_no}
+            label="IP Number"
+            required
+            onChange={handleChangeV2}
+            error={oldState.errors.ip_no}
+            validate={(value) => "some error"}
+          />
+        </div>
+        <div id="ip_no-div" className="mt-4">
+          <InputLabel id="refered-label">IP number*</InputLabel>
+          <TextInputField
+            name="ip_no"
+            variant="outlined"
+            margin="dense"
+            type="string"
+            InputLabelProps={{ shrink: !!oldState.form.ip_no }}
+            value={oldState.form.ip_no}
+            onChange={handleChange}
+            errors={oldState.errors.ip_no}
+            required
+          />
+        </div>
+        <div id="verified_by-div">
+          <InputLabel id="exam-details-label">Verified By</InputLabel>
+          <MultilineInputField
+            rows={3}
+            name="verified_by"
+            variant="outlined"
+            margin="dense"
+            type="text"
+            placeholder="Attending Doctors Name and Designation"
+            InputLabelProps={{
+              shrink: !!oldState.form.verified_by,
+            }}
+            value={oldState.form.verified_by}
+            onChange={handleChange}
+            errors={oldState.errors.verified_by}
+          />
+        </div>
+        <div id="diagnosis-div" className="mt-4">
+          <InputLabel id="diagnosis-label">Diagnosis</InputLabel>
+          <DiagnosisSelect
+            name="icd11_diagnoses"
+            selected={oldState.form.icd11_diagnoses_object}
+            setSelected={(selected: ICD11DiagnosisModel[] | null) => {
+              oldDispatch({
+                type: "set_form",
+                form: {
+                  ...oldState.form,
+                  icd11_diagnoses:
+                    selected?.map(
+                      (diagnosis: ICD11DiagnosisModel) => diagnosis.id
+                    ) || [],
+                },
+              });
+            }}
+          />
+        </div>
+
+        {KASP_ENABLED && (
+          <div className="flex-1" id="is_kasp-div">
+            <InputLabel id="admitted-label">{KASP_STRING}*</InputLabel>
+            <RadioGroup
+              aria-label="covid"
+              name="is_kasp"
+              value={oldState.form.is_kasp}
+              onChange={handleTelemedicineChange}
+              style={{ padding: "0px 5px" }}
+            >
+              <Box display="flex" flexDirection="row">
+                <FormControlLabel
+                  value="true"
+                  control={<Radio />}
+                  label="Yes"
+                />
+                <FormControlLabel
+                  value="false"
+                  control={<Radio />}
+                  label="No"
+                />
+              </Box>
+            </RadioGroup>
+            <ErrorHelperText error={oldState.errors.is_kasp} />
+          </div>
+        )}
+        {/* Telemedicine Fields */}
+        <div className="flex mt-4">
+          <div className="flex-1" id="is_telemedicine-div">
+            <InputLabel id="admitted-label">Telemedicine</InputLabel>
+            <RadioGroup
+              aria-label="covid"
+              name="is_telemedicine"
+              value={oldState.form.is_telemedicine}
+              onChange={handleTelemedicineChange}
+              style={{ padding: "0px 5px" }}
+            >
+              <Box display="flex" flexDirection="row">
+                <FormControlLabel
+                  value="true"
+                  control={<Radio />}
+                  label="Yes"
+                />
+                <FormControlLabel
+                  value="false"
+                  control={<Radio />}
+                  label="No"
+                />
+              </Box>
+            </RadioGroup>
+            <ErrorHelperText error={oldState.errors.is_telemedicine} />
+          </div>
+
+          {JSON.parse(oldState.form.is_telemedicine) && (
+            <div className="flex-1" id="review_time">
+              <InputLabel id="review_time-label">Review After </InputLabel>
+              <SelectField
+                name="review_time"
+                variant="standard"
+                value={oldState.form.review_time}
+                options={[{ id: "", text: "select" }, ...REVIEW_AT_CHOICES]}
+                onChange={handleChange}
+                errors={oldState.errors.review_time}
+              />
+            </div>
+          )}
+        </div>
+        {JSON.parse(oldState.form.is_telemedicine) && (
+          <div className="md:col-span-1" id="assigned_to-div">
+            <OnlineUsersSelect
+              userId={oldState.form.assigned_to}
+              selectedUser={oldState.form.assigned_to_object}
+              onSelect={handleDoctorSelect}
+              user_type={"Doctor"}
+              outline={false}
+            />
+          </div>
+        )}
+        {JSON.parse(oldState.form.is_telemedicine) && (
+          <div id="action-div">
+            <InputLabel
+              id="action-label"
+              style={{ fontWeight: "bold", fontSize: "18px" }}
+            >
+              Action
+            </InputLabel>
+            <NativeSelectField
+              name="action"
+              variant="outlined"
+              value={oldState.form.action}
+              optionKey="text"
+              optionValue="desc"
+              options={TELEMEDICINE_ACTIONS}
+              onChange={handleChange}
+            />
+            <ErrorHelperText error={oldState.errors.action} />
+          </div>
+        )}
+        <div id="special_instruction-div" className="mt-2">
+          <InputLabel id="special-instruction-label">
+            Special Instructions
+          </InputLabel>
+          <MultilineInputField
+            rows={5}
+            name="special_instruction"
+            variant="outlined"
+            margin="dense"
+            type="text"
+            placeholder="Information optional"
+            InputLabelProps={{
+              shrink: !!oldState.form.special_instruction,
+            }}
+            value={oldState.form.special_instruction}
+            onChange={handleChange}
+            errors={oldState.errors.special_instruction}
+          />
+        </div>
+
+        <div className="flex flex-col md:flex-row justify-between md:gap-5 mt-4">
+          <div id="weight-div" className="flex-1">
+            <InputLabel id="refered-label">Weight (in Kg)</InputLabel>
+            <TextInputField
+              name="weight"
+              variant="outlined"
+              margin="dense"
+              type="number"
+              InputLabelProps={{ shrink: !!oldState.form.weight }}
+              value={oldState.form.weight}
+              onChange={handleChange}
+              errors={oldState.errors.weight}
+            />
+          </div>
+          <div id="height-div" className="flex-1">
+            <InputLabel id="refered-label">Height (in cm)</InputLabel>
+            <TextInputField
+              name="height"
+              variant="outlined"
+              margin="dense"
+              type="number"
+              InputLabelProps={{ shrink: !!oldState.form.height }}
+              value={oldState.form.height}
+              onChange={handleChange}
+              errors={oldState.errors.height}
+            />
+          </div>
+        </div>
+        <div id="body_surface-div" className="flex-1">
+          Body Surface area :{" "}
+          {Math.sqrt(
+            (Number(oldState.form.weight) * Number(oldState.form.height)) / 3600
+          ).toFixed(2)}{" "}
+          m<sup>2</sup>
+        </div>
+        {/* End of Telemedicine fields */}
+        <div className="mt-4 flex justify-between">
+          <Button
+            color="default"
+            variant="contained"
+            type="button"
+            onClick={() =>
+              navigate(`/facility/${facilityId}/patient/${patientId}`)
+            }
+          >
+            Cancel{" "}
+          </Button>
+          <Button
+            color="primary"
+            variant="contained"
+            type="submit"
+            style={{ marginLeft: "auto" }}
+            startIcon={<CheckCircleOutlineIcon>save</CheckCircleOutlineIcon>}
+            onClick={(e) => handleSubmit(e)}
+          >
+            {buttonText}
+          </Button>
+        </div>
+      </Form>
       {!id ? null : (
         <div className="mt-4 bg-white rounded shadow p-4">
           <h3>Update Bed</h3>

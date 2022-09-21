@@ -57,7 +57,7 @@ export default function PageTitle(props: PageTitleProps) {
   };
 
   return (
-    <div ref={divRef} className={`pt-4 mb-4 ${className}`}>
+    <div ref={divRef} className={`my-10 ${className}`}>
       <PageHeadTitle title={title} />
       <div
         className={clsx({
@@ -68,12 +68,14 @@ export default function PageTitle(props: PageTitleProps) {
         <div className="flex items-center">
           {!hideBack && (
             <button onClick={onBackButtonClick}>
-              <i className="fas fa-chevron-left text-2xl rounded-md p-2 hover:bg-gray-200 mr-1">
+              <i className="fa-solid fa-chevron-left rounded-md text-xs p-2 hover:bg-gray-200 mr-1">
                 {" "}
               </i>
             </button>
           )}
-          <h2 className="font-semibold text-2xl leading-tight ml-0">{title}</h2>
+          <h2 className="font-medium text-black text-lg leading-tight ml-0">
+            {title}
+          </h2>
         </div>
         {componentRight}
       </div>

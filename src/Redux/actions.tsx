@@ -486,11 +486,11 @@ export const createConsultation = (params: object) => {
 export const getConsultationList = (params: object) => {
   return fireRequest("getConsultationList", [], params);
 };
-export const getConsultation = (id: number) => {
-  return fireRequest("getConsultation", [], {}, { id: id });
+export const getConsultation = (id: string) => {
+  return fireRequest("getConsultation", [], {}, { id });
 };
 export const updateConsultation = (id: number, params: object) => {
-  return fireRequest("updateConsultation", [], params, { id: id });
+  return fireRequest("updateConsultation", [], params, { id });
 };
 //Inventory
 export const getItems = (params: object) => {
@@ -721,7 +721,7 @@ export const editInvestigation = (
 // ICD11
 export const listICD11Diagnosis = (params: object, key: string) => {
   return fireRequest("listICD11Diagnosis", [], params, null, key);
-}
+};
 
 // Resource
 export const createResource = (params: object) => {
