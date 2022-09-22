@@ -1,3 +1,5 @@
+import { MutableRefObject, useEffect, useMemo, useState } from "react";
+
 interface ApacheParams {
   age: number;
   organFailure: boolean;
@@ -62,3 +64,25 @@ export const calculateApache2Score = (apacheParams: ApacheParams): number => {
 
   return totalScore;
 };
+
+function useIsInViewport(ref: MutableRefObject<any>) {
+  const [isIntersecting, setIsIntersecting] = useState(false);
+
+  const observer = useMemo(
+    () =>
+      new IntersectionObserver(([entry]) =>
+        setIsIntersecting(entry.isIntersecting)
+      ),
+    []
+  );
+
+  useEffect(() => {
+    observer.observe(ref.current);
+
+    return () => {
+      observer.disconnect();
+    };
+  }, [ref, observer]);
+
+  return isIntersecting;
+}
