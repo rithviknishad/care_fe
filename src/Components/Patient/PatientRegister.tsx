@@ -58,7 +58,7 @@ import TransferPatientDialog from "../Facility/TransferPatientDialog";
 import { validatePincode } from "../../Common/validation";
 import { InfoOutlined } from "@material-ui/icons";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import { scrollTo } from "../../Utils/utils";
+import { goBack } from "../../Utils/utils";
 
 const Loading = loadable(() => import("../Common/Loading"));
 const PageTitle = loadable(() => import("../Common/PageTitle"));
@@ -183,8 +183,9 @@ const patientFormReducer = (state = initialState, action: any) => {
   }
 };
 
-const goBack = () => {
-  window.history.go(-1);
+const scrollTo = (id: any) => {
+  const element = document.querySelector(`#${id}-div`);
+  element?.scrollIntoView({ behavior: "smooth", block: "center" });
 };
 
 export const PatientRegister = (props: PatientRegisterProps) => {
@@ -994,7 +995,7 @@ export const PatientRegister = (props: PatientRegisterProps) => {
         <>
           {showAlertMessage.show && (
             <AlertDialog
-              handleClose={() => goBack()}
+              handleClose={goBack}
               message={showAlertMessage.message}
               title={showAlertMessage.title}
             />
@@ -2043,7 +2044,7 @@ export const PatientRegister = (props: PatientRegisterProps) => {
                     <button
                       className="btn btn-default bg-gray-300 hover:bg-gray-400 btn-large   mr-4"
                       type="button"
-                      onClick={goBack}
+                      onClick={() => goBack()}
                     >
                       {" "}
                       Cancel{" "}
