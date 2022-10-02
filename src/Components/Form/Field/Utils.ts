@@ -13,11 +13,13 @@ export type FormFieldBaseProps<T> = {
   disabled?: boolean;
   className?: string;
   required?: boolean;
+  errorClass?: string;
+  labelClass?: string;
 } & (
   | {
-      error: undefined;
-      value: undefined;
-      onChange: undefined;
+      error?: undefined;
+      value?: undefined;
+      onChange?: undefined;
       reducerProps: { state: FormState; dispatch: Dispatch<FormAction> };
       validate: FieldValidator<T>;
     }
@@ -25,20 +27,20 @@ export type FormFieldBaseProps<T> = {
       error: FieldError;
       value?: T;
       onChange: FieldChangeEventHandler<T>;
-      reducerProps: undefined;
-      validate: undefined;
+      reducerProps?: undefined;
+      validate?: undefined;
     }
 );
 
-export function handleFormFieldChange<V, F = FormDetails>(
+export const handleFormFieldChange = <V, F = FormDetails>(
   state: FormState<F>,
   dispatch: Dispatch<FormAction<F>>
-) {
+) => {
   return (event: FieldChangeEvent<V>) => {
     const { name, value } = event;
     dispatch({ type: "set_form", form: { ...state.form, [name]: value } });
   };
-}
+};
 
 export const resolveFormFieldChangeEventHandler = <T>(
   props: FormFieldBaseProps<T>

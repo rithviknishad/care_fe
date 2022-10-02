@@ -1,3 +1,4 @@
+import React from "react";
 import FormField from "./FormField";
 import {
   FormFieldBaseProps,
@@ -10,9 +11,11 @@ type TextFormFieldProps = FormFieldBaseProps<string> & {
   value?: string | number;
   autoComplete?: string;
   type?: "email" | "password" | "search" | "text";
+  // prefixIcon?: React.ReactNode;
+  // suffixIcon?: React.ReactNode;
 };
 
-export default function TextFormField(props: TextFormFieldProps) {
+const TextFormField = (props: TextFormFieldProps) => {
   const handleChange = resolveFormFieldChangeEventHandler(props);
   const error = resolveFormFieldError(props);
 
@@ -38,4 +41,6 @@ export default function TextFormField(props: TextFormFieldProps) {
       />
     </FormField>
   );
-}
+};
+
+export default TextFormField;

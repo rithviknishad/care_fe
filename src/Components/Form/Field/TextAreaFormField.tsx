@@ -9,12 +9,11 @@ type TextAreaFormFieldProps = FormFieldBaseProps<string> & {
   placeholder?: string;
   value?: string | number;
   rows?: number;
+  // prefixIcon?: React.ReactNode;
+  // suffixIcon?: React.ReactNode;
 };
 
-export const TextAreaFormField = ({
-  rows = 3,
-  ...props
-}: TextAreaFormFieldProps) => {
+const TextAreaFormField = ({ rows = 3, ...props }: TextAreaFormFieldProps) => {
   const handleChange = resolveFormFieldChangeEventHandler(props);
   const error = resolveFormFieldError(props);
 
@@ -40,3 +39,5 @@ export const TextAreaFormField = ({
     </FormField>
   );
 };
+
+export default TextAreaFormField;
