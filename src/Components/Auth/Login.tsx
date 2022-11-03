@@ -114,18 +114,17 @@ export const Login = (props: { forgot?: boolean }) => {
   const validateForgetData = () => {
     let hasError = false;
     const err = Object.assign({}, errors);
-    Object.keys(form).forEach((key) => {
-      if (typeof form[key] === "string") {
-        if (!form[key].match(/\w/)) {
-          hasError = true;
-          err[key] = t("field_request");
-        }
-      }
-      if (!form[key]) {
+    const usernameInput = form["username"];
+    if (typeof usernameInput === "string") {
+      if (!usernameInput.match(/\w/)) {
         hasError = true;
-        err[key] = t("field_request");
+        err["username"] = t("field_request");
       }
-    });
+    }
+    if (!usernameInput) {
+      hasError = true;
+      err["username"] = t("field_request");
+    }
     if (hasError) {
       setErrors(err);
       return false;
