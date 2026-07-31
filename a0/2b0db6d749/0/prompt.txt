@@ -994,3 +994,22 @@ Error: Duplicate exported component names are not allowed for auto-registration:
 ```
 
 Fix, then call preview_start to start the server.
+
+---
+
+<task-notification>
+<task-id>ae829fab2597483a4</task-id>
+<tool-use-id>REDACTED</tool-use-id>
+<output-file>/private/tmp/claude-501/-Users-bodhishthomas-code-care-fe/5786aa56-b361-49ee-bae1-fb5d507b7318/tasks/ae829fab2597483a4.output</output-file>
+<status>completed</status>
+<summary>Agent "Implement Task 10 (builder reducer)" finished</summary>
+<note>A task-notification fires each time this agent stops with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>
+<result>Task 10 complete.
+
+**Commit:** `bf60d4b1f668e16ab4ca48379d4a3760073b2534`
+
+**Status:** Created `src/components/QuestionnaireV2/builder/builderReducer.ts` (158 lines) with exact code transcription from brief. TypeScript strict mode passes, ESLint passes after formatting (4 prettier fixes applied). mapTree logic preserved exactly per spec. Ready for Tasks 11-12.
+
+**Report:** `/Users/bodhishthomas/code/care_fe/.superpowers/sdd/task-10-report.md`</result>
+<usage><subagent_tokens>41011</subagent_tokens><tool_uses>13</tool_uses><duration_ms>135704</duration_ms></usage>
+</task-notification>
