@@ -1,19 +1,1 @@
-How can this be used without a PAT?
-
----
-
-If with PAT, what are the permissions needed? fine grainer?
-
-<canvas-context>
-- name="file:.github/workflows/grumpy-reviewer.md" type="editor" title="grumpy-reviewer.md" panel="open" artifact="repo:.github/workflows/grumpy-reviewer.md" file="/Users/amjithtitus/Code/copilot-worktrees/care_fe/amjithtitus09-sturdy-telegram/.github/workflows/grumpy-reviewer.md" media="text/markdown"
-- name="userterm-right-terminal-c0342f2d-820c-41f9-a7b1-c785ecf7d738-1" type="terminal" title="Terminal" panel="open" instance="userterm-right-terminal-c0342f2d-820c-41f9-a7b1-c785ecf7d738-1"
-</canvas-context>
-
----
-
 Revert to using PAT
-
-<canvas-context>
-- name="file:.github/workflows/grumpy-reviewer.md" type="editor" title="grumpy-reviewer.md" panel="open" artifact="repo:.github/workflows/grumpy-reviewer.md" file="/Users/amjithtitus/Code/copilot-worktrees/care_fe/amjithtitus09-sturdy-telegram/.github/workflows/grumpy-reviewer.md" media="text/markdown"
-- name="userterm-right-terminal-c0342f2d-820c-41f9-a7b1-c785ecf7d738-1" type="terminal" title="Terminal" panel="open" instance="userterm-right-terminal-c0342f2d-820c-41f9-a7b1-c785ecf7d738-1"
-</canvas-context>
