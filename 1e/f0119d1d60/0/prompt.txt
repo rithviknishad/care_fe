@@ -939,3 +939,58 @@ Missing/Extra: none.
 All binding constraints were independently verifiable by reading the actual source files (old component prop interfaces, call sites, `StructuredQuestionType` definition, `RendererSubject` type, `useQuestionResponse`/`useQuestionErrors` hooks, eslint config, and full `en.json`). Did not re-run `tsc`/`eslint` per instructions; spot-checks corroborate the report's claimed PASS results.</result>
 <usage><subagent_tokens>93680</subagent_tokens><tool_uses>36</tool_uses><duration_ms>219610</duration_ms></usage>
 </task-notification>
+
+---
+
+The dev server failed to start with the following error:
+
+```
+Failed to start preview server: [33mBoth esbuild and oxc options were set. oxc options will be used and esbuild options will be ignored.[39m The following esbuild options were set: `{ target: 'es2022' }`
+[31merror when starting dev server:
+Error: Duplicate exported component names are not allowed for auto-registration:
+- DateTimeInput
+  /Users/bodhishthomas/code/care_fe/src/components/Common/DateTimeInput.tsx
+  /Users/bodhishthomas/code/care_fe/src/components/QuestionnaireV2/renderer/inputs/DateTimeInput.tsx
+    at assertUniqueComponentNames (file:///Users/bodhishthomas/code/care_fe/node_modules/.vite-temp/vite.config.mts.timestamp-1785512635566-223b7407162c5.mjs:238:8)
+    at PluginContext.buildStart (file:///Users/bodhishthomas/code/care_fe/node_modules/.vite-temp/vite.config.mts.timestamp-1785512635566-223b7407162c5.mjs:332:4)
+    at EnvironmentPluginContainer.hookParallel (file:///Users/bodhishthomas/code/care_fe/node_modules/vite/dist/node/chunks/node.js:30008:41)
+    at EnvironmentPluginContainer.buildStart (file:///Users/bodhishthomas/code/care_fe/node_modules/vite/dist/node/chunks/node.js:30019:57)
+    at file:///Users/bodhishthomas/code/care_fe/node_modules/vite/dist/node/chunks/node.js:26010:83
+    at initServer (file:///Users/bodhishthomas/code/care_fe/node_modules/vite/dist/node/chunks/node.js:26014:5)
+    at httpServer.listen (file:///Users/bodhishthomas/code/care_fe/node_modules/vite/dist/node/chunks/node.js:26021:11)
+    at file:///Users/bodhishthomas/code/care_fe/node_modules/vite/dist/node/chunks/node.js:11393:14
+    at new Promise (<anonymous>)
+    at tryBindServer (file:///Users/bodhishthomas/code/care_fe/node_modules/vite/dist/node/chunks/node.js:11377:9)[39m
+
+
+Output:
+> care_fe@3.0.5 dev
+> npm run build:meta && npm run supported-browsers && vite
+
+
+> care_fe@3.0.5 build:meta
+> node ./scripts/generate-build-version.js
+
+
+> care_fe@3.0.5 supported-browsers
+> node ./scripts/generate-supported-browsers.mjs
+
+[33mBoth esbuild and oxc options were set. oxc options will be used and esbuild options will be ignored.[39m The following esbuild options were set: `{ target: 'es2022' }`
+[31merror when starting dev server:
+Error: Duplicate exported component names are not allowed for auto-registration:
+- DateTimeInput
+  /Users/bodhishthomas/code/care_fe/src/components/Common/DateTimeInput.tsx
+  /Users/bodhishthomas/code/care_fe/src/components/QuestionnaireV2/renderer/inputs/DateTimeInput.tsx
+    at assertUniqueComponentNames (file:///Users/bodhishthomas/code/care_fe/node_modules/.vite-temp/vite.config.mts.timestamp-1785512635566-223b7407162c5.mjs:238:8)
+    at PluginContext.buildStart (file:///Users/bodhishthomas/code/care_fe/node_modules/.vite-temp/vite.config.mts.timestamp-1785512635566-223b7407162c5.mjs:332:4)
+    at EnvironmentPluginContainer.hookParallel (file:///Users/bodhishthomas/code/care_fe/node_modules/vite/dist/node/chunks/node.js:30008:41)
+    at EnvironmentPluginContainer.buildStart (file:///Users/bodhishthomas/code/care_fe/node_modules/vite/dist/node/chunks/node.js:30019:57)
+    at file:///Users/bodhishthomas/code/care_fe/node_modules/vite/dist/node/chunks/node.js:26010:83
+    at initServer (file:///Users/bodhishthomas/code/care_fe/node_modules/vite/dist/node/chunks/node.js:26014:5)
+    at httpServer.listen (file:///Users/bodhishthomas/code/care_fe/node_modules/vite/dist/node/chunks/node.js:26021:11)
+    at file:///Users/bodhishthomas/code/care_fe/node_modules/vite/dist/node/chunks/node.js:11393:14
+    at new Promise (<anonymous>)
+    at tryBindServer (file:///Users/bodhishthomas/code/care_fe/node_modules/vite/dist/node/chunks/node.js:11377:9)[39m
+```
+
+Fix, then call preview_start to start the server.
