@@ -1676,3 +1676,66 @@ To re-run with edited post-processing: Workflow({scriptPath: '/Users/bodhishthom
 **Concerns:** (1) Seven en.json values changed (keys stable) — Crowdin will flag those strings for retranslation; `questionnaires` key removed, `questionnaires_legacy` added. (2) The create page's Basic Information card is now collapsible (consequence of reusing the detail card). (3) `tests/admin/questionnaire` (legacy) vs `tests/admin/questionnaires` (v2) differ by one character — per the finding's own prescription, noted in the new module README.</result>
 <usage><subagent_tokens>412130</subagent_tokens><tool_uses>237</tool_uses><duration_ms>2382023</duration_ms></usage>
 </task-notification>
+
+---
+
+<task-notification>
+<task-id>a767720a2af20a48a</task-id>
+<tool-use-id>REDACTED</tool-use-id>
+<output-file>/private/tmp/claude-501/-Users-bodhishthomas-code-care-fe/5786aa56-b361-49ee-bae1-fb5d507b7318/tasks/a767720a2af20a48a.output</output-file>
+<status>completed</status>
+<summary>Agent "Final gate review" finished</summary>
+<note>A task-notification fires each time this agent stops with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>
+<result>Working tree is back to its pre-review state. Here is the final gate report.
+
+## Check 1 — Spot-run verification: **PASS**
+
+- `npx tsc --noEmit` → **exit 0, zero diagnostics** (ran twice; second run captured the real exit code rather than a pipe's).
+- Specified specs: `questionnaireEnableWhen.spec.ts` + `tests/admin/questionnaires/` → **3 passed (7.8s)**. Tokens were stale; refreshed via the `visual-env.md` recipe first.
+- Went wider: full v2 suite (`tests/facility/settings/questionnaires/` + `tests/admin/questionnaires/`) → **12 passed**.
+- **6 legacy specs fail** (`tests/admin/questionnaire/questionnaire.spec.ts`), at 4 workers *and* serially at 1 worker. Root-caused, not a branch regression — the legacy create POST returns `400 {"loc":["auth_context"],"msg":"Field required"}`. Evidence: `auth_context` appears nowhere in **develop's** `src/components/Questionnaire/` or `src/types/questionnaire/`; the legacy `questionnaireApi.create` route and `QuestionnaireCreate` body are unchanged vs develop; the branch only *added* a `createV2` route. It is a FE/BE contract gap on the legacy editor that reproduces on develop against this backend. Worth knowing since it will be red in CI.
+
+## Check 2 — Riskiest refactors
+
+**(a) Renderer store seeded at creation: PASS.** `RendererContext.tsx:52-57` seeds `questionnaireAtom`/`responsesAtom` inside the `useState` initializer (comment correctly explains why `useState` not `useMemo`); the re-seed effect at `:62-69` is ref-guarded on questionnaire identity and resets `activeGroupIndexAtom`. The two waves compose correctly: the design wave's builder preview memoizes `previewQuestionnaire` on `[questionnaire, state.questions]` (`QuestionnaireBuilderPage.tsx:121-127`) precisely so the refactor wave's identity guard isn't defeated. One transient I checked and cleared: on re-seed, context updates during render while atoms update in the effect, so derived selectors read the prior questionnaire for one paint — no crash path (`QuestionnaireRenderer.tsx:105` `?? questions[0]` fallback + the `visibleIndices.length === 0` branch), and strictly better than the pre-refactor empty-store-on-every-mount.
+
+**(b) Boundary moves / cycles / routes: PASS.** madge isn't installed, so I wrote a Tarjan SCC detector over every `.ts/.tsx` in `src/`. **No SCC contains any `manage/`, `builder/`, or `shared/` file.** Directed edges: `builder→shared` 14, `builder→manage` 1, `builder→renderer` 1, `manage→shared` 8, `manage→renderer` 1, `renderer→shared` 4, **`manage→builder` 0**. Zero orphan files in the module. `adminRoutes.tsx` is +25/−0 — all four v2 routes resolve to real files, legacy three untouched.
+- Nit: refactor-report.md claims "manage→shared and builder→shared only"; there *is* one `builder→manage` edge (`QuestionnaireBuilderPage.tsx:37` → `manage/useUpdateQuestionnaire`). One-directional, no cycle — the report just overstates.
+- Pre-existing, not from these waves: `questionTypeRegistry ↔ inputs/*` (type-only `RendererInputProps` binding, erased at build) and `QuestionField ↔ QuestionGroupCard` (intentional recursive tree render).
+
+**(c) BasicInformationCard generic: PASS.** Rendered by create (`QuestionnaireCreatePage.tsx:184`) **and** detail (`QuestionnaireDetailPage.tsx:253`, Organizations as children). Exactly one cast — `BasicInformationCard.tsx:44` — documented and sound (`T extends BasicInfoFormValues &amp; FieldValues`; the card only touches `.control` and the three guaranteed names). Full module cast inventory: 4× `as EnableWhen` (all pre-date these waves, untouched by them), `questions as Question[]` now backed by `isQuestionLike`, and one shadcn `value as ImportMode`. No `any`, no `@ts-ignore`.
+
+**(d) Spec reorganization: PASS.** `testDir: "./tests"` + default `testMatch` collects every `*.spec.ts` at any depth; `--list` confirms all 11 v2 spec files at their new paths plus the setup project. `tests/admin/questionnairesV2/` fully removed, no empty dirs, no `.only`, helper imported by 8 specs. Caveat: tsconfig `include` omits `tests/**`, so `tsc` never typechecks specs — their correctness rests on the green Playwright run (which I confirmed).
+
+## Check 3 — Frozen contracts: **PASS**
+
+Whole branch, `src/components/Questionnaire/`: **1 file, +3 lines** — `ManageQuestionnaireOrganizationsSheet.tsx` adding `type="button"` plus 2 comment lines to `OrgSelector`. Correctly allowlisted, and I verified it cannot regress the legacy editor: its only legacy consumer `QuestionnaireProperties` has no `&lt;form&gt;` and renders *outside* `QuestionnaireEditor`'s form (lines 1039–1252, while Properties renders at 1011 and 1256). The two waves alone touched **zero** files there.
+
+Evaluator: diffed `store.ts:92-146` against legacy `QuestionGroup.tsx:37-101` line by line — identical except `equals`/`not_equals` wrapping the stored answer in `normalizeValue`. I independently confirmed the delta is confined to literal booleans: the legacy editor stores numeric `equals` answers as **strings** (`QuestionnaireEditor.tsx:1994-1996` — only ordering operators call `Number()`), and the v2 builder restricts numeric targets to ordering operators (`VisibilityConditionsCard.tsx:36-41`). So `normalizeValue`'s number branch is unreachable from either editor's data, and the reachable change is exactly the documented boolean repair.
+
+## Check 4 — en.json: **PASS** (two minor findings)
+
+Valid JSON, 6777 keys, **strictly alphabetical**, zero duplicates. Delta vs base: +103 added, **0 removed**, 6 real value changes. The `questionnaires` key is net-absent and has **zero** `t()` call sites anywhere — the 4 grep hits are TanStack `queryKey: ["questionnaires", …]` arrays in legacy files. Sidebars use `questionnaires_legacy` + `questionnaire_other`; legacy `QuestionnaireList.tsx:248` uses pre-existing `questionnaire_other`. `ml.json` still has a stale `questionnaires` key, but non-en locale files are untouched by the branch — correct Crowdin hygiene.
+
+## Check 5 — Old UI intact: **PASS**
+
+Legacy routes present and unchanged (diff is purely additive); legacy components carry only the 3-line allowlisted touch across the entire branch. The 6 red legacy specs are the backend `auth_context` gap, not a UI regression.
+
+## Check 6 — Commit hygiene: **FAIL** (minor, easily fixed)
+
+All 18 messages are technical, scoped, imperative, and stand alone — no finding numbers, no review artifacts. 7845915c4 even records removing a review-artifact cross-reference from a spec comment. **But** two of the 18 carry an `Entire-Checkpoint:` trailer with private checkpoint hashes.
+
+## New issues
+
+| Severity | Issue |
+|---|---|
+| **Minor (fix before PR)** | `Entire-Checkpoint:` trailers leak internal tooling refs into public commits — `fc662fb71` (`2d762e0d5d68`) and `b7a4450b4` (`c30f3d35675b`) in this window; 7 across the branch's 46 commits (also `2e95b0ff5`, `f541cab25`, `bf60d4b1f`, `32391c116`, `557cfcdac`). No precedent on develop. Strip with a filter-branch/rebase trailer removal. |
+| **Minor** | `public/locale/en.json` — `coming_soon` is a branch-added orphan key: zero references in `src/` or `tests/`, and no matching literal. Will ship to Crowdin for translation. |
+| **Minor** | Three value-changed keys are shared *outside* QuestionnaireV2 and weren't flagged in either report: `clear_selection` (6 unrelated features — `LocationNavigation.tsx:107`, `ResourceDefinitionCategoryPicker.tsx:836,966`, `HealthcareServiceSelector.tsx:138`, `MultiQRCodePrintSheet.tsx:136`, `PaymentsData.tsx:337`, `ChargeItemsTable.tsx:418`); `add_sub_question` (legacy `QuestionnaireEditor.tsx:2803`); `manage_and_view_questionnaires` (legacy `QuestionnaireList.tsx:249`). Cosmetic casing only, but it invalidates existing translations on unrelated surfaces. |
+| **Informational (not the branch)** | Legacy `/admin/questionnaire/create` is broken against the current backend (`auth_context` required, never sent). Reproduces on develop. Causes 6 red specs in `tests/admin/questionnaire/questionnaire.spec.ts`. |
+
+## Overall: **SHIP**
+
+The waves did not break each other and did not regress the previously-verified state. Type check clean, specified specs green, full v2 suite green, frozen contracts held with a single benign allowlisted touch I traced to be inert on the legacy path, no import cycles across the reorganized boundary, no orphaned files or specs, en.json well-formed. The only thing I'd gate on is stripping the `Entire-Checkpoint:` trailers before the PR goes public — that's a rebase, not a code change. The `coming_soon` orphan and the three shared-key casing changes are worth a follow-up commit but don't block.</result>
+<usage><subagent_tokens>166366</subagent_tokens><tool_uses>70</tool_uses><duration_ms>690576</duration_ms></usage>
+</task-notification>
