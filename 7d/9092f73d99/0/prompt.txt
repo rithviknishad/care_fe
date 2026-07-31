@@ -278,3 +278,19 @@ Minor observations (informational, not blocking):
 **⚠️ Cannot verify from diff:** none. All binding constraints were checked against the live repo: old importers (`QuestionnaireProperties.tsx:97`, `observation.ts:5,58`, `StructuredFormData.tsx` literals) confirmed to still type-check by inspection; the `submit` route's TBody change confirmed to have zero existing callers of the typed route (the one raw POST caller in `QuestionnaireForm.tsx` already used the new `results`/`values`/`body_site` field names); no other file in the repo references the new exports yet; commit contains exactly the two claimed files.</result>
 <usage><subagent_tokens>77859</subagent_tokens><tool_uses>16</tool_uses><duration_ms>282712</duration_ms></usage>
 </task-notification>
+
+---
+
+<task-notification>
+<task-id>a559fc862db2eb68b</task-id>
+<tool-use-id>REDACTED</tool-use-id>
+<output-file>/private/tmp/claude-501/-Users-bodhishthomas-code-care-fe/5786aa56-b361-49ee-bae1-fb5d507b7318/tasks/a559fc862db2eb68b.output</output-file>
+<status>completed</status>
+<summary>Agent "Implement Task 2 (UI primitives)" finished</summary>
+<note>A task-notification fires each time this agent stops with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>
+<result>DONE
+Commit: `7417d94c7`
+Verification: `npx tsc --noEmit` and `npx eslint src/components/QuestionnaireV2/` both pass clean (exit 0); only the intended 7 files changed (6 new shared components + `public/locale/en.json`, 13 new alphabetically-sorted `question_type__*` keys).
+Concerns: (1) resolved an internal brief inconsistency — Interfaces summary says `renderItemExtra` but Step 6 code and the master plan doc's downstream `BuilderTreeNav` usage both use `renderSeparator`; implemented `renderSeparator` to match actual consumers. (2) `QuestionType` includes `"time"` but the brief's Step 7 i18n list and Step 1 `TYPE_CLASSES` omit it — implemented verbatim per brief, so a `time`-type badge will show the raw untranslated key; not fixed unilaterally, flagged in the report for follow-up. (3) No `Entire-Checkpoint` trailer was appended to the commit in this environment despite the brief noting it's automatic — no footer added manually, hooks were not bypassed. Full details in `/Users/bodhishthomas/code/care_fe/.superpowers/sdd/task-2-report.md`.</result>
+<usage><subagent_tokens>102737</subagent_tokens><tool_uses>44</tool_uses><duration_ms>382882</duration_ms></usage>
+</task-notification>
