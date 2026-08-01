@@ -3,7 +3,7 @@
   "checkpoint_id": "245de54bb854",
   "strategy": "manual-commit",
   "branch": "bodhi/questionnaire-wysiwyg-builder",
-  "checkpoints_count": 1,
+  "checkpoints_count": 2,
   "files_touched": [
     "tests/facility/settings/questionnaires/questionnaireEnableWhenMatrix.spec.ts"
   ],
@@ -14,13 +14,20 @@
       "compact_transcript": "/24/5de54bb854/0/transcript.jsonl",
       "content_hash": "/24/5de54bb854/0/content_hash.txt",
       "prompt": ""
+    },
+    {
+      "metadata": "/24/5de54bb854/1/metadata.json",
+      "transcript": "/24/5de54bb854/1/full.jsonl",
+      "compact_transcript": "/24/5de54bb854/1/transcript.jsonl",
+      "content_hash": "/24/5de54bb854/1/content_hash.txt",
+      "prompt": ""
     }
   ],
   "token_usage": {
-    "input_tokens": 0,
-    "cache_creation_tokens": 0,
-    "cache_read_tokens": 0,
-    "output_tokens": 0,
-    "api_call_count": 0
+    "input_tokens": 24,
+    "cache_creation_tokens": 17967,
+    "cache_read_tokens": 6624809,
+    "output_tokens": 6925,
+    "api_call_count": 12
   }
 }
