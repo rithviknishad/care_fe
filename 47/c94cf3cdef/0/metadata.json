@@ -1,0 +1,230 @@
+{
+  "cli_version": "0.9.0",
+  "checkpoint_id": "47c94cf3cdef",
+  "session_id": "5786aa56-b361-49ee-bae1-fb5d507b7318",
+  "strategy": "manual-commit",
+  "created_at": "2026-08-01T15:52:17.019245Z",
+  "branch": "bodhi/questionnaire-actions",
+  "checkpoints_count": 2,
+  "save_step_count": 3,
+  "files_touched": [],
+  "agent": "Claude Code",
+  "model": "claude-fable-5",
+  "turn_id": "d77402770a6a",
+  "compact_transcript_start": 0,
+  "token_usage": {
+    "input_tokens": 669,
+    "cache_creation_tokens": 1414071,
+    "cache_read_tokens": 145589126,
+    "output_tokens": 305312,
+    "api_call_count": 340
+  },
+  "skill_events_version": 1,
+  "skill_events": [
+    {
+      "id": "claude-skill-toolu_013cjuXXZsbz6fcgew3phnvz",
+      "event_type": "tool_invocation",
+      "skill": {
+        "name": "superpowers:brainstorming"
+      },
+      "source": {
+        "agent": "claude-code",
+        "signal": "skill_tool_use",
+        "confidence": "explicit"
+      },
+      "turn_id": "d77402770a6a",
+      "transcript_anchor": {
+        "unit": "line",
+        "start": 15,
+        "end": 16,
+        "entry_ids": [
+          "ab944bc9-934e-4074-a511-95b07bb81a3e"
+        ],
+        "tool_use_id": "toolu_013cjuXXZsbz6fcgew3phnvz"
+      },
+      "native": {
+        "tool_name": "Skill",
+        "tool_use_id": "toolu_013cjuXXZsbz6fcgew3phnvz"
+      },
+      "collapse": {
+        "target": "tool_pair",
+        "label": "Skill: superpowers:brainstorming",
+        "default_collapsed": true
+      }
+    },
+    {
+      "id": "claude-skill-toolu_01HAue6LpTYnpNSL5SXdC9d6",
+      "event_type": "tool_invocation",
+      "skill": {
+        "name": "figma:figma-design-to-code"
+      },
+      "source": {
+        "agent": "claude-code",
+        "signal": "skill_tool_use",
+        "confidence": "explicit"
+      },
+      "turn_id": "d77402770a6a",
+      "transcript_anchor": {
+        "unit": "line",
+        "start": 29,
+        "end": 30,
+        "entry_ids": [
+          "9cf3f9bc-9ae0-4099-97af-b86c7431168a"
+        ],
+        "tool_use_id": "toolu_01HAue6LpTYnpNSL5SXdC9d6"
+      },
+      "native": {
+        "tool_name": "Skill",
+        "tool_use_id": "toolu_01HAue6LpTYnpNSL5SXdC9d6"
+      },
+      "collapse": {
+        "target": "tool_pair",
+        "label": "Skill: figma:figma-design-to-code",
+        "default_collapsed": true
+      }
+    },
+    {
+      "id": "claude-skill-toolu_01VjAwv7FBhKHwkY1Fbuvmm6",
+      "event_type": "tool_invocation",
+      "skill": {
+        "name": "superpowers:writing-plans"
+      },
+      "source": {
+        "agent": "claude-code",
+        "signal": "skill_tool_use",
+        "confidence": "explicit"
+      },
+      "turn_id": "d77402770a6a",
+      "transcript_anchor": {
+        "unit": "line",
+        "start": 206,
+        "end": 207,
+        "entry_ids": [
+          "25476058-ef92-4d9a-8b4f-79561d4ead63"
+        ],
+        "tool_use_id": "toolu_01VjAwv7FBhKHwkY1Fbuvmm6"
+      },
+      "native": {
+        "tool_name": "Skill",
+        "tool_use_id": "toolu_01VjAwv7FBhKHwkY1Fbuvmm6"
+      },
+      "collapse": {
+        "target": "tool_pair",
+        "label": "Skill: superpowers:writing-plans",
+        "default_collapsed": true
+      }
+    },
+    {
+      "id": "claude-skill-toolu_016AtHVnGbLfvwd3zDteA6Po",
+      "event_type": "tool_invocation",
+      "skill": {
+        "name": "superpowers:subagent-driven-development"
+      },
+      "source": {
+        "agent": "claude-code",
+        "signal": "skill_tool_use",
+        "confidence": "explicit"
+      },
+      "turn_id": "d77402770a6a",
+      "transcript_anchor": {
+        "unit": "line",
+        "start": 348,
+        "end": 349,
+        "entry_ids": [
+          "de690bb9-722c-4be2-a15a-93fddcd99cae"
+        ],
+        "tool_use_id": "toolu_016AtHVnGbLfvwd3zDteA6Po"
+      },
+      "native": {
+        "tool_name": "Skill",
+        "tool_use_id": "toolu_016AtHVnGbLfvwd3zDteA6Po"
+      },
+      "collapse": {
+        "target": "tool_pair",
+        "label": "Skill: superpowers:subagent-driven-development",
+        "default_collapsed": true
+      }
+    },
+    {
+      "id": "claude-skill-toolu_01KiC9WwQA6w7X6GEDStw8wK",
+      "event_type": "tool_invocation",
+      "skill": {
+        "name": "investigate"
+      },
+      "source": {
+        "agent": "claude-code",
+        "signal": "skill_tool_use",
+        "confidence": "explicit"
+      },
+      "turn_id": "d77402770a6a",
+      "transcript_anchor": {
+        "unit": "line",
+        "start": 1619,
+        "end": 1620,
+        "entry_ids": [
+          "3b5f87ee-6e03-4e56-ac47-047a084f058d"
+        ],
+        "tool_use_id": "toolu_01KiC9WwQA6w7X6GEDStw8wK"
+      },
+      "native": {
+        "tool_name": "Skill",
+        "tool_use_id": "toolu_01KiC9WwQA6w7X6GEDStw8wK"
+      },
+      "collapse": {
+        "target": "tool_pair",
+        "label": "Skill: investigate",
+        "default_collapsed": true
+      }
+    }
+  ],
+  "session_metrics": {
+    "turn_count": 57
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 2,
+      "user_lines_added": 41,
+      "user_lines_removed": 0,
+      "agent_lines_added": 2701,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        ".context/retros/2026-03-15-1.json": 36,
+        ".husky/commit-msg": 1,
+        ".husky/post-commit": 1,
+        ".husky/post-rewrite": 1,
+        ".husky/pre-push": 1,
+        ".husky/prepare-commit-msg": 1
+      }
+    },
+    {
+      "checkpoint_number": 3,
+      "user_lines_added": 41,
+      "user_lines_removed": 0,
+      "agent_lines_added": 2701,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        ".context/retros/2026-03-15-1.json": 36,
+        ".husky/commit-msg": 1,
+        ".husky/post-commit": 1,
+        ".husky/post-rewrite": 1,
+        ".husky/pre-push": 1,
+        ".husky/prepare-commit-msg": 1
+      }
+    },
+    {
+      "checkpoint_number": 4,
+      "user_lines_added": 41,
+      "user_lines_removed": 0,
+      "agent_lines_added": 2701,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        ".context/retros/2026-03-15-1.json": 36,
+        ".husky/commit-msg": 1,
+        ".husky/post-commit": 1,
+        ".husky/post-rewrite": 1,
+        ".husky/pre-push": 1,
+        ".husky/prepare-commit-msg": 1
+      }
+    }
+  ]
+}
