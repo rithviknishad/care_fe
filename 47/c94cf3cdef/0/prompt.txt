@@ -1918,3 +1918,7 @@ Verification: `tsc --noEmit` clean, `npm run lint` 0 errors (no new warnings), `
 Concerns: none. Full detail in `.superpowers/sdd/deletion-report.md`.</result>
 <usage><subagent_tokens>140717</subagent_tokens><tool_uses>80</tool_uses><duration_ms>880021</duration_ms></usage>
 </task-notification>
+
+---
+
+Clicking on `Add Coding` crashes care.
