@@ -3,7 +3,7 @@
   "checkpoint_id": "07d4ae9c74ae",
   "strategy": "manual-commit",
   "branch": "bodhi/questionnaire-wysiwyg-builder",
-  "checkpoints_count": 1,
+  "checkpoints_count": 2,
   "files_touched": [
     "src/components/QuestionnaireV2/form/FormCanvas.tsx",
     "src/components/QuestionnaireV2/form/FormContext.tsx",
@@ -22,13 +22,20 @@
       "compact_transcript": "/07/d4ae9c74ae/0/transcript.jsonl",
       "content_hash": "/07/d4ae9c74ae/0/content_hash.txt",
       "prompt": ""
+    },
+    {
+      "metadata": "/07/d4ae9c74ae/1/metadata.json",
+      "transcript": "/07/d4ae9c74ae/1/full.jsonl",
+      "compact_transcript": "/07/d4ae9c74ae/1/transcript.jsonl",
+      "content_hash": "/07/d4ae9c74ae/1/content_hash.txt",
+      "prompt": "/07/d4ae9c74ae/1/prompt.txt"
     }
   ],
   "token_usage": {
-    "input_tokens": 0,
-    "cache_creation_tokens": 0,
-    "cache_read_tokens": 0,
-    "output_tokens": 0,
-    "api_call_count": 0
+    "input_tokens": 182,
+    "cache_creation_tokens": 368576,
+    "cache_read_tokens": 24330173,
+    "output_tokens": 133395,
+    "api_call_count": 92
   }
 }
