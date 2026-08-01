@@ -51,6 +51,37 @@
         "label": "Skill: superpowers:brainstorming",
         "default_collapsed": true
       }
+    },
+    {
+      "id": "claude-skill-toolu_0156uEam9esSJH8KCYhPsiBq",
+      "event_type": "tool_invocation",
+      "skill": {
+        "name": "browse"
+      },
+      "source": {
+        "agent": "claude-code",
+        "signal": "skill_tool_use",
+        "confidence": "explicit"
+      },
+      "turn_id": "680028fad42b",
+      "transcript_anchor": {
+        "unit": "line",
+        "start": 432,
+        "end": 433,
+        "entry_ids": [
+          "5fb54368-a6df-466c-89c8-3b3cf7c6b57a"
+        ],
+        "tool_use_id": "toolu_0156uEam9esSJH8KCYhPsiBq"
+      },
+      "native": {
+        "tool_name": "Skill",
+        "tool_use_id": "toolu_0156uEam9esSJH8KCYhPsiBq"
+      },
+      "collapse": {
+        "target": "tool_pair",
+        "label": "Skill: browse",
+        "default_collapsed": true
+      }
     }
   ]
 }
