@@ -1739,3 +1739,12 @@ All 18 messages are technical, scoped, imperative, and stand alone — no findin
 The waves did not break each other and did not regress the previously-verified state. Type check clean, specified specs green, full v2 suite green, frozen contracts held with a single benign allowlisted touch I traced to be inert on the legacy path, no import cycles across the reorganized boundary, no orphaned files or specs, en.json well-formed. The only thing I'd gate on is stripping the `Entire-Checkpoint:` trailers before the PR goes public — that's a rebase, not a code change. The `coming_soon` orphan and the three shared-key casing changes are worth a follow-up commit but don't block.</result>
 <usage><subagent_tokens>166366</subagent_tokens><tool_uses>70</tool_uses><duration_ms>690576</duration_ms></usage>
 </task-notification>
+
+---
+
+1. can we add that filter in the local backend for auth_context and proceed further?
+2. We can drop AnswerOption.display for now
+3. Delete all old questionnaire related files, lets only have the new one. 
+4. I think you missed the repeat option
+5. ignore Entire fully, I am just testing it, it shouldn't bother you 
+6. lets keep the local backend for now and move forward.
