@@ -1748,3 +1748,128 @@ The waves did not break each other and did not regress the previously-verified s
 4. I think you missed the repeat option
 5. ignore Entire fully, I am just testing it, it shouldn't bother you 
 6. lets keep the local backend for now and move forward.
+
+---
+
+<task-notification>
+<task-id>a8670926aa97825aa</task-id>
+<tool-use-id>REDACTED</tool-use-id>
+<output-file>/private/tmp/claude-501/-Users-bodhishthomas-code-care-fe/5786aa56-b361-49ee-bae1-fb5d507b7318/tasks/a8670926aa97825aa.output</output-file>
+<status>completed</status>
+<summary>Agent "Map legacy deletion scope" finished</summary>
+<note>A task-notification fires each time this agent stops with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>
+<result>## Deletion Map — Legacy Questionnaire Management UI
+
+Methodology: for every candidate, ran repo-wide grep for its import path/basename (verified with full-file reads where ambiguous, e.g. comment-only false hits in `builderReducer.ts`/`BehaviourSettingsCard.tsx`/`QuestionnaireListPage.tsx`). i18n keys checked by diffing `t("literal")` calls in candidate files against all other `.ts/.tsx` files, then manually re-verified against `QuestionnaireV2` for dynamic `t(variable)` lookups (caught `BehaviourSettingsCard.tsx`'s `t(flag.label)` and the `manage_organization`/`_other` pluralization case as false positives).
+
+### 1. DELETE list
+
+| File | Importers found (all must also be DELETE) |
+|---|---|
+| `src/components/Questionnaire/QuestionnaireEditor.tsx` | `src/Routers/routes/adminRoutes.tsx` only (comment mentions in `builderReducer.ts`, `BehaviourSettingsCard.tsx` are non-import) |
+| `src/components/Questionnaire/QuestionnaireList.tsx` | `src/Routers/routes/adminRoutes.tsx` only |
+| `src/components/Questionnaire/QuestionnaireProperties.tsx` | `QuestionnaireEditor.tsx` only |
+| `src/components/Questionnaire/CloneQuestionnaireSheet.tsx` | `QuestionnaireProperties.tsx` only |
+| `src/components/Questionnaire/QuestionActions.tsx` | `QuestionnaireEditor.tsx` only |
+| `src/components/Questionnaire/MoveQuestionDialog.tsx` | `QuestionActions.tsx` only (V2's `MoveQuestionsDialog.tsx` only *mentions* it in a comment, doesn't import) |
+| `src/components/Questionnaire/utils.ts` | `MoveQuestionDialog.tsx`, `QuestionActions.tsx`, `QuestionnaireEditor.tsx` — all DELETE |
+
+No `src/pages/**` files exist for the legacy admin UI (searched — none found).
+
+**Route entries** — `src/Routers/routes/adminRoutes.tsx`:
+```
+"/admin/questionnaire": () =&gt; &lt;QuestionnaireList /&gt;,
+"/admin/questionnaire/create": () =&gt; &lt;QuestionnaireEditor /&gt;,
+"/admin/questionnaire/:id/edit": ({ id }) =&gt; &lt;QuestionnaireEditor id={id} /&gt;,
+```
+plus the two now-dead imports (`QuestionnaireEditor`, `QuestionnaireList`).
+
+**Nav entry** — `src/components/ui/sidebar/admin-nav.tsx` lines 16–22: the `{ name: t("questionnaires_legacy"), url: `${baseUrl}/questionnaire`, ... }` object, plus its leading two-line comment (lines 16–17) explaining the dual-editor situation (now stale).
+
+**Test spec dir** — `tests/admin/questionnaire/` (singular) → delete whole dir (`questionnaire.spec.ts`, self-contained, no shared fixtures/helpers referenced from elsewhere). Distinct from `tests/admin/questionnaires/` (plural, V2, keep).
+
+**Removable en.json keys** (75, used only by the 7 DELETE files above + `admin-nav.tsx`'s `questionnaires_legacy`; verified not read dynamically by any `QuestionnaireV2` file):
+```
+add_organizations, add_question_above, add_question_below, add_template, add_unit,
+answer_options_description, answer_value, choose_layout_style, clear_all_defaults,
+click_to_add_first_question, clone_questionnaire_description, cloning,
+confirm_remove_questions, content, data_collection_details,
+data_collection_details_description, default_selected, defaults_selected,
+destination_question, display_text, display_text_placeholder, edit_form,
+enable_behavior, enable_when__all, enable_when__any, enable_when_conditions,
+ensure_conditions_are_valid, enter_position, enter_title,
+failed_to_create_questionnaire, failed_to_update_questionnaire, form_preview,
+group_layout_options, group_must_have_sub_questions, import_form,
+import_from_file, manage_organizations_description, move_item, move_questions,
+move_to_specific_position, no_questions_selected, no_questions_yet,
+no_requested_questionnaires_found, organization_selection_required, properties,
+quantity_question_description, question_actions, question_description_placeholder,
+question_settings, question_settings_description,
+question_structured_type_placeholder, question_text, question_type_placeholder,
+questionnaire_json_url, questionnaire_json_url_placeholder,
+questionnaire_question_dependent, questionniare_load_error, questions_copied,
+questions_moved, questions_removed, range, remove_from_selection,
+remove_questions, select_a_question, select_a_sub_question, select_organizations,
+selected_organizations, sort_alphabetically, structured_type,
+sub_questions_for_group, template, to_bottom, to_top,
+unique_url_for_questionnaire, url_required, questionnaires_legacy
+```
+Caveat: `manage_organization` / `manage_organization_other` / `add_organization` are **NOT** removable — they're pluralized keys (`t("manage_organization",{count})`) also used by `LinkDepartmentsSheet.tsx`, `LocationView.tsx`, `AdminOrganizationFormSheet.tsx`.
+
+### 2. KEEP list
+
+| File | Kept because imported by (fill-flow or V2) |
+|---|---|
+| `QuestionnaireForm.tsx` | `EncounterQuestionnaire.tsx` (fill flow), `pluginTypes.ts` |
+| `QuestionnaireSearch.tsx` | **`QuestionnaireForm.tsx`** (add-questionnaire-to-fill-flow search), `src/pages/Encounters/tabs/responses.tsx` |
+| `QuestionRenderer.tsx` | `QuestionnaireForm.tsx`, `src/pages/Encounters/tabs/overview/FormSubmissionDrafts.tsx` |
+| `utils.ts` | — DELETE (see above, all importers legacy) |
+| `data/StructuredFormData.tsx` | `QuestionnaireForm.tsx`, `QuestionRenderer.tsx`, `structured/handlers.ts`, `structured/types.ts`, `QuestionTypes/MedicationRequestQuestion.tsx`, `QuestionTypes/ServiceRequestQuestion.tsx`, `QuestionnaireV2/renderer/structured/registry.tsx`, `QuestionnaireV2/builder/QuestionTypePicker.tsx`, plus `types/questionnaire/{form,question,questionnaireResponse}.ts` |
+| `structured/handlers.ts`, `structured/types.ts` | `QuestionnaireForm.tsx` only |
+| `QuestionTypes/*` (all 22 files) | Every one is wired through `QuestionInput.tsx` (fill flow) — confirmed via `QuestionInput.tsx`'s switch statement — and the structured ones (`AllergyQuestion`, `MedicationRequestQuestion`, `MedicationStatementQuestion`, `DiagnosisQuestion`, `SymptomQuestion`, `ServiceRequestQuestion`, `ChargeItemQuestion`, `EncounterQuestion`, `AppointmentQuestion`, `FileQuestion`, `DeathQuestion`) are also imported directly by `QuestionnaireV2/renderer/structured/registry.tsx`. None are legacy-management-only. |
+| `ValueSetSearchContent.tsx` | `MedicationValueSetSelect.tsx`, `ValueSetSelect.tsx` |
+| `ValueSetSelect.tsx` | `QuestionTypes/*` (7 files, fill flow), **`QuestionnaireV2/renderer/inputs/{QuantityInput,ChoiceInput}.tsx`**, `QuestionnaireV2/builder/AnswerOptionsEditor.tsx`, plus many unrelated non-questionnaire settings forms (Medicine, CareTeam, Facility settings) |
+| `SelectOrCreateValueset.tsx` | **`QuestionnaireV2/builder/AnswerOptionsEditor.tsx`** only |
+| `CodingEditor.tsx` | **`QuestionnaireV2/builder/QuestionEditorCard.tsx`** only |
+| `MedicationValueSetSelect.tsx` | `QuestionTypes/MedicationRequestQuestion.tsx` (fill flow + V2 registry) |
+| `EntitySelectionDrawer.tsx` | `QuestionTypes/{MedicationRequestQuestion,SymptomQuestion,MedicationStatementQuestion,DiagnosisQuestion,AllergyQuestion}.tsx` — all fill-flow/V2-shared |
+| `QuestionLabel.tsx`, `QuestionDescription.tsx` | Used throughout `QuestionTypes/*` and `QuestionGroup.tsx`/`QuestionInput.tsx` — fill-flow shared |
+| `AddToTemplateDialog.tsx`, `ManageResponseTemplatesSheet.tsx` | `QuestionTypes/ServiceRequestQuestion.tsx`, `QuestionTypes/MedicationRequestQuestion.tsx` — these are **fill-flow structured-question features** (save/apply a response as/from a template while filling), not admin management. Confirmed via both files' import lists — no cross-references to any DELETE-list file. |
+| `QuestionTypes/TemplateSelector.tsx` | `QuestionTypes/TextQuestion.tsx` — fill-flow basic text input's template affordance |
+| `ManageQuestionnaireOrganizationsSheet.tsx` | Split — see UNTANGLE below |
+
+`CloneQuestionnaireSheet.tsx` vs. `QuestionnaireV2/manage/CloneQuestionnaireDialog.tsx`: fully independent, no shared code; the V2 dialog never imports the legacy sheet.
+`MoveQuestionDialog.tsx` vs. `QuestionnaireV2/builder/MoveQuestionsDialog.tsx`: fully independent (only a doc-comment cross-reference).
+`QuestionnaireProperties.tsx`, `QuestionActions.tsx`, `MoveQuestionDialog.tsx`: legacy-editor-only, safe to delete (see DELETE list).
+
+### 3. UNTANGLE list
+
+**(a) `src/components/Questionnaire/ManageQuestionnaireOrganizationsSheet.tsx`**
+Two independent things live in one file:
+- `export function OrgSelector(...)` (lines 65–177) — a pure org-search combobox/drawer, no fetching.
+- `export default function ManageQuestionnaireOrganizationsSheet(...)` (lines 179–393) — the legacy Sheet/Drawer wrapper (fetches org list, manages selection, calls `questionnaireApi.setOrganizations`) — only used by `QuestionnaireProperties.tsx` (being deleted).
+
+`QuestionnaireV2/manage/OrganizationsField.tsx` imports only the named `OrgSelector` export (`import { OrgSelector } from "@/components/Questionnaire/ManageQuestionnaireOrganizationsSheet"`).
+
+Minimal move: extract `OrgSelector` (and its `OrgSelectorProps` interface) into a new file `src/components/Questionnaire/OrgSelector.tsx`. Then:
+- Delete the rest of `ManageQuestionnaireOrganizationsSheet.tsx` (the default-exported Sheet component) along with the file itself.
+- Update `OrganizationsField.tsx`'s import to `@/components/Questionnaire/OrgSelector`.
+- `QuestionnaireProperties.tsx` (which imports both) is deleted wholesale, so no update needed there.
+
+**(b) KEEP files importing DELETE-list files**
+None found. Every KEEP-list file's imports were individually checked (`AddToTemplateDialog`, `ManageResponseTemplatesSheet`, `MedicationValueSetSelect`, `EntitySelectionDrawer`, `CodingEditor`, `SelectOrCreateValueset`, `ValueSetSelect`, `QuestionnaireForm`, `QuestionRenderer`, `QuestionnaireSearch`, `data/StructuredFormData`, `structured/{handlers,types}`, all `QuestionTypes/*`) — none reference `QuestionnaireEditor`, `QuestionnaireList`, `QuestionnaireProperties`, `CloneQuestionnaireSheet`, `QuestionActions`, `MoveQuestionDialog`, or `utils.ts`. The only cross-reference (b-type) is (a) above, already covered.
+
+**(c) `admin/questionnaire` URL references outside routing/nav (grep evidence)**
+- `src/pages/UserDashboard.tsx:119` — `&lt;Link href="/admin/questionnaire"&gt;{t("admin_dashboard")}&lt;/Link&gt;` (the "Admin Dashboard" top-bar link). **Must change to `/admin/questionnaires`** — currently the only user-facing entry point still pointing at the legacy list; this is what `tests/admin/questionnaire/questionnaire.spec.ts` clicks through (`"Admin Dashboard"` link → `"Create Questionnaire"`), and that spec is being deleted anyway. V2's own specs (`tests/admin/questionnaires/*.spec.ts`) navigate via `page.goto("/admin/questionnaires")` directly, so this change doesn't affect them.
+- `QuestionnaireSearch.tsx` — no `admin/questionnaire` reference (searches/lists questionnaires for the fill flow via API, not URL navigation). No change needed.
+- `EncounterCommandDialog.tsx` — only uses fill-flow paths (`/facility/.../encounter/.../questionnaire/...`), no `/admin/questionnaire` reference. No change needed.
+- Breadcrumbs (`src/components/ui/breadcrumb.tsx`) — generic primitive, no questionnaire-specific config. No change needed.
+- `tests/PLAYWRIGHT_GUIDE.md:103` — doc example lists `` `/admin/questionnaire` `` as a sample admin route; update to `` `/admin/questionnaires` `` (docs-only, not required for correctness but stale after deletion).
+- `src/components/QuestionnaireV2/README.md` lines 4–7 and 114–116 — describes the legacy editor as still living at `/admin/questionnaire` and references `tests/admin/questionnaire/` as the legacy spec dir; update/remove these lines once the legacy UI and its spec dir are gone (docs-only).
+
+**Encounter-overview surfaces confirmed NOT routing through legacy admin pages:**
+- `src/pages/Encounters/tabs/overview/FormSubmissionDrafts.tsx` — imports `QuestionRenderer` (KEEP) directly, navigates only to `/facility/{f}/patient/{p}/encounter/{e}/questionnaire/{id}?continue_draft=...` (fill route).
+- `src/pages/Encounters/tabs/overview/FormsDialog.tsx` — navigates only to `/facility/{f}/patient/{p}/encounter/{e}/questionnaire/{id}` (fill route).
+Both untouched by this deletion.</result>
+<usage><subagent_tokens>174744</subagent_tokens><tool_uses>102</tool_uses><duration_ms>748420</duration_ms></usage>
+</task-notification>
