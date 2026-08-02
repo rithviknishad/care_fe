@@ -3,7 +3,7 @@
   "checkpoint_id": "b8b253ac6aed",
   "strategy": "manual-commit",
   "branch": "bodhi/questionnaire-fill",
-  "checkpoints_count": 2,
+  "checkpoints_count": 3,
   "files_touched": [
     "docs/superpowers/specs/2026-08-02-questionnaire-fill-flow-design.md"
   ],
@@ -21,13 +21,20 @@
       "compact_transcript": "/b8/b253ac6aed/1/transcript.jsonl",
       "content_hash": "/b8/b253ac6aed/1/content_hash.txt",
       "prompt": ""
+    },
+    {
+      "metadata": "/b8/b253ac6aed/2/metadata.json",
+      "transcript": "/b8/b253ac6aed/2/full.jsonl",
+      "compact_transcript": "/b8/b253ac6aed/2/transcript.jsonl",
+      "content_hash": "/b8/b253ac6aed/2/content_hash.txt",
+      "prompt": "/b8/b253ac6aed/2/prompt.txt"
     }
   ],
   "token_usage": {
-    "input_tokens": 389,
-    "cache_creation_tokens": 496462,
-    "cache_read_tokens": 70356979,
-    "output_tokens": 219503,
-    "api_call_count": 212
+    "input_tokens": 496,
+    "cache_creation_tokens": 864207,
+    "cache_read_tokens": 76257162,
+    "output_tokens": 263131,
+    "api_call_count": 266
   }
 }
