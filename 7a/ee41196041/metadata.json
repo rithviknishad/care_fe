@@ -3,7 +3,7 @@
   "checkpoint_id": "7aee41196041",
   "strategy": "manual-commit",
   "branch": "bodhi/questionnaire-fill",
-  "checkpoints_count": 1,
+  "checkpoints_count": 2,
   "files_touched": [
     "docs/superpowers/plans/2026-08-02-questionnaire-fill-delta.md"
   ],
@@ -14,13 +14,20 @@
       "compact_transcript": "/7a/ee41196041/0/transcript.jsonl",
       "content_hash": "/7a/ee41196041/0/content_hash.txt",
       "prompt": ""
+    },
+    {
+      "metadata": "/7a/ee41196041/1/metadata.json",
+      "transcript": "/7a/ee41196041/1/full.jsonl",
+      "compact_transcript": "/7a/ee41196041/1/transcript.jsonl",
+      "content_hash": "/7a/ee41196041/1/content_hash.txt",
+      "prompt": "/7a/ee41196041/1/prompt.txt"
     }
   ],
   "token_usage": {
-    "input_tokens": 0,
-    "cache_creation_tokens": 0,
-    "cache_read_tokens": 0,
-    "output_tokens": 0,
-    "api_call_count": 0
+    "input_tokens": 161,
+    "cache_creation_tokens": 517402,
+    "cache_read_tokens": 11863474,
+    "output_tokens": 115385,
+    "api_call_count": 81
   }
 }
