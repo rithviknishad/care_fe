@@ -186,3 +186,45 @@ Concerns:
 - `findFirstInvalidQuestion` in the save handlers deliberately has no subscription — it's called imperatively at save time and always reads a fresh registry. Worth knowing before someone adds one there for consistency.</result>
 <usage><subagent_tokens>214049</subagent_tokens><tool_uses>35</tool_uses><duration_ms>359022</duration_ms></usage>
 </task-notification>
+
+---
+
+<task-notification>
+<task-id>a0ebdf9b6349e6018</task-id>
+<tool-use-id>REDACTED</tool-use-id>
+<output-file>/private/tmp/claude-501/-Users-bodhishthomas-code-care-fe/d9027e2d-e7f0-43f5-9e77-6edffa06a71d/tasks/a0ebdf9b6349e6018.output</output-file>
+<status>completed</status>
+<summary>Agent "Review Task 5 (spec + quality)" finished</summary>
+<note>A task-notification fires each time this agent stops with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>
+<result>### Fix Verification
+
+**(1) Studio staleness — fixed, and the `void` trick works.** `QuestionnaireStudioPage.tsx:203–213`: `structuredTypesVersion` comes from `useSyncExternalStore(subscribeToStructuredTypes, getStructuredTypesVersion, getStructuredTypesVersion)` and is in the `useMemo` dep array alongside `state.questions`. The recompute is driven entirely by the dep array — a `notify()` bumps the module counter, `useSyncExternalStore` forces a re-render with a new value, React sees a changed dep and re-runs `findInvalidQuestions`. The `void structuredTypesVersion;` in the body contributes nothing to that; its only job is putting the identifier inside the callback so `react-hooks/exhaustive-deps` collects it as used and stops calling the dep unnecessary. That mechanism is correct.
+
+Style: acceptable. `no-void` and `no-unused-expressions` are not configured in `eslint.config.mjs` (the only config file; no `.eslintrc*`) and neither is in `eslint:recommended`, so the statement genuinely passes rather than trading one suppression for another. Preferring an explicit read over `eslint-disable` is defensible — the disable comment would have silenced the whole rule for that hook, this doesn't silence anything. The load-bearing-looking-dead-code hazard the report flags is real but mitigated by the comment.
+
+**(2) Second cast — removed, single regex source confirmed.** `PLUGIN_STRUCTURED_TYPE_PATTERN` + `isPluginStructuredTypeName` live at `src/types/questionnaire/structured.ts:38–56`; `pluginRegistry.ts` imports the regex and has no local copy. `QuestionTypePicker.tsx` now uses `.flatMap()` with the guard in the condition (`definition.subjects.includes(...) &amp;&amp; isPluginStructuredTypeName(definition.type)`), and TS narrows `definition.type` through the property-access path into the true branch — no cast. Sweep confirms exactly one `as unknown as` remains in the whole touched surface (`registry.ts:139`, the sanctioned one); the only other hit is pre-existing and untouched (`manage/BasicInformationCard.tsx:44`).
+
+Worth noting the trap that was avoided: the shared regex has no `g`/`y` flag, so `.test()` carries no `lastIndex` state between the registry and the guard. Sharing one module-level regex would have been a genuine bug with `/g`.
+
+**(3) `QuestionTypeBadge` subscribes** — `QuestionTypeBadge.tsx:38–42`. ✓
+
+**(4) Duplicate-registration warning** — `pluginRegistry.ts`, `if (pluginTypes.has(definition.type))` before the `set`. Better than the comment claims: PluginEngine's effect runs its cleanup list *before* the registration loop, deleting the entries first, so ordinary manifest-change re-registration does **not** warn. The warning fires only on a true collision (two plugins claiming one id, or one manifest listing it twice) — exactly the intended signal, no noise.
+
+**(5) `findFirstInvalidQuestion` left unsubscribed — correct.** It is called imperatively inside `handleSave` and in `QuestionnaireBuilderPage.tsx:145`, reading the module `Map` at call time, so it is inherently fresh; it is not a hook and could not subscribe anyway.
+
+**Coverage now complete.** Cross-checked every render-time registry reader against the subscriber list: `StructuredSlot`, `QuestionTypePicker`, `QuestionTypeBadge`, `QuestionnaireStudioPage` all subscribe; `saveValidation`, `composeBatch`, `validateStructured`, `fillDraftStore` are imperative-only. The one remaining file that mentions `findInvalidQuestions` is `StudioCanvas.tsx:35` — a comment; it receives `issueKeysByQuestionId` as a prop. `types/questionnaire/structured.ts` is confirmed import-free, so `pluginRegistry`'s new runtime import is one leaf module.
+
+### New Issues
+
+None material. Two observations, neither worth blocking:
+
+- **`QuestionTypeBadge` subscribes per instance** (`QuestionTypeBadge.tsx:38`), including on the majority of rows where `type !== "structured"`. On a large questionnaire that is hundreds of listeners in one `Set`, iterated on every `notify()`. Registry mutations happen only at plugin load/unload, so the cost is negligible — and leaf placement is what makes the fix correct. Noting it only so nobody is surprised by the listener count.
+- **The `flatMap` guard's `: []` branch is unreachable** (`QuestionTypePicker.tsx`): registration throws on any id failing the same regex, so no registered definition can fail `isPluginStructuredTypeName`. Harmless dead branch; if it ever became reachable, a plugin type would vanish from the picker silently rather than warn.
+
+### Assessment
+
+**Task quality:** Approved
+
+**Reasoning:** All four findings are fixed at the root — the memo genuinely recomputes on registry change, the second cast is gone in favour of a shared-regex type predicate, and subscription coverage across render-time registry readers is now complete with imperative readers correctly left alone. The `void` dependency read is an unusual but sound and non-suppressing way to satisfy exhaustive-deps, and no new defects were introduced.</result>
+<usage><subagent_tokens>146712</subagent_tokens><tool_uses>14</tool_uses><duration_ms>147905</duration_ms></usage>
+</task-notification>
