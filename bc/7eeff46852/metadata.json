@@ -3,7 +3,7 @@
   "checkpoint_id": "bc7eeff46852",
   "strategy": "manual-commit",
   "branch": "bodhi/questionnaire-fill",
-  "checkpoints_count": 1,
+  "checkpoints_count": 4,
   "files_touched": [
     "tests/facility/patient/encounter/medicine/prescriptionCreate.spec.ts",
     "tests/facility/patient/encounter/medicine/prescriptionEdit.spec.ts",
@@ -16,13 +16,20 @@
       "compact_transcript": "/bc/7eeff46852/0/transcript.jsonl",
       "content_hash": "/bc/7eeff46852/0/content_hash.txt",
       "prompt": ""
+    },
+    {
+      "metadata": "/bc/7eeff46852/1/metadata.json",
+      "transcript": "/bc/7eeff46852/1/full.jsonl",
+      "compact_transcript": "/bc/7eeff46852/1/transcript.jsonl",
+      "content_hash": "/bc/7eeff46852/1/content_hash.txt",
+      "prompt": "/bc/7eeff46852/1/prompt.txt"
     }
   ],
   "token_usage": {
-    "input_tokens": 0,
-    "cache_creation_tokens": 0,
-    "cache_read_tokens": 0,
-    "output_tokens": 0,
-    "api_call_count": 0
+    "input_tokens": 309,
+    "cache_creation_tokens": 645629,
+    "cache_read_tokens": 40251282,
+    "output_tokens": 171962,
+    "api_call_count": 155
   }
 }
