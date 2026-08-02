@@ -20,3 +20,7 @@ The UI doesn't look nice, the experience is bad, can we see if we can inspire fr
 ---
 
 if you look closesly you can see 2 borders for most of these buttons, we should make it 1 right
+
+---
+
+Can we remove the  nav for the page fully and make it fullscreen.
