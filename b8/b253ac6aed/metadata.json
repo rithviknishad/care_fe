@@ -3,8 +3,10 @@
   "checkpoint_id": "b8b253ac6aed",
   "strategy": "manual-commit",
   "branch": "bodhi/questionnaire-fill",
-  "checkpoints_count": 1,
-  "files_touched": null,
+  "checkpoints_count": 2,
+  "files_touched": [
+    "docs/superpowers/specs/2026-08-02-questionnaire-fill-flow-design.md"
+  ],
   "sessions": [
     {
       "metadata": "/b8/b253ac6aed/0/metadata.json",
@@ -12,6 +14,13 @@
       "compact_transcript": "/b8/b253ac6aed/0/transcript.jsonl",
       "content_hash": "/b8/b253ac6aed/0/content_hash.txt",
       "prompt": "/b8/b253ac6aed/0/prompt.txt"
+    },
+    {
+      "metadata": "/b8/b253ac6aed/1/metadata.json",
+      "transcript": "/b8/b253ac6aed/1/full.jsonl",
+      "compact_transcript": "/b8/b253ac6aed/1/transcript.jsonl",
+      "content_hash": "/b8/b253ac6aed/1/content_hash.txt",
+      "prompt": ""
     }
   ],
   "token_usage": {
