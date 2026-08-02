@@ -24,3 +24,7 @@ if you look closesly you can see 2 borders for most of these buttons, we should 
 ---
 
 Can we remove the  nav for the page fully and make it fullscreen.
+
+---
+
+Can you do a deep code review for the PR and find everything we need to fix and adress it, long term mainability and good code quality is the 2 focus
