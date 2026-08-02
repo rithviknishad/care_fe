@@ -3,3 +3,7 @@ Actual issues found (see inline comments):
 1. Performance: O(n2) tree walks (`conditionSummary.ts:50`) — `questionsByLinkId` is built fresh on every `shortConditionSummary` and `plainWordsSummary` call. Per canvas render, per question block. The comment even warns against this but the fix wasn't applied at the call site. Hoist the index build.
 2. Dead hook subscription (`QuestionBlock.tsx:50`) — `useQuestionResponse` called on `group` questions that never use it. Minor but sloppy.
 3. Broken browser navigation (`StudioTopBar.tsx:120`) — Back button using `navigate()` instead of an anchor. Middle-click and "open in new tab" simply don't work.
+
+---
+
+When structured is sleected, we should also render what type of struictiured was selected in the dropdown.
