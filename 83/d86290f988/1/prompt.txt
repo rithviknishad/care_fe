@@ -333,3 +333,51 @@ Carried forward unchanged, both previously accepted: the registry is a last-wins
 3. The spec still skips on CI until the workflow builds with `REACT_ENABLE_QUESTIONNAIRE_DRAFT=true`; with the env var set it now fails loudly instead of skipping, so drift is caught in both directions.</result>
 <usage><subagent_tokens>290288</subagent_tokens><tool_uses>33</tool_uses><duration_ms>563987</duration_ms></usage>
 </task-notification>
+
+---
+
+<task-notification>
+<task-id>a78776b62327d860f</task-id>
+<tool-use-id>toolu_01EjHmvqdEDXXn8cu81qY4Te</tool-use-id>
+<output-file>/private/tmp/claude-501/-Users-bodhishthomas-code-care-fe/d9027e2d-e7f0-43f5-9e77-6edffa06a71d/tasks/a78776b62327d860f.output</output-file>
+<status>completed</status>
+<summary>Agent "Review Task 7 (spec + quality)" finished</summary>
+<note>A task-notification fires each time this agent stops with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>
+<result>### Verdict per fix
+
+**1. Critical — patient-subject drafts unreachable → FIXED.** `useSaveServerDraft.ts:76` now `const encounterBound = subject.type === "encounter" ? subject : undefined`, threaded through `canSaveDraft` (`:81-86`), the `saveDraft` guard (`:119`) and the POST body (`:138-140`, both ids now come off the encounter subject). `isPatientBound` is no longer imported by this module; the other five importers (`QuestionnaireFillPage.tsx:58`, `useFillActions.ts:47`, `composeBatch.ts:13`) are untouched, so resuming/finalizing a pre-existing patient-scope draft still works — the change only removes the *creation* path. Doc comment states the real constraint (findability, not dump shape).
+
+**2. Query-cache mutation → FIXED.** `FormSubmissionDrafts.tsx:47` clones before reviving (`for (const response of structuredClone(responses))`), so the cached `response_dump` the discard PUT spreads at `:66-74` is pristine. `structuredClone` has precedent in the repo (`CloneQuestionnaireDialog.tsx:130`, `PrintTemplateSheet.tsx:70`). Comment explains why the clone is load-bearing.
+
+**3. Spec skip drift → FIXED, and better than asked.** `fillServerDraft.spec.ts:29-49` probes the served bundle: it first awaits "Save Changes" (proving the mount is healthy, which is what makes the subsequent non-waiting `isVisible()` sound rather than racy), then skips only if the button is genuinely absent, and throws a two-cause error message when `REACT_ENABLE_QUESTIONNAIRE_DRAFT=true` contradicts reality. PUT branch now covered end-to-end: resume → edit → re-save → `toHaveCount(1)` on Continue (proves no second record) → `draftIdFromUrl` equality → preview shows `editedNote`. That last assertion is a direct regression guard for the seed-once bug.
+
+**4. Shape guards → FIXED.** `FormSubmissionDrafts.tsx:104-110` `Array.isArray` on both `questions` and `responses`; `fillDraftStore.ts:184` `response.values ?? []`.
+
+**5. Stale comments → FIXED.** `saveValidation.ts:7,12`, `form/types.ts:3-9`, `form/validation.ts:13-18` all rewritten and now accurate. Re-grepped: zero `renderer/*` path references remain in `src/`, and the relocation gate is still empty.
+
+**6. Spinner → FIXED.** `FillHeader.tsx:169` `Loader2` with `animate-spin` behind `isSavingDraft`.
+
+### Judgment: the keyed remount
+
+**Sound host-side pattern — keep it.** Resetting a subtree via `key` is the canonical React answer to "this component's seed data changed"; it leaves the seed-once contract the studio depends on completely untouched, and the cost is a remount of a card that holds no local state. The alternative — making the provider re-seed on `initialResponses` identity change — would have to be mode-conditional to stay safe, which is a worse contract (a prop that means two different things depending on `mode`).
+
+Two caveats worth recording rather than fixing:
+
+- The key depends on the backend bumping `modified_date` on PUT. That is not a frontend guarantee, but it *is* now empirically verified (the spec's post-PUT `toHaveValue(editedNote)` would fail otherwise), and it is self-detecting: the card's own "saved on" line at `FormSubmissionDrafts.tsx:113-115` reads the same field, so a non-bumping backend shows a visibly wrong timestamp next to the stale preview.
+- The deeper smell is real but not this task's: `initialResponses` + seed-once is a *fill* affordance (restore once, then the user edits). A **readonly** renderer has no user edits to protect, so routing its data through a seeded mutable store is indirection the mode doesn't need. If a third readonly host appears, the right move is a direct `responses` render path for `mode="readonly"`, not a third `key` incantation.
+
+### Confirming the resting point
+
+**Right call, with one correction to the stated rationale.** Patient-mount server drafts were unreachable *in legacy too* — the deleted `EncounterQuestionnaire.tsx:20-24,62-70` took `encounterId?: string` and had a patient-only exit branch (`/patient/{id}/updates`), while legacy `isDraftSaveable` gated on neither. So legacy offered Save as Draft on patient mounts and produced exactly the orphaned records I flagged. Removing the button removes a pre-existing trap rather than regressing anything, and local autosave still covers those mounts. A patient-filtered listing is genuinely backend + UI work and correctly deferred.
+
+### New issues
+
+**Minor — the gate's "why" comment misstates history.** `useSaveServerDraft.ts:57` asserts *"Legacy only ever mounted this encounter-bound"*, contradicted by the deleted `EncounterQuestionnaire.tsx` (optional `encounterId`, patient exit target). Everything else in that comment block is correct and the gate is right; but this is precisely the sentence a future maintainer would lean on when asked to re-widen the gate, and it would lead them to conclude patient mounts are a safe new capability rather than a known trap. Suggested wording: legacy *did* offer it on patient mounts and silently produced unreachable records — the encounter gate is a deliberate narrowing, not a port.
+
+No other new issues; nothing else in the diff changed between passes.
+
+**Task quality: Approved**
+
+**Reasoning:** All five findings are fixed at the root rather than papered over, and the PUT-branch spec the fix pass added caught a real seed-once bug and now guards it. The only remaining item is a one-sentence historical inaccuracy in a comment.</result>
+<usage><subagent_tokens>171174</subagent_tokens><tool_uses>9</tool_uses><duration_ms>118308</duration_ms></usage>
+</task-notification>
