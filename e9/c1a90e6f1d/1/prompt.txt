@@ -16,3 +16,7 @@ The UI doesn't look nice, the experience is bad, can we see if we can inspire fr
 1. Lets reuse the new questionnaire rendering in versions tab. 
 2. Save as version in the ui felt better, backend always increment the version for each save so it was if we could just show it. 
 3. The choice question had a special behavior that switched from radio kind of input to dropdown based on list, can you confirm if that exisit if yes we need it to be ported?
+
+---
+
+if you look closesly you can see 2 borders for most of these buttons, we should make it 1 right
