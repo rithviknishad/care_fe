@@ -3,8 +3,13 @@
   "checkpoint_id": "86f9a8cf6675",
   "strategy": "manual-commit",
   "branch": "bodhi/questionnaire-fill",
-  "checkpoints_count": 1,
-  "files_touched": null,
+  "checkpoints_count": 2,
+  "files_touched": [
+    "src/Routers/AppRouter.tsx",
+    "src/Routers/routes/ConsultationRoutes.tsx",
+    "src/components/QuestionnaireV2/README.md",
+    "src/components/QuestionnaireV2/shared/ChoiceChip.tsx"
+  ],
   "sessions": [
     {
       "metadata": "/86/f9a8cf6675/0/metadata.json",
@@ -12,6 +17,13 @@
       "compact_transcript": "/86/f9a8cf6675/0/transcript.jsonl",
       "content_hash": "/86/f9a8cf6675/0/content_hash.txt",
       "prompt": "/86/f9a8cf6675/0/prompt.txt"
+    },
+    {
+      "metadata": "/86/f9a8cf6675/1/metadata.json",
+      "transcript": "/86/f9a8cf6675/1/full.jsonl",
+      "compact_transcript": "/86/f9a8cf6675/1/transcript.jsonl",
+      "content_hash": "/86/f9a8cf6675/1/content_hash.txt",
+      "prompt": ""
     }
   ],
   "token_usage": {
