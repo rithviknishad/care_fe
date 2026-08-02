@@ -3,7 +3,7 @@
   "checkpoint_id": "c10670861143",
   "session_id": "771d8259-e78b-45e6-b6f2-87df901040d9",
   "strategy": "manual-commit",
-  "created_at": "2026-08-02T15:20:25.480569Z",
+  "created_at": "2026-08-02T15:21:21.839666Z",
   "branch": "bodhi/questionnaire-fill",
   "checkpoints_count": 1,
   "files_touched": [
@@ -25,14 +25,14 @@
     "api_call_count": 0
   },
   "initial_attribution": {
-    "calculated_at": "2026-08-02T15:20:25.476Z",
+    "calculated_at": "2026-08-02T15:21:21.833177Z",
     "agent_lines": 0,
     "agent_removed": 0,
-    "human_added": 37,
-    "human_modified": 6,
+    "human_added": 0,
+    "human_modified": 0,
     "human_removed": 0,
-    "total_committed": 37,
-    "total_lines_changed": 43,
+    "total_committed": 0,
+    "total_lines_changed": 0,
     "agent_percentage": 0,
     "metric_version": 2
   }
