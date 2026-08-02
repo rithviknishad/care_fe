@@ -6,3 +6,7 @@ Also read these files the selection imports:
 	•	ds/styles.css
 	•	support.js
 Implement: This is a reference UI, look for stuff that got missed out in build, one example is the right nav with tabs; another is conditional logic highlights, error highlights etc
+
+---
+
+The UI doesn't look nice, the experience is bad, can we see if we can inspire from the design
