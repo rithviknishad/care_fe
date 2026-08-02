@@ -3,8 +3,18 @@
   "checkpoint_id": "31e9d8507f21",
   "strategy": "manual-commit",
   "branch": "bodhi/questionnaire-fill",
-  "checkpoints_count": 1,
-  "files_touched": null,
+  "checkpoints_count": 2,
+  "files_touched": [
+    "tests/facility/patient/encounter/fill/fillAutosave.spec.ts",
+    "tests/facility/patient/encounter/fill/fillPage.spec.ts",
+    "tests/facility/patient/encounter/fill/fillValidation.spec.ts",
+    "tests/facility/patient/encounter/forms/formSubmissionAndDisplay.spec.ts",
+    "tests/facility/patient/encounter/structuredQuestions/allergy.spec.ts",
+    "tests/facility/patient/encounter/structuredQuestions/chargeItem.spec.ts",
+    "tests/facility/patient/encounter/structuredQuestions/diagnosis.spec.ts",
+    "tests/facility/patient/encounter/structuredQuestions/medicationRequest.spec.ts",
+    "tests/facility/patient/encounter/structuredQuestions/symptom.spec.ts"
+  ],
   "sessions": [
     {
       "metadata": "/31/e9d8507f21/0/metadata.json",
@@ -12,6 +22,13 @@
       "compact_transcript": "/31/e9d8507f21/0/transcript.jsonl",
       "content_hash": "/31/e9d8507f21/0/content_hash.txt",
       "prompt": "/31/e9d8507f21/0/prompt.txt"
+    },
+    {
+      "metadata": "/31/e9d8507f21/1/metadata.json",
+      "transcript": "/31/e9d8507f21/1/full.jsonl",
+      "compact_transcript": "/31/e9d8507f21/1/transcript.jsonl",
+      "content_hash": "/31/e9d8507f21/1/content_hash.txt",
+      "prompt": ""
     }
   ],
   "token_usage": {
