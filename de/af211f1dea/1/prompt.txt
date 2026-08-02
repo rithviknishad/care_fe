@@ -124,3 +124,45 @@ Concerns:
 - Both concerns from the first report are now withdrawn: prior `/consultation` picker behavior is exactly restored (submitted body unchanged), and the device flow has permanent E2E coverage that also guards the raviger registration order.</result>
 <usage><subagent_tokens>266447</subagent_tokens><tool_uses>26</tool_uses><duration_ms>303664</duration_ms></usage>
 </task-notification>
+
+---
+
+<task-notification>
+<task-id>a4cab408ecd12cf5a</task-id>
+<tool-use-id>REDACTED</tool-use-id>
+<output-file>/private/tmp/claude-501/-Users-bodhishthomas-code-care-fe/d9027e2d-e7f0-43f5-9e77-6edffa06a71d/tasks/a4cab408ecd12cf5a.output</output-file>
+<status>completed</status>
+<summary>Agent "Review Task 3 (spec + quality)" finished</summary>
+<note>A task-notification fires each time this agent stops with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>
+<result>### Verdict on the fixes
+
+**Important 1 — `/consultation` picker filter: fixed, exactly.** `FillPageProps.pickerSubjectType?: SubjectType` (`QuestionnaireFillPage.tsx:89`) defaults at destructure to `subject.type` (`:112`), is threaded into `FillPageBody` as a required, already-resolved prop (`:270`, `:320`, `:338`), and reaches **both** pickers — the no-id picker at `:228` and the add-questionnaire popover at `:576`. `ConsultationRoutes.tsx:150` sets `pickerSubjectType="encounter"` on the `/consultation` mount and nowhere else. I walked all 7 patient/encounter mounts against their pre-union `subjectType` strings: encounter mounts `"encounter"`, patient mounts `"patient"`, consultation `"encounter"` — every one now resolves to the identical value it sent before the union landed. The submitted body is untouched: `subject` on that mount is still `{type:"patient", facilityId, patientId}`, and `composeBatch` never sees `pickerSubjectType`, so `resource_id`/`patient`/`encounter` are byte-identical. The default-parameter form is valid — `subject` is destructured before `pickerSubjectType` in the same pattern.
+
+The typing is stronger than requested: `SubjectType` is `(typeof SUBJECT_TYPES)[number]` over exactly the five members the union carries (`src/types/questionnaire/questionnaire.ts:8-17`), so `subject.type` is assignable by construction and a sixth backend subject type breaks the build here too. `QuestionnaireSearch` accepts it (`src/components/Questionnaire/QuestionnaireSearch.tsx:43`, `subjectType?: string`) and keys its query on it (`:62`), so the filter change actually refetches.
+
+**Important 2 — fixture hygiene + non-vacuous negative: fixed.** `locationQuestionnaire.spec.ts:53-61` resolves `e2e-subject-location` via `getQuestionnaireIdBySlug` in `beforeEach`, before any UI is driven, so a missing fixture fails with the helper's explicit "reload backend E2E fixtures" error. The negative assertion is now guarded by a positive control in the same picker session (`:85-88` option IS visible → `:92-96` encounter title yields zero options *and* "No Results Found"), which closes the vacuous-pass hole. Bonus tightening I did not ask for: the post-pick URL and the batch URL now assert the *resolved* questionnaire id (`:131-134`) instead of a loose `[0-9a-f-]+`/`toContain("/submit_resource/")`.
+
+**Device spec — restored and real.** `tests/facility/deviceQuestionnaire.spec.ts` resolves `e2e-subject-device` by slug (`:44-49`), registers a device through the settings UI, and asserts the intercepted `POST /api/v1/batch_requests/` carries exactly one request to `/api/v1/questionnaire/{resolvedId}/submit_resource/` with `resource_id === device.id` and no `patient`/`encounter` keys (`:99-105`) — real network, no mock, with the success toast and redirect proving the backend accepted it. Its `waitForURL` on `…/devices/{id}/questionnaire` is a live regression guard on the raviger registration order. The device-creation steps match `tests/facility/settings/devices/deviceCreation.spec.ts:20-30` verbatim, including the raw `getByText` toast check, so it follows the house pattern for that directory.
+
+**Minors 3, 5, 9 — all done.** `composeBatch.ts:145` now passes `subject` like `:157` (same value, so no behavior change); `questionnaireApi.ts:66-70` carries the "Documentation/type parity only — composeBatch builds this URL for the batch endpoint by hand" note; the unanswered-fill test navigates straight to the resolved URL and reads its counter after `waitForLoadState("networkidle")` (`locationQuestionnaire.spec.ts:166-167`) with the listener still registered before the click.
+
+Test arithmetic is consistent: 20 → 21 passed is exactly the one added device test.
+
+### New Issues
+
+#### Minor
+1. **The device spec's picker step does not test what its name claims.** `deviceQuestionnaire.spec.ts:70-84` is titled "the picker is scoped to device-subject questionnaires" but only asserts the device fixture is findable — there is no negative control excluding a non-device questionnaire, which is precisely the pair the location spec now has at `:85-96`. Either mirror the location spec's positive-then-negative shape or rename the step to what it verifies.
+
+2. **Both specs still hardcode the fixture title next to the slug** (`locationQuestionnaire.spec.ts:15-16`, `deviceQuestionnaire.spec.ts:13-14`). The slug lookup now guards existence, which was the substance of the original finding, but a fixture whose title drifts while the slug holds still fails opaquely in the picker. Residual and much reduced — noting it only so it is a known limit.
+
+3. **`waitForLoadState("networkidle")` is the one selector Playwright's own docs discourage** (`locationQuestionnaire.spec.ts:166`). It is the right instinct and it passes; a bounded `waitForTimeout` or waiting on a concrete UI settle would be less exposed to any future background refetch holding the connection count above zero.
+
+4. **No automated coverage pins `/consultation` to `subject_type=encounter`.** The report discloses this honestly. It is a one-line prop restoring a pre-existing string, and I verified it by reading, so I would not gate on it — but the restored path also preserves a pre-existing oddity (encounter-subject forms added there still submit with `encounter: undefined`), which is unchanged from before the union and not introduced here.
+
+### Assessment
+
+**Task quality:** Approved
+
+**Reasoning:** Both Important findings are genuinely fixed rather than papered over — the picker filter is restored to a byte-identical pre-union value on all 7 mounts with a type that is total against `SUBJECT_TYPES`, and the location spec's fixture resolution plus positive-control ordering removes both the opaque-failure and vacuous-pass holes. The four remaining items are test-polish nits on new coverage that did not exist before this task.</result>
+<usage><subagent_tokens>152735</subagent_tokens><tool_uses>7</tool_uses><duration_ms>132855</duration_ms></usage>
+</task-notification>
