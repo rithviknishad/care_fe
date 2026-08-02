@@ -3,11 +3,8 @@
   "checkpoint_id": "afe7367f842e",
   "strategy": "manual-commit",
   "branch": "bodhi/questionnaire-fill",
-  "checkpoints_count": 3,
-  "files_touched": [
-    "src/components/QuestionnaireV2/fill/QuestionnaireFillPage.tsx",
-    "src/components/QuestionnaireV2/fill/draft/useFillAutosave.ts"
-  ],
+  "checkpoints_count": 1,
+  "files_touched": null,
   "sessions": [
     {
       "metadata": "/af/e7367f842e/0/metadata.json",
@@ -15,32 +12,13 @@
       "compact_transcript": "/af/e7367f842e/0/transcript.jsonl",
       "content_hash": "/af/e7367f842e/0/content_hash.txt",
       "prompt": "/af/e7367f842e/0/prompt.txt"
-    },
-    {
-      "metadata": "/af/e7367f842e/1/metadata.json",
-      "transcript": "/af/e7367f842e/1/full.jsonl",
-      "compact_transcript": "/af/e7367f842e/1/transcript.jsonl",
-      "content_hash": "/af/e7367f842e/1/content_hash.txt",
-      "prompt": "/af/e7367f842e/1/prompt.txt"
     }
   ],
   "token_usage": {
-    "input_tokens": 462,
-    "cache_creation_tokens": 711621,
-    "cache_read_tokens": 69572364,
-    "output_tokens": 239371,
-    "api_call_count": 248
-  },
-  "combined_attribution": {
-    "calculated_at": "2026-08-02T16:23:02.812525Z",
-    "agent_lines": 43,
-    "agent_removed": 11,
-    "human_added": 45,
-    "human_modified": 0,
-    "human_removed": 46,
-    "total_committed": 88,
-    "total_lines_changed": 145,
-    "agent_percentage": 37.24137931034483,
-    "metric_version": 2
+    "input_tokens": 369,
+    "cache_creation_tokens": 482449,
+    "cache_read_tokens": 64644015,
+    "output_tokens": 208671,
+    "api_call_count": 201
   }
 }
