@@ -53,3 +53,52 @@ To re-run with edited post-processing: Workflow({scriptPath: '/Users/bodhishthom
 <result>DONE — commits `30b9066c9` (feature) + `b11629895` (fix pass). Fill suite 18/18 green (`fillAutosave` + `fillMultiForm` + `fillPage` + `fillValidation`); all three new regression specs verified RED against a rebuild with only the two fixed source files stashed, and `npx tsc --noEmit` / eslint clean. Concerns: original #1 (duplicate outline landmarks) and #2 (removal not persisted) are closed; still standing are the primary questionnaire object being frozen at mount, the 7 pre-existing `encounter/` legacy-"Submit" failures, and a pre-existing Task-1-shaped behaviour where typing while the restore prompt is still showing overwrites the stored draft (the new guard only prevents the destructive empty-session case).</result>
 <usage><subagent_tokens>300030</subagent_tokens><tool_uses>34</tool_uses><duration_ms>709707</duration_ms></usage>
 </task-notification>
+
+---
+
+<task-notification>
+<task-id>ac6b1999201eedd14</task-id>
+<tool-use-id>REDACTED</tool-use-id>
+<output-file>/private/tmp/claude-501/-Users-bodhishthomas-code-care-fe/d9027e2d-e7f0-43f5-9e77-6edffa06a71d/tasks/ac6b1999201eedd14.output</output-file>
+<status>completed</status>
+<summary>Agent "Review Task 2 (spec + quality)" finished</summary>
+<note>A task-notification fires each time this agent stops with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>
+<result>### Spec Compliance (fix pass)
+
+- ✅ **Important finding fixed, and fixed at the right layer.** `persistNow` (`useFillAutosave.ts:106-116`) is now the single save body used by the debounce (`:154`), the flush (`:139`) and the new shape effect (`:127-129`). The gate `if (!scopeKey || !dirty) return; persistNow();` with deps `[scopeKey, dirty, storesVersion, persistNow]` fires in the **create** phase, and `persistNow`'s identity tracks `snapshotAll` → `forms`. Since passive mount effects run children-before-parent, the newly added section's `StoreRegistrar` has already registered when this effect runs — so it writes the full session, unlike the cleanup flush that caused the bug. Both directions are covered: Resume (async re-add) and removal (no pending debounce needed).
+- ✅ **No re-render write amplification.** `dirty` flips once, `forms`/`getStore`/`storesVersion` don't change per keystroke, and jotai writes don't re-render `FillPageBody` — so the effect does not fire per keystroke and the 1500 ms debounce still governs ordinary typing. `finishedRef` still short-circuits `persistNow`, so the post-submit path cannot resurrect a cleared draft.
+- ✅ **Inverse-trap guard is correctly scoped and correctly factored.** `restorePendingRef.current = !!restoredDraft &amp;&amp; !restoreDismissed` (`:76-77`); the guard makes an *empty* session a no-op rather than a save while a restore is un-acted (`:110-112`). Crucially, `fillSessionHasDraftContent` (`fillDraftStore.ts:139-143`) and `saveFillDraft`'s clear-on-empty branch (`:148-155`) both derive from the one `snapshotSession` (`:113`), so the predicate cannot drift from the branch it is guarding. That is the right way to add this guard.
+- ✅ **Minor #1 (duplicate landmarks) fixed without moving an existing selector.** `FillOutline({ ariaLabel })` falls back to `t("questions")` (`FillOutline.tsx:24,32`); the host passes the title only when `forms.length &gt; 1` (`QuestionnaireFillPage.tsx:530-532`), so a single-form session keeps the landmark name `fillPage.spec.ts` asserts.
+- ✅ **The three new specs are discriminating, not decorative.** (a) polls `draftFormCount` at the **storage** layer after Resume, then reloads *without typing* and re-resumes — that is exactly the failure I described, asserted where it lives. (b) polls to 2 *before* removing so the removal cannot ride a pending debounce; the report notes the first version passed unfixed, which is why the poll exists — that is the right instinct. The stash-and-rebuild RED run (3 failed) is credible evidence the specs bind.
+- ✅ **No scope creep.** File stat deltas match exactly the claimed work (`FillOutline.tsx` new to the list; `useSubmitQuestionnaire.ts`, `DraftRestoreBar.tsx`, `README.md` byte-identical to the first pass). `composeBatch`/`isQuestionEnabledInState` still untouched — the frozen contract holds.
+
+### Residual (the parked question)
+
+**Acceptable as a parked Minor — not a blocker.** Typing while the prompt is un-acted overwrites the stored draft; the fix guards only the destructive empty-session case. Reasons to park:
+
+- It is Task-1 shape, not introduced here: single-form Task 1 had the identical debounce→overwrite behavior and shipped with it.
+- The harm requires the user to be *shown* a Resume prompt, type over it anyway, then leave and later want the old draft back. Newest-working-state-wins is a defensible product rule for that sequence, and `restoredDraftRef` keeps Resume working in-page the whole time.
+- The genuinely destructive variant (draft *deleted*, not overwritten) is now closed and pinned by spec (c).
+- Every real fix is out of this task's scope: suppressing autosave while the prompt is up trades a stale-draft loss for a *fresh-typing* loss (strictly worse), and keeping both copies is a schema change.
+
+One caveat to make the park informed: the new effect fires on the `dirty` false→true transition, so the overwrite now happens at ≈0 ms instead of ≤1500 ms after the first keystroke. Same outcome, smaller window — worth the sentence in the PR description alongside concern #3.
+
+### New Issues
+
+#### Critical / Important
+None.
+
+#### Minor
+1. **The X (dismiss) lifts the new guard, contradicting the bar's own documented promise.** `restorePendingRef` is `!!restoredDraft &amp;&amp; !restoreDismissed` (`useFillAutosave.ts:77`), and `dismissRestoreBar` sets `restoreDismissed` — so after the X, emptying the session takes `saveFillDraft`'s clear branch and deletes the draft, while `DraftRestoreBar`'s header comment states "X only hides the prompt and keeps the stored draft for the next visit." Not a regression (pre-fix it cleared too), just an incompleteness in the new guard. Cheap fix: predicate on *acted* (resume ∥ discard) rather than on prompt visibility.
+2. **Spec (c)'s name over-promises what it pins.** By the time it removes the added form, the stored draft has already been overwritten by that form's typing, so the surviving entry is not the original `noteA` draft — the test asserts "an entry still exists", which is the guard, not content preservation. Worth one comment line so a future reader doesn't mistake it for a stronger guarantee.
+3. **Multi-form outline announces the title twice** — once as the `&lt;p&gt;` above the nav and once as the landmark name (`FillFormSection.tsx:55-58`). `aria-hidden` on the `&lt;p&gt;`, or `aria-labelledby` pointing at it, would collapse the duplication.
+
+Carried forward unchanged from round 1, none blocking: `FormContext.tsx:149-155` still duplicates the overlay merge (layering rationale accepted); re-selecting an already-added questionnaire is a silent no-op; the server-error panel has no per-form attribution; `discardRestoredDraft` also resets manually-added forms; filenames no longer match their exports (plan-mandated); primary questionnaire frozen at mount (concern #3).
+
+### Assessment
+
+**Task quality:** Approved
+
+**Reasoning:** The fix addresses the root cause rather than the symptom — a `dirty`-gated persist in the create phase, after the registry grows, with the empty-session guard derived from the same `snapshotSession` as the clear branch it protects — and the new specs assert at the storage layer with the pending-debounce path deliberately closed off. The remaining residual is pre-existing Task-1 semantics whose only real fixes are out of scope, and the three new Minors are polish.</result>
+<usage><subagent_tokens>178215</subagent_tokens><tool_uses>10</tool_uses><duration_ms>193608</duration_ms></usage>
+</task-notification>
