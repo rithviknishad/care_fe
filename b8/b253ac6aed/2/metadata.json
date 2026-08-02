@@ -51,6 +51,37 @@
         "label": "Skill: superpowers:brainstorming",
         "default_collapsed": true
       }
+    },
+    {
+      "id": "claude-skill-toolu_01TwXRqvx8L8HMhB3aXmf93T",
+      "event_type": "tool_invocation",
+      "skill": {
+        "name": "superpowers:writing-plans"
+      },
+      "source": {
+        "agent": "claude-code",
+        "signal": "skill_tool_use",
+        "confidence": "explicit"
+      },
+      "turn_id": "25f549e764a1",
+      "transcript_anchor": {
+        "unit": "line",
+        "start": 260,
+        "end": 261,
+        "entry_ids": [
+          "104273a3-40fe-4b15-b160-59af09a62056"
+        ],
+        "tool_use_id": "toolu_01TwXRqvx8L8HMhB3aXmf93T"
+      },
+      "native": {
+        "tool_name": "Skill",
+        "tool_use_id": "toolu_01TwXRqvx8L8HMhB3aXmf93T"
+      },
+      "collapse": {
+        "target": "tool_pair",
+        "label": "Skill: superpowers:writing-plans",
+        "default_collapsed": true
+      }
     }
   ],
   "session_metrics": {
