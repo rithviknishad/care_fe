@@ -3,8 +3,24 @@
   "checkpoint_id": "59cdccc98551",
   "strategy": "manual-commit",
   "branch": "bodhi/questionnaire-fill",
-  "checkpoints_count": 1,
-  "files_touched": null,
+  "checkpoints_count": 2,
+  "files_touched": [
+    "src/components/QuestionnaireV2/form/StructuredSlot.tsx",
+    "src/components/QuestionnaireV2/structured/definitions/adapt.ts",
+    "src/components/QuestionnaireV2/structured/definitions/allergyIntolerance.tsx",
+    "src/components/QuestionnaireV2/structured/definitions/appointment.tsx",
+    "src/components/QuestionnaireV2/structured/definitions/chargeItem.tsx",
+    "src/components/QuestionnaireV2/structured/definitions/diagnosis.tsx",
+    "src/components/QuestionnaireV2/structured/definitions/encounter.tsx",
+    "src/components/QuestionnaireV2/structured/definitions/files.tsx",
+    "src/components/QuestionnaireV2/structured/definitions/medicationRequest.tsx",
+    "src/components/QuestionnaireV2/structured/definitions/medicationStatement.tsx",
+    "src/components/QuestionnaireV2/structured/definitions/serviceRequest.tsx",
+    "src/components/QuestionnaireV2/structured/definitions/symptom.tsx",
+    "src/components/QuestionnaireV2/structured/definitions/timeOfDeath.tsx",
+    "src/components/QuestionnaireV2/structured/registry.ts",
+    "src/components/QuestionnaireV2/structured/types.ts"
+  ],
   "sessions": [
     {
       "metadata": "/59/cdccc98551/0/metadata.json",
@@ -12,6 +28,13 @@
       "compact_transcript": "/59/cdccc98551/0/transcript.jsonl",
       "content_hash": "/59/cdccc98551/0/content_hash.txt",
       "prompt": "/59/cdccc98551/0/prompt.txt"
+    },
+    {
+      "metadata": "/59/cdccc98551/1/metadata.json",
+      "transcript": "/59/cdccc98551/1/full.jsonl",
+      "compact_transcript": "/59/cdccc98551/1/transcript.jsonl",
+      "content_hash": "/59/cdccc98551/1/content_hash.txt",
+      "prompt": ""
     }
   ],
   "token_usage": {
