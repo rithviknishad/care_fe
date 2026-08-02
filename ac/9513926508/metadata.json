@@ -3,21 +3,8 @@
   "checkpoint_id": "ac9513926508",
   "strategy": "manual-commit",
   "branch": "bodhi/questionnaire-fill",
-  "checkpoints_count": 2,
-  "files_touched": [
-    "public/locale/en.json",
-    "src/components/QuestionnaireV2/fill/ClinicalHistoryTab.tsx",
-    "src/components/QuestionnaireV2/fill/DraftRestoreBar.tsx",
-    "src/components/QuestionnaireV2/fill/FillCanvas.tsx",
-    "src/components/QuestionnaireV2/fill/FillHeader.tsx",
-    "src/components/QuestionnaireV2/fill/FillOutline.tsx",
-    "src/components/QuestionnaireV2/fill/QuestionnaireFillPage.tsx",
-    "src/components/QuestionnaireV2/fill/ServerErrorsPanel.tsx",
-    "src/components/QuestionnaireV2/fill/draft/fillDraftStore.ts",
-    "src/components/QuestionnaireV2/form/FormContext.tsx",
-    "src/pages/Patient/History/clinicalHistoryTabs.tsx",
-    "src/pages/Patient/History/index.tsx"
-  ],
+  "checkpoints_count": 1,
+  "files_touched": null,
   "sessions": [
     {
       "metadata": "/ac/9513926508/0/metadata.json",
@@ -25,13 +12,6 @@
       "compact_transcript": "/ac/9513926508/0/transcript.jsonl",
       "content_hash": "/ac/9513926508/0/content_hash.txt",
       "prompt": "/ac/9513926508/0/prompt.txt"
-    },
-    {
-      "metadata": "/ac/9513926508/1/metadata.json",
-      "transcript": "/ac/9513926508/1/full.jsonl",
-      "compact_transcript": "/ac/9513926508/1/transcript.jsonl",
-      "content_hash": "/ac/9513926508/1/content_hash.txt",
-      "prompt": ""
     }
   ],
   "token_usage": {
