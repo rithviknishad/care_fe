@@ -5,7 +5,6 @@
   "branch": "bodhi/questionnaire-fill",
   "checkpoints_count": 2,
   "files_touched": [
-    ".gitignore",
     "src/components/Questionnaire/data/StructuredFormData.tsx",
     "src/types/questionnaire/form.ts",
     "src/types/questionnaire/structured.ts"
@@ -27,11 +26,11 @@
     }
   ],
   "token_usage": {
-    "input_tokens": 126,
-    "cache_creation_tokens": 231818,
-    "cache_read_tokens": 11655118,
-    "output_tokens": 63311,
-    "api_call_count": 69
+    "input_tokens": 129,
+    "cache_creation_tokens": 233541,
+    "cache_read_tokens": 12179799,
+    "output_tokens": 63945,
+    "api_call_count": 71
   },
   "combined_attribution": {
     "calculated_at": "2026-08-02T15:20:56.253932Z",
