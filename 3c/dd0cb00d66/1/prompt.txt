@@ -250,3 +250,42 @@ None material. Two observations, neither worth blocking:
 - Unchanged from before: `ScribeComponentType` still needs the lockstep `care_scribe` update in the PR body; registry is a module singleton (last-wins on duplicate ids); audit remains a console stub until the backend endpoint lands.</result>
 <usage><subagent_tokens>185179</subagent_tokens><tool_uses>34</tool_uses><duration_ms>338836</duration_ms></usage>
 </task-notification>
+
+---
+
+<task-notification>
+<task-id>ada0016651835a586</task-id>
+<tool-use-id>REDACTED</tool-use-id>
+<output-file>/private/tmp/claude-501/-Users-bodhishthomas-code-care-fe/d9027e2d-e7f0-43f5-9e77-6edffa06a71d/tasks/ada0016651835a586.output</output-file>
+<status>completed</status>
+<summary>Agent "Review Task 6 (spec + quality)" finished</summary>
+<note>A task-notification fires each time this agent stops with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>
+<result>All seven claims verified against the diff, plus the two supporting facts they depend on.
+
+### Verdict on the fixes
+
+| # | Claim | Verified |
+|---|---|---|
+| 1 | ValueSet choice rejects free text | `useFillActions.ts:349-361` — `!options?.length` now branches on `question.answer_value_set` before the permissive fallthrough, with an error naming the reason ("requires a coded value from a value set"). The comment records the exact failure mode. Correct fix, correct place. |
+| 2 | Stale errors cleared | `useFillActions.ts:515` — `clearQuestionErrorsInState(store.get, store.set, question.id)` after the write. I checked the unbound-method risk: jotai 2.20.1 builds `store.get`/`store.set` as closures over `store` and `buildingBlocks` (`node_modules/jotai/vanilla/internals.js:786-794`), never touching `this`, so passing them detached is safe. Matches `useQuestionResponse`'s invariant. |
+| 3 | Manual `path: message` join | `registry.ts:835-841`, over `parsed.error.issues`. **Deviation accepted** — and it is the better call: it keeps `registry.ts`'s "no runtime imports" property (stated in its own header) and produces a tighter single-line string than `z.prettifyError`'s multi-line ✖-marked output, for a reader that is a model correcting its own call. |
+| 4 | Audit covers rejections | `registry.ts:822-854` — `unknown-action`, `scope-rejected`, `schema-rejected`, `invoked`, `ok`/`failed`, `threw`. The extracted `audit()` (`:867-869`) takes only `(id, scope, outcome)`; no signature can carry input or result, which is stronger than a comment. |
+| 5 | Time supported | `TIME_PATTERN` `/^([01]\d|2[0-3]):[0-5]\d(:[0-5]\d)?$/` (`:249`) — correct 24-hour bounds, optional seconds, matching what `&lt;input type="time"&gt;` round-trips into `TimeInput`. |
+| 6 | Parameters projection copies | `registry.ts:799-804` — per-parameter spread. Parameter fields are all primitives, so the shallow copy is complete; nothing shared reaches the boundary. |
+| 7 | `enabled` + disabled-write reject | `listFormsSummary` threads `ancestorsEnabled` down the walk (`:547-569`); `applySetResponse` gates on `isPathEnabled(path, previous, buildLinkIndex(...))` (`:486-495`). I verified the parity claim outside the diff: `composeBatch.ts:72-75` tests `isEnabled(question)` *before* descending, so a disabled group takes its whole subtree with it — the ancestor walk is the matching predicate, not an approximation. Rejecting rather than silently accepting a write that `composeBatch` would drop is the right call, and the error tells the agent how to unblock itself. |
+
+The `questionnaire.forms.list` description was updated in lockstep with the payload (`:646`), so the descriptor doesn't drift from what the action returns.
+
+### New Issues
+
+None at Important or above. Nothing in the fix pass introduced a regression: the enable-check sits before coercion (so the more actionable error wins), `isPathEnabled` reads pre-write state (correct), and the added `buildLinkIndex` walks are per-invoke, not per-keystroke — the memoization analysis from the first pass is unaffected.
+
+One observation, **not introduced by this pass** and below the fix bar: `listFormsSummary`'s walk descends into a non-group question's `questions[]`, whereas `initializeResponses` (`renderer/store.ts:53-56`) and `composeBatch` descend only through groups. A question nested under a non-group would therefore be advertised in `forms.list` but rejected on write by the `!current` guard. Unreachable with well-formed questionnaires, and identical in the pre-fix code.
+
+Carried forward unchanged, both previously accepted: the registry is a last-wins module singleton (plan-acknowledged, scope-gated), and `src/lib/**` plus `.ts` hook files sit outside the eslint react-hooks net (`eslint.config.mjs:51-54, 150`) — pre-existing config, out of task scope.
+
+**Task quality:** Approved
+
+**Reasoning:** Both Importants are fixed at the root — the valueset branch now rejects instead of guessing, and the error-clear restores the store's documented clear-on-edit invariant — and the five minors were addressed with the parity checks (composeBatch's subtree skip, jotai's unbound get/set, `&lt;input type="time"&gt;`'s format) actually holding up under verification rather than merely asserted.</result>
+<usage><subagent_tokens>124196</subagent_tokens><tool_uses>6</tool_uses><duration_ms>114491</duration_ms></usage>
+</task-notification>
