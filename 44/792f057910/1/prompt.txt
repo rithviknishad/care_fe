@@ -412,3 +412,50 @@ Verification: `npx tsc --noEmit` clean, `npx eslint` on all changed files 0 erro
 Concerns: none blocking. Parked the null-`structured_type` hole as instructed (pre-existing, dies in Phase-5).</result>
 <usage><subagent_tokens>263502</subagent_tokens><tool_uses>34</tool_uses><duration_ms>412069</duration_ms></usage>
 </task-notification>
+
+---
+
+<task-notification>
+<task-id>a2757c62f595108b4</task-id>
+<tool-use-id>REDACTED</tool-use-id>
+<output-file>/private/tmp/claude-501/-Users-bodhishthomas-code-care-fe/2dabe7d0-29e9-45a7-8554-462aec27da99/tasks/a2757c62f595108b4.output</output-file>
+<status>completed</status>
+<summary>Agent "Review Task 8 (spec + quality)" finished</summary>
+<note>A task-notification fires each time this agent stops with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>
+<result># Task 8 re-review — fix wave (9a2d1a81e + 6973ae9c8)
+
+### Spec Compliance
+
+All four round-1 findings are resolved. Verified against source, not the report.
+
+1. **Important (spec didn't discriminate) — RESOLVED.** `/Users/bodhishthomas/code/care_fe/tests/facility/patient/encounter/fill/fillHardBlock.spec.ts` non-required case now asserts `"Entries in this section will not be submitted."` inside the structured block, before the fill/submit steps. That sentence does not exist anywhere at base 0f9ed9e3a, so the case now fails on pre-fix code. Both spec cases are now discriminating.
+2. **Minor 2 (contradictory copy) — RESOLVED, and consistently across every state.** All four broken-slot notices branch on `question.required` — `/Users/bodhishthomas/code/care_fe/src/components/QuestionnaireV2/form/StructuredSlot.tsx:112` (unknown_type), `:129` (subject_mismatch), `:149` (missing_context), `:192` (render_failed error-boundary fallback). Each `_required` twin ends in the identical clause and promises no skip; each base variant ends in the identical skip sentence. No state can now show "entries won't be submitted" above "the form can't be saved". The required spec case asserts the required-variant sentence, replacing the old `/isn't enabled/` regex that matched both variants.
+3. **Minor 3 (render_failed) — RESOLVED.** Both twins added; the non-required copy now matches `composeBatch.ts:144`, which does drop render-failed entries.
+4. **Minor 4 (overclaimed parity) — RESOLVED in substance.** `/Users/bodhishthomas/code/care_fe/src/components/QuestionnaireV2/structured/registry.ts:184-196` names the gate verbatim (`!patientBound &amp;&amp; definition.source !== "plugin"`), cites `composeBatch.ts ~166-176` (correct — the gate is at `:176`, its rationale comment at `:166-175`), states neither validator mirrors it, and lands on "`ready` is necessary but not always sufficient." The headline sentence at `:167-168` was also narrowed to drop the "what data reaches the domain APIs" claim it could no longer support.
+
+**i18n checks:** all five new keys (`structured_section_unavailable_required` + four `_required` twins) exist in `public/locale/en.json` only — grepped every file under `public/locale/`, no Crowdin-managed locale touched. Alphabetical placement is correct at each insertion point. The four base notice keys are consumed by `StructuredSlot.tsx` and nothing else, so the appended sentences cannot leak into an unrelated surface.
+
+**Byte-match (implementer's claim) — confirmed.** Extracted every `getByText` literal from the spec and diffed against the resolved locale values: `"This section is required — the form can't be saved until it's available."` uses U+2014 on **both** sides and ASCII `'` (U+0027) on both sides — no smart-quote or hyphen drift. `"Entries in this section will not be submitted."` and the blocking-error template (with `${STRUCTURED_LABEL}` resolved) are ASCII-only and match exactly.
+
+**Round-1 items — not re-checked, and not touched.** `validateStructured.ts` and `validation.ts` carry identical pre/post blob hashes in both review packages (`15740721d..7545be4d5`, `d424e0ed7..14a680c3d`); the fix commit did not alter them. Resolver sharing, single-error-per-question, notice anchoring, and backend fixture acceptance stand as verified.
+
+### Strengths
+
+- The `_required` twin approach is the right shape: one clause reused across all four states means the spec can assert a single sentence and cover every broken path, and a future fifth state has an obvious pattern to follow.
+- The registry exception paragraph is honest engineering — it documents a divergence that makes the module look worse, rather than quietly narrowing the claim.
+- The spec's inline comment on the non-required assertion states *why* it exists ("without this the case would pass unchanged on pre-fix code"), which is exactly the note that stops a future cleanup from deleting it.
+
+### Issues
+
+**Minor**
+
+1. **New, introduced by the fix: the notice branches on `question.required` alone, ignoring enable_when.** `/Users/bodhishthomas/code/care_fe/src/components/QuestionnaireV2/form/QuestionBlock.tsx:48` keeps a logic-disabled question rendered when `disabled_display === "protected"`, while both validators skip disabled questions (`validation.ts:80`, `validateStructured.ts:61`). So a required + broken + currently-disabled-but-protected slot displays "This section is required — the form can't be saved until it's available." while Save in fact succeeds. Pre-fix that same slot said "Entries in this section will not be submitted." — which was correct for that configuration, so this is a small regression in copy accuracy on a narrow config. The precise signal is the enabled state (`useQuestionEnabled`, `QuestionBlock.tsx:46` — the same predicate `isQuestionEnabledInState` implements), **not** the `disabled` prop the slot already receives: `disabled` also covers readonly/`read_only`, where the required block genuinely does apply. Same root cause makes the studio canvas's `revealHidden` path show the required clause on logic-hidden questions.
+2. **One inaccurate clause in the otherwise-correct exception paragraph.** `registry.ts:195` justifies the plugin exemption with "the studio only offers them a resource subject to begin with." Untrue: `PluginStructuredTypeDefinition.subjects` is `readonly SubjectType[]` (`pluginRegistry.ts:31`) and `builder/QuestionTypePicker.tsx:120` offers a plugin type on whatever subjects it declares — patient/encounter included. The conclusion holds (the gate exempts `source === "plugin"` unconditionally), but the stated reason would mislead anyone who relies on it. The report's own addendum uses a different, sounder justification than the comment does.
+
+⚠️ **Standing, unchanged:** Playwright still not executed (checkpoint constraint). Both spec cases are now logically discriminating, but neither has been run against a live backend.
+
+### Assessment — Task quality: Approved
+
+The Important finding is fully closed — both spec cases now fail on pre-fix code and the assertions byte-match the locale strings — and all four notice states received consistent, non-contradictory `_required` branching backed by en.json-only keys. The two remaining Minors are a narrow enable_when copy edge introduced by the fix and one wrong sentence in a comment; neither affects the blocking behavior this task exists to deliver.</result>
+<usage><subagent_tokens>143288</subagent_tokens><tool_uses>15</tool_uses><duration_ms>215835</duration_ms></usage>
+</task-notification>
