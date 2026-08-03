@@ -480,3 +480,53 @@ Verification: `npx tsc --noEmit` (app + tests configs) and `npx eslint` on all 4
 Concerns: textarea's own `disabled` attribute during an open popover isn't independently exercised live in the spec (Radix Popover auto-closes on the outside Save click, making that assertion untestable as-is; covered by code review + a forced-click-can't-open proof instead); report's original "verified" wording corrected to "asserted by an unexecuted spec" per item 4; parked items (Save-as-Draft freeze, payload assertion scope, isComposing export) left untouched as instructed.</result>
 <usage><subagent_tokens>287364</subagent_tokens><tool_uses>26</tool_uses><duration_ms>380883</duration_ms></usage>
 </task-notification>
+
+---
+
+<task-notification>
+<task-id>aeb1f1918bf298fc5</task-id>
+<tool-use-id>REDACTED</tool-use-id>
+<output-file>/private/tmp/claude-501/-Users-bodhishthomas-code-care-fe/2dabe7d0-29e9-45a7-8554-462aec27da99/tasks/aeb1f1918bf298fc5.output</output-file>
+<status>completed</status>
+<summary>Agent "Review Task 10 (spec + quality)" finished</summary>
+<note>A task-notification fires each time this agent stops with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>
+<result>## Spec Compliance
+
+All four round-1 items are addressed in `9d956c119`; the fix commit touches exactly 4 files and nothing in it re-opens a round-1-verified area (extraction, `FormContext`/`QuestionBlock` plumbing, and the submit hook's release path are all untouched — `QuestionnaireFillPage.tsx` gains one prop line at `:704`).
+
+1. **Important (NoteControl) — fixed, both surfaces.** `/Users/bodhishthomas/code/care_fe/src/components/QuestionnaireV2/form/NoteControl.tsx:21` now destructures `frozen` from `useFormRenderer()`, applied at `:49` (trigger `&lt;button disabled&gt;`) and `:61` (`&lt;Textarea disabled&gt;`). **Mechanism: context read, not a threaded prop** — divergent from siblings (`InputComponent`, `StructuredSlot`, per-entry remove, add-another all receive `disabled={effectiveDisabled}` threaded from `LeafBlock`), but for `frozen` the two are value-identical: it is a form-wide context flag that `QuestionBlock.tsx:51` reads from the same source. The stated rationale (NoteControl already reads `mode` from context, so keep both flags on one access pattern) is sound and is the minimal change. See Minor 1 for the one consequence of not threading.
+
+2. **Minor 3 (DraftRestoreBar) — fixed, correctly scoped.** `frozen?: boolean` (default `false`) disables Resume and Discard; Dismiss is deliberately left live. I verified the rationale rather than taking it: `dismissRestoreBar` is `useCallback(() =&gt; setRestoreDismissed(true), [])` at `/Users/bodhishthomas/code/care_fe/src/components/QuestionnaireV2/fill/draft/useFillAutosave.ts:252` — pure local UI state, no store or draft write. `resumeRestoredDraft` (same file, `:254+`) does mutate live stores and hands snapshots to `onResumeAddedForms`, so gating it was the right call. Exactly one mount site (`QuestionnaireFillPage.tsx:701`), now threading `frozen`; the default keeps any future caller unaffected.
+
+3. **Minor 5 (Remove locator) — fixed and, I confirmed, actually correct.** `/^Remove Feedback/` requires the fixture title to *start* with "Feedback"; the report justifies it from `ADDED_TITLE = /Feedback Form/`, which is an unanchored match and would not have guaranteed that. I checked the source of truth: `/Users/bodhishthomas/code/care/data/questionnaire_fixtures.json` gives `patient_feedback` → `"Feedback Form  (NCG - Patient)"`, so the accessible name is `"Remove Feedback Form (NCG - Patient)"` and the anchored regex matches, while no longer matching the per-entry buttons named exactly `"Remove"`. Right answer; the written justification was thinner than the evidence.
+
+4. **Minor 2 (report wording) — corrected.** The appended "Correction — wording" section names the overclaim, states plainly that no Playwright run has happened at any point, and generalizes the correction to every other "verified" in the document. Append-only rather than a rewrite, but unambiguous.
+
+## Strengths
+
+- **The open-popover disclosure holds up, and the substitute is adequate — because the code path genuinely covers the case, not because the case was argued away.** Two independent checks:
+  - *Reachability:* the report's claim that Save necessarily closes the popover first is correct for the mouse path (Radix `DismissableLayer` dismisses on outside pointerdown, before the Save `click` handler runs). I also checked the keyboard escape hatch the coordinator raised: `grep` over `src/components/QuestionnaireV2/fill/` finds exactly one keydown handler — `FillOutlineOverlay.tsx:230`, which handles Escape for the outline. **There is no submit hotkey**, so there is no path today that reaches `submit` with the popover still open (and tab-away triggers Radix's `onFocusOutside` dismissal anyway).
+  - *Coverage if it were reachable:* `PopoverContent` is portaled in the **DOM** but remains inside `NoteControl`'s **React** tree, and context propagates through portals. When `frozen` flips, `NoteControl` re-renders as a context consumer and the already-mounted `&lt;Textarea&gt;` receives `disabled={true}` on that same commit — no remount required. So the `disabled={frozen}` at `:61` is live protection, not decoration, and would still hold if a future keyboard-submit binding or `forceMount` made the state reachable. The residual is genuinely a missing *assertion*, not a missing *behavior*, and the two escape hatches the report floats (`forceMount` / controlled `open`) are correctly judged as out-of-scope behavior changes.
+- **The substitute assertion is well-constructed.** `page.getByPlaceholder("Add note")` matches only the textarea (placeholder attribute) and cannot collide with the trigger's identical `aria-label`; and the preceding `await expect(noteButton).toBeDisabled()` proves under strict mode that the locator resolved to exactly one element, so the `toHaveCount(0)` that follows is not the vacuous-zero-match trap the house helper's own docstring warns about (`tests/helper/questionnaireV2.ts:175-180`).
+- **Spec symmetry is complete:** `noteButton` is asserted enabled-before / disabled-during in both tests and re-enabled-after in the failure test, matching the existing `removeButton` treatment rather than bolting on a one-sided check.
+- **Self-review caught its own blast radius:** `NoteControl` renders under every mount (studio/preview/fill), and the context default of `false` was re-traced for the new consumer rather than assumed from the first pass.
+
+## Issues
+
+### Minor
+
+**1. `NoteControl` now honors `frozen` but still ignores the rest of `effectiveDisabled` — pre-existing, worth a follow-up.** `QuestionBlock.tsx:52` computes `effectiveDisabled = mode === "readonly" || question.read_only === true || frozen || !enabled`; the context read at `NoteControl.tsx:21` picks up only `mode` and `frozen`. So a note stays editable on a `read_only` question and on an enable_when-disabled question rendered via `disabled_display: "protected"`. That predates this task and fixing it is a behavior change beyond P1-4, so the minimal fix was the right call here — but threading `effectiveDisabled` into `NoteControl` would have closed all three at once and removed the two-access-patterns-for-one-concept split. Worth parking as its own item.
+
+**2. The restore-bar gate has no spec coverage.** The `fillFreeze` fixture never produces a local draft, so `DraftRestoreBar`'s new `disabled={frozen}` on Resume/Discard is unexercised. Two lines of prop plumbing with a `false` default, so the risk is low — noting it so it isn't mistaken for tested.
+
+**3. Negative assertion has no settle window (nitpick).** `await expect(page.getByPlaceholder("Add note")).toHaveCount(0)` passes on first evaluation, so it would win a race against an asynchronously-opening popover. In practice a disabled native `&lt;button&gt;` suppresses click activation even for a forced synthetic click, so the popover cannot open at all — but asserting the absence of the popover's `role="dialog"` after a settle would be marginally stronger.
+
+**4. Still unexecuted.** Every assertion in `fillFreeze.spec.ts` — the round-1 set and the four new note assertions — is type-checked and lint-clean but never run, per the checkpoint instruction. The corrected report now says this accurately.
+
+Previously parked and confirmed still open by design: Save-as-Draft flight not frozen (brief-supported, separate task), the `isComposing` export, and the payload assertion's limited discriminating power.
+
+## Assessment — Task quality: Approved
+
+The one Important finding is closed on both the trigger and the textarea, and the disclosed gap in its test coverage is a missing assertion rather than a missing behavior — I confirmed the open-popover case is unreachable today (no submit hotkey) *and* would be handled correctly if it became reachable, since context flows through the portal to the mounted textarea. The three Minors are fixed, with the tightened locator independently validated against the actual backend fixture title; what remains is follow-up scope, not defects in this task.</result>
+<usage><subagent_tokens>120131</subagent_tokens><tool_uses>10</tool_uses><duration_ms>178046</duration_ms></usage>
+</task-notification>
