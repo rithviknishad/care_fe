@@ -1,0 +1,22 @@
+1. add extensive playwright test for the frontend, if required add more fixtures in backend, it should work really well
+2. Make sure UI works well, the left side nav for the questionnaire as per the ui is not a fixed section freeing up more space, make sure we incorporate it correctly (@https://www.figma.com/design/Z93EYKSa1MdBmXndsMBJSQ/Care---Master?node-id=43604-21509&m=dev) ignore structured styling for now. 
+3. Review the UI, it should be production class high quality
+4. Also review the state management, data flow and submit so that everything works seamless.
+
+---
+
+can we create a PR
+
+---
+
+you should have made it a stacked pr
+
+---
+
+you messedup 
+I wanted it staacked against this
+https://github.com/ohcnetwork/care_fe/pull/16618
+
+---
+
+Alignment issues when structured question comes, we should have test for all structured questions also
