@@ -3,7 +3,7 @@
   "checkpoint_id": "493069a1529b",
   "strategy": "manual-commit",
   "branch": "bodhi/questionnaire-fill",
-  "checkpoints_count": 1,
+  "checkpoints_count": 3,
   "files_touched": [
     "src/components/QuestionnaireV2/form/engine/inputs/QuantityInput.tsx",
     "tests/facility/patient/encounter/fill/fillQuantityValuesetCoding.spec.ts"
@@ -15,6 +15,20 @@
       "compact_transcript": "/49/3069a1529b/0/transcript.jsonl",
       "content_hash": "/49/3069a1529b/0/content_hash.txt",
       "prompt": ""
+    },
+    {
+      "metadata": "/49/3069a1529b/1/metadata.json",
+      "transcript": "/49/3069a1529b/1/full.jsonl",
+      "compact_transcript": "/49/3069a1529b/1/transcript.jsonl",
+      "content_hash": "/49/3069a1529b/1/content_hash.txt",
+      "prompt": "/49/3069a1529b/1/prompt.txt"
     }
-  ]
+  ],
+  "token_usage": {
+    "input_tokens": 199,
+    "cache_creation_tokens": 301497,
+    "cache_read_tokens": 19226293,
+    "output_tokens": 136956,
+    "api_call_count": 83
+  }
 }
