@@ -3,7 +3,7 @@
   "checkpoint_id": "276fe066e67c",
   "strategy": "manual-commit",
   "branch": "bodhi/questionnaire-fill",
-  "checkpoints_count": 1,
+  "checkpoints_count": 9,
   "files_touched": [
     "src/Providers/AuthUserProvider.tsx",
     "src/components/Auth/Login.tsx",
@@ -16,6 +16,20 @@
       "compact_transcript": "/27/6fe066e67c/0/transcript.jsonl",
       "content_hash": "/27/6fe066e67c/0/content_hash.txt",
       "prompt": ""
+    },
+    {
+      "metadata": "/27/6fe066e67c/1/metadata.json",
+      "transcript": "/27/6fe066e67c/1/full.jsonl",
+      "compact_transcript": "/27/6fe066e67c/1/transcript.jsonl",
+      "content_hash": "/27/6fe066e67c/1/content_hash.txt",
+      "prompt": "/27/6fe066e67c/1/prompt.txt"
     }
-  ]
+  ],
+  "token_usage": {
+    "input_tokens": 149,
+    "cache_creation_tokens": 255180,
+    "cache_read_tokens": 11049783,
+    "output_tokens": 113557,
+    "api_call_count": 58
+  }
 }
