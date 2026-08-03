@@ -197,3 +197,67 @@ Verification: `tsc --noEmit` and `eslint` clean on all touched files; pre-commit
 Concerns: none new — the metadata-race fix uses a `form.getValues()` live-diff instead of an `isDirty` boolean/counter (traced why a bare boolean is insufficient for the "edited twice while already dirty" case); parked items (choice-with-unit spec leg, `pickType` dedup, empty-repeater chrome, dead `QuestionEditorCard`) left untouched per instruction. Report appended to `/Users/bodhishthomas/code/care_fe/.superpowers/sdd/task-4-report.md`.</result>
 <usage><subagent_tokens>355056</subagent_tokens><tool_uses>29</tool_uses><duration_ms>592691</duration_ms></usage>
 </task-notification>
+
+---
+
+<task-notification>
+<task-id>af62d764ad7e6bd01</task-id>
+<tool-use-id>toolu_01RkXVrhKzHokbDmrGfefxno</tool-use-id>
+<output-file>/private/tmp/claude-501/-Users-bodhishthomas-code-care-fe/2dabe7d0-29e9-45a7-8554-462aec27da99/tasks/af62d764ad7e6bd01.output</output-file>
+<status>completed</status>
+<summary>Agent "Review Task 4 (spec + quality)" finished</summary>
+<note>A task-notification fires each time this agent stops with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>
+<result>### Spec Compliance
+
+- ✅ **Fix 1 — metadata in-flight edits survive.** `QuestionnaireStudioPage.tsx:330` snapshots the submitted `meta` at the same instant as the dispatch counter (`:411-412`); `:358-360` compares it field-by-field against live `form.getValues()`; `:376-383` gates `form.reset` on the result.
+- ✅ **Fix 1 — deviation is correct, and better than the suggestion.** The live-diff compares against the **pre-save submitted snapshot** (`meta`), not the server response — the right reference point, since the question is "does the form still hold what the PUT carried?". The implementer's rationale for rejecting an `isDirty` boolean holds: dirty→edit-again→dirty reads `true` at both ends, so a boolean before/after comparison is blind to a second edit on an already-dirty field. I checked the false-positive path that would have made this worse than a boolean — coercion drift between the zod-parsed `meta` and the raw form values — and it does not exist: `questionnaireFormSchema.ts:29-38` is transform-free (`z.string()` / `z.enum`, no `.trim()`, `.optional()`, or `.default()`), and all four `DetailFormValues` fields are non-optional (`:43-53`), so there is no `undefined` vs `""` mismatch that would make `metaEditedDuringFlight` permanently `true` and strand the form dirty after every save.
+- ✅ **Fix 1 — the snapshot is a real snapshot, not an alias.** Checked `node_modules/@hookform/resolvers/zod/dist/zod.mjs`: the success branch returns `raw?Object.assign({},o):e` — with no `raw` option configured it returns Zod's freshly-constructed parse output, and even the `raw` path is a shallow copy. `saveMetaRef.current` therefore cannot mutate in lockstep with RHF's `_formValues`, which would have silently neutered the whole fix.
+- ✅ **Fix 1 — ordering and independence.** `setQueryData` → `onSaved` runs inside the same synchronous `onSuccess` (`useUpdateQuestionnaire.ts:34-37`), before any re-render, so `getValues()` still holds the user's live text and the `values`-prop resync at `:140-149` hasn't fired. The two skips are separate `if`s (`:369`, `:376`); with `dirty = state.dirty || form.formState.isDirty` (`:175`), an edit to either side alone keeps Save enabled while the other side still resets. Edit-then-revert during flight correctly falls back to resetting (submitted values == server values).
+- ✅ **Fix 2 — gate mirrors ChoiceInput's precedence.** `QuestionBlock.tsx:53-54` (`!!question.answer_option?.length`) now matches `ChoiceInput.tsx:106` (`if (question.answer_option?.length)`) exactly. Pure-`answer_option` and pure-`answer_value_set` questions route as before.
+- ✅ **Fix 3 — counter is user-originated only.** `QuestionnaireStudioPage.tsx:290-295` exempts `"reset"`, with the invariant stated. Verified no user-originated `reset` can race a save: `handleDiscard` (`:366`) is the only user path that dispatches `reset`, and its button is `disabled={!dirty || isSaving}` (`StudioTopBar.tsx:182`). The P1-5 spec still exercises the counter — its mid-flight edit is `updateQuestion`, not `reset`.
+- ✅ **Fix 4 — payload asserted against captured text.** `fillValuesetRepeatsChoice.spec.ts:524-525,531-532` capture the trigger's rendered text; `:570-571` assert the payload against those. Verified the captured string will actually equal `coding.display`: `ValueSetSelect.tsx:56` defaults `showCode = false` and `ChoiceInput` doesn't pass it, so the trigger renders bare `value.display` (`:101`). The `.innerText().split("\n")[0]?.trim()` convention is genuinely the one at `questionnaireQuantityUnit.spec.ts:83`, as claimed. The added `expect(entryTwoDisplay).not.toBe(entryOneDisplay)` (`:537`) closes the vacuous-pass hole.
+- ✅ **Parked items confirmed untouched.** Builder-matrix assertions unchanged (`questionnaireBuilderMatrix.spec.ts:649-652`), `pickType` still duplicated (`fillValuesetRepeatsChoice.spec.ts:456-461`), `QuestionEditorCard.tsx` absent from the diff, empty-repeater chrome not special-cased.
+- ✅ **Round-1 verdicts still hold** — P2-4, the reducer-side P1-5 guard, and the `withEntryAt` convention are unchanged by this wave.
+- ⚠️ tsc/eslint/prettier results unverifiable from the diff (not re-run, per instructions).
+
+### Strengths
+
+- The deviation was the right call and is defended with a concrete failure trace rather than preference. It also happens to be more robust than the alternative in a second way the report doesn't claim: it survives a server-side normalization of a field the user didn't touch, because the comparison is against what was *sent*, not against what came *back*.
+- Choosing to exempt `reset` inside the single `dispatch` wrapper rather than routing the re-seed effect around it keeps one enforcement point instead of N call sites, and the invariant comment (`:282-288`) names every non-user `reset` producer so a future reader can tell whether a new call site violates it.
+- Fix 2's comment (`:44-52`) records *why* the gate mirrors ChoiceInput rather than restating what it does — the next person to touch either file sees the coupling.
+- Fix 4's not-equal guard is the part most implementers skip; without it, two searches resolving to the same code would have made the whole spec pass on pre-fix code.
+
+### Issues
+
+#### Critical (Must Fix)
+
+None.
+
+#### Important (Should Fix)
+
+None.
+
+#### Minor (Nice to Have)
+
+**1. Fix 2 moves an unconfigured repeats choice onto the multi-entry path — and my round-1 review misdescribed this. Correcting the record.**
+`src/components/QuestionnaireV2/form/QuestionBlock.tsx:53-54`
+
+My round-1 Minor #3 claimed the empty-repeater chrome already existed in `0d6595975`. That was wrong: the old gate `!question.answer_value_set` evaluated **true** for a choice with neither field, keeping it on the single-input path. The new gate `!!question.answer_option?.length` evaluates **false** for that same question, so it now takes the multi-entry path and renders "Add Another" plus remove buttons around `ChoiceInput`s that all `return null` (`ChoiceInput.tsx:159`). So the item the coordinator parked on my (incorrect) round-1 report is in fact newly introduced by this wave, not pre-existing — the parking rationale was inverted, and that's my error to own.
+
+It is reachable through the studio, not just via import: `saveValidation.ts:54-57` scopes the "needs options or a valueset" rule to `quantity` only, so authoring Choice → Repeatable → never configuring options saves cleanly.
+
+Severity stays Minor — the question renders no usable control either way, only the surrounding chrome differs. One predicate satisfies both this and the precedence fix: let a choice join multi-entry only when it has a valueset *and* no fixed options —
+`const isSelfManagedChoice = question.type === "choice" &amp;&amp; (!!question.answer_option?.length || !question.answer_value_set);`
+
+**2. `metaMatches` enumerates the four fields by hand with no exhaustiveness guard.**
+`src/components/QuestionnaireV2/studio/QuestionnaireStudioPage.tsx:331-335`
+
+A fifth field added to `DetailFormValues` later would compile clean and be silently excluded from the in-flight check, reintroducing exactly the bug this fix closes for that field. `(Object.keys(a) as (keyof DetailFormValues)[]).every((k) =&gt; a[k] === b[k])` — or a `Record&lt;keyof DetailFormValues, true&gt;` key list — makes the omission a type error.
+
+### Assessment
+
+**Task quality:** Approved
+
+**Reasoning:** All four requested fixes are implemented correctly, and the disclosed deviation is sound — I verified the two ways a live-diff could have silently failed (zod coercion drift making the reset never run, and `meta` aliasing RHF's live values making it always run) and neither applies. The one remaining defect is a cosmetic edge case on an unconfigured question that my own round-1 report misattributed; it is worth a one-line predicate change but does not gate the task.</result>
+<usage><subagent_tokens>153158</subagent_tokens><tool_uses>11</tool_uses><duration_ms>205487</duration_ms></usage>
+</task-notification>
