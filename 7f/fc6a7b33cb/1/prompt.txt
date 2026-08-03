@@ -282,3 +282,41 @@ Verification: `npx tsc --noEmit` and eslint clean on both changed files; pre-com
 Concerns: none new — backend `coding=None` 500 remains a separately-tracked backend bug; this closes the second FE path (untouched-default-unit entries) that could still trigger it.</result>
 <usage><subagent_tokens>133665</subagent_tokens><tool_uses>17</tool_uses><duration_ms>191109</duration_ms></usage>
 </task-notification>
+
+---
+
+<task-notification>
+<task-id>a17294e25a615d9f8</task-id>
+<tool-use-id>REDACTED</tool-use-id>
+<output-file>/private/tmp/claude-501/-Users-bodhishthomas-code-care-fe/2dabe7d0-29e9-45a7-8554-462aec27da99/tasks/a17294e25a615d9f8.output</output-file>
+<status>completed</status>
+<summary>Agent "Review Task 6 (spec + quality)" finished</summary>
+<note>A task-notification fires each time this agent stops with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>
+<result>All four follow-up items check out. Here is the re-review.
+
+### Spec Compliance
+
+- ✅ Explicit-pick path (`handleUnitChange`) unchanged and still correct — `QuantityInput.tsx:72-79` (need to confirm exact end but verified: still `writeEntry({ type: "quantity", value, unit: newUnit, coding: newUnit })`).
+- ✅ Default-unit gap from round 1 closed — `QuantityInput.tsx:38-47`: `unit` is now derived first (`pickedUnit ?? question.unit`), then `const coding = entry?.coding ?? unit;` at line 47, with the invariant stated once in the comment at lines 40-46 ("submitted `coding` always mirrors `unit`… unless the entry already carries its own explicit coding"). Single point of derivation — the two fields cannot drift by construction, since the only two writers (`handleValueChange` at `:69`, `handleUnitChange` at the picked-code call) either both read this same derived pair or both set an identical explicit pair.
+- ✅ No-default/no-pick case produces no invented data: when `question.unit` is undefined and no chip was ever clicked, `unit` resolves to `undefined`, so `coding` (`entry?.coding ?? unit`) also resolves to `undefined` — `serializeValues.ts`'s `entry.unit` branch is skipped and the entry serializes as a bare `{ value }`, matching pre-existing non-valueset-quantity behavior. Verified by code reasoning (no fixture exercises this specific case, but the logic is directly inspectable and unambiguous).
+- ✅ New spec case ("accepting the default unit and only typing a value still submits a coding," `fillQuantityValuesetCoding.spec.ts:189-238`) asserts `coding.code === "mg"` (`:233`) and end-to-end submit success (`:236-237`). Confirmed by hand-tracing the pre-fix (`bf2ffa91f`) code path: with no chip clicked, `entry` is `undefined` on the first `handleValueChange` call, so old `coding = entry?.coding` (no fallback) stays `undefined`, and the assertion `toBe("mg")` would fail — this is a real, valid regression test for exactly the gap flagged in round 1, not a vacuous one.
+- ✅ Minor #1 resolved: the "gram" radio is now scoped through `block` (`fillQuantityValuesetCoding.spec.ts:148,150`), matching the `questionBlock`-scoping convention used elsewhere (e.g. `fillValidation.spec.ts:44-45`).
+- ✅ Minor #2 resolved: "per-keystroke" wording is gone from both the spec comments (now "the write that follows," `:145`) and the report's Changes section ("passed straight through on each write," `task-6-report.md:18-19`).
+
+### Strengths
+
+- The fix centralizes the unit/coding invariant at a single derivation point rather than patching each call site independently — exactly what was asked for ("the invariant should hold at ONE point"), and it's provably drift-free: both writers consume the same derived pair or set an identical explicit pair, so there's no path where `unit` and `coding` diverge.
+- The fallback also self-heals any previously-drafted entries that were saved under the old buggy code (`entry.unit` set, `entry.coding` `undefined`) — a beneficial side effect of `entry?.coding ?? unit`, not a new risk.
+- The new regression test is correctly discriminating: hand-traced against the prior commit (`bf2ffa91f`), it fails there and passes on `02b9dc174`, so it's pinning the actual fix rather than trivially passing either way.
+- `tsc --noEmit`, `eslint`, and `prettier --check` independently re-run clean on both changed files, corroborating the report's verification claims.
+- Shared `SubmitBatchBody` type extracted to module scope removes duplication between the two test cases — a reasonable, unprompted cleanup.
+
+### Issues (Critical / Important / Minor)
+
+None found in this fix pass.
+
+### Assessment — Task quality: Approved
+
+The round-1 Important finding (default-unit path submitting `coding: undefined`) is fixed correctly and minimally, with the invariant expressed at a single point and verified (via direct code trace) to fail on pre-fix code and pass on the current commit. Both Minor findings (locator scoping, wording) are also resolved. No new issues surfaced.</result>
+<usage><subagent_tokens>113959</subagent_tokens><tool_uses>6</tool_uses><duration_ms>127769</duration_ms></usage>
+</task-notification>
