@@ -3,7 +3,7 @@
   "checkpoint_id": "3f4f5e84dea8",
   "strategy": "manual-commit",
   "branch": "bodhi/questionnaire-fill",
-  "checkpoints_count": 1,
+  "checkpoints_count": 9,
   "files_touched": [
     "tests/helper/questionnaireV2.ts",
     "tests/setup/questionnaire.setup.ts"
@@ -15,13 +15,20 @@
       "compact_transcript": "/3f/4f5e84dea8/0/transcript.jsonl",
       "content_hash": "/3f/4f5e84dea8/0/content_hash.txt",
       "prompt": "/3f/4f5e84dea8/0/prompt.txt"
+    },
+    {
+      "metadata": "/3f/4f5e84dea8/1/metadata.json",
+      "transcript": "/3f/4f5e84dea8/1/full.jsonl",
+      "compact_transcript": "/3f/4f5e84dea8/1/transcript.jsonl",
+      "content_hash": "/3f/4f5e84dea8/1/content_hash.txt",
+      "prompt": "/3f/4f5e84dea8/1/prompt.txt"
     }
   ],
   "token_usage": {
-    "input_tokens": 65509,
-    "cache_creation_tokens": 0,
-    "cache_read_tokens": 210176,
-    "output_tokens": 3261,
-    "api_call_count": 8
+    "input_tokens": 65642,
+    "cache_creation_tokens": 240285,
+    "cache_read_tokens": 8892022,
+    "output_tokens": 107663,
+    "api_call_count": 58
   }
 }
