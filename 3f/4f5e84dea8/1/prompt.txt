@@ -112,3 +112,7 @@ I think we should allow assistant to write everything including the structured q
 ---
 
 Feel free to update my backend pullrequest to update fixtures, lets not hack it via frontend, that should be something backend should honestly support that we can clearly write as we are the primary users for playwright test.
+
+---
+
+don't ask me anymore questions, lets get to build.
