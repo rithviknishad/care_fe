@@ -16,3 +16,7 @@ you should have made it a stacked pr
 you messedup 
 I wanted it staacked against this
 https://github.com/ohcnetwork/care_fe/pull/16618
+
+---
+
+Alignment issues when structured question comes, we should have test for all structured questions also
