@@ -135,3 +135,46 @@ Verification: `tsc --noEmit` (root + tests config) and eslint clean on all 5 cha
 Concerns: the post-auth clear now makes one extra `callApi(userApi.currentUser)` round-trip per successful login/MFA-verify (best-effort, `silent: true`, swallowed on failure) since neither the JWT nor the stale `user` closure carries the id at that point — flagged in the report as a tradeoff, not a blocker.</result>
 <usage><subagent_tokens>202597</subagent_tokens><tool_uses>44</tool_uses><duration_ms>502476</duration_ms></usage>
 </task-notification>
+
+---
+
+<task-notification>
+<task-id>a51fbdbdc110eb7b8</task-id>
+<tool-use-id>toolu_01LAqV46XQFytTVF4X5p8iZi</tool-use-id>
+<output-file>/private/tmp/claude-501/-Users-bodhishthomas-code-care-fe/2dabe7d0-29e9-45a7-8554-462aec27da99/tasks/a51fbdbdc110eb7b8.output</output-file>
+<status>completed</status>
+<summary>Agent "Review Task 3 (spec + quality)" finished</summary>
+<note>A task-notification fires each time this agent stops with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>
+<result>## Re-Review: Task 3 (post-amendment, base 468a6f096 → head a74983b7f)
+
+### Spec Compliance (against amended requirements)
+
+1. ✅ **Token-refresh-failure branch reverted to tokens-only.** `src/Providers/AuthUserProvider.tsx:84-94` — only the two `localStorage.removeItem` calls remain; `clearQuestionnaireFillDrafts()` is gone from this branch. Comment at `:86-90` accurately explains why (`retry: false` on that query, verified independently — see Strengths).
+2. ✅ **Post-auth clears are user-scoped.** `clearOtherUsersFillDrafts(currentUserId)` added to `fillDraftCache.ts:316-324`; wired into both the JWT branch (`AuthUserProvider.tsx:148`) and `verifyMFA` branch (`:169`) via a shared `clearOtherUsersDrafts()` helper (`:109-120`) that resolves identity through `callApi(userApi.currentUser)`. `signOut` untouched — still calls the full `clearQuestionnaireFillDrafts()` (confirmed unchanged outside the diff hunks).
+3. ✅ **Lifecycle comments updated truthfully.** Checked all four touch points — `fillDraftCache.ts` module header (`:269-287`) and each function's doc (`:299-300`, `:308-315`, `:326-327`), `fillDraftStore.ts:351-363`, and `README.md:243-263`. Every comment matches what the code actually does: other-user sweep on login, full sweep on signOut/app-update, expiry sweep at boot regardless of auth outcome, same-user survival stated as intentional. No stale "swept on login" blanket claims remain anywhere.
+4. ✅ **Spec asserts both required outcomes.** `tests/auth/loginDraftSurvival.spec.ts` seeds an other-user draft and a same-user draft (keyed to the *real* discovered `adminUserId`, not a guess), then asserts: both survive a failed login (`:519-527`), the other-user draft is `null` after successful login (`:536-541`), and the same-user draft survives successful login (`:544-547`).
+
+### Strengths
+
+- **UserId type/value match verified end-to-end.** Traced `FillDraftScope.userId` back to its single write site — `QuestionnaireFillPage.tsx:209-215` sets `userId: user.id` where `user = useAuthUser()` (typed `CurrentUserRead`). This is the exact same field the new code fetches via `callApi(userApi.currentUser)` (`TRes: Type&lt;CurrentUserRead&gt;()`, `src/types/user/userApi.ts:46-50`, `id: string` from `UserBase`, `src/types/user/user.ts:10-11`). The "same user survives re-login" guarantee is correctly wired at the type level, not just asserted.
+- **Auth-header freshness verified.** `getAuthorizationHeader()` (`src/Utils/request/utils.ts:77-85`) reads `localStorage.getItem(LocalStorageKeys.accessToken)` live at call time. Since `clearOtherUsersDrafts()` runs strictly after `localStorage.setItem(accessToken, data.access)` in both success branches, the identity lookup is guaranteed to authenticate as the just-logged-in user, not a stale token.
+- **`retry: false` claim verified.** `tokenRefreshQuery` (`AuthUserProvider.tsx:74-82`) sets no `retry` override, so it inherits the global `QueryClient` default of `retry: false` (previously confirmed in `src/Utils/request/queryClient.ts:19-25`) — the comment's premise for pulling the clear out of that branch is factually correct, not just asserted.
+- **Test rewrite is a genuine improvement**, not just patched to pass: it discovers the real backend-assigned user id via `page.waitForResponse` on `/getcurrentuser/` rather than guessing or decoding a JWT claim whose relationship to `CurrentUserRead.id` the implementer explicitly declined to assume (correctly — the two are different concepts).
+
+### Issues
+
+#### Critical (Must Fix)
+None.
+
+#### Important (Should Fix)
+None. Both named risks were checked and are defensible/narrow (see below), not defects.
+
+#### Minor (Nice to Have)
+1. **Named risk (a) — duplicate identity fetch vs. reactive `user` query.** `AuthUserProvider.tsx:109-120`. The component already has a `useQuery` for `currentUser` (`:61-66`) that will independently refetch once `setAccessToken` changes the query key on a later render, plus an explicit `invalidateQueries({queryKey:["currentUser"]})` right after (`:150`) — so a login now triggers the `getcurrentuser` endpoint at least twice. This is a real, if small, added round-trip on every login, not just the rare shared-device case. The direct `callApi` call is still the defensible choice: threading the sweep through the reactive `user` state would require a ref/flag to distinguish "just logged in" from "routine refetch," which is more failure-prone than a synchronous one-shot fetch tied precisely to the success-branch causality. Worth a follow-up only if the second full `useQuery` refetch is deemed wasteful — not blocking.
+2. **Named risk (b) — swallowed-failure edge case.** `AuthUserProvider.tsx:110-119`. If the identity lookup fails (network blip right after a successful login), the other-user sweep for that login is skipped silently — no retry within the session. Residual exposure: a different user's stale draft can linger in `localStorage` on a shared machine until the next successful other-user login or the 24h TTL boot sweep, which is exactly the class of exposure this feature targets. The window is narrow (must fail exactly once, immediately post-auth, on an otherwise-successful login) and self-heals within a bounded time, and correctly never blocks sign-in — an acceptable, disclosed tradeoff, but flagged since it's the one place the amended design doesn't fully close the original P1-17/P1-18 gap under failure.
+
+### Assessment
+**Task quality:** Approved
+**Reasoning:** All four amended requirements are implemented exactly as specified and verified against actual source (not just the diff's context) — the refresh-failure branch is tokens-only, the post-auth scoping is correctly keyed to the real `CurrentUserRead.id` used by the draft-writing code, lifecycle comments are truthful everywhere they were touched, and the rewritten spec asserts precisely the two required outcomes using a real discovered user id. Both named risks resolve to reasoned, low-probability, self-healing tradeoffs rather than defects.</result>
+<usage><subagent_tokens>115088</subagent_tokens><tool_uses>14</tool_uses><duration_ms>236046</duration_ms></usage>
+</task-notification>
