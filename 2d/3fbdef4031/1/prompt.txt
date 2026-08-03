@@ -339,3 +339,57 @@ Verification: `npx tsc --noEmit` (root + tests/tsconfig.json) and `npx eslint` o
 Concerns: none new — same two noted in the original report (heavier-than-ideal DOM work for the file-cap e2e cases; `MAX_BATCH_REQUESTS` has no shared source of truth with the backend's `MAX_REQUESTS_PER_BATCH_REQUEST`). Report appended at `/Users/bodhishthomas/code/care_fe/.superpowers/sdd/task-7-report.md`.</result>
 <usage><subagent_tokens>269808</subagent_tokens><tool_uses>20</tool_uses><duration_ms>294229</duration_ms></usage>
 </task-notification>
+
+---
+
+<task-notification>
+<task-id>af507a6a72b5e9a22</task-id>
+<tool-use-id>toolu_014j777rkSzmBABcPAqDHBp2</tool-use-id>
+<output-file>/private/tmp/claude-501/-Users-bodhishthomas-code-care-fe/2dabe7d0-29e9-45a7-8554-462aec27da99/tasks/af507a6a72b5e9a22.output</output-file>
+<status>completed</status>
+<summary>Agent "Review Task 7 (spec + quality)" finished</summary>
+<note>A task-notification fires each time this agent stops with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>
+<result>### Spec Compliance (fix commit `0f9ed9e3a`)
+
+**1. P1-9 relocation — resolved, and the serial contract holds.** The case now sits inside `fillServerDraft.spec.ts`'s `test.describe("Fill page server draft")`, which carries `test.describe.configure({ mode: "serial" })` at `:70` — same file, same worker, no cross-file race. Placement is **last (4th)**, appended after "a form_submission that is no longer a draft refuses to resume" (`fillServerDraft.spec.ts:389-455`). Checked both directions of the ordering:
+
+- *Upstream:* the drafts card queries `formSubmissionApi.list` with `queryParams: { encounter, status: "draft" }` (`FormSubmissionDrafts.tsx:63-65`), so test 3's API-created **submitted** record never lists, and tests 1 and 2 each end by submitting their draft and asserting the card is gone. The new case therefore opens onto an empty card, and its `getByRole("button", { name: "Continue", exact: true })` click (`:411`) resolves to exactly one element.
+- *Downstream:* nothing follows it, and it still cleans up anyway — the batch's completion PUT flips the record to `submitted` (`composeBatch.ts:257-277`), and `:452-454` re-asserts "Draft Forms" is not visible, matching the file's stated cleanup contract. The later "Draft Forms not visible" assertions in tests 1 and 2 run *before* it and are unaffected.
+
+**2. Flag-probe dedup — resolved by relocation.** `fillSubmitGuards.spec.ts` no longer contains `flagRequested`, `SAVE_DRAFT`, the bundle probe, or the `test.skip` branch; it imports only `questionBlock`, `expectToast` and the three id helpers, and never touches drafts. The moved case reuses the file's existing `openFillPage` (`:403`) and `draftIdFromUrl` (`:413`) rather than re-declaring them. No verbatim duplicate remains.
+
+**3. In-memory payloads — resolved.** `tinyFilePayloads` (`fillSubmitGuards.spec.ts:494-502`) returns `{name, mimeType, buffer}` objects; `fs`/`os`/`path` imports are gone, no `mkdtempSync`, nothing to clean up. `.txt` is in `BACKEND_ALLOWED_EXTENSIONS` (`src/types/files/file.ts:74-93`).
+
+**4. Boundary pair — both present; only one of them discriminates pre-fix.** Stating this plainly since it was asked:
+- *21-abort* (`:536-567`): discriminates pre-fix vs post-fix. Pre-fix, 21 requests POST and the backend 400s into "Failed to submit questionnaire", so the cap-toast assertion fails and `posts` is length 1.
+- *20-pass* (`:569-602`): **passes on pre-fix code too** — pre-fix has no cap, so 20 submits fine. It is not a pre/post discriminator; it is an off-by-one guard, and it does discriminate against the plausible wrong fix (`&gt;=` instead of `&gt;`), which is exactly what a boundary pair is for. The report's own wording ("Confirms the cap is `&gt; 20`, not `&gt;= 20`") is accurate.
+- Arithmetic re-verified for both: the `files` fixed questionnaire is a single structured question (`StructuredFormData.tsx:143-160`), its response never joins `answeredLeaves`, so no `/submit/` entry and no PUT — N files produce exactly N requests. 21 → abort with `count: 21`; 20 → `20 &gt; 20` false → one `submitBatch`.
+
+**5. `{{max}}` single-sourcing — resolved.** `en.json` now reads "at most {{max}}" and the call site passes `max: MAX_BATCH_REQUESTS` (`useSubmitQuestionnaire.ts:344-352`). Rendered English is byte-identical to before, so the 21-case's exact-text assertion still matches. The `count` key still resolves through i18next's `key_other` → base-key fallback (no suffixed siblings exist), unchanged.
+
+**Source diff unchanged from round 1** — `composeBatch.ts` and `QuestionnaireFillPage.tsx` hunks are byte-identical; `useSubmitQuestionnaire.ts`'s only delta is the `max` interpolation argument. Nothing re-opened.
+
+Verified independently: `npx tsc --noEmit -p tests/tsconfig.json` → exit 0; `npx eslint` on both specs plus `useSubmitQuestionnaire.ts` → exit 0.
+
+### Strengths
+
+- The relocation took the *right* fix rather than the cheap one: it inherited the serial guarantee and the two helpers instead of duplicating an encounter fixture or sprinkling `mode: "serial"` on a second file.
+- `nameEveryFile` (`fillSubmitGuards.spec.ts:508-517`) is shared by both boundary cases, so the 20/21 pair differs in exactly one variable — the count.
+- The header comment at `fillSubmitGuards.spec.ts:472-486` records *why* P1-9 lives elsewhere, which is what stops the next author from moving it back.
+- The parked item (retained-window message wording) is named as parked rather than quietly dropped.
+
+### Issues
+
+**Minor — the 20-pass case is the first e2e that actually completes a file upload through the batch.** Nothing else in `tests/` submits the `files` questionnaire (`structuredRendering.spec.ts:28` only mounts it), so this case newly exercises `/api/v1/files/upload-file/` × 20 inside a batch. If that contract has any unrelated wrinkle, the failure will present as a cap failure. Worth reading its first red run as "upload path" before "cap logic".
+
+**Minor — serial coupling now gates P1-9 coverage.** As the 4th test in a serial describe, it is skipped whenever any of the three preceding tests fails (standard Playwright serial semantics). That is the price of the isolation fix and the right trade, but it means a flake upstream silently removes the draft-linkage assertion from the run.
+
+**Minor (carried, acknowledged as parked) — `questionnaire_submit_missing_forms` misadvises during the resume window.** `onResumeAddedForms` (`QuestionnaireFillPage.tsx:544-552`) retains every snapshot before re-fetching, so a Save Changes click during that loop aborts with "Reload the page and try again" for a form about to mount normally. Errs safe; wording only. Explicitly deferred by instruction.
+
+*Checked and clear:* the 20-pass case leaves 20 `FileType.ENCOUNTER` files on the shared fixture encounter, but no spec under `tests/facility/patient/encounter/` asserts on encounter files, and the DB snapshot restore in `globalSetup` resets local re-runs.
+
+### Assessment — Task quality: Approved
+
+Every round-1 finding is resolved at the right layer — the Important isolation defect by inheriting the existing serial guarantee (and its cleanup contract) rather than papering over it, and the four Minors by relocation, in-memory payloads, a real boundary pair, and `{{max}}`; source behavior is untouched and tsc/eslint verify clean, leaving only deferred-by-design polish.</result>
+<usage><subagent_tokens>167364</subagent_tokens><tool_uses>11</tool_uses><duration_ms>177332</duration_ms></usage>
+</task-notification>
