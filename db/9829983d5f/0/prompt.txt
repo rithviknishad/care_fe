@@ -1459,3 +1459,20 @@ Every brief item is produced with the exact mandated signature: `AppointmentRow 
 Every Important I raised is closed by a structural fix, not a workaround, and each is confirmed by execution against the fix commit; the three lessons are now binding in the plan and the code matches them verbatim. The two residual Minors are untrusted-draft-only one-liners best folded in when Task 3's differ is written from this template.</result>
 <usage><subagent_tokens>255282</subagent_tokens><tool_uses>16</tool_uses><duration_ms>299164</duration_ms></usage>
 </task-notification>
+
+---
+
+<task-notification>
+<task-id>ab34dc19d41a05a49</task-id>
+<tool-use-id>toolu_01JdbEyoevRzfNCQcorcitYY</tool-use-id>
+<output-file>/private/tmp/claude-501/-Users-bodhishthomas-code-care-fe/2dabe7d0-29e9-45a7-8554-462aec27da99/tasks/ab34dc19d41a05a49.output</output-file>
+<status>completed</status>
+<summary>Agent "P2 Task 2: time_of_death port" finished</summary>
+<note>A task-notification fires each time this agent stops with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>
+<result>All green.
+
+Status: DONE (second post-review pass applied)
+Commit: `5fe1772f8` — "fix(questionnaire-v2): filter blanks before the singleton pick and correct the set-order/orphan-window docs"
+Verification: 229/229 unit tests pass (10/10 in time_of_death model, incl. new blank-tail regression test), `tsc --noEmit` clean on both configs, eslint+prettier clean.</result>
+<usage><subagent_tokens>213251</subagent_tokens><tool_uses>15</tool_uses><duration_ms>204199</duration_ms></usage>
+</task-notification>
