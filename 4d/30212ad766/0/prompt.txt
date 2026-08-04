@@ -1,0 +1,1344 @@
+Here’s a copy-ready handoff for Claude:
+Questionnaire V2 PR review summary
+PR: `#16627`
+Frontend: `/Users/bodhishthomas/code/care_fe`
+Backend: `/Users/bodhishthomas/code/care`
+Recommendation: Request changes; do not broadly release yet.
+P1 release blockers
+
+1. Subject mismatch: A location/device/facility questionnaire can mount on a patient route and may be submitted as a patient response. Enforce `questionnaire.subject_type` in both frontend routing and backend submission.
+2. Encounter/patient mismatch: Validate that the patient in the URL matches the encounter’s actual patient before rendering or submitting.
+3. Structured-only edits are not dirty: Changes such as Time of Death can be closed without a warning or recoverable draft because structured values are excluded from dirty/autosave tracking.
+4. Fill remains editable during submission: Editing while batch composition or submission is pending can produce UI/server state divergence. Freeze the session or version the submitted snapshot.
+5. Studio loses edits during Save: Edits made after clicking Save are erased when the PUT response unconditionally resets editor state.
+6. No Studio optimistic concurrency: Full-body PUTs have no expected `internal_revision`/ETag. Two authors silently overwrite one another. Backend should return `409` for stale revisions.
+7. Fill/drafts are not revision-pinned: Local drafts compare semantic `version`, not `internal_revision`; live submissions carry no expected revision. Old answers can be accepted and stamped against a newly edited questionnaire.
+8. New server drafts can 500: Draft creation resolves questionnaires by unscoped slug. Revision clones and cross-facility forms can share a slug, causing `MultipleObjectsReturned`.
+9. Resumed responses are unlinked: Questionnaire submission omits `form_submission` and separately marks the draft submitted. This bypasses the backend linkage/duplicate guard and allows duplicate submissions from concurrent tabs.
+10. Backend batch limit is unmodeled: Frontend creates an unlimited batch, while backend allows at most 20 requests. Twenty files plus one response, or 21 forms, deterministically fails with only a generic error.
+11. Valueset-backed quantity crashes: V2 stores the selected valueset entry as `unit`, while backend validates `value.coding`. `coding=None` causes a backend 500 and full-batch rollback.
+12. `exists:false` differs across layers: Frontend hides a dependent when the controlling answer is absent; backend correctly enables it for `exists:false`. Invisible required questions consequently fail at submission.
+13. Required structured questions fail open: Render errors, missing context, and subject mismatches waive required validation and drop the data, while the rest of the form can submit successfully.
+14. Untouched clinical records are re-upserted: Allergy, symptom, and medication-statement widgets submit all prefetched rows rather than only dirty rows. An unrelated form submission can overwrite another clinician’s concurrent edit.
+15. File uploads are not truly atomic: The DB transaction rolls back on later batch failure, but S3/MinIO writes do not. This leaves orphaned clinical files and retries leak additional objects.
+16. Optional appointment can use an undefined slot: Partial optional appointment data can generate `/slots/undefined/`, rolling back the full form.
+17. Plaintext clinical data in localStorage: Full answers and notes persist in localStorage. TTL cleanup is lazy, auth-expiry does not consistently clear it, and same-origin plugin code can access it. Requires explicit privacy/security approval or protected server-side storage.
+18. Failed login destroys recovery drafts: Drafts are cleared before authentication succeeds, so a mistyped password can delete the same user’s recoverable work.
+19. Agent date/integer coercion is unsafe: Date-only input can shift by timezone or normalize invalid dates; integer questions accept decimals.
+20. No durable agent audit: Agent-written clinical values are only logged with `console.debug`; persisted records do not retain agent provenance. Treat durable audit or explicit clinician acceptance as a release requirement.
+
+P2 architecture and reliability issues
+
+1. Questionnaire submit TypeScript types are stale and disagree with backend (`responses/value` versus `results/values/form_submission`). Raw batch URLs and `any` bodies bypass type checking.
+2. Questionnaire search is subject-scoped but not facility-scoped. Users can complete a form from another facility before receiving a Save-time rejection.
+3. Query data is copied into local fill-session state and can become stale when the cached questionnaire changes.
+4. Changing question type can retain incompatible fields and values from the previous type.
+5. Repeated valueset selections can overwrite the wrong repeated entry.
+6. Missing form stores are silently skipped, allowing the rest of a multi-form session to submit without an entire form.
+7. Plugin error boundaries do not reset when a plugin/type changes or recovers.
+8. Plugin namespace ownership uses the remote manifest’s self-declared name rather than the trusted configured slug.
+9. Action registry IDs are global and last-write-wins; it cannot safely represent multiple concurrently mounted scoped sessions.
+10. Full-session JSON serialization runs synchronously on every answer edit. Studio also walks the full question tree per edit, and fill measures every question during scrolling. Large forms need performance testing and incremental state tracking.
+11. The 885-line fill page mixes fetching, routing, restore, stores, autosave, actions, submission, and navigation. Introduce an explicit lifecycle state machine:
+`loading → restoring → editing → composing → submitting → saved/exiting`.
+12. Test helper only fetches the first 100 questionnaires, causing fixture failures once the backend contains more records. Paginate or filter directly by slug.
+
+Functional verification
+
+* Static checks passed: diff check, TypeScript, production build, and lint with zero errors.
+* Resource questionnaire tests: `10/10` passed.
+* Targeted fill/structured/Studio tests: `33/33` passed.
+* Broad questionnaire run: `170 passed`, `7 failed`, `2 expected skips`.
+* The seven failures were test/environment issues: one parallel flake, dirty diagnosis data, stale slug-length expectation, and four fixture-pagination failures.
+* Backend form-submission tests: `32/32` passed.
+* Backend `exists:false` contract test passed, confirming the frontend divergence.
+* Fourteen backend questionnaire-response tests fail during fixture setup because `auth_context` is missing; repair these before relying on that suite for revision/response coverage.
+* Live reproduction confirmed:
+   * Structured-only Time of Death edit closes without draft/unsaved warning.
+   * Location questionnaire mounts on a patient route with Save enabled.
+   * A 21-request batch is rejected by the backend.
+
+Suggested remediation order
+
+1. Subject/facility/revision enforcement.
+2. Quantity, `exists:false`, draft linkage, structured fail-open, and batch-capacity fixes.
+3. Studio/fill concurrency and save-in-flight handling.
+4. Draft privacy and file-storage transaction design.
+5. Durable agent audit.
+6. Add cross-layer, concurrency, malformed-route, and large-form tests before rollout.
+
+---
+
+<task-notification>
+<task-id>wot4ji92f</task-id>
+<tool-use-id>toolu_01H5sx1LvX5QqhgrpKP1v1cM</tool-use-id>
+<output-file>/private/tmp/claude-501/-Users-bodhishthomas-code-care-fe/2dabe7d0-29e9-45a7-8554-462aec27da99/tasks/wot4ji92f.output</output-file>
+<status>completed</status>
+<summary>Dynamic workflow "Verify each Questionnaire V2 review finding against current code in both repos" completed</summary>
+<result>{"findings":[{"id":"P1-1","verdict":"PARTIAL","evidence":"Frontend half STILL_PRESENT: src/components/QuestionnaireV2/fill/QuestionnaireFillPage.tsx fetches the questionnaire by id (lines 117-127) and mounts FillPageBody unconditionally (lines 328-345) — there is no comparison of questionnaire.subject_type to subject.type anywhere in the fill module (grep confirms subject_type is only read for structured-type gating: composeBatch.ts:157, StructuredSlot.tsx:94, validateStructured.ts:64). composeBatch.ts:214-236 chooses /submit/ vs /submit_resource/ from the ROUTE subject ('patientBound ? submit : submit_resource'), not from questionnaire.subject_type, so a location/device/facility questionnaire id pasted into /facility/:f/patient/:p/questionnaire/:qid mounts, renders and can be fully filled. Backend half DISPUTED — 'may be submitted as a patient response' is factually wrong about current code: (1) submit_resource explicitly validates subject_type in {location, device, facility} and 404s/errors otherwise (care/care/emr/api/viewsets/questionnaire/questionnaire.py:230-242: 'Invalid resource type'), plus facility match (247-250); (2) submit rejects every cross-subject combination: encounter subject_type binds encounter to patient (278-280) with facility check (281-287); any other subject_type forbids an encounter in the request (296-299: 'Encounter cannot be provided for a patient questionnaire'); then handle_response (care/emr/resources/questionnaire/utils.py) requires instance auth_context for subject_type 'patient' (663-667) and for location/device/facility falls into the else branch requiring a real encounter — results.encounter is None so Encounter.objects.filter(...).first() is None → ValidationError 'Encounter not found' (669-674). The batch endpoint wraps everything in transaction.atomic() and rolls back on any sub-request &gt;299 (care/emr/api/viewsets/batch_request.py:45-70), so nothing persists. Net: the mount-gating gap is real (clinician fills the whole mismatched form and fails only at Save with a confusing error), but no path stores a resource questionnaire as a patient response. No fixing commit exists; e13430da9 reworked QuestionnaireFillPage but added no subject_type gate.","files":["/Users/bodhishthomas/code/care_fe/src/components/QuestionnaireV2/fill/QuestionnaireFillPage.tsx","/Users/bodhishthomas/code/care_fe/src/components/QuestionnaireV2/fill/submit/composeBatch.ts","/Users/bodhishthomas/code/care/care/emr/api/viewsets/questionnaire/questionnaire.py","/Users/bodhishthomas/code/care/care/emr/resources/questionnaire/utils.py","/Users/bodhishthomas/code/care/care/emr/api/viewsets/batch_request.py"],"remediation_hint":"In QuestionnaireFillPage, after the questionnaire query resolves (around line 286), compare questionnaire.subject_type against the mount's subject family — patient-bound mounts accept 'patient'/'encounter' (per pickerSubjectType), resource mounts accept exactly subject.type — and render the existing FillErrorPage on mismatch instead of mounting FillPageBody."},{"id":"P1-2","verdict":"PARTIAL","evidence":"Frontend half STILL_PRESENT: QuestionnaireFillPage.tsx fetches the encounter (lines 129-144) and sets 'const patient = encounter?.patient ?? fetchedPatient' (line 173) — the banner shows the ENCOUNTER's actual patient, but the URL patientId is never compared to encounter.patient.id. rendererSubjectOf(subject) (fill/subject.ts:66-73) propagates the URL patientId into ClinicalHistoryTab (QuestionnaireFillPage.tsx:875-878), structured widget context, and the /submit/ body (composeBatch.ts:220-227 'patient: patientBound.patientId'). A URL pairing patient A with patient B's encounter therefore renders B's identity banner next to A's clinical history tab and A's structured-widget data — no error, no guard. Backend half DISPUTED for the persistence claim: the submit viewset DOES validate the encounter belongs to the submitted patient — care/emr/api/viewsets/questionnaire/questionnaire.py:278-280 'get_object_or_404(Encounter, external_id=request_params.encounter, patient=patient)' → mismatch 404s and the atomic batch (batch_request.py:45-70) rolls the whole submission back. Server-draft creation coerces rather than trusts the client: FormSubmissionWriteSpec.perform_extra_deserialization sets 'obj.patient = obj.encounter.patient' (care/emr/resources/form_submission/spec.py), and the completion PUT's FormSubmissionUpdateSpec accepts only status + response_dump, ignoring the patient/encounter the frontend sends. Structured domain writes are likewise coerced (e.g. AllergyIntoleranceWriteSpec.perform_extra_deserialization, care/emr/resources/allergy_intolerance/spec.py:106-108 'obj.patient = obj.encounter.patient'), so a structured-only submission on a mismatched URL commits against the encounter's TRUE patient — though create authorization is checked against the URL patient (allergy_intolerance.py:81-85 can_write_patient_obj on patient_external_id), an authz/data divergence. Net: wrong-patient persistence is blocked server-side, but the fill page still renders mixed-patient clinical context with no validation. No fixing commit; none of e13430da9/f4c933f05/251b2e1a1 added the check.","files":["/Users/bodhishthomas/code/care_fe/src/components/QuestionnaireV2/fill/QuestionnaireFillPage.tsx","/Users/bodhishthomas/code/care_fe/src/components/QuestionnaireV2/fill/subject.ts","/Users/bodhishthomas/code/care_fe/src/components/QuestionnaireV2/fill/submit/composeBatch.ts","/Users/bodhishthomas/code/care/care/emr/api/viewsets/questionnaire/questionnaire.py","/Users/bodhishthomas/code/care/care/emr/resources/form_submission/spec.py","/Users/bodhishthomas/code/care/care/emr/resources/allergy_intolerance/spec.py"],"remediation_hint":"In QuestionnaireFillPage, when subject.type === 'encounter' and the encounter query resolves, verify encounter.patient.id === subject.patientId and render FillErrorPage (fill_context_load_failed or a dedicated message) on mismatch — this closes the mixed-context render (history tab / structured widgets keyed on the URL patient while the form belongs to the encounter's patient)."},{"id":"P2-2","verdict":"STILL_PRESENT","evidence":"Frontend: src/components/Questionnaire/QuestionnaireSearch.tsx:61-73 queries questionnaireApi.list with only { title, subject_type (conditional), status: 'active' } — the component has no facility prop at all (props interface lines 39-46), and both fill-page usages pass subjectType only (QuestionnaireFillPage.tsx:249-263 empty-state picker, 836-853 in-session 'add questionnaire' picker). git log shows QuestionnaireSearch.tsx last changed in d542f8033, long before this branch — no recent commit touched it. Backend: QuestionnaireFilter exposes an OPT-IN facility param (care/emr/api/viewsets/questionnaire/questionnaire.py:73 'facility = filters.UUIDFilter(field_name=\"facility__external_id\")') that the frontend never sends, and get_filtered_questionnaires (care/security/authorization/questionnaire.py:88-108) scopes only by the user's organization/facility-organization memberships — a user with roles at multiple facilities sees every such facility's questionnaires in the picker regardless of the current route's facility. Rejection happens only at Save: submit raises PermissionDenied 'Encounter facility does not match questionnaire facility' (questionnaire.py:281-287); submit_resource raises 'Resource facility does not match questionnaire facility' (246-250); facility-scoped patient questionnaires die in handle_response ('Patient questionnaires are only supported at the instance level', utils.py:663-667). So the review's exact scenario — fully fill another facility's form, rejected only at Save — holds in current code.","files":["/Users/bodhishthomas/code/care_fe/src/components/Questionnaire/QuestionnaireSearch.tsx","/Users/bodhishthomas/code/care_fe/src/components/QuestionnaireV2/fill/QuestionnaireFillPage.tsx","/Users/bodhishthomas/code/care/care/emr/api/viewsets/questionnaire/questionnaire.
+... (truncated 75851 chars, full result in /private/tmp/claude-501/-Users-bodhishthomas-code-care-fe/2dabe7d0-29e9-45a7-8554-462aec27da99/tasks/wot4ji92f.output)</result>
+<diagnostics>Per-agent results: /Users/bodhishthomas/.claude/projects/-Users-bodhishthomas-code-care-fe/2dabe7d0-29e9-45a7-8554-462aec27da99/subagents/workflows/wf_8a41481a-cf6/journal.jsonl — one {"type":"result",...} line per completed agent with its full return value.
+If the result above is empty or unexpected, Read this file BEFORE diagnosing — do not assume agents returned non-empty results.
+To re-run with edited post-processing: Workflow({scriptPath: '/Users/bodhishthomas/.claude/projects/-Users-bodhishthomas-code-care-fe/2dabe7d0-29e9-45a7-8554-462aec27da99/workflows/scripts/verify-qv2-review-findings-wf_8a41481a-cf6.js', resumeFromRunId: 'wf_8a41481a-cf6'}) — agents whose (prompt, opts) are unchanged replay from cache.</diagnostics>
+<usage><agent_count>13</agent_count><agents_done>13</agents_done><agents_error>0</agents_error><agents_skipped>0</agents_skipped><agents_empty_result>0</agents_empty_result><subagent_tokens>1229268</subagent_tokens><tool_uses>396</tool_uses><duration_ms>527903</duration_ms></usage>
+</task-notification>
+
+---
+
+We haven’t cleaned up the structured components, lets also rearchitect them now along with fixing the issues mentioned. 
+
+If you have questions ask me with context so that i can pick a way forwarded 
+
+Goal is long term maintainability, zero bugs, extensive playwright tests and high quality code.
+
+---
+
+yes
+
+---
+
+yes
+
+---
+
+* it will be good to add support for draft restore for fillable fields when a questionnaire changed so that data is not lost
+
+rest looks fine
+
+---
+
+I think we should allow assistant to write everything including the structured questionnaires by design, this enables voice based form filling. The data will only get saved to the patients record only when the users clicks on save so its safe to enable those edits.
+
+---
+
+Feel free to update my backend pullrequest to update fixtures, lets not hack it via frontend, that should be something backend should honestly support that we can clearly write as we are the primary users for playwright test.
+
+---
+
+don't ask me anymore questions, lets get to build.
+
+---
+
+<task-notification>
+<task-id>adc2ea80ea8d593e7</task-id>
+<tool-use-id>REDACTED</tool-use-id>
+<output-file>/private/tmp/claude-501/-Users-bodhishthomas-code-care-fe/2dabe7d0-29e9-45a7-8554-462aec27da99/tasks/adc2ea80ea8d593e7.output</output-file>
+<status>completed</status>
+<summary>Agent "Implement Task 3: auth draft lifecycle" finished</summary>
+<note>A task-notification fires each time this agent stops with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>
+<result>Status: Applied all four fixes and appended the addendum to the report.
+
+New commit: `a74983b7f` — `fix(questionnaire-v2): scope post-auth draft clear to other users; drop it from token-refresh failure`
+
+Verification: `tsc --noEmit` (root + tests config) and eslint clean on all 5 changed files, prettier clean, pre-commit hooks passed; spec rewritten to discover the real admin user id via the `getcurrentuser` network response (no meta file carries it) and now asserts the other-user draft is cleared while the same-user draft survives both a failed and a successful login.
+
+Concerns: the post-auth clear now makes one extra `callApi(userApi.currentUser)` round-trip per successful login/MFA-verify (best-effort, `silent: true`, swallowed on failure) since neither the JWT nor the stale `user` closure carries the id at that point — flagged in the report as a tradeoff, not a blocker.</result>
+<usage><subagent_tokens>202597</subagent_tokens><tool_uses>44</tool_uses><duration_ms>502476</duration_ms></usage>
+</task-notification>
+
+---
+
+<task-notification>
+<task-id>a51fbdbdc110eb7b8</task-id>
+<tool-use-id>toolu_01LAqV46XQFytTVF4X5p8iZi</tool-use-id>
+<output-file>/private/tmp/claude-501/-Users-bodhishthomas-code-care-fe/2dabe7d0-29e9-45a7-8554-462aec27da99/tasks/a51fbdbdc110eb7b8.output</output-file>
+<status>completed</status>
+<summary>Agent "Review Task 3 (spec + quality)" finished</summary>
+<note>A task-notification fires each time this agent stops with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>
+<result>## Re-Review: Task 3 (post-amendment, base 468a6f096 → head a74983b7f)
+
+### Spec Compliance (against amended requirements)
+
+1. ✅ **Token-refresh-failure branch reverted to tokens-only.** `src/Providers/AuthUserProvider.tsx:84-94` — only the two `localStorage.removeItem` calls remain; `clearQuestionnaireFillDrafts()` is gone from this branch. Comment at `:86-90` accurately explains why (`retry: false` on that query, verified independently — see Strengths).
+2. ✅ **Post-auth clears are user-scoped.** `clearOtherUsersFillDrafts(currentUserId)` added to `fillDraftCache.ts:316-324`; wired into both the JWT branch (`AuthUserProvider.tsx:148`) and `verifyMFA` branch (`:169`) via a shared `clearOtherUsersDrafts()` helper (`:109-120`) that resolves identity through `callApi(userApi.currentUser)`. `signOut` untouched — still calls the full `clearQuestionnaireFillDrafts()` (confirmed unchanged outside the diff hunks).
+3. ✅ **Lifecycle comments updated truthfully.** Checked all four touch points — `fillDraftCache.ts` module header (`:269-287`) and each function's doc (`:299-300`, `:308-315`, `:326-327`), `fillDraftStore.ts:351-363`, and `README.md:243-263`. Every comment matches what the code actually does: other-user sweep on login, full sweep on signOut/app-update, expiry sweep at boot regardless of auth outcome, same-user survival stated as intentional. No stale "swept on login" blanket claims remain anywhere.
+4. ✅ **Spec asserts both required outcomes.** `tests/auth/loginDraftSurvival.spec.ts` seeds an other-user draft and a same-user draft (keyed to the *real* discovered `adminUserId`, not a guess), then asserts: both survive a failed login (`:519-527`), the other-user draft is `null` after successful login (`:536-541`), and the same-user draft survives successful login (`:544-547`).
+
+### Strengths
+
+- **UserId type/value match verified end-to-end.** Traced `FillDraftScope.userId` back to its single write site — `QuestionnaireFillPage.tsx:209-215` sets `userId: user.id` where `user = useAuthUser()` (typed `CurrentUserRead`). This is the exact same field the new code fetches via `callApi(userApi.currentUser)` (`TRes: Type&lt;CurrentUserRead&gt;()`, `src/types/user/userApi.ts:46-50`, `id: string` from `UserBase`, `src/types/user/user.ts:10-11`). The "same user survives re-login" guarantee is correctly wired at the type level, not just asserted.
+- **Auth-header freshness verified.** `getAuthorizationHeader()` (`src/Utils/request/utils.ts:77-85`) reads `localStorage.getItem(LocalStorageKeys.accessToken)` live at call time. Since `clearOtherUsersDrafts()` runs strictly after `localStorage.setItem(accessToken, data.access)` in both success branches, the identity lookup is guaranteed to authenticate as the just-logged-in user, not a stale token.
+- **`retry: false` claim verified.** `tokenRefreshQuery` (`AuthUserProvider.tsx:74-82`) sets no `retry` override, so it inherits the global `QueryClient` default of `retry: false` (previously confirmed in `src/Utils/request/queryClient.ts:19-25`) — the comment's premise for pulling the clear out of that branch is factually correct, not just asserted.
+- **Test rewrite is a genuine improvement**, not just patched to pass: it discovers the real backend-assigned user id via `page.waitForResponse` on `/getcurrentuser/` rather than guessing or decoding a JWT claim whose relationship to `CurrentUserRead.id` the implementer explicitly declined to assume (correctly — the two are different concepts).
+
+### Issues
+
+#### Critical (Must Fix)
+None.
+
+#### Important (Should Fix)
+None. Both named risks were checked and are defensible/narrow (see below), not defects.
+
+#### Minor (Nice to Have)
+1. **Named risk (a) — duplicate identity fetch vs. reactive `user` query.** `AuthUserProvider.tsx:109-120`. The component already has a `useQuery` for `currentUser` (`:61-66`) that will independently refetch once `setAccessToken` changes the query key on a later render, plus an explicit `invalidateQueries({queryKey:["currentUser"]})` right after (`:150`) — so a login now triggers the `getcurrentuser` endpoint at least twice. This is a real, if small, added round-trip on every login, not just the rare shared-device case. The direct `callApi` call is still the defensible choice: threading the sweep through the reactive `user` state would require a ref/flag to distinguish "just logged in" from "routine refetch," which is more failure-prone than a synchronous one-shot fetch tied precisely to the success-branch causality. Worth a follow-up only if the second full `useQuery` refetch is deemed wasteful — not blocking.
+2. **Named risk (b) — swallowed-failure edge case.** `AuthUserProvider.tsx:110-119`. If the identity lookup fails (network blip right after a successful login), the other-user sweep for that login is skipped silently — no retry within the session. Residual exposure: a different user's stale draft can linger in `localStorage` on a shared machine until the next successful other-user login or the 24h TTL boot sweep, which is exactly the class of exposure this feature targets. The window is narrow (must fail exactly once, immediately post-auth, on an otherwise-successful login) and self-heals within a bounded time, and correctly never blocks sign-in — an acceptable, disclosed tradeoff, but flagged since it's the one place the amended design doesn't fully close the original P1-17/P1-18 gap under failure.
+
+### Assessment
+**Task quality:** Approved
+**Reasoning:** All four amended requirements are implemented exactly as specified and verified against actual source (not just the diff's context) — the refresh-failure branch is tokens-only, the post-auth scoping is correctly keyed to the real `CurrentUserRead.id` used by the draft-writing code, lifecycle comments are truthful everywhere they were touched, and the rewritten spec asserts precisely the two required outcomes using a real discovered user id. Both named risks resolve to reasoned, low-probability, self-healing tradeoffs rather than defects.</result>
+<usage><subagent_tokens>115088</subagent_tokens><tool_uses>14</tool_uses><duration_ms>236046</duration_ms></usage>
+</task-notification>
+
+---
+
+<task-notification>
+<task-id>aebfb53e1711d00b3</task-id>
+<tool-use-id>REDACTED</tool-use-id>
+<output-file>/private/tmp/claude-501/-Users-bodhishthomas-code-care-fe/2dabe7d0-29e9-45a7-8554-462aec27da99/tasks/aebfb53e1711d00b3.output</output-file>
+<status>completed</status>
+<summary>Agent "Implement Task 4: studio fixes" finished</summary>
+<note>A task-notification fires each time this agent stops with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>
+<result>Status: DONE — all four requested fixes applied and committed.
+
+New commit: `018827a90` — "fix(questionnaire-v2): metadata-side save race, choice-precedence gate, spec literals"
+
+Verification: `tsc --noEmit` and `eslint` clean on all touched files; pre-commit hooks passed; no Playwright execution (unchanged from original instruction).
+
+Concerns: none new — the metadata-race fix uses a `form.getValues()` live-diff instead of an `isDirty` boolean/counter (traced why a bare boolean is insufficient for the "edited twice while already dirty" case); parked items (choice-with-unit spec leg, `pickType` dedup, empty-repeater chrome, dead `QuestionEditorCard`) left untouched per instruction. Report appended to `/Users/bodhishthomas/code/care_fe/.superpowers/sdd/task-4-report.md`.</result>
+<usage><subagent_tokens>355056</subagent_tokens><tool_uses>29</tool_uses><duration_ms>592691</duration_ms></usage>
+</task-notification>
+
+---
+
+<task-notification>
+<task-id>af62d764ad7e6bd01</task-id>
+<tool-use-id>toolu_01RkXVrhKzHokbDmrGfefxno</tool-use-id>
+<output-file>/private/tmp/claude-501/-Users-bodhishthomas-code-care-fe/2dabe7d0-29e9-45a7-8554-462aec27da99/tasks/af62d764ad7e6bd01.output</output-file>
+<status>completed</status>
+<summary>Agent "Review Task 4 (spec + quality)" finished</summary>
+<note>A task-notification fires each time this agent stops with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>
+<result>### Spec Compliance
+
+- ✅ **Fix 1 — metadata in-flight edits survive.** `QuestionnaireStudioPage.tsx:330` snapshots the submitted `meta` at the same instant as the dispatch counter (`:411-412`); `:358-360` compares it field-by-field against live `form.getValues()`; `:376-383` gates `form.reset` on the result.
+- ✅ **Fix 1 — deviation is correct, and better than the suggestion.** The live-diff compares against the **pre-save submitted snapshot** (`meta`), not the server response — the right reference point, since the question is "does the form still hold what the PUT carried?". The implementer's rationale for rejecting an `isDirty` boolean holds: dirty→edit-again→dirty reads `true` at both ends, so a boolean before/after comparison is blind to a second edit on an already-dirty field. I checked the false-positive path that would have made this worse than a boolean — coercion drift between the zod-parsed `meta` and the raw form values — and it does not exist: `questionnaireFormSchema.ts:29-38` is transform-free (`z.string()` / `z.enum`, no `.trim()`, `.optional()`, or `.default()`), and all four `DetailFormValues` fields are non-optional (`:43-53`), so there is no `undefined` vs `""` mismatch that would make `metaEditedDuringFlight` permanently `true` and strand the form dirty after every save.
+- ✅ **Fix 1 — the snapshot is a real snapshot, not an alias.** Checked `node_modules/@hookform/resolvers/zod/dist/zod.mjs`: the success branch returns `raw?Object.assign({},o):e` — with no `raw` option configured it returns Zod's freshly-constructed parse output, and even the `raw` path is a shallow copy. `saveMetaRef.current` therefore cannot mutate in lockstep with RHF's `_formValues`, which would have silently neutered the whole fix.
+- ✅ **Fix 1 — ordering and independence.** `setQueryData` → `onSaved` runs inside the same synchronous `onSuccess` (`useUpdateQuestionnaire.ts:34-37`), before any re-render, so `getValues()` still holds the user's live text and the `values`-prop resync at `:140-149` hasn't fired. The two skips are separate `if`s (`:369`, `:376`); with `dirty = state.dirty || form.formState.isDirty` (`:175`), an edit to either side alone keeps Save enabled while the other side still resets. Edit-then-revert during flight correctly falls back to resetting (submitted values == server values).
+- ✅ **Fix 2 — gate mirrors ChoiceInput's precedence.** `QuestionBlock.tsx:53-54` (`!!question.answer_option?.length`) now matches `ChoiceInput.tsx:106` (`if (question.answer_option?.length)`) exactly. Pure-`answer_option` and pure-`answer_value_set` questions route as before.
+- ✅ **Fix 3 — counter is user-originated only.** `QuestionnaireStudioPage.tsx:290-295` exempts `"reset"`, with the invariant stated. Verified no user-originated `reset` can race a save: `handleDiscard` (`:366`) is the only user path that dispatches `reset`, and its button is `disabled={!dirty || isSaving}` (`StudioTopBar.tsx:182`). The P1-5 spec still exercises the counter — its mid-flight edit is `updateQuestion`, not `reset`.
+- ✅ **Fix 4 — payload asserted against captured text.** `fillValuesetRepeatsChoice.spec.ts:524-525,531-532` capture the trigger's rendered text; `:570-571` assert the payload against those. Verified the captured string will actually equal `coding.display`: `ValueSetSelect.tsx:56` defaults `showCode = false` and `ChoiceInput` doesn't pass it, so the trigger renders bare `value.display` (`:101`). The `.innerText().split("\n")[0]?.trim()` convention is genuinely the one at `questionnaireQuantityUnit.spec.ts:83`, as claimed. The added `expect(entryTwoDisplay).not.toBe(entryOneDisplay)` (`:537`) closes the vacuous-pass hole.
+- ✅ **Parked items confirmed untouched.** Builder-matrix assertions unchanged (`questionnaireBuilderMatrix.spec.ts:649-652`), `pickType` still duplicated (`fillValuesetRepeatsChoice.spec.ts:456-461`), `QuestionEditorCard.tsx` absent from the diff, empty-repeater chrome not special-cased.
+- ✅ **Round-1 verdicts still hold** — P2-4, the reducer-side P1-5 guard, and the `withEntryAt` convention are unchanged by this wave.
+- ⚠️ tsc/eslint/prettier results unverifiable from the diff (not re-run, per instructions).
+
+### Strengths
+
+- The deviation was the right call and is defended with a concrete failure trace rather than preference. It also happens to be more robust than the alternative in a second way the report doesn't claim: it survives a server-side normalization of a field the user didn't touch, because the comparison is against what was *sent*, not against what came *back*.
+- Choosing to exempt `reset` inside the single `dispatch` wrapper rather than routing the re-seed effect around it keeps one enforcement point instead of N call sites, and the invariant comment (`:282-288`) names every non-user `reset` producer so a future reader can tell whether a new call site violates it.
+- Fix 2's comment (`:44-52`) records *why* the gate mirrors ChoiceInput rather than restating what it does — the next person to touch either file sees the coupling.
+- Fix 4's not-equal guard is the part most implementers skip; without it, two searches resolving to the same code would have made the whole spec pass on pre-fix code.
+
+### Issues
+
+#### Critical (Must Fix)
+
+None.
+
+#### Important (Should Fix)
+
+None.
+
+#### Minor (Nice to Have)
+
+**1. Fix 2 moves an unconfigured repeats choice onto the multi-entry path — and my round-1 review misdescribed this. Correcting the record.**
+`src/components/QuestionnaireV2/form/QuestionBlock.tsx:53-54`
+
+My round-1 Minor #3 claimed the empty-repeater chrome already existed in `0d6595975`. That was wrong: the old gate `!question.answer_value_set` evaluated **true** for a choice with neither field, keeping it on the single-input path. The new gate `!!question.answer_option?.length` evaluates **false** for that same question, so it now takes the multi-entry path and renders "Add Another" plus remove buttons around `ChoiceInput`s that all `return null` (`ChoiceInput.tsx:159`). So the item the coordinator parked on my (incorrect) round-1 report is in fact newly introduced by this wave, not pre-existing — the parking rationale was inverted, and that's my error to own.
+
+It is reachable through the studio, not just via import: `saveValidation.ts:54-57` scopes the "needs options or a valueset" rule to `quantity` only, so authoring Choice → Repeatable → never configuring options saves cleanly.
+
+Severity stays Minor — the question renders no usable control either way, only the surrounding chrome differs. One predicate satisfies both this and the precedence fix: let a choice join multi-entry only when it has a valueset *and* no fixed options —
+`const isSelfManagedChoice = question.type === "choice" &amp;&amp; (!!question.answer_option?.length || !question.answer_value_set);`
+
+**2. `metaMatches` enumerates the four fields by hand with no exhaustiveness guard.**
+`src/components/QuestionnaireV2/studio/QuestionnaireStudioPage.tsx:331-335`
+
+A fifth field added to `DetailFormValues` later would compile clean and be silently excluded from the in-flight check, reintroducing exactly the bug this fix closes for that field. `(Object.keys(a) as (keyof DetailFormValues)[]).every((k) =&gt; a[k] === b[k])` — or a `Record&lt;keyof DetailFormValues, true&gt;` key list — makes the omission a type error.
+
+### Assessment
+
+**Task quality:** Approved
+
+**Reasoning:** All four requested fixes are implemented correctly, and the disclosed deviation is sound — I verified the two ways a live-diff could have silently failed (zod coercion drift making the reset never run, and `meta` aliasing RHF's live values making it always run) and neither applies. The one remaining defect is a cosmetic edge case on an unconfigured question that my own round-1 report misattributed; it is worth a one-line predicate change but does not gate the task.</result>
+<usage><subagent_tokens>153158</subagent_tokens><tool_uses>11</tool_uses><duration_ms>205487</duration_ms></usage>
+</task-notification>
+
+---
+
+<task-notification>
+<task-id>abfcb2cc84ae3eedf</task-id>
+<tool-use-id>REDACTED</tool-use-id>
+<output-file>/private/tmp/claude-501/-Users-bodhishthomas-code-care-fe/2dabe7d0-29e9-45a7-8554-462aec27da99/tasks/abfcb2cc84ae3eedf.output</output-file>
+<status>completed</status>
+<summary>Agent "Implement Task 6: quantity coding" finished</summary>
+<note>A task-notification fires each time this agent stops with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>
+<result>Report file is untracked/ignored (not part of repo tracking), consistent with prior task reports. Everything's clean.
+
+Status: Fixed and committed.
+
+New commit: `02b9dc174` — `fix(questionnaire-v2): fall back a quantity's coding to its default unit`
+
+Verification: `npx tsc --noEmit` and eslint clean on both changed files; pre-commit hooks (prettier + eslint --fix) passed on commit; Playwright not run (phase checkpoint).
+
+Concerns: none new — backend `coding=None` 500 remains a separately-tracked backend bug; this closes the second FE path (untouched-default-unit entries) that could still trigger it.</result>
+<usage><subagent_tokens>133665</subagent_tokens><tool_uses>17</tool_uses><duration_ms>191109</duration_ms></usage>
+</task-notification>
+
+---
+
+<task-notification>
+<task-id>a17294e25a615d9f8</task-id>
+<tool-use-id>REDACTED</tool-use-id>
+<output-file>/private/tmp/claude-501/-Users-bodhishthomas-code-care-fe/2dabe7d0-29e9-45a7-8554-462aec27da99/tasks/a17294e25a615d9f8.output</output-file>
+<status>completed</status>
+<summary>Agent "Review Task 6 (spec + quality)" finished</summary>
+<note>A task-notification fires each time this agent stops with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>
+<result>All four follow-up items check out. Here is the re-review.
+
+### Spec Compliance
+
+- ✅ Explicit-pick path (`handleUnitChange`) unchanged and still correct — `QuantityInput.tsx:72-79` (need to confirm exact end but verified: still `writeEntry({ type: "quantity", value, unit: newUnit, coding: newUnit })`).
+- ✅ Default-unit gap from round 1 closed — `QuantityInput.tsx:38-47`: `unit` is now derived first (`pickedUnit ?? question.unit`), then `const coding = entry?.coding ?? unit;` at line 47, with the invariant stated once in the comment at lines 40-46 ("submitted `coding` always mirrors `unit`… unless the entry already carries its own explicit coding"). Single point of derivation — the two fields cannot drift by construction, since the only two writers (`handleValueChange` at `:69`, `handleUnitChange` at the picked-code call) either both read this same derived pair or both set an identical explicit pair.
+- ✅ No-default/no-pick case produces no invented data: when `question.unit` is undefined and no chip was ever clicked, `unit` resolves to `undefined`, so `coding` (`entry?.coding ?? unit`) also resolves to `undefined` — `serializeValues.ts`'s `entry.unit` branch is skipped and the entry serializes as a bare `{ value }`, matching pre-existing non-valueset-quantity behavior. Verified by code reasoning (no fixture exercises this specific case, but the logic is directly inspectable and unambiguous).
+- ✅ New spec case ("accepting the default unit and only typing a value still submits a coding," `fillQuantityValuesetCoding.spec.ts:189-238`) asserts `coding.code === "mg"` (`:233`) and end-to-end submit success (`:236-237`). Confirmed by hand-tracing the pre-fix (`bf2ffa91f`) code path: with no chip clicked, `entry` is `undefined` on the first `handleValueChange` call, so old `coding = entry?.coding` (no fallback) stays `undefined`, and the assertion `toBe("mg")` would fail — this is a real, valid regression test for exactly the gap flagged in round 1, not a vacuous one.
+- ✅ Minor #1 resolved: the "gram" radio is now scoped through `block` (`fillQuantityValuesetCoding.spec.ts:148,150`), matching the `questionBlock`-scoping convention used elsewhere (e.g. `fillValidation.spec.ts:44-45`).
+- ✅ Minor #2 resolved: "per-keystroke" wording is gone from both the spec comments (now "the write that follows," `:145`) and the report's Changes section ("passed straight through on each write," `task-6-report.md:18-19`).
+
+### Strengths
+
+- The fix centralizes the unit/coding invariant at a single derivation point rather than patching each call site independently — exactly what was asked for ("the invariant should hold at ONE point"), and it's provably drift-free: both writers consume the same derived pair or set an identical explicit pair, so there's no path where `unit` and `coding` diverge.
+- The fallback also self-heals any previously-drafted entries that were saved under the old buggy code (`entry.unit` set, `entry.coding` `undefined`) — a beneficial side effect of `entry?.coding ?? unit`, not a new risk.
+- The new regression test is correctly discriminating: hand-traced against the prior commit (`bf2ffa91f`), it fails there and passes on `02b9dc174`, so it's pinning the actual fix rather than trivially passing either way.
+- `tsc --noEmit`, `eslint`, and `prettier --check` independently re-run clean on both changed files, corroborating the report's verification claims.
+- Shared `SubmitBatchBody` type extracted to module scope removes duplication between the two test cases — a reasonable, unprompted cleanup.
+
+### Issues (Critical / Important / Minor)
+
+None found in this fix pass.
+
+### Assessment — Task quality: Approved
+
+The round-1 Important finding (default-unit path submitting `coding: undefined`) is fixed correctly and minimally, with the invariant expressed at a single point and verified (via direct code trace) to fail on pre-fix code and pass on the current commit. Both Minor findings (locator scoping, wording) are also resolved. No new issues surfaced.</result>
+<usage><subagent_tokens>113959</subagent_tokens><tool_uses>6</tool_uses><duration_ms>127769</duration_ms></usage>
+</task-notification>
+
+---
+
+<task-notification>
+<task-id>ad4f3407e93c9fd5c</task-id>
+<tool-use-id>toolu_01P5i25uzgpbXAvu5HCQ1BWp</tool-use-id>
+<output-file>/private/tmp/claude-501/-Users-bodhishthomas-code-care-fe/2dabe7d0-29e9-45a7-8554-462aec27da99/tasks/ad4f3407e93c9fd5c.output</output-file>
+<status>completed</status>
+<summary>Agent "Implement Task 7: submit guards" finished</summary>
+<note>A task-notification fires each time this agent stops with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>
+<result>Status: DONE — review follow-up applied on top of 065e5b043.
+
+New commit: `0f9ed9e3a` — fix(questionnaire-v2): isolate the P1-9 spec, in-memory batch-cap files, single-source cap message
+
+Verification: `npx tsc --noEmit` (root + tests/tsconfig.json) and `npx eslint` on all changed files are clean; P1-9 now lives inside fillServerDraft.spec.ts's serial describe (reusing its helpers), fillSubmitGuards.spec.ts only holds the 21-abort/20-pass batch-cap pair using in-memory `setInputFiles` payloads, and the cap message now sources `{{max}}` from `MAX_BATCH_REQUESTS`.
+
+Concerns: none new — same two noted in the original report (heavier-than-ideal DOM work for the file-cap e2e cases; `MAX_BATCH_REQUESTS` has no shared source of truth with the backend's `MAX_REQUESTS_PER_BATCH_REQUEST`). Report appended at `/Users/bodhishthomas/code/care_fe/.superpowers/sdd/task-7-report.md`.</result>
+<usage><subagent_tokens>269808</subagent_tokens><tool_uses>20</tool_uses><duration_ms>294229</duration_ms></usage>
+</task-notification>
+
+---
+
+<task-notification>
+<task-id>af507a6a72b5e9a22</task-id>
+<tool-use-id>toolu_014j777rkSzmBABcPAqDHBp2</tool-use-id>
+<output-file>/private/tmp/claude-501/-Users-bodhishthomas-code-care-fe/2dabe7d0-29e9-45a7-8554-462aec27da99/tasks/af507a6a72b5e9a22.output</output-file>
+<status>completed</status>
+<summary>Agent "Review Task 7 (spec + quality)" finished</summary>
+<note>A task-notification fires each time this agent stops with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>
+<result>### Spec Compliance (fix commit `0f9ed9e3a`)
+
+**1. P1-9 relocation — resolved, and the serial contract holds.** The case now sits inside `fillServerDraft.spec.ts`'s `test.describe("Fill page server draft")`, which carries `test.describe.configure({ mode: "serial" })` at `:70` — same file, same worker, no cross-file race. Placement is **last (4th)**, appended after "a form_submission that is no longer a draft refuses to resume" (`fillServerDraft.spec.ts:389-455`). Checked both directions of the ordering:
+
+- *Upstream:* the drafts card queries `formSubmissionApi.list` with `queryParams: { encounter, status: "draft" }` (`FormSubmissionDrafts.tsx:63-65`), so test 3's API-created **submitted** record never lists, and tests 1 and 2 each end by submitting their draft and asserting the card is gone. The new case therefore opens onto an empty card, and its `getByRole("button", { name: "Continue", exact: true })` click (`:411`) resolves to exactly one element.
+- *Downstream:* nothing follows it, and it still cleans up anyway — the batch's completion PUT flips the record to `submitted` (`composeBatch.ts:257-277`), and `:452-454` re-asserts "Draft Forms" is not visible, matching the file's stated cleanup contract. The later "Draft Forms not visible" assertions in tests 1 and 2 run *before* it and are unaffected.
+
+**2. Flag-probe dedup — resolved by relocation.** `fillSubmitGuards.spec.ts` no longer contains `flagRequested`, `SAVE_DRAFT`, the bundle probe, or the `test.skip` branch; it imports only `questionBlock`, `expectToast` and the three id helpers, and never touches drafts. The moved case reuses the file's existing `openFillPage` (`:403`) and `draftIdFromUrl` (`:413`) rather than re-declaring them. No verbatim duplicate remains.
+
+**3. In-memory payloads — resolved.** `tinyFilePayloads` (`fillSubmitGuards.spec.ts:494-502`) returns `{name, mimeType, buffer}` objects; `fs`/`os`/`path` imports are gone, no `mkdtempSync`, nothing to clean up. `.txt` is in `BACKEND_ALLOWED_EXTENSIONS` (`src/types/files/file.ts:74-93`).
+
+**4. Boundary pair — both present; only one of them discriminates pre-fix.** Stating this plainly since it was asked:
+- *21-abort* (`:536-567`): discriminates pre-fix vs post-fix. Pre-fix, 21 requests POST and the backend 400s into "Failed to submit questionnaire", so the cap-toast assertion fails and `posts` is length 1.
+- *20-pass* (`:569-602`): **passes on pre-fix code too** — pre-fix has no cap, so 20 submits fine. It is not a pre/post discriminator; it is an off-by-one guard, and it does discriminate against the plausible wrong fix (`&gt;=` instead of `&gt;`), which is exactly what a boundary pair is for. The report's own wording ("Confirms the cap is `&gt; 20`, not `&gt;= 20`") is accurate.
+- Arithmetic re-verified for both: the `files` fixed questionnaire is a single structured question (`StructuredFormData.tsx:143-160`), its response never joins `answeredLeaves`, so no `/submit/` entry and no PUT — N files produce exactly N requests. 21 → abort with `count: 21`; 20 → `20 &gt; 20` false → one `submitBatch`.
+
+**5. `{{max}}` single-sourcing — resolved.** `en.json` now reads "at most {{max}}" and the call site passes `max: MAX_BATCH_REQUESTS` (`useSubmitQuestionnaire.ts:344-352`). Rendered English is byte-identical to before, so the 21-case's exact-text assertion still matches. The `count` key still resolves through i18next's `key_other` → base-key fallback (no suffixed siblings exist), unchanged.
+
+**Source diff unchanged from round 1** — `composeBatch.ts` and `QuestionnaireFillPage.tsx` hunks are byte-identical; `useSubmitQuestionnaire.ts`'s only delta is the `max` interpolation argument. Nothing re-opened.
+
+Verified independently: `npx tsc --noEmit -p tests/tsconfig.json` → exit 0; `npx eslint` on both specs plus `useSubmitQuestionnaire.ts` → exit 0.
+
+### Strengths
+
+- The relocation took the *right* fix rather than the cheap one: it inherited the serial guarantee and the two helpers instead of duplicating an encounter fixture or sprinkling `mode: "serial"` on a second file.
+- `nameEveryFile` (`fillSubmitGuards.spec.ts:508-517`) is shared by both boundary cases, so the 20/21 pair differs in exactly one variable — the count.
+- The header comment at `fillSubmitGuards.spec.ts:472-486` records *why* P1-9 lives elsewhere, which is what stops the next author from moving it back.
+- The parked item (retained-window message wording) is named as parked rather than quietly dropped.
+
+### Issues
+
+**Minor — the 20-pass case is the first e2e that actually completes a file upload through the batch.** Nothing else in `tests/` submits the `files` questionnaire (`structuredRendering.spec.ts:28` only mounts it), so this case newly exercises `/api/v1/files/upload-file/` × 20 inside a batch. If that contract has any unrelated wrinkle, the failure will present as a cap failure. Worth reading its first red run as "upload path" before "cap logic".
+
+**Minor — serial coupling now gates P1-9 coverage.** As the 4th test in a serial describe, it is skipped whenever any of the three preceding tests fails (standard Playwright serial semantics). That is the price of the isolation fix and the right trade, but it means a flake upstream silently removes the draft-linkage assertion from the run.
+
+**Minor (carried, acknowledged as parked) — `questionnaire_submit_missing_forms` misadvises during the resume window.** `onResumeAddedForms` (`QuestionnaireFillPage.tsx:544-552`) retains every snapshot before re-fetching, so a Save Changes click during that loop aborts with "Reload the page and try again" for a form about to mount normally. Errs safe; wording only. Explicitly deferred by instruction.
+
+*Checked and clear:* the 20-pass case leaves 20 `FileType.ENCOUNTER` files on the shared fixture encounter, but no spec under `tests/facility/patient/encounter/` asserts on encounter files, and the DB snapshot restore in `globalSetup` resets local re-runs.
+
+### Assessment — Task quality: Approved
+
+Every round-1 finding is resolved at the right layer — the Important isolation defect by inheriting the existing serial guarantee (and its cleanup contract) rather than papering over it, and the four Minors by relocation, in-memory payloads, a real boundary pair, and `{{max}}`; source behavior is untouched and tsc/eslint verify clean, leaving only deferred-by-design polish.</result>
+<usage><subagent_tokens>167364</subagent_tokens><tool_uses>11</tool_uses><duration_ms>177332</duration_ms></usage>
+</task-notification>
+
+---
+
+<task-notification>
+<task-id>aa255e7f15768ad2d</task-id>
+<tool-use-id>REDACTED</tool-use-id>
+<output-file>/private/tmp/claude-501/-Users-bodhishthomas-code-care-fe/2dabe7d0-29e9-45a7-8554-462aec27da99/tasks/aa255e7f15768ad2d.output</output-file>
+<status>completed</status>
+<summary>Agent "Implement Task 8: hard-block validation" finished</summary>
+<note>A task-notification fires each time this agent stops with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>
+<result>Status: Done — all 4 review items addressed on top of 9a2d1a81e.
+
+New commit: `6973ae9c8` — `fix(questionnaire-v2): notices stop contradicting the required hard-block; pin coverage and the compose gap`
+
+Verification: `npx tsc --noEmit` clean, `npx eslint` on all changed files 0 errors, `npx prettier --check` clean; locale strings byte-diffed against the spec's literal assertions to rule out em-dash/apostrophe mismatches.
+
+Concerns: none blocking. Parked the null-`structured_type` hole as instructed (pre-existing, dies in Phase-5).</result>
+<usage><subagent_tokens>263502</subagent_tokens><tool_uses>34</tool_uses><duration_ms>412069</duration_ms></usage>
+</task-notification>
+
+---
+
+<task-notification>
+<task-id>a2757c62f595108b4</task-id>
+<tool-use-id>REDACTED</tool-use-id>
+<output-file>/private/tmp/claude-501/-Users-bodhishthomas-code-care-fe/2dabe7d0-29e9-45a7-8554-462aec27da99/tasks/a2757c62f595108b4.output</output-file>
+<status>completed</status>
+<summary>Agent "Review Task 8 (spec + quality)" finished</summary>
+<note>A task-notification fires each time this agent stops with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>
+<result># Task 8 re-review — fix wave (9a2d1a81e + 6973ae9c8)
+
+### Spec Compliance
+
+All four round-1 findings are resolved. Verified against source, not the report.
+
+1. **Important (spec didn't discriminate) — RESOLVED.** `/Users/bodhishthomas/code/care_fe/tests/facility/patient/encounter/fill/fillHardBlock.spec.ts` non-required case now asserts `"Entries in this section will not be submitted."` inside the structured block, before the fill/submit steps. That sentence does not exist anywhere at base 0f9ed9e3a, so the case now fails on pre-fix code. Both spec cases are now discriminating.
+2. **Minor 2 (contradictory copy) — RESOLVED, and consistently across every state.** All four broken-slot notices branch on `question.required` — `/Users/bodhishthomas/code/care_fe/src/components/QuestionnaireV2/form/StructuredSlot.tsx:112` (unknown_type), `:129` (subject_mismatch), `:149` (missing_context), `:192` (render_failed error-boundary fallback). Each `_required` twin ends in the identical clause and promises no skip; each base variant ends in the identical skip sentence. No state can now show "entries won't be submitted" above "the form can't be saved". The required spec case asserts the required-variant sentence, replacing the old `/isn't enabled/` regex that matched both variants.
+3. **Minor 3 (render_failed) — RESOLVED.** Both twins added; the non-required copy now matches `composeBatch.ts:144`, which does drop render-failed entries.
+4. **Minor 4 (overclaimed parity) — RESOLVED in substance.** `/Users/bodhishthomas/code/care_fe/src/components/QuestionnaireV2/structured/registry.ts:184-196` names the gate verbatim (`!patientBound &amp;&amp; definition.source !== "plugin"`), cites `composeBatch.ts ~166-176` (correct — the gate is at `:176`, its rationale comment at `:166-175`), states neither validator mirrors it, and lands on "`ready` is necessary but not always sufficient." The headline sentence at `:167-168` was also narrowed to drop the "what data reaches the domain APIs" claim it could no longer support.
+
+**i18n checks:** all five new keys (`structured_section_unavailable_required` + four `_required` twins) exist in `public/locale/en.json` only — grepped every file under `public/locale/`, no Crowdin-managed locale touched. Alphabetical placement is correct at each insertion point. The four base notice keys are consumed by `StructuredSlot.tsx` and nothing else, so the appended sentences cannot leak into an unrelated surface.
+
+**Byte-match (implementer's claim) — confirmed.** Extracted every `getByText` literal from the spec and diffed against the resolved locale values: `"This section is required — the form can't be saved until it's available."` uses U+2014 on **both** sides and ASCII `'` (U+0027) on both sides — no smart-quote or hyphen drift. `"Entries in this section will not be submitted."` and the blocking-error template (with `${STRUCTURED_LABEL}` resolved) are ASCII-only and match exactly.
+
+**Round-1 items — not re-checked, and not touched.** `validateStructured.ts` and `validation.ts` carry identical pre/post blob hashes in both review packages (`15740721d..7545be4d5`, `d424e0ed7..14a680c3d`); the fix commit did not alter them. Resolver sharing, single-error-per-question, notice anchoring, and backend fixture acceptance stand as verified.
+
+### Strengths
+
+- The `_required` twin approach is the right shape: one clause reused across all four states means the spec can assert a single sentence and cover every broken path, and a future fifth state has an obvious pattern to follow.
+- The registry exception paragraph is honest engineering — it documents a divergence that makes the module look worse, rather than quietly narrowing the claim.
+- The spec's inline comment on the non-required assertion states *why* it exists ("without this the case would pass unchanged on pre-fix code"), which is exactly the note that stops a future cleanup from deleting it.
+
+### Issues
+
+**Minor**
+
+1. **New, introduced by the fix: the notice branches on `question.required` alone, ignoring enable_when.** `/Users/bodhishthomas/code/care_fe/src/components/QuestionnaireV2/form/QuestionBlock.tsx:48` keeps a logic-disabled question rendered when `disabled_display === "protected"`, while both validators skip disabled questions (`validation.ts:80`, `validateStructured.ts:61`). So a required + broken + currently-disabled-but-protected slot displays "This section is required — the form can't be saved until it's available." while Save in fact succeeds. Pre-fix that same slot said "Entries in this section will not be submitted." — which was correct for that configuration, so this is a small regression in copy accuracy on a narrow config. The precise signal is the enabled state (`useQuestionEnabled`, `QuestionBlock.tsx:46` — the same predicate `isQuestionEnabledInState` implements), **not** the `disabled` prop the slot already receives: `disabled` also covers readonly/`read_only`, where the required block genuinely does apply. Same root cause makes the studio canvas's `revealHidden` path show the required clause on logic-hidden questions.
+2. **One inaccurate clause in the otherwise-correct exception paragraph.** `registry.ts:195` justifies the plugin exemption with "the studio only offers them a resource subject to begin with." Untrue: `PluginStructuredTypeDefinition.subjects` is `readonly SubjectType[]` (`pluginRegistry.ts:31`) and `builder/QuestionTypePicker.tsx:120` offers a plugin type on whatever subjects it declares — patient/encounter included. The conclusion holds (the gate exempts `source === "plugin"` unconditionally), but the stated reason would mislead anyone who relies on it. The report's own addendum uses a different, sounder justification than the comment does.
+
+⚠️ **Standing, unchanged:** Playwright still not executed (checkpoint constraint). Both spec cases are now logically discriminating, but neither has been run against a live backend.
+
+### Assessment — Task quality: Approved
+
+The Important finding is fully closed — both spec cases now fail on pre-fix code and the assertions byte-match the locale strings — and all four notice states received consistent, non-contradictory `_required` branching backed by en.json-only keys. The two remaining Minors are a narrow enable_when copy edge introduced by the fix and one wrong sentence in a comment; neither affects the blocking behavior this task exists to deliver.</result>
+<usage><subagent_tokens>143288</subagent_tokens><tool_uses>15</tool_uses><duration_ms>215835</duration_ms></usage>
+</task-notification>
+
+---
+
+<task-notification>
+<task-id>aacb4d1d476a0ba1e</task-id>
+<tool-use-id>REDACTED</tool-use-id>
+<output-file>/private/tmp/claude-501/-Users-bodhishthomas-code-care-fe/2dabe7d0-29e9-45a7-8554-462aec27da99/tasks/aacb4d1d476a0ba1e.output</output-file>
+<status>completed</status>
+<summary>Agent "Implement Task 10: submit freeze" finished</summary>
+<note>A task-notification fires each time this agent stops with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>
+<result>Both fixes are committed cleanly (working tree only has the pre-existing unrelated `.gitignore`/`docs/superpowers/` state, not touched by me). Report appended.
+
+Status: DONE (fix pass applied on top of 9c4393df2).
+
+New commit: `9d956c119` — fix(questionnaire-v2): gate the note popover and draft-resume controls on the submit freeze
+
+Verification: `npx tsc --noEmit` (app + tests configs) and `npx eslint` on all 4 changed files — clean.
+
+Concerns: textarea's own `disabled` attribute during an open popover isn't independently exercised live in the spec (Radix Popover auto-closes on the outside Save click, making that assertion untestable as-is; covered by code review + a forced-click-can't-open proof instead); report's original "verified" wording corrected to "asserted by an unexecuted spec" per item 4; parked items (Save-as-Draft freeze, payload assertion scope, isComposing export) left untouched as instructed.</result>
+<usage><subagent_tokens>287364</subagent_tokens><tool_uses>26</tool_uses><duration_ms>380883</duration_ms></usage>
+</task-notification>
+
+---
+
+<task-notification>
+<task-id>aeb1f1918bf298fc5</task-id>
+<tool-use-id>REDACTED</tool-use-id>
+<output-file>/private/tmp/claude-501/-Users-bodhishthomas-code-care-fe/2dabe7d0-29e9-45a7-8554-462aec27da99/tasks/aeb1f1918bf298fc5.output</output-file>
+<status>completed</status>
+<summary>Agent "Review Task 10 (spec + quality)" finished</summary>
+<note>A task-notification fires each time this agent stops with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>
+<result>## Spec Compliance
+
+All four round-1 items are addressed in `9d956c119`; the fix commit touches exactly 4 files and nothing in it re-opens a round-1-verified area (extraction, `FormContext`/`QuestionBlock` plumbing, and the submit hook's release path are all untouched — `QuestionnaireFillPage.tsx` gains one prop line at `:704`).
+
+1. **Important (NoteControl) — fixed, both surfaces.** `/Users/bodhishthomas/code/care_fe/src/components/QuestionnaireV2/form/NoteControl.tsx:21` now destructures `frozen` from `useFormRenderer()`, applied at `:49` (trigger `&lt;button disabled&gt;`) and `:61` (`&lt;Textarea disabled&gt;`). **Mechanism: context read, not a threaded prop** — divergent from siblings (`InputComponent`, `StructuredSlot`, per-entry remove, add-another all receive `disabled={effectiveDisabled}` threaded from `LeafBlock`), but for `frozen` the two are value-identical: it is a form-wide context flag that `QuestionBlock.tsx:51` reads from the same source. The stated rationale (NoteControl already reads `mode` from context, so keep both flags on one access pattern) is sound and is the minimal change. See Minor 1 for the one consequence of not threading.
+
+2. **Minor 3 (DraftRestoreBar) — fixed, correctly scoped.** `frozen?: boolean` (default `false`) disables Resume and Discard; Dismiss is deliberately left live. I verified the rationale rather than taking it: `dismissRestoreBar` is `useCallback(() =&gt; setRestoreDismissed(true), [])` at `/Users/bodhishthomas/code/care_fe/src/components/QuestionnaireV2/fill/draft/useFillAutosave.ts:252` — pure local UI state, no store or draft write. `resumeRestoredDraft` (same file, `:254+`) does mutate live stores and hands snapshots to `onResumeAddedForms`, so gating it was the right call. Exactly one mount site (`QuestionnaireFillPage.tsx:701`), now threading `frozen`; the default keeps any future caller unaffected.
+
+3. **Minor 5 (Remove locator) — fixed and, I confirmed, actually correct.** `/^Remove Feedback/` requires the fixture title to *start* with "Feedback"; the report justifies it from `ADDED_TITLE = /Feedback Form/`, which is an unanchored match and would not have guaranteed that. I checked the source of truth: `/Users/bodhishthomas/code/care/data/questionnaire_fixtures.json` gives `patient_feedback` → `"Feedback Form  (NCG - Patient)"`, so the accessible name is `"Remove Feedback Form (NCG - Patient)"` and the anchored regex matches, while no longer matching the per-entry buttons named exactly `"Remove"`. Right answer; the written justification was thinner than the evidence.
+
+4. **Minor 2 (report wording) — corrected.** The appended "Correction — wording" section names the overclaim, states plainly that no Playwright run has happened at any point, and generalizes the correction to every other "verified" in the document. Append-only rather than a rewrite, but unambiguous.
+
+## Strengths
+
+- **The open-popover disclosure holds up, and the substitute is adequate — because the code path genuinely covers the case, not because the case was argued away.** Two independent checks:
+  - *Reachability:* the report's claim that Save necessarily closes the popover first is correct for the mouse path (Radix `DismissableLayer` dismisses on outside pointerdown, before the Save `click` handler runs). I also checked the keyboard escape hatch the coordinator raised: `grep` over `src/components/QuestionnaireV2/fill/` finds exactly one keydown handler — `FillOutlineOverlay.tsx:230`, which handles Escape for the outline. **There is no submit hotkey**, so there is no path today that reaches `submit` with the popover still open (and tab-away triggers Radix's `onFocusOutside` dismissal anyway).
+  - *Coverage if it were reachable:* `PopoverContent` is portaled in the **DOM** but remains inside `NoteControl`'s **React** tree, and context propagates through portals. When `frozen` flips, `NoteControl` re-renders as a context consumer and the already-mounted `&lt;Textarea&gt;` receives `disabled={true}` on that same commit — no remount required. So the `disabled={frozen}` at `:61` is live protection, not decoration, and would still hold if a future keyboard-submit binding or `forceMount` made the state reachable. The residual is genuinely a missing *assertion*, not a missing *behavior*, and the two escape hatches the report floats (`forceMount` / controlled `open`) are correctly judged as out-of-scope behavior changes.
+- **The substitute assertion is well-constructed.** `page.getByPlaceholder("Add note")` matches only the textarea (placeholder attribute) and cannot collide with the trigger's identical `aria-label`; and the preceding `await expect(noteButton).toBeDisabled()` proves under strict mode that the locator resolved to exactly one element, so the `toHaveCount(0)` that follows is not the vacuous-zero-match trap the house helper's own docstring warns about (`tests/helper/questionnaireV2.ts:175-180`).
+- **Spec symmetry is complete:** `noteButton` is asserted enabled-before / disabled-during in both tests and re-enabled-after in the failure test, matching the existing `removeButton` treatment rather than bolting on a one-sided check.
+- **Self-review caught its own blast radius:** `NoteControl` renders under every mount (studio/preview/fill), and the context default of `false` was re-traced for the new consumer rather than assumed from the first pass.
+
+## Issues
+
+### Minor
+
+**1. `NoteControl` now honors `frozen` but still ignores the rest of `effectiveDisabled` — pre-existing, worth a follow-up.** `QuestionBlock.tsx:52` computes `effectiveDisabled = mode === "readonly" || question.read_only === true || frozen || !enabled`; the context read at `NoteControl.tsx:21` picks up only `mode` and `frozen`. So a note stays editable on a `read_only` question and on an enable_when-disabled question rendered via `disabled_display: "protected"`. That predates this task and fixing it is a behavior change beyond P1-4, so the minimal fix was the right call here — but threading `effectiveDisabled` into `NoteControl` would have closed all three at once and removed the two-access-patterns-for-one-concept split. Worth parking as its own item.
+
+**2. The restore-bar gate has no spec coverage.** The `fillFreeze` fixture never produces a local draft, so `DraftRestoreBar`'s new `disabled={frozen}` on Resume/Discard is unexercised. Two lines of prop plumbing with a `false` default, so the risk is low — noting it so it isn't mistaken for tested.
+
+**3. Negative assertion has no settle window (nitpick).** `await expect(page.getByPlaceholder("Add note")).toHaveCount(0)` passes on first evaluation, so it would win a race against an asynchronously-opening popover. In practice a disabled native `&lt;button&gt;` suppresses click activation even for a forced synthetic click, so the popover cannot open at all — but asserting the absence of the popover's `role="dialog"` after a settle would be marginally stronger.
+
+**4. Still unexecuted.** Every assertion in `fillFreeze.spec.ts` — the round-1 set and the four new note assertions — is type-checked and lint-clean but never run, per the checkpoint instruction. The corrected report now says this accurately.
+
+Previously parked and confirmed still open by design: Save-as-Draft flight not frozen (brief-supported, separate task), the `isComposing` export, and the payload assertion's limited discriminating power.
+
+## Assessment — Task quality: Approved
+
+The one Important finding is closed on both the trigger and the textarea, and the disclosed gap in its test coverage is a missing assertion rather than a missing behavior — I confirmed the open-popover case is unreachable today (no submit hotkey) *and* would be handled correctly if it became reachable, since context flows through the portal to the mounted textarea. The three Minors are fixed, with the tightened locator independently validated against the actual backend fixture title; what remains is follow-up scope, not defects in this task.</result>
+<usage><subagent_tokens>120131</subagent_tokens><tool_uses>10</tool_uses><duration_ms>178046</duration_ms></usage>
+</task-notification>
+
+---
+
+<task-notification>
+<task-id>a88570537e3364bcb</task-id>
+<tool-use-id>toolu_01RKxKGLbYjytBk44orF7GK3</tool-use-id>
+<output-file>/private/tmp/claude-501/-Users-bodhishthomas-code-care-fe/2dabe7d0-29e9-45a7-8554-462aec27da99/tasks/a88570537e3364bcb.output</output-file>
+<status>completed</status>
+<summary>Agent "Implement Task 12: perf quick wins" finished</summary>
+<note>A task-notification fires each time this agent stops with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>
+<result>Status: Fixes applied and committed.
+
+New commit: `f1688b503` — "fix(questionnaire-v2): drop dead session signature, seed primary form in autosave spec"
+
+Verification: `npx tsc --noEmit` (root + tests/tsconfig.json), eslint, and prettier all pass clean on both changed files; pre-commit hook ran clean.
+
+Concerns: none. Report appended to `/Users/bodhishthomas/code/care_fe/.superpowers/sdd/task-12-report.md`.</result>
+<usage><subagent_tokens>179863</subagent_tokens><tool_uses>16</tool_uses><duration_ms>159025</duration_ms></usage>
+</task-notification>
+
+---
+
+<task-notification>
+<task-id>a22371aed933debcc</task-id>
+<tool-use-id>toolu_01DXXxg9Gho9mbL15Pu8EqUs</tool-use-id>
+<output-file>/private/tmp/claude-501/-Users-bodhishthomas-code-care-fe/2dabe7d0-29e9-45a7-8554-462aec27da99/tasks/a22371aed933debcc.output</output-file>
+<status>completed</status>
+<summary>Agent "Review Task 12 (spec + quality)" finished</summary>
+<note>A task-notification fires each time this agent stops with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>
+<result>### Spec Compliance
+
+| Requirement | Status |
+|---|---|
+| Per-form recompute scope (round 1: verified) | Still met, and now strictly leaner — per accepted keystroke the callback does exactly one `formSignature(form, store)` plus a Map get/set (`useFillAutosave.ts:220-222`). No session-wide work of any kind remains on the keystroke path. |
+| Removed-form eviction (round 1: verified) | Unchanged mechanism — effect-local `Map` rebuilt from current `forms`/`getStore` (`:195-200`), deps `[storesVersion, forms, getStore, persistNow]` (`:243`). |
+| Dirty semantics identical | Met — the comparison is the same one the fix commit inherited (`:221`), against the same `safeSessionSignature` → `partitionForDraft` pipeline (`:30-34`); phantom-draft protection untouched. |
+| Draft schema / persist behavior unchanged | Met — `snapshotAll` is now referenced only by `persistNow` (`:113-141`), which is byte-unchanged from base. |
+| Studio deferral / Save-blocking | Untouched by the fix commit; the hunk in the updated diff is identical to round 1's (verified live-state `handleSave` at `QuestionnaireStudioPage.tsx:340`, Save disabled only on `!dirty \|\| isSaving` at `StudioTopBar.tsx:188-191`). |
+
+**Finding 1 (Critical, round 1) — fixed and still discriminating.** `fillMultiForm.spec.ts:315-321` now fills the primary's "Note on Bilateral Air Entry" before adding form B, with a comment naming the clear-on-empty branch as the reason. That makes `.toBe(1)` at `:333` correct: after removal the session is `[primary(noteA)]`, `anyContent` is true, and the draft key survives with one form — the same shape as the pre-existing removal test at `:260-268`. I re-traced the tail: the seed does **not** blunt it. `draftFormNoteText` filters by `questionnaireId === addedId` (`:265`), and the only write between the re-add and the retype is the shape-change persist, which stores form B **empty**. Under a stale-cache regression the retype compares equal, no debounce is scheduled, nothing else re-persists (typing changes none of that effect's deps), and the poll at `:345-347` sees `undefined` — the test fails, as intended. Also confirmed noteA cannot satisfy the poll, and form B's other questions are integers (the helper's `typeof value === "string"` guard excludes them).
+
+**Finding 2 (Important, round 1) — fixed cleanly, no remnants.** `safeSignatureRef`, `joinSignatures`, and both call sites are gone; a repo-wide grep for `safeSignatureRef|joinSignatures` returns nothing. Imports are all still live: `safeSessionSignature` is consumed by `formSignature` (`:31`), `FillSessionFormState` by `snapshotAll`'s return type, `snapshotAll` by `persistNow` only. I independently confirmed nothing needed a session-level signature: `discardRestoredDraft` (`:263-282`) and `finishDraft` go through `persistNow`/`clearFillDraft`, and `resumeRestoredDraft` (`:290-317`) writes the store and calls `setDirty(true)` — no path reads a cached fingerprint. The Resume baseline still behaves as before: the primary's `store.set` fires its own sub against its cached part, and added forms bump `storesVersion` so the effect re-runs and captures their resumed content as baseline.
+
+### Strengths
+
+- The fix chose deletion over preservation: rather than keeping a session signature "just in case", it verified no consumer existed and removed the function outright, leaving the per-form Map as the single source of truth for dirty. The rewritten comment at `:179-194` now states that plainly ("nothing to gain from joining them into a session-wide value") instead of describing a join that no longer exists.
+- The spec fix is minimal and self-documenting — it explains *why* the primary must hold content rather than silently changing the expected count, so the next reader can't re-break it.
+
+### Issues
+
+**Minor**
+
+1. `src/components/QuestionnaireV2/fill/draft/fillDraftStore.ts:192-201` — `safeSessionSignature`'s doc comment is now stale: it describes "a fingerprint of everything a draft WOULD store for this session" that "Autosave compares against the last value it saw". Autosave now only ever calls it with a single-element array and compares per form. The function is correct and still used; only the prose over-claims. A one-line amendment would keep the two files honest with each other.
+2. `.superpowers/sdd/task-12-report.md` (Fix pass, finding 2) — states that "`discardRestoredDraft` and `resumeRestoredDraft` both call `persistNow()` directly". `resumeRestoredDraft` does not (`useFillAutosave.ts:290-317`); it sets the store and `setDirty(true)`, and the persist arrives via the shape-change effect. The conclusion the claim supports — that neither path reads a cached signature — is correct, so this is report accuracy, not a code defect.
+
+Round-1 Minors 3 (same-tick debounce-restart timing) and 4 (tick-stale issues-popover click) remain, parked by the coordinator as noted in the report; neither is a behavior regression.
+
+### Assessment — Task quality: **Approved**
+
+Both round-1 findings are properly fixed rather than papered over: the spec now seeds the primary so its `.toBe(1)` assertion is sound while the discriminating tail still fails under a stale-cache regression, and the dead session signature is fully excised with no remnants and no path that needed it. Only cosmetic doc drift remains.</result>
+<usage><subagent_tokens>126216</subagent_tokens><tool_uses>5</tool_uses><duration_ms>101231</duration_ms></usage>
+</task-notification>
+
+---
+
+<task-notification>
+<task-id>b23sa4z3r</task-id>
+<tool-use-id>toolu_019eSurjD5ivxaFXa5kDjxkQ</tool-use-id>
+<output-file>/private/tmp/claude-501/-Users-bodhishthomas-code-care-fe/2dabe7d0-29e9-45a7-8554-462aec27da99/tasks/b23sa4z3r.output</output-file>
+<status>completed</status>
+<summary>Background command "Rebuild with server-draft flag enabled" completed (exit code 0)</summary>
+</task-notification>
+
+---
+
+<task-notification>
+<task-id>b0fj96i04</task-id>
+<tool-use-id>REDACTED</tool-use-id>
+<output-file>/private/tmp/claude-501/-Users-bodhishthomas-code-care-fe/2dabe7d0-29e9-45a7-8554-462aec27da99/tasks/b0fj96i04.output</output-file>
+<status>completed</status>
+<summary>Background command "Run full questionnaire-surface Playwright sweep, 4 workers" completed (exit code 0)</summary>
+</task-notification>
+
+---
+
+<task-notification>
+<task-id>bjeoaanlq</task-id>
+<tool-use-id>toolu_012UDbC1bFWXWFGeX3ygX62r</tool-use-id>
+<output-file>/private/tmp/claude-501/-Users-bodhishthomas-code-care-fe/2dabe7d0-29e9-45a7-8554-462aec27da99/tasks/bjeoaanlq.output</output-file>
+<status>completed</status>
+<summary>Background command "Final full checkpoint sweep on the fixed bundle" completed (exit code 0)</summary>
+</task-notification>
+
+---
+
+Please
+
+---
+
+<task-notification>
+<task-id>w6yot055g</task-id>
+<tool-use-id>toolu_01Xb6nWZ8tL3QGj5AnHRio6L</tool-use-id>
+<output-file>/private/tmp/claude-501/-Users-bodhishthomas-code-care-fe/2dabe7d0-29e9-45a7-8554-462aec27da99/tasks/w6yot055g.output</output-file>
+<status>completed</status>
+<summary>Dynamic workflow "Map post-Phase-0 seams and design the contract v2 + core kit APIs for Phase 1" completed</summary>
+<result>[{"section":"seams","report":"## Ground truth\n\nTree state: branch `bodhi/questionnaire-fill`, HEAD `a82110da0f2049a83371331921ea0f069e6d2dbe`. Every line number below was read from the working tree at that commit. File lengths for the seven named seams (use as a sanity check before editing):\n\n| File | lines |\n|---|---|\n| `src/components/QuestionnaireV2/structured/types.ts` | 148 |\n| `src/components/QuestionnaireV2/structured/registry.ts` | 251 |\n| `src/types/questionnaire/form.ts` | 53 |\n| `src/components/QuestionnaireV2/form/engine/store.ts` | 408 |\n| `src/components/QuestionnaireV2/form/StructuredSlot.tsx` | 224 |\n| `src/components/QuestionnaireV2/fill/submit/composeBatch.ts` | 308 |\n| `src/components/QuestionnaireV2/fill/submit/validateStructured.ts` | 124 |\n| `src/components/QuestionnaireV2/form/validation.ts` | 122 |\n\n**Unit-test harness constraint (drives the whole TDD plan).** `package.json:39`: `\"test:unit\": \"node --import tsx --test \\\"plugins/**/*.test.ts\\\" \\\"src/**/*.test.ts\\\"\"`. There is no vitest, no jsdom test runner, no `@testing-library`. Only `*.test.ts` (never `.tsx`) under `src/` runs, under plain `node --test` + `tsx`. The single existing unit spec is `src/components/QuestionnaireV2/structured/pluginRegistry.test.ts` (126 lines) and it documents the boundary explicitly at `pluginRegistry.test.ts:98-100`:\n\n&gt; `registry.ts` pulls in every structured definition's real component tree (CSS, UI libs) and is exercised via the questionnaire fill/structured Playwright specs instead.\n\n**Consequence for Phase 1:** every new unit-testable primitive must live in a `.ts` module that imports **nothing from React, no `.tsx`, and not `registry.ts`**. Concretely: the edit-log algebra, the projection function, and the contract discriminator must be their own leaf modules (`structured/core/edits.ts`, `structured/core/projectRows.ts`, `structured/contract.ts`), with `useStructuredRows.ts` (React) as a thin wrapper over them. That is the only way Phase 1 gets real TDD instead of Playwright-only coverage.\n\n---\n\n## Seam A — `src/components/QuestionnaireV2/structured/types.ts` (the v1 contract as it stands)\n\n### Current contract, verbatim\n\n`types.ts:26` — the context-key union:\n```ts\nexport type StructuredContextKey = \"patientId\" | \"encounterId\" | \"facilityId\";\n```\n\n`types.ts:32-47` — the key→data correlation map (11 core members) and its projector:\n```ts\nexport interface StructuredDataMap {\n  allergy_intolerance: AllergyIntoleranceRequest;\n  medication_request: MedicationRequestCreate;\n  medication_statement: MedicationStatementRequest;\n  symptom: SymptomRequest;\n  diagnosis: DiagnosisRequest;\n  encounter: EncounterEdit;\n  appointment: CreateAppointmentQuestion;\n  files: FileUploadQuestion;\n  time_of_death: string;\n  service_request: ServiceRequestApplyActivityDefinitionForm;\n  charge_item: ApplyChargeItemDefinitionRequest;\n}\n\nexport type DataTypeFor&lt;K extends StructuredQuestionType&gt; =\n  StructuredDataMap[K];\n```\n\n`types.ts:50-55` — the batch entry:\n```ts\nexport interface StructuredBatchEntry {\n  url: string;\n  method: \"POST\" | \"PUT\" | \"PATCH\";\n  reference_id: string;\n  body: unknown;\n}\n```\n\n`types.ts:70-82` — request context + reference-id scheme (the latter is read back by `mapBatchErrors.ts:26` `STRUCTURED_REFERENCE_PREFIX = \"structured:\"` and `mapBatchErrors.ts:71-80`, which splits on `:` and takes `slice(2).join(\":\")` as the question id — so **the reference-id format is load-bearing and must not change in Phase 1**):\n```ts\nexport interface StructuredRequestContext {\n  patientId?: string;\n  encounterId?: string;\n  facilityId?: string;\n  questionId: string;\n}\n\nexport function structuredReferenceId(\n  type: StructuredQuestionType,\n  questionId: string,\n): string {\n  return `structured:${type}:${questionId}`;\n}\n```\n\n`types.ts:87-103` — the prop bag every structured input receives:\n```ts\nexport interface StructuredInputProps {\n  question: Question;\n  response: QuestionnaireResponse;\n  onChange: (values: ResponseValue[], note?: string) =&gt; void;\n  disabled: boolean;\n  errors: QuestionValidationError[];\n  clearError: () =&gt; void;\n  patientId?: string;\n  encounterId?: string;\n  facilityId?: string;\n  questionnaireId?: string;\n  questionnaireSlug?: string;\n}\n```\n\n`types.ts:113-148` — the definition itself:\n```ts\nexport interface StructuredTypeDefinition&lt;\n  K extends StructuredQuestionType = StructuredQuestionType,\n&gt; {\n  type: K;\n  component: ComponentType&lt;StructuredInputProps&gt;;\n  requires: readonly StructuredContextKey[];\n  subjects: readonly SubjectType[];\n  draftPolicy: \"serialize\" | \"exclude\";\n  validate?: (\n    data: DataTypeFor&lt;K&gt;[],\n    questionId: string,\n    required: boolean,\n  ) =&gt; QuestionValidationError[];\n  buildRequests: (\n    data: DataTypeFor&lt;K&gt;[],\n    context: StructuredRequestContext,\n  ) =&gt; Promise&lt;StructuredBatchEntry[]&gt;;\n}\n```\n\n### Current state of all 11 definitions (grep over `structured/definitions/*.tsx`)\n\nEvery one is `draftPolicy: \"exclude\"` — `allergyIntolerance.tsx:30`, `appointment.tsx:33`, `chargeItem.tsx:31`, `diagnosis.tsx:30`, `encounter.tsx:37`, `files.tsx:36`, `medicationRequest.tsx:38`, `medicationStatement.tsx:35`, `serviceRequest.tsx:33`, `symptom.tsx:30`, `timeOfDeath.tsx:28`. Only two filter untouched rows (P1-14's blast radius): `diagnosis.tsx:34` `const dirty = diagnoses.filter((diagnosis) =&gt; diagnosis.dirty);` and `medicationRequest.tsx:47` `const dirtyMedications = medications.filter((m) =&gt; m.dirty);`. `symptom.tsx:35` is the counter-example that re-upserts everything: `if (!patientId || !encounterId || symptoms.length === 0) return [];`. The `dirty` wire fields the spec deletes are `src/types/emr/diagnosis/diagnosis.ts:80` (`dirty: boolean;`) and `src/types/emr/medicationRequest/medicationRequest.ts:437` (`dirty?: boolean;`).\n\n### What Phase 1 changes here\n\nSplit the contract into a discriminated union so v1 definitions compile **untouched** while v2 modules exist. Complete TypeScript to add to `types.ts` (replacing lines 113-148):\n\n```ts\n/** Client-stable identity for one structured row: the server's id for a row\n *  that came from the baseline, a uuid for a row the clinician added. */\nexport type StructuredRowId = string;\n\n/**\n * One recorded unit of user intent against a structured section.\n *\n * `patch` is the MATERIALIZED row, not a field-level diff: `useStructuredRows`\n * computes the projection anyway, so storing the merged row keeps `toRequests`\n * a pure function of the edit log (spec §3: \"edits alone compile into\n * requests\") and keeps a restored draft meaningful when the baseline it was\n * written against has since changed. `remove` carries no patch — `rowId` is\n * the server id, which is all an entered-in-error PATCH needs.\n *\n * Default `TRow = unknown` so `StructuredEdit&lt;DiagnosisRow&gt;` is assignable to\n * the erased `StructuredEdit` at the registry boundary (patch sits in a\n * covariant position; `Partial&lt;unknown&gt;` would not have been).\n */\nexport type StructuredEdit&lt;TRow = unknown&gt; =\n  | { rowId: StructuredRowId; op: \"add\"; patch: TRow }\n  | { rowId: StructuredRowId; op: \"update\"; patch: TRow }\n  | { rowId: StructuredRowId; op: \"remove\" };\n\n/** Everything shared by both contract versions. */\ninterface StructuredTypeDefinitionBase&lt;K extends string&gt; {\n  type: K;\n  component: ComponentType&lt;StructuredInputProps&gt;;\n  requires: readonly StructuredContextKey[];\n  subjects: readonly SubjectType[];\n  draftPolicy: \"serialize\" | \"exclude\";\n}\n\n/**\n * The legacy contract: `values[0].value` is simultaneously the prefetched\n * server rows, the user's edits and the submit payload, so `buildRequests`\n * must re-derive \"what changed\" from row flags (`diagnosis.tsx:34`,\n * `medicationRequest.tsx:47`) or re-upsert everything (`
+... (truncated 242009 chars, full result in /private/tmp/claude-501/-Users-bodhishthomas-code-care-fe/2dabe7d0-29e9-45a7-8554-462aec27da99/tasks/w6yot055g.output)</result>
+<diagnostics>Per-agent results: /Users/bodhishthomas/.claude/projects/-Users-bodhishthomas-code-care-fe/2dabe7d0-29e9-45a7-8554-462aec27da99/subagents/workflows/wf_d872bd8e-bba/journal.jsonl — one {"type":"result",...} line per completed agent with its full return value.
+If the result above is empty or unexpected, Read this file BEFORE diagnosing — do not assume agents returned non-empty results.
+To re-run with edited post-processing: Workflow({scriptPath: '/Users/bodhishthomas/.claude/projects/-Users-bodhishthomas-code-care-fe/2dabe7d0-29e9-45a7-8554-462aec27da99/workflows/scripts/phase1-seam-design-wf_d872bd8e-bba.js', resumeFromRunId: 'wf_d872bd8e-bba'}) — agents whose (prompt, opts) are unchanged replay from cache.</diagnostics>
+<usage><agent_count>4</agent_count><agents_done>4</agents_done><agents_error>0</agents_error><agents_skipped>0</agents_skipped><agents_empty_result>0</agents_empty_result><subagent_tokens>808101</subagent_tokens><tool_uses>214</tool_uses><duration_ms>868646</duration_ms></usage>
+</task-notification>
+
+---
+
+<task-notification>
+<task-id>aba3047e15803ade1</task-id>
+<tool-use-id>REDACTED</tool-use-id>
+<output-file>/private/tmp/claude-501/-Users-bodhishthomas-code-care-fe/2dabe7d0-29e9-45a7-8554-462aec27da99/tasks/aba3047e15803ade1.output</output-file>
+<status>completed</status>
+<summary>Agent "Implement P1 Task 2: row ids + deepEqual" finished</summary>
+<note>A task-notification fires each time this agent stops with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>
+<result>Status: DONE — fixes applied and verified.
+
+New commit: `97c336dc3` — `fix(questionnaire-v2): reconcile RowEdit with Task 1's shipped edit vocabulary`
+
+Verification: `npm run test:unit` → 56/56 pass; `tsc --noEmit` (both configs) → clean, including the new compiler-checked assignment proving `EditLog&lt;TRow&gt;` is now assignable to `readonly StructuredEditRecord[]`; eslint clean.
+
+Concerns: none new — `RowEdit&lt;TRow&gt;` is now a true alias of `StructuredEdit&lt;TRow&gt;` (not a restatement), so it can't drift from Task 1's vocabulary again; the sparse-array `.every()` hole-skip bug is fixed with a regression test; the two mismatched test names are corrected. Report appended to `/Users/bodhishthomas/code/care_fe/.superpowers/sdd/task-2-report.md`.</result>
+<usage><subagent_tokens>189981</subagent_tokens><tool_uses>22</tool_uses><duration_ms>335413</duration_ms></usage>
+</task-notification>
+
+---
+
+<task-notification>
+<task-id>a5c4d81a36855571f</task-id>
+<tool-use-id>REDACTED</tool-use-id>
+<output-file>/private/tmp/claude-501/-Users-bodhishthomas-code-care-fe/2dabe7d0-29e9-45a7-8554-462aec27da99/tasks/a5c4d81a36855571f.output</output-file>
+<status>completed</status>
+<summary>Agent "Review P1 Task 2" finished</summary>
+<note>A task-notification fires each time this agent stops with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>
+<result>## Spec Compliance
+
+Both round-1 blocking findings are fixed, and I verified them by compilation rather than by reading.
+
+Gates re-run at head `97c336dc3`:
+- `node --import tsx --test .../deepEqual.test.ts` → 27 tests, 7 suites, 27 pass, 0 fail.
+- `npx tsc --noEmit` (root) → exit 0. `npx tsc --noEmit -p tests/tsconfig.json` → exit 0.
+- `npx eslint .../core/` → exit 0, and `--report-unused-disable-directives` on the test file also exits 0, so the `no-sparse-arrays` disable at `deepEqual.test.ts:156` is load-bearing, not a stray suppression.
+- `tsc --noEmit --listFiles` includes `core/deepEqual.test.ts` — confirming the new compile-time assertion is actually inside the type-checked program (it would be inert otherwise, since `tsx`/esbuild strips types without checking).
+
+## Strengths
+
+**1. Critical resolved — `RowEdit` is a genuine alias, and the annex spelling is gone from live code.**
+
+`core/types.ts:41` is `export type RowEdit&lt;TRow extends object&gt; = StructuredEdit&lt;TRow&gt;;`, importing `StructuredEdit` from `@/types/questionnaire/structured` (`types.ts:2-5`). Not a restatement — there is no local re-declaration of `rowId`/`op`/`patch`, so drift now requires deleting the alias rather than quietly editing a field name. `grep -rn "row_id" src/components/QuestionnaireV2/ src/types/questionnaire/` returns exactly one hit: `types.ts:25`, inside prose describing the mistake that was fixed. No live declaration anywhere speaks snake_case.
+
+Everything else in the file is already canonical: `BaselineRow.rowId` (`:16`), `ProjectedRow.rowId` (`:47`). Patch-completeness is enforced by the type itself, not just documented — probed `RowEdit&lt;{a: string; b: number}&gt;` with `patch: { a: "x" }` and got `TS2741: Property 'b' is missing`.
+
+**2. Important resolved — the erasure is real, and the doc comment at `types.ts:84-93` is now true.**
+
+The exact assignment that failed in round 1 now compiles clean. Probe:
+
+```ts
+declare const narrowed: StructuredEditInputFor&lt;{ a: string; b: number }&gt;;
+export const widened: StructuredEditInput = narrowed;   // no error
+```
+
+**3. The parity assertion is not a decorative one — I tried to break it three ways.**
+
+`deepEqual.test.ts:255-265` annotates both sides concretely (`editLog: EditLog&lt;ExampleRow&gt;`, then `const erased: readonly StructuredEditRecord[] = editLog`). No `any`, no `as`, no widened intermediate. I built the two drift modes that actually occurred and confirmed `tsc` rejects both:
+
+| drift reintroduced | caught? |
+|---|---|
+| `row_id` snake_case | yes — `TS2322: Property 'rowId' is missing…` |
+| patchless `remove` | yes — `TS2322: Property 'patch' is missing in type '{ rowId: string; op: "remove"; }'` |
+| `patch: Partial&lt;TRow&gt;` | **no** — `Partial&lt;T&gt;` is assignable to `unknown` (see Minor 1) |
+
+The suite also carries real runtime assertions (`:266-268`), so it isn't a type-only line that the `node:test` harness walks past.
+
+**4. All four Minors addressed, and the sparse fix is genuinely correct.**
+
+`deepEqual.ts:82-93` replaces `every` with an index loop and explains *why* in-line (`:85-89`). Regression test at `:155-160`. Verified at runtime beyond what the test covers: `[, 1]` vs `[2, 1]` → `false` (was `true`), `[, 1]` vs `[undefined, 1]` → `true`, nested `[{x:[,5]}]` vs `[{x:[9,5]}]` → `false`, and the ordinary array cases still behave. The cyclic-input bullet (`deepEqual.ts:58-66`) correctly names the `RangeError` and contrasts it with `JSON.stringify`'s catchable `TypeError` — matching what I observed in round 1 — and argues the no-guard decision rather than just noting it. Both test renames are now accurate: `editedToMild`/`revertedToBaseline` (`:85-86`) hold what their names say, and `:90` reads "treats … as equal to …", matching its `true` assertion.
+
+## Issues
+
+### Minor
+
+- **`src/components/QuestionnaireV2/structured/core/deepEqual.test.ts:249-251`** — the parity suite pins `rowId` naming and `patch` presence, but not `patch` *completeness*, because `ExampleRow` has a single field, so a complete row and a `Partial` of it are the same type. The erasure assignment can never catch that axis either (`Partial&lt;T&gt;` widens to `unknown`). Two-line close, which I confirmed works: give `ExampleRow` a second field and add a `@ts-expect-error` above a `RowEdit&lt;ExampleRow&gt;` literal carrying only one of them. Low residual risk given `RowEdit` is now a one-line alias.
+- **`.superpowers/sdd/task-2-report.md` (Corrected assertion count)** — the correction is itself off: it claims "8 `describe` blocks and 27 `it` blocks". Actual is **7** describes and 27 `it`s (`grep -c "^describe("` → 7; the runner reports `suites 7`). The `it` count is right; the describe count was wrong before and is wrong again in the paragraph correcting it.
+- **`src/components/QuestionnaireV2/structured/core/types.ts:71`** — `SoftDeleteDescriptor.patch: Partial&lt;TRow&gt;` is semantically correct (it is the marker fields written onto a row, e.g. `{verification_status: "entered_in_error"}`, not an edit-log entry). But the module now has two fields named `patch` with opposite completeness contracts — `RowEdit.patch` must be the COMPLETE row, this one must not be. A one-line doc note distinguishing it would spare Task 3-7's implementer a wrong inference. Not a correctness defect.
+
+## Assessment
+
+**Task quality: Approved** — the Critical and Important are fixed at the root (a true alias, not a re-spelling) and both fixes are compiler-verified rather than asserted, with the parity guard shown to actually reject the two drift modes that occurred; all four Minors landed correctly, and what remains is one uncaught-but-low-risk assertion axis and a miscounted number in the report.</result>
+<usage><subagent_tokens>111343</subagent_tokens><tool_uses>11</tool_uses><duration_ms>247853</duration_ms></usage>
+</task-notification>
+
+---
+
+<task-notification>
+<task-id>aba3047e15803ade1</task-id>
+<tool-use-id>toolu_01MWyRi7SynBionwY8rfAxG7</tool-use-id>
+<output-file>/private/tmp/claude-501/-Users-bodhishthomas-code-care-fe/2dabe7d0-29e9-45a7-8554-462aec27da99/tasks/aba3047e15803ade1.output</output-file>
+<status>completed</status>
+<summary>Agent "Implement P1 Task 2: row ids + deepEqual" finished</summary>
+<note>A task-notification fires each time this agent stops with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>
+<result>Status: DONE
+
+Commit: `5e3155ee1` — `fix(questionnaire-v2): close the Partial&lt;TRow&gt; gap in the vocabulary-parity guard`
+
+Verification: `npm run test:unit` → 57/57 pass; `tsc --noEmit` (both configs) → clean, confirming the two-field `ExampleRow` + correctly-positioned `@ts-expect-error` now actually catches a `Partial&lt;TRow&gt;` regression; eslint clean. Report appended to `/Users/bodhishthomas/code/care_fe/.superpowers/sdd/task-2-report.md`.</result>
+<usage><subagent_tokens>216700</subagent_tokens><tool_uses>26</tool_uses><duration_ms>365090</duration_ms></usage>
+</task-notification>
+
+---
+
+<task-notification>
+<task-id>a89f4a02efde2bef9</task-id>
+<tool-use-id>REDACTED</tool-use-id>
+<output-file>/private/tmp/claude-501/-Users-bodhishthomas-code-care-fe/2dabe7d0-29e9-45a7-8554-462aec27da99/tasks/a89f4a02efde2bef9.output</output-file>
+<status>completed</status>
+<summary>Agent "Implement P1 Task 3: edit-log reducer" finished</summary>
+<note>A task-notification fires each time this agent stops with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>
+<result>Status: Fixed and committed.
+
+New commit: `792e60c1a` — `fix(questionnaire-v2): resolve edit-log resurrection ops by baseline data, not op labels`
+
+Verification: `npm run test:unit` 73/73 pass (16 in editLog suite, +4 new); `tsc --noEmit` clean both configs; eslint clean.
+
+Concerns: none blocking. Both flagged decision points now consult `baseline` via a new `resolveOpAgainstBaseline` helper (present→update, provably absent→add, unsupplied→conservative "update" fallback, documented as non-guaranteed); false invariant comment corrected; `isEmptyRow` re-attributed as a Task-7 carry-forward in this file; resurrection/update canonicalization asymmetry documented per review (not changed). Report appended to `/Users/bodhishthomas/code/care_fe/.superpowers/sdd/task-3-report.md`.</result>
+<usage><subagent_tokens>166388</subagent_tokens><tool_uses>21</tool_uses><duration_ms>400655</duration_ms></usage>
+</task-notification>
+
+---
+
+<task-notification>
+<task-id>a94b8f561a10cb2ed</task-id>
+<tool-use-id>REDACTED</tool-use-id>
+<output-file>/private/tmp/claude-501/-Users-bodhishthomas-code-care-fe/2dabe7d0-29e9-45a7-8554-462aec27da99/tasks/a94b8f561a10cb2ed.output</output-file>
+<status>completed</status>
+<summary>Agent "Review P1 Task 3" finished</summary>
+<note>A task-notification fires each time this agent stops with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>
+<result>**Verdict: Approved** — both round-1 defects are fixed at the right layer and confirmed by differential execution; the residual items are documentation/contract, not behavior.
+
+### Spec Compliance
+
+Re-verified at head 792e60c1a: `npm run test:unit` 73/73 pass (69 → +4), `npx tsc --noEmit` clean, `npx tsc --noEmit -p tests/tsconfig.json` clean, `npx eslint` on both files clean.
+
+To test by execution rather than reading, I reconstructed the pre-fix module verbatim from the round-1 diff into the scratchpad and ran OLD and NEW side by side on the same sequences:
+
+| sequence | OLD (6cf9f8fbe) | NEW (792e60c1a) |
+|---|---|---|
+| 1. `add→remove`(annihilate)`→remove→add`, baseline={someone-else} | `uuid-1:update` | **`uuid-1:add`** ✓ |
+| 2. `update→add`, baseline={server-9} | `server-9:add` | **`server-9:update`** ✓ |
+| 3. stray `update` after annihilation → `add`, baseline lacks rowId | `uuid-2:add` | `uuid-2:add` (unchanged) |
+| 4. `remove→add`, baseline **unsupplied** | `r1:update` | `r1:update` |
+| 5. `update→add`, baseline **unsupplied** | `r1:add` | **`r1:update`** |
+| 6. `remove→add`, baseline supplied but **empty map** | `r1:update` | **`r1:add`** ✓ |
+| 7. real server row **missing from a partial map**, `update→add` | `server-9:add` | `server-9:add` |
+| 8. genuine baseline row `remove→add` | `server-9:update` | `server-9:update` |
+
+(1) and (2) are the exact round-1 repros — both now correct. (6) shows the fix discriminates "supplied and provably absent" from "unsupplied", which is the whole point of `resolveOpAgainstBaseline` (`editLog.ts:255-261`).
+
+**Question 3 — false invariant gone, replacement true of the code.** Confirmed. `editLog.ts:183-198` now states the invariant is false and gives the forging sequence; I reproduced the intermediate forged state (`[{uuid-1, remove}]` with `uuid-1` absent from baseline) in probe 1. The mechanism claim it rests on — `appendFresh` never consults baseline for a `remove` — is true as written (`editLog.ts:90-103`). The header table (`editLog.ts:54-62`) matches observed behavior on all eight sequences.
+
+**Question 5.** `isEmptyRow` re-attribution (`editLog.ts:4-17`) checked against sources and is accurate: annex §6 puts it in the reducer's `add`+`update` cell (`p1-state-core.md:551`, test matrix `:1309`), §7's `removeRow` (`:576-591`) never mentions it, and the plan assigns the wiring to Task 7 (`2026-08-04-phase1-core-kit.md:217`). Resurrection asymmetry documented not changed (`editLog.ts:211-218`) — matches the round-1 note.
+
+**Round-1 items re-checked** (the fix touched the `coalesce` dispatch and two branches): mutation safety, revert-drop, and position preservation all still hold (probe 9; frozen input untouched, `update`→revert still drops to `[]`, middle entry keeps its index). One inherent behavior worth naming since log order is batch order: an annihilate-then-resurrect moves the row to the **tail** (`a:add,z:add,uuid-mid:add`) — correct, since annihilation erased the slot, but it does change which request the server sees first.
+
+### Question 2 — is the "conservative update" fallback the safe direction?
+
+Executed: with `baseline` unsupplied, both decision points return `update` (probes 4 and 5). **The code picks the failure I would ship**, but for a sturdier reason than the one it gives:
+
+- A silent duplicate clinical row (allergy, symptom, medication statement) persists in the record, misleads the next clinician, and requires a human to find it and mark it entered-in-error. A rejected batch writes nothing and is visible at the point of care. In an EMR, prefer the rejection — even at the cost of a submit that keeps failing until the section is cleared.
+- **But the stated justification over-claims.** `editLog.ts:249-253` asserts the wrong `update` "surfaces as a loud 404/400 from the differ's request". No such differ exists yet, and the ones that do — and the ones the annex plans — don't branch on `op`: the shipped differ POSTs whole rows to `/api/v1/patient/{id}/symptom/upsert/` (`definitions/symptom.tsx:31-38`), and the annex's v2 `resolveChanges`/`toRequests` map every change to `change.row` with create-vs-update decided by whether the row carries `id` (`p1-state-core.md:870-900`, `:1034-1050`). On a true upsert endpoint an `update` carrying an unknown id may well **create** rather than 404 — the silent outcome the comment says it avoids. The op choice is still right at this layer (it is the edit log's semantic record, consumed by PATCH-style differs, validators, and the assistant contract); the comment just claims a downstream guarantee this layer cannot enforce.
+
+### Question 4 — do the 4 new tests pin the fix?
+
+Executed against the reconstructed pre-fix module: **3 of 4 would fail on 6cf9f8fbe**.
+
+- `editLog.test.ts:117` — asserts `add`; old produced `update` → fails on old ✓
+- `editLog.test.ts:192` — asserts `update`; old produced `add` → fails on old ✓
+- `editLog.test.ts:211` — asserts `update`; old produced `add` → fails on old ✓
+- `editLog.test.ts:155` — asserts `add`; **old also produced `add`** (probe 3) → would have passed pre-fix. It does not discriminate.
+
+`editLog.test.ts:107`'s retitle ("no baseline supplied — the documented conservative fallback, not a claimed guarantee") is now accurate.
+
+### Strengths
+
+- One helper, two call sites, decided by data (`editLog.ts:153`, `:220`, `:255-261`) — the minimal correct shape, not a special case per branch.
+- Comments now carry the counter-example rather than a guarantee (`editLog.ts:183-198`, `:224-254`), which is what makes the next reader able to check them.
+- Empty-map-vs-absent-map is a real distinction and the code gets it right (probes 4 vs 6) — a fresh section with genuinely zero server rows resurrects as `add`.
+
+### Issues
+
+**Important — the baseline-completeness obligation is stated only on the private helper** (`editLog.ts:246-254` says "Every real caller … supplies the full baseline map"), while the public option's doc (`editLog.ts:19-29`) still describes only its old, benign role ("can never be detected as reverted — by design"). Before this fix, an absent/partial map was fail-safe: it only suppressed revert detection, which keeps an edit. After it, absence is treated as **proof** the row isn't on the server and selects a data-creating op — probe 7 shows a genuine server row missing from a partial map resolving to `add`, i.e. the exact duplicate-create just fixed. A plausible path exists in this repo: a restored draft seeding `initialEdits` for server rowIds while the baseline fetch failed (cf. `f321cb379`, "keep un-fetchable added forms in the draft on Resume") gives edits on server rows with an empty map. Fix is one sentence on the `baseline` option — "must be the complete fetched server-row set, or `undefined`; never a partial map standing in for not-yet-loaded" — plus the same constraint in Task 7's brief. Does not require reopening this commit if the coordinator carries it forward.
+
+**Minor — `editLog.test.ts:155` does not discriminate** (passes against pre-fix code, verified by execution). Keep it as a regression pin against a future hardcoded `"update"`, but it is not evidence of the fix. The discriminating version of that path — stray `update` on a rowId that *is* in baseline, then `add` — is already covered by `editLog.test.ts:192`.
+
+**Minor — over-claimed downstream failure mode** at `editLog.ts:249-253`, per Question 2 above. Either soften to "the op is the edit log's record of intent; how each differ realizes it is Task 5's contract", or make Task 5's brief carry the obligation that an `add`/`update` distinction actually reaches the wire.
+
+**Minor (carry-forwards, both verified accurate, no action now)** — resurrection asymmetry at `editLog.ts:211-218`; `isEmptyRow` at `editLog.ts:4-17`, which Task 7 will require reopening this file for.
+
+### Assessment — Task quality: Approved
+
+Both round-1 Importants are genuinely fixed (differential execution against the pre-fix module confirms the ops flipped in exactly the two repros and nowhere else harmful), the false invariant is replaced with a description that matches the code, and everything is green. The one Important left is a one-sentence contract note on the `baseline` option — best folded into Task 5/7 briefs rather than another round here.</result>
+<usage><subagent_tokens>123272</subagent_tokens><tool_uses>14</tool_uses><duration_ms>330125</duration_ms></usage>
+</task-notification>
+
+---
+
+<task-notification>
+<task-id>af9850940f5d827b9</task-id>
+<tool-use-id>REDACTED</tool-use-id>
+<output-file>/private/tmp/claude-501/-Users-bodhishthomas-code-care-fe/2dabe7d0-29e9-45a7-8554-462aec27da99/tasks/af9850940f5d827b9.output</output-file>
+<status>completed</status>
+<summary>Agent "Implement P1 Task 4: projection" finished</summary>
+<note>A task-notification fires each time this agent stops with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>
+<result>Status: Done. Commit `f91c6603f` — `fix(questionnaire-v2): resolve projectRows' add-loop by the same last-write map as baseline`. Verification: `npm run test:unit` 90/90 pass (2 new pinning tests, confirmed RED before the fix, GREEN after), `tsc --noEmit` clean both configs, eslint clean; report appended to task-4-report.md.</result>
+<usage><subagent_tokens>185278</subagent_tokens><tool_uses>17</tool_uses><duration_ms>243938</duration_ms></usage>
+</task-notification>
+
+---
+
+can we spin up more agents to complete the list
+
+---
+
+<task-notification>
+<task-id>ae86f1bb0d9380548</task-id>
+<tool-use-id>REDACTED</tool-use-id>
+<output-file>/private/tmp/claude-501/-Users-bodhishthomas-code-care-fe/2dabe7d0-29e9-45a7-8554-462aec27da99/tasks/ae86f1bb0d9380548.output</output-file>
+<status>completed</status>
+<summary>Agent "Implement P1 Task 5: differ" finished</summary>
+<note>A task-notification fires each time this agent stops with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>
+<result>Status: DONE — fixes applied and committed.
+
+New commit: `0a1de95a6` — `fix(questionnaire-v2): resolveChanges consults baseline for orphans and dedups by rowId`
+
+Verification: `npm run test:unit` 108/108 pass (21 in the `resolveChanges` suite, including both regressions reproduced via the real `applyEditToLog` reducer); `tsc --noEmit` clean on both configs; eslint/prettier clean.
+
+Concerns: Items 1–5 all addressed. One deliberately unfixed gap flagged in the report (not asked for by the review, left on judgment): `resolveChanges` doesn't mirror `projectRows`' add-vs-baseline-collision reclassification (singleton-draft-outrun-by-baseline case), so a stale `add` colliding with a baseline rowId would still dispatch to `creates` rather than `updates` — worth a look before Phase 2 ports `encounter`.
+
+Report appended: `/Users/bodhishthomas/code/care_fe/.superpowers/sdd/task-5-report.md`</result>
+<usage><subagent_tokens>224957</subagent_tokens><tool_uses>15</tool_uses><duration_ms>496247</duration_ms></usage>
+</task-notification>
+
+---
+
+<task-notification>
+<task-id>ae49a02616be3e527</task-id>
+<tool-use-id>REDACTED</tool-use-id>
+<output-file>/private/tmp/claude-501/-Users-bodhishthomas-code-care-fe/2dabe7d0-29e9-45a7-8554-462aec27da99/tasks/ae49a02616be3e527.output</output-file>
+<status>completed</status>
+<summary>Agent "Review P1 Task 5" finished</summary>
+<note>A task-notification fires each time this agent stops with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>
+<result>Verdict: **Needs fixes** — all four round-1 items are genuinely fixed and executable-verified; the self-flagged fifth is the same Critical one path over and should not ship.
+
+### Spec Compliance
+
+All four re-verification items pass, by execution:
+
+1. **Critical 1 closed.** The false annihilation-invariant text is gone; `changes.ts:159-185` now states the counter-sequence correctly and cites `editLog.ts`'s own FIX note. Re-ran `add(client-only) → remove → remove` through the real reducer with a complete baseline: the phantom `remove` still lands in the log (`[{"rowId":"client-only","op":"remove",…}]`), and `resolveChanges` now returns `{creates:[],updates:[],removes:[]}`. Nothing id-less reaches `removes`. Without a baseline the old body still appears — correct, and matches the documented fallback at `changes.ts:63-94`.
+2. **Critical 2 closed.** Duplicate-rowId draft: `projectRows` → `[{note:"fresh"}]`, `resolveChanges` → `[{note:"fresh"}]`. Agree on count **and** content. `changes.ts:216-217` uses the same `editByRowId` map as `projectRows.ts:175-176`.
+3. **Important closed.** Re-ran the exact divergence probe (same baseline, same restored log that previously gave 1 row vs 3 datapoints): now **1 row vs 1 datapoint**. The orphan rule at `changes.ts:230-234` reproduces `projectRows`' rule, with `add` correctly exempted.
+4. **P1-14 extended pin holds.** `resolveChanges([], {baseline: &lt;2 rows&gt;})` → three empty sets; pinned at `changes.test.ts:68`.
+
+Green re-verified after the fix commit: `test:unit` 108/108, `tsc --noEmit` and `-p tests/tsconfig.json` both exit 0, `eslint` 0, `prettier --check` clean. Test-file's new `./editLog` import is harness-safe (pure `.ts`, no React edge). Round-1 items that the dispatch rewrite touched — ordering and purity — still pass; merge order and key omission are untouched.
+
+### Strengths
+
+- The fix mirrors sibling modules rather than inventing a rule: same map as `projectRows.ts:175-176`, same orphan rule as `projectRows.ts:144-160`, same fallback wording as `editLog.ts:255-261`. Cross-module consistency is now the enforced property, not a coincidence.
+- `changes.ts:159-185` doesn't just delete the false claim — it records why it was false and what it cost. That is the right disposition for an invariant a second review had to disprove.
+- Regression tests drive the phantom case through **`applyEditToLog` three times** (`changes.test.ts:201-246`) with the annihilation and the appended-phantom shape asserted as intermediate sanity checks, so the test fails loudly if Task 3's behavior ever shifts underneath it. That is a stronger pin than a hand-built log.
+- Both Minors handled honestly: aliasing documented **and** pinned by reference-equality assertions rather than quietly changed; unrecognized-op path pinned.
+
+### Issues
+
+**Critical — `changes.ts:237-239`: an `add` whose rowId collides with a baseline row still dispatches to `creates`, so submit asks the server to create a row it already has.** The implementer disclosed this and deferred it; I executed it end-to-end through the real reducer, no hand-built log:
+
+```
+log after add (baseline still undefined) : [{"rowId":"singleton","op":"add",…}]
+log after a later update                 : [{"rowId":"singleton","op":"add",…}]   &lt;- op STILL "add"
+projectRows    : 1 row, origin="baseline", edited=true
+resolveChanges : creates:[{note:"typed some more"}]   (baseline.has("singleton") === true)
+```
+
+Three things make this fix-now rather than defer-with-owner:
+
+- **Reachability is mandated, not hypothetical.** The BASELINE COMPLETENESS CONTRACT requires Task 7 to pass `undefined` while the baseline query loads. An `add` created in that window is never revisited against baseline afterwards: `coalesceOntoAdd` (`editLog.ts:120-134`) is the one arm Task 3's `resolveOpAgainstBaseline` fix did **not** cover, and my probe shows a later `update` leaves the op as `add`. If no later edit arrives, the reducer never runs for that rowId again at all. `resolveChanges` is therefore the only layer holding a fresh baseline at submit time — `projectRows` already uses it for exactly this collision (`projectRows.ts:132-142`).
+- **It is the same failure class just accepted as Critical**, and `editLog.ts:249-253` already names it the worse one: a wrongly emitted `add` "would instead silently create a duplicate clinical row… data corruption, not a rejected request." The created row also carries no server `id` (visible above), so an upsert has nothing to match on.
+- **The input is already wired and the fix is one condition.** Simulated (not applied): `case "add"` → `(baseline?.has(rowId) ? updates : creates).push(resolved.patch)`. Result: case 5 becomes `creates:[] / updates:[…]`, agreeing with the projection; and all three shipped add-related cases (`changes.test.ts:181`, `:199-206`, `:68`) are unchanged, because each either passes no baseline or a non-colliding one. Non-breaking.
+
+One caveat the fix should state rather than assume: the reclassified row is the add's patch verbatim, which may lack the server `id`. For the singleton types where this is reachable (`encounter`, next in Phase 2) the endpoint is URL-keyed so it doesn't matter — say so at the call site instead of leaving it implicit. Pin it with a reducer-driven test mirroring `changes.test.ts:201-246`, using `SINGLETON_ROW_ID`.
+
+**Minor — `changes.ts:224-260`:** the dispatch now has three interacting rules (last-write-wins, orphan drop, op switch) and the ordering test at `changes.test.ts:131` still only exercises a well-formed log. The cross-op dedupe test (`changes.test.ts:261-276`) covers first-appearance position, so coverage is adequate — but a single case combining a duplicate rowId *and* a supplied baseline would close the last uncovered interaction cheaply.
+
+### Assessment
+
+**Task quality: Needs fixes.** The fix wave is high quality — every round-1 finding is closed at the root, mirrors the sibling modules rather than patching symptoms, and is pinned by tests that drive the real reducer — but the implementer's own disclosed gap is a reachable duplicate-clinical-row create for a rowId the baseline provably holds, one condition away from fixed in a function that now already receives the baseline, and it lands on the exact type Phase 2 ports next.</result>
+<usage><subagent_tokens>128982</subagent_tokens><tool_uses>8</tool_uses><duration_ms>207550</duration_ms></usage>
+</task-notification>
+
+---
+
+<task-notification>
+<task-id>ae86f1bb0d9380548</task-id>
+<tool-use-id>toolu_0182QQNFtrDkVL2pBodDexVU</tool-use-id>
+<output-file>/private/tmp/claude-501/-Users-bodhishthomas-code-care-fe/2dabe7d0-29e9-45a7-8554-462aec27da99/tasks/ae86f1bb0d9380548.output</output-file>
+<status>completed</status>
+<summary>Agent "Implement P1 Task 5: differ" finished</summary>
+<note>A task-notification fires each time this agent stops with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>
+<result>Status: DONE.
+
+New commit: `a711b5a8f` — `fix(questionnaire-v2): reclassify an add colliding with baseline to update`
+
+Verification: `npm run test:unit` 110/110 pass (23 in `resolveChanges` suite, including the reducer-driven `SINGLETON_ROW_ID` regression test and the combined last-write-wins/orphan-drop/op-switch test); `tsc --noEmit` clean both configs; eslint/prettier clean.
+
+Concerns: none remaining — no further self-flagged gaps; report appended to `/Users/bodhishthomas/code/care_fe/.superpowers/sdd/task-5-report.md`.</result>
+<usage><subagent_tokens>268704</subagent_tokens><tool_uses>20</tool_uses><duration_ms>278369</duration_ms></usage>
+</task-notification>
+
+---
+
+<task-notification>
+<task-id>a4432bb5bb62f03b7</task-id>
+<tool-use-id>REDACTED</tool-use-id>
+<output-file>/private/tmp/claude-501/-Users-bodhishthomas-code-care-fe/2dabe7d0-29e9-45a7-8554-462aec27da99/tasks/a4432bb5bb62f03b7.output</output-file>
+<status>completed</status>
+<summary>Agent "Backend E2E structured fixtures" finished</summary>
+<note>A task-notification fires each time this agent stops with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>
+<result>Committed cleanly, only the fixture script changed; the pre-existing unrelated diffs in the working tree were left untouched.
+
+Status: complete. Commit `20941c5a3` "Add structured-type E2E fixtures: per-type, unknown-plugin, kitchen-sink, patient-subject" on `bodhi/ENG-737-test-fixtures` in `/Users/bodhishthomas/code/care`.
+
+Verification: ran the script twice via `docker compose exec backend`. Run 1 created all 19 new questionnaires; run 2 was a complete no-op (every slug "exists, skipping", zero errors). psql on port 5433 confirms `count(*)=1` per new slug (no dupes). Also verified all 19 through the live API (`GET /api/v1/questionnaire/{id}/`, admin bearer) — correct `subject_type`, `structured_type` per question, and `required` flags round-tripped exactly as authored.
+
+Constraint check: `structured_type` has no backend validation (`spec.py:165` TODO), so the namespaced plugin id `x_e2e.missing` passes through untouched — no STOP needed.
+
+New slugs: `e2e-structured-{allergy_intolerance,symptom,diagnosis,medication_request,medication_statement,encounter,appointment,files,time_of_death,service_request,charge_item}`, plus `-required` variants for `medication_statement`, `encounter`, `appointment`, `files`, `time_of_death` (the five types the design doc's §10 calls out as going from zero to full test coverage — required-block validation needs its own fixture since fixtures can't be toggled live; the other six already have row-level validation specs), `e2e-structured-unknown` (required, `x_e2e.missing`), `e2e-structured-kitchen-sink`, and `e2e-subject-patient` (instance-scoped, since patient subject type is instance-only).
+
+Full slug/question-id/link_id inventory written to `/private/tmp/claude-501/-Users-bodhishthomas-code-care-fe/2dabe7d0-29e9-45a7-8554-462aec27da99/scratchpad/backend-fixtures-report.md`; raw API bodies in the same directory's `api_verify.json`.
+
+Concerns: the questionnaire list endpoint's `?slug=` filter is silently ignored (no `slug` field on `QuestionnaireFilter`) — matches the design doc's known §9 hand-off gap; frontend must keep using the paginated `getQuestionnaireIdBySlug` scan. `fillHardBlock.spec.ts` currently authors both required and optional broken-slot variants live; I only added the required one per the task spec — a non-required companion isn't in this fixture set if that spec migrates too.</result>
+<usage><subagent_tokens>155901</subagent_tokens><tool_uses>66</tool_uses><duration_ms>862648</duration_ms></usage>
+</task-notification>
+
+---
+
+<task-notification>
+<task-id>ae49a02616be3e527</task-id>
+<tool-use-id>REDACTED</tool-use-id>
+<output-file>/private/tmp/claude-501/-Users-bodhishthomas-code-care-fe/2dabe7d0-29e9-45a7-8554-462aec27da99/tasks/ae49a02616be3e527.output</output-file>
+<status>completed</status>
+<summary>Agent "Review P1 Task 5" finished</summary>
+<note>A task-notification fires each time this agent stops with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>
+<result>Final gate verified by execution.
+
+### Spec Compliance
+
+All five items confirmed:
+
+1. **End-to-end probe now agrees.** Re-ran the exact scenario (add minted with `baseline` absent → baseline resolves → later `update` → reducer leaves `op: "add"`): `resolveChanges` returns `creates:[], updates:[{note:"typed some more"}]`. `projectRows` shows 1 row, `origin="baseline"`; submit carries 1 datapoint. Agreement on **count and content** both true, `creates.length === 0`. The fix at `changes.ts:303-305` is the one condition I simulated.
+2. **Non-breaking, as simulated.** Executed all three shipped add-related cases against the fixed code: add with no baseline → `creates`; add with a non-colliding baseline → `creates`; P1-14 extended → three empty sets. Full suite 110/110 (up from 108, exactly the two new cases). `tsc` both configs exit 0, `eslint` 0, `prettier` clean.
+3. **The caveat is stated and true, not aspirational.** `changes.ts:56-67` states it at the call site (`ResolvedChanges.updates`' doc), reachable from the dispatch via the pointer at `changes.ts:301-302`. Verified against the real endpoint: `definitions/encounter.tsx:48-59` is `PUT /api/v1/encounter/${encounterId}/` with a body that enumerates `status`/`encounter_class`/`period`/… and **no `id` field at all** — so an id-less row is genuinely harmless there. The comment also correctly refuses to generalize ("a per-endpoint fact this function does not itself guarantee for every future caller"), which keeps it inside the *op-semantics-stop-here* constraint rather than claiming wire behavior.
+4. **The regression test is genuinely reducer-driven and would have failed before.** `changes.test.ts:279-322` calls `applyEditToLog` twice — first with **no options object at all** (the mandated "still loading" shape), then with the resolved baseline — asserts the intermediate `op: "add"` collision shape as a sanity check, and uses `SINGLETON_ROW_ID` imported from `./rowIds`. Simulating the pre-fix dispatch (`creates.push(resolved.patch)`) against the same reducer-built log yields `creates:[{note:"typed some more"}]`, so the test's `assert.deepEqual(result.creates, [])` **would fail against 0a1de95a6**. Confirmed, not assumed.
+5. **The combined test exercises the rule interaction, and is falsifiable.** `changes.test.ts:328-350` builds `[remove("resurrected"), add("ghost"), update("resurrected"), remove("ghost")]` where both rowIds change op between first and last appearance — so last-write-wins, the orphan-drop rule, and the op switch must all cooperate. I ran the counterfactual where orphan status is decided by the *first-seen* op instead of the resolved one: it leaks `removes:[{rowId:"ghost"}]`, which the test's `assert.deepEqual(result.removes, [])` catches. The assertion is load-bearing, not incidental.
+
+### Strengths
+
+- The fix is the minimal correct one — a single dispatch condition (`changes.ts:303-305`) rather than a new branch — and it lands on the side the codebase already argued for: `editLog.ts:249-253` names a wrongly-emitted `add` the worse of the two mistakes, and this now defers to the same baseline that `projectRows.ts:132-142` uses for the identical collision.
+- `changes.ts:227-244` explains *why* the reducer can't fix this itself (`coalesceOntoAdd` is the one arm Task 3's `resolveOpAgainstBaseline` never touched), which is the durable insight — it tells a future reader why the check must live at submit time rather than in the log.
+- The residual risk is disclosed rather than smoothed over: the reclassified row is the add's patch verbatim, that may lack `id`, that this is safe for URL-keyed endpoints only, and that a non-URL-keyed type's `toRequests` must re-verify. Three rounds in, this file's comments now under-claim rather than over-claim — the opposite of where round 1 started.
+- All three of my round-1 findings and the round-2 adjudication are closed at the root, each pinned by a test that drives the real reducer, so they fail loudly if Task 3's behavior shifts underneath them.
+
+### Issues
+
+**Minor — `changes.ts:63`, `changes.test.ts:279-322`: `encounter` is named as "the singleton keyed by `SINGLETON_ROW_ID`", which the design source supports but the code does not yet.** `p1-state-core.md:22` and `:1121` do class `encounter` as the singleton, and `:891` says singletons return the constant rowId — so this is annex-backed, not invented. But `rowIds.ts:19-25` names only `appointment` and `time_of_death`, and no type is ported yet, so the specific attribution is a forward reference that Phase 2 could invalidate. The reachability argument does not depend on it: the collision holds for *any* type using `SINGLETON_ROW_ID`, including the two `rowIds.ts` does name. Cosmetic — worth a hedge word if that file is touched again, not worth a commit of its own.
+
+No other issues. Round-1 and round-2 verified items (merge order, key omission, ordering, purity, orphan rule, dedupe, extended P1-14, harness purity) were re-run and all still hold.
+
+### Assessment
+
+**Task quality: Approved.** The Critical I adjudicated is fixed at the root with the minimal correct change, verified by execution end-to-end through the real reducer — the reclassification lands in `updates`, `projectRows` and `resolveChanges` now agree on count and content in every scenario I could construct across three rounds, the regression test provably fails against the prior commit, and the one caveat I asked for is stated at the call site and true of the actual `encounter` endpoint. Green on all four gates (110/110 unit, tsc both configs, eslint, prettier). Clean — clear to proceed to Tasks 6-8.</result>
+<usage><subagent_tokens>146569</subagent_tokens><tool_uses>8</tool_uses><duration_ms>144541</duration_ms></usage>
+</task-notification>
+
+---
+
+<task-notification>
+<task-id>a80033a93a77f8bb9</task-id>
+<tool-use-id>toolu_01Gh4hSvT7t1ABjv8ho6cddW</tool-use-id>
+<output-file>/private/tmp/claude-501/-Users-bodhishthomas-code-care-fe/2dabe7d0-29e9-45a7-8554-462aec27da99/tasks/a80033a93a77f8bb9.output</output-file>
+<status>completed</status>
+<summary>Agent "Draft Phase 2 plan" finished</summary>
+<note>A task-notification fires each time this agent stops with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>
+<result>Status: done. No source files touched, no commits, no builds.
+
+**Wrote:** `/Users/bodhishthomas/code/care_fe/docs/superpowers/plans/2026-08-04-phase2-ports-simple.md`
+
+**Tasks:** 1 Phase-1 landing gate + structured fixture map · 2 `time_of_death` → v2 · 3 `appointment` model (P1-16 differ + slot rule) · 4 `StructuredFieldError` + `appointment` editor → v2 · 5 `charge_item` model (response-backed, one display strip) · 6 `StructuredList` + `charge_item` editor → v2 · 7 `encounter` model (pure `normalizePatch`/differ) · 8 `encounter` editor → single-row v2 · 9 `files` → v2 (sole draft-exclude) · 10 Playwright matrix: singletons · 11 Playwright matrix: lists + mobile card · 12 Invariant specs (zero-upsert, refetch safety, structured-only dirtiness) · Checkpoint.
+
+**Conflicts found and resolved (all recorded in an "Annex reconciliation" section):**
+- `toRequests` signature: `p1-shim` §a.3 `(edits, ctx)` vs `p1-state-core` §§12/14/15 `(StructuredEditInputFor, ctx)` reading `projection[0]`. Shim wins (spec §5 + Phase 1 Task 6 cite it); `projection[0]` reads become `resolveChanges(edits,{}).updates[0] ?? .creates[0]`, legal because `patch` is the complete row.
+- `resolveChanges`: annex §11's `(input, rowIdOf) =&gt; RowChange[]` vs the **landed** `changes.ts` `(log, options) =&gt; {creates,updates,removes}`. Landed code wins.
+- List row view: annex `StructuredRow` vs landed `ProjectedRow` (`core/types.ts:46-61`). Landed wins; annex names mapped, no second row view.
+- Annex §14 seeds `?toDischarge` with a *partial* patch — impossible under the canonical vocabulary. Resolved by gating the encounter hook's mount on the resolved query, which also discharges the baseline-completeness contract.
+- `p1-shim` §a.3 claims no `TRow extends object` constraint is needed; the landed core constrains it, so `StructuredDataMap.time_of_death: string` must widen to an object row (with `ResponseValue` widened to `string[] | TimeOfDeathRow[]` so the still-compiled legacy widget isn't touched before Phase 5).
+
+**Honest scope call:** `AddEntityControl` and `RowStatusSelect` have **no** genuine Phase-2 consumer (all their forks are Phase 3/4 types) — deferred, with reasons, and the master plan's bullets flagged for update. Flagged as must-verify, not guessed: the fixture slugs/link_ids/labels (Task 1 Step 3), and whether Phase 1 Tasks 6–8 have landed at all — currently only Tasks 1–5 are on the branch.</result>
+<usage><subagent_tokens>293041</subagent_tokens><tool_uses>46</tool_uses><duration_ms>1152591</duration_ms></usage>
+</task-notification>
+
+---
+
+<task-notification>
+<task-id>aa972cd7465182366</task-id>
+<tool-use-id>toolu_01TVMHsVr7SLhqVmkKkSvnTF</tool-use-id>
+<output-file>/private/tmp/claude-501/-Users-bodhishthomas-code-care-fe/2dabe7d0-29e9-45a7-8554-462aec27da99/tasks/aa972cd7465182366.output</output-file>
+<status>completed</status>
+<summary>Agent "Implement P1 Task 6: contract union" finished</summary>
+<note>A task-notification fires each time this agent stops with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>
+<result>Status: DONE (both original task and reviewer's requested fix).
+
+New commit SHA + subject: `0c8ffd326` — "fix(questionnaire-v2): refuse contract-v2 plugin registrations for the Phase-1 lifetime"
+
+One-line verification: `npm run test:unit` 144/144 pass (incl. 2 new refusal cases + 3 new cross-check cases), both `tsc --noEmit` configs clean, `npm run lint` 0 errors/400 warnings (unchanged baseline).
+
+Concerns: none outstanding — `composeBatch.ts`/`validateStructured.ts` left untouched as instructed (Task 8's remit); the v2 plugin path is now closed at the registration boundary rather than left to resolve-and-drop.</result>
+<usage><subagent_tokens>274387</subagent_tokens><tool_uses>21</tool_uses><duration_ms>473375</duration_ms></usage>
+</task-notification>
+
+---
+
+<task-notification>
+<task-id>a6169ac5a1e14c39f</task-id>
+<tool-use-id>REDACTED</tool-use-id>
+<output-file>/private/tmp/claude-501/-Users-bodhishthomas-code-care-fe/2dabe7d0-29e9-45a7-8554-462aec27da99/tasks/a6169ac5a1e14c39f.output</output-file>
+<status>completed</status>
+<summary>Agent "Review P1 Task 6" finished</summary>
+<note>A task-notification fires each time this agent stops with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>
+<result>### Spec Compliance
+
+The fix is exactly option (a) from my finding, scoped to 3 files (`git show 0c8ffd326 --numstat`: `contract.test.ts +27`, `pluginRegistry.test.ts +58`, `pluginRegistry.ts +26/-1`). Gates re-run by me on the current tree: `npm run test:unit` → `tests 144, suites 19, pass 144, fail 0`; `npx tsc --noEmit` → exit 0; `npx tsc --noEmit -p tests/tsconfig.json` → exit 0; `npx eslint` and `npx prettier --check` on the three changed files → clean.
+
+**1. The silent drop is gone — verified by re-running the exact probe.** Registering the `contract: 2` plugin now logs `Plugin structured type "probe.v2" declares contract v2, which this host does not support yet; skipping it` and nothing enters the map. Same probe, before vs. after:
+
+- before: `composeBatch urls = ["/api/v1/legacy/"]`, `validateStructured errors = [{"question_id":"q1","error":"v1 validate ran"}]` — q2's recorded rows vanished with no signal.
+- after: `validateStructured errors = [{"question_id":"q1",…},{"question_id":"q2","error":"structured_section_unavailable_required"}]`.
+
+A third probe pins the degradation precisely: `resolveStructuredSlotState("probe.v2", …).kind === "unknown_type"`. So the clinician experience is now — **required question**: the slot renders the `unknown_type` notice (`StructuredSlot.tsx` reads that same state) and `collectStructuredErrors` (`validateStructured.ts:80-89`) raises `structured_section_unavailable_required` naming the section, which hard-blocks the whole submit; no success toast, nothing silently omitted. **Optional question**: probed at `required: false` → `validate errors = []`, `composeBatch urls = []` — skipped, but behind a visible notice that says its entries will not be submitted, which is the documented, intentional behavior for every unresolvable type (`registry.ts` `StructuredSlotState` doc).
+
+**2. v1 path still intact end-to-end.** Same run: the no-`contract` plugin still resolves to `contract = 1`, `composeBatch urls = ["/api/v1/legacy/"]`, `v1 validate ran`. Identity probe unchanged too: `stable identity across calls = true`, `new identity after re-register = true`, all 11 core types `contract 1`, `core diagnosis stable = true`.
+
+**3. Refusal shape matches the sibling.** `pluginRegistry.ts:167-172` is `console.error(...)` + `return noopCleanup` — no throw, structurally identical to the ownership refusal at `:145-150`, and placed after it so a cross-namespace v2 definition still reports the ownership problem first. Probed: calling the returned cleanup does not throw (`cleanup is a function, calling it throws? = false`). The `PLUGIN_STRUCTURED_TYPE_PATTERN` throw at `:139-143` is untouched, so the "one bad definition never takes the app down" property holds. The comment names what lifts it: `pluginRegistry.ts:164-166` — "Lift this once Task 8 lands the real v2 fork (or … no later than Phase 5, when v2 becomes the only contract)" — plus a pointer from the function's doc comment at `:133-134`.
+
+**4. The new tests genuinely pin the behavior.** Both new cases run and pass by name (`a contract-v2 plugin definition is refused for the Phase-1 lifetime`, `a contract-v2 refusal does not affect a v1 registration under the same owner`); the second is the one that matters for plugin isolation — it proves the refusal doesn't poison a sibling v1 registration from the same owner. The `makeV2Definition` factory (`pluginRegistry.test.ts:96-107`) is honestly typed as `PluginStructuredTypeDefinitionV2`, not cast, so it is a real compile-time exercise of the v2 arm.
+
+I mutation-tested the cross-check rather than trusting it — copied `contract.ts`/`contract.test.ts` to scratchpad and broke the copy:
+- Mutant A (`normalizeContract` returns 2 for absent): `tests 9, pass 7, fail 2` — killed, including `agree for contract = undefined`.
+- Mutant B (`isV2Definition` treats absent as v2): `tests 9, pass 7, fail 2` — killed by the same case.
+
+So the cross-check would fail on divergence in either direction.
+
+**5. Task 8's files untouched.** `composeBatch.ts` and `validateStructured.ts` do not appear in the commit's numstat, and both stubs still stand with their markers: `composeBatch.ts:79` / `:95` and `validateStructured.ts:100` / `:108`.
+
+### Strengths
+
+- The chosen fix removes the hazard at the source instead of patching the symptom in Task 8's files: the guard branches at `composeBatch.ts:95` and `validateStructured.ts:108` are now genuinely unreachable *by construction* (no core definition is v2 and no plugin can register as v2), which makes the original report's claim true rather than aspirational.
+- The refusal reuses an existing, tested degradation path rather than inventing one, so there is no new UI or error vocabulary to review.
+- The Minor was fixed with a parametrized cross-check rather than by weakening the divergence disclosure.
+
+### Issues
+
+**Minor (residual, not introduced by the fix) — the cross-check pins `contract.ts` to itself, not to `registry.ts:219-225`.** `contract.test.ts:46-53` compares `normalizeContract(c)` against `isV2Definition({contract: c}) ? 2 : 1`, reconstructing the registry's *pattern* rather than importing the registry (which it cannot, under the node:test harness rule). A future edit that flipped the registry's own ternary would pass every unit test. This is inherent to the harness constraint and the comment at `:30-43` is honest about it; the real coverage for that line is the Playwright fill/structured specs. No action needed in Task 6.
+
+**Minor — a v1→v2 upgrade in place leaves the old v1 registration live.** If a plugin re-registers an already-registered type as `contract: 2`, the refusal returns before the last-wins `pluginTypes.set` (`:173-181`), so the previously registered v1 definition keeps serving. That is the safe outcome (the alternative is dropping a working type), and the `console.error` is emitted, but it is worth knowing when Task 8 lifts the gate. Not a defect.
+
+### Assessment — Task quality: Approved
+
+The Important finding is fixed at the right layer and the fix is verified by execution, not assertion: a `contract: 2` registration is now refused with the same console.error + no-op-cleanup shape as the ownership check, degrades to `unknown_type` with a visible notice and a hard block on required questions, and the v1 path — plugin and core — is byte-for-byte the behavior it had before Task 6, with all gates green and both mutation tests killed. Task 8 can proceed; it should delete both TEMPORARY stubs and the Phase-1 gate at `pluginRegistry.ts:151-172` together.</result>
+<usage><subagent_tokens>161963</subagent_tokens><tool_uses>13</tool_uses><duration_ms>200392</duration_ms></usage>
+</task-notification>
+
+---
+
+<task-notification>
+<task-id>a29a3cde214c3e519</task-id>
+<tool-use-id>toolu_01M9f3bZxc2hxbNa1aDdcpht</tool-use-id>
+<output-file>/private/tmp/claude-501/-Users-bodhishthomas-code-care-fe/2dabe7d0-29e9-45a7-8554-462aec27da99/tasks/a29a3cde214c3e519.output</output-file>
+<status>completed</status>
+<summary>Agent "Implement P1 Task 7: useStructuredRows" finished</summary>
+<note>A task-notification fires each time this agent stops with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>
+<result>Report appended. Final reply:
+
+Status: DONE — all four review findings fixed and verified.
+
+Commit: `c540a5602` — `fix(questionnaire-v2): fix the initialEdits seed latch and extract the hook's mutator dispatches to pure siblings` (on top of `3b41fe4fd`, base `f2342dd1f`).
+
+Verification: tsc clean (both configs), `npm run lint` clean, react-hooks/exhaustive-deps re-verified via the same temporary local override (0 errors), `npm run test:unit` 175/175 green (36 new tests: `toBaselineMap`, `mergePatch`, `resolveRemoveIntent` incl. the loading-window case built on real `projectRows`, `resolveSetRow`, `decideInitialEditsSeed` incl. the exact wait→seed regression shape).
+
+Concerns: item 1's fix and item 2's extractions are done as prescribed; item 3 fixed by dropping the `lastWritten` ref in favor of comparing against `response?.values` directly (simpler, fixes both the mount bug and the original redundant-write case); item 4 documented + pinned with a test. `mode: "single"`'s missing at-most-one-row truncation is recorded in the report for Phase 2, no code changed. `useSetQuestionProjection` deferral stands as your recorded carry-forward.</result>
+<usage><subagent_tokens>419774</subagent_tokens><tool_uses>42</tool_uses><duration_ms>1019060</duration_ms></usage>
+</task-notification>
+
+---
+
+<task-notification>
+<task-id>aa5086c92b7198daa</task-id>
+<tool-use-id>REDACTED</tool-use-id>
+<output-file>/private/tmp/claude-501/-Users-bodhishthomas-code-care-fe/2dabe7d0-29e9-45a7-8554-462aec27da99/tasks/aa5086c92b7198daa.output</output-file>
+<status>completed</status>
+<summary>Agent "Review P1 Task 7" finished</summary>
+<note>A task-notification fires each time this agent stops with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>
+<result>**Verdict: Approved.** All five findings are fixed and verified by execution; 175/175 green, both tsc configs clean, exhaustive-deps clean with the rule proven active.
+
+## Spec Compliance
+
+**1. Critical (`initialEdits` latch) — fixed, verified end-to-end.** I built a React-semantics simulator (real `projectRows`/`applyEditToLog`/`toBaselineMap`/`decideInitialEditsSeed`, real `useQuestionResponse` merge-and-clear-errors setter) and ran the encounter `?toDischarge` timeline — mount with the baseline unresolved (seed unconstructible), then the query resolves and the caller supplies the full-row seed — against both the old and new effect bodies:
+
+- old: `edits after load = []`, `seeded=true` — intent dropped, exactly as I reported.
+- new: `edits after load = [{rowId:"enc-1",op:"update",patch:{…status:"discharged"}}]` — applied, once.
+
+The regression test the implementer claims would have failed against `f2342dd1f` does: `decideInitialEditsSeed([], undefined) === "wait"` is the assertion the old code violated by latching at that moment (`rowMutations.test.ts:264-277`; the function did not exist at `f2342dd1f`, and my simulation reproduces the old drop directly). Also executed: a restored draft still wins over a later-arriving seed (`edits` keeps the clinician's draft, `seeded=true`); the seed applies exactly once — after `resetEdits` plus a baseline refetch the log stays `[]`, no re-seed. `useStructuredRows.ts:359-372` latches only on `"skip"`/`"seed"`.
+
+**2. The four extractions — genuine, and behavior-preserving.** `rowMutations.ts` holds the real decisions (`resolveRemoveIntent` `:81-93`, `resolveSetRow` `:131-163` with the `throw` moved inside, `mergePatch` `:37-44`, `decideInitialEditsSeed` `:201-208`); `toBaselineMap` is now a tested function (`editLog.ts:26-31`). The hook's bodies are find-entry → resolver → `commit` (`:441, 458, 470, 499`). I ran an equivalence matrix of the pre-fix inline code against the new resolvers: baseline+softDelete, baseline-no-softDelete, added+softDelete, already-soft-deleted, and three `setRow` routes — **all IDENTICAL**. The loading-window divergence I flagged is unchanged and now pinned end-to-end through the *real* `projectRows` (`rowMutations.test.ts:140-167`); I re-executed it and got the same soft-delete `update` from both old and new.
+
+**3. Passive effect — first-mount wipe fixed, no new problem.** Executed four scenarios, old vs new:
+
+| scenario | old writes / error-clears | new |
+|---|---|---|
+| remount, `response.values` already matches the projection | 1 / 1 | **0 / 0** |
+| mount empty → baseline arrives (legitimate change) | 1 then 2 | 0 then **1** |
+| one `commit`-driven edit | 2 total | 2 total (no double write) |
+| `projectValues` returning fresh arrays every call | — | renders 2, writes 1 (**no thrash**) |
+| empty projection on mount | — | 0 writes |
+
+Comparing against `response?.values` (`:346`) is correct on the first render and after every `commit` (the atom holds the array `commit` wrote, and the recomputed one is content-equal), so it neither skips a needed write nor loops. `edits` are still never touched by this effect.
+
+**4. `normalizePatch` contract** — documented at the option's own doc site (`useStructuredRows.ts:152-163`, including the `{...patch, ...derived}` rule and the annex §14 reference) and pinned by a real failing-shape test (`rowMutations.test.ts:64-78` asserts the clinician's `note` edit is dropped).
+
+**5. Minors** — `addRows` commits only when an edit actually ran (`:419`); the guard is sound because `applyEditToLog` returns a fresh array on every path, including the canonicalize-away one (`editLog.ts` `appendFresh` returns `log.slice()`). The two-mutators-one-handler caveat is at the module doc site (`:91-102`).
+
+**6. Regression** — `npm run test:unit` 175/175, 26 suites. `git diff --numstat` on the fix commit: the only test-file deletions are two import lines; every other test change is an addition (278 new lines in `rowMutations.test.ts`, 38/2 in `editLog.test.ts`). No assertion weakened. `npx tsc --noEmit` clean on root and `tests/tsconfig.json`. Under a config that puts `react-hooks/*` on `**/*.ts`, the shipped hook emits nothing while a deliberately broken deps array on a copy warns at `:463` — so the check was live.
+
+## Strengths
+
+- The `"seed" | "wait" | "skip"` shape is a better fix than the minimal one: it makes "a restored draft always wins" and "wait for the seed to become constructible" two separately testable facts rather than one latch ordering.
+- Dropping `lastWritten` for a comparison against the atom's own content is genuinely simpler than what I asked for, and it closes both the mount wipe and the redundant post-`commit` write with one predicate.
+- The extractions kept their rationale attached: `rowMutations.ts:67-79` documents the loading-window divergence from the annex *as* a divergence, with the reasoning, rather than silently encoding it.
+
+## Issues (Minor only)
+
+- **`mergePatch` changes behavior for a `normalizePatch` that returns `undefined`** (`rowMutations.ts:42`): the old form was `normalizePatch?.(…) ?? patch`, which fell back to the incoming patch; the new `normalizePatch ? normalizePatch(…) : patch` spreads `undefined` and silently discards the edit. Executed: old ⇒ `{id:"r1",note:"typed"}`, new ⇒ `{id:"r1",note:"old"}`. Type-illegal input, so unreachable from typed callers — but plugin definitions cross an `unknown` boundary. One `?? patch` restores it.
+- **`clearRow` now consults `softDelete`** (`useStructuredRows.ts:499`, was an unconditional `remove`): for a singleton type with `softDelete` configured it now records a marker `update`. More consistent with `removeRow`, and disclosed in `rowMutations.ts:51-52`, but it is a semantic change rather than a pure extraction and the addendum's change list does not name it. No live consumer (no v2 type ships in Phase 1).
+- **The seed loses to a clinician edit that lands during the baseline-load window** (executed: edits during load ⇒ `"skip"`, seed dropped). Spec-consistent with "only when the log is empty", and unreachable for encounter (its editor renders a skeleton until `single.row` exists, annex §14) — worth a line in the Phase 2 port notes.
+
+Still open by prior agreement, unchanged: the `useSetQuestionProjection` store split (plan carry-forward — the refetch-clears-errors window is now the only remaining error-clear path, since the mount path is fixed), and `mode: "single"` truncation, which the addendum records for Phase 2 with both options spelled out.
+
+## Assessment — Task quality: Approved
+
+Every finding from the first pass is closed, each fix is confirmed by running the real modules rather than by reading the report, and the extraction is provably behavior-identical on the cases that mattered; the three residual Minors are unreachable from typed, currently-shipping code.</result>
+<usage><subagent_tokens>198330</subagent_tokens><tool_uses>14</tool_uses><duration_ms>399620</duration_ms></usage>
+</task-notification>
+
+---
+
+<task-notification>
+<task-id>a29a3cde214c3e519</task-id>
+<tool-use-id>REDACTED</tool-use-id>
+<output-file>/private/tmp/claude-501/-Users-bodhishthomas-code-care-fe/2dabe7d0-29e9-45a7-8554-462aec27da99/tasks/a29a3cde214c3e519.output</output-file>
+<status>completed</status>
+<summary>Agent "Implement P1 Task 7: useStructuredRows" finished</summary>
+<note>A task-notification fires each time this agent stops with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>
+<result>Report appended.
+
+Status: DONE — all three residual minors addressed (fixed #1, documented #2, recorded #3).
+
+Commit: `94940e1aa` — `fix(questionnaire-v2): restore mergePatch's normalizePatch-undefined fallback`
+
+Verification: `npm run test:unit` 177/177 green (2 new regression tests); `tsc --noEmit` clean both configs; `npm run lint` clean.</result>
+<usage><subagent_tokens>424675</subagent_tokens><tool_uses>14</tool_uses><duration_ms>342178</duration_ms></usage>
+</task-notification>
+
+---
+
+<task-notification>
+<task-id>a0bf0cd767f2c607f</task-id>
+<tool-use-id>toolu_018TVmpYzgoMf7gzrEGB1fuC</tool-use-id>
+<output-file>/private/tmp/claude-501/-Users-bodhishthomas-code-care-fe/2dabe7d0-29e9-45a7-8554-462aec27da99/tasks/a0bf0cd767f2c607f.output</output-file>
+<status>completed</status>
+<summary>Agent "Implement P1 Task 8: shim forks" finished</summary>
+<note>A task-notification fires each time this agent stops with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>
+<result>Status: Done, all four review items addressed and verified green.
+
+Commit: `7154d118f` — `fix(questionnaire-v2): pin the untyped-structured draft gate and subscribe to the plugin registry`
+
+Verification: `npm run test:unit` 184/184 pass, `tsc --noEmit` clean (root + tests), `npm run lint` 0 errors — untyped-structured-question drift fixed and pinned with a new test, registry-version subscription added, plugin test cleanup restored, and the orphan-forwarding caveat recorded (no code) in the appended report section.</result>
+<usage><subagent_tokens>348164</subagent_tokens><tool_uses>31</tool_uses><duration_ms>620336</duration_ms></usage>
+</task-notification>
+
+---
+
+<task-notification>
+<task-id>bnlpwvhsk</task-id>
+<tool-use-id>toolu_01Afn8tHE9sfR4o17wtew1dp</tool-use-id>
+<output-file>/private/tmp/claude-501/-Users-bodhishthomas-code-care-fe/2dabe7d0-29e9-45a7-8554-462aec27da99/tasks/bnlpwvhsk.output</output-file>
+<status>completed</status>
+<summary>Background command "Phase 1 checkpoint sweep — full questionnaire surface" completed (exit code 0)</summary>
+</task-notification>
+
+---
+
+Can we build out everythign else that was pending
+
+---
+
+<task-notification>
+<task-id>a97b8b7dd6f49a9f4</task-id>
+<tool-use-id>toolu_018LaoYNgVugpgHaspNjWEuz</tool-use-id>
+<output-file>/private/tmp/claude-501/-Users-bodhishthomas-code-care-fe/2dabe7d0-29e9-45a7-8554-462aec27da99/tasks/a97b8b7dd6f49a9f4.output</output-file>
+<status>completed</status>
+<summary>Agent "Review P2 Task 2: first v2 port" finished</summary>
+<note>A task-notification fires each time this agent stops with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>
+<result>**Needs fixes** — the vertical is sound and unusually well-evidenced (P1-14, the draft flip, and the registry bookkeeping all verified by execution), but the projection and the differ apply two different emptiness predicates, and the disclosed Mode seam was resolved the wrong way with a comment that instructs three later ports to copy it.
+
+All findings were produced against a `git archive dc442eaf9` snapshot (the working tree drifted under Task 3 mid-review; HEAD has since moved to `f7fea0409`). Nothing in the repo was mutated.
+
+### Spec Compliance
+
+| Obligation | Verdict |
+|---|---|
+| N2 row widening (`StructuredDataMap.time_of_death` → object) | Met (`structured/types.ts:48`) |
+| N4.2 widen the `ResponseValue` arm rather than replace | Met, and **proven load-bearing**: narrowing the arm to `TimeOfDeathRow[]` in the snapshot fails `DeathQuestion.tsx:25` (read cast) and `:32` (write) — the report's claim holds by execution, not assertion |
+| N1 `toRequests(edits, ctx)`, no `validate` needed | Met (`definitions/timeOfDeath.tsx:18`) |
+| N3/D2 `draftPolicy: "serialize"` | Met and round-tripped end to end |
+| N6 no `structured/types/index.ts` | Met |
+| `structuredReferenceId` reference-id format | Met (`model.ts:46`) |
+| BASELINE COMPLETENESS CONTRACT ("`[]` is honest for the create-only types") | **Diverges** — see Important 3 |
+| PROJECTION AND SUBMIT MUST AGREE | **Violated** for one reachable input — see Important 1 |
+| "Targeted Playwright specs per commit" (Global Constraints); brief Step 10 | **Not evidenced** — the report records RED/GREEN, `tsc` ×2 and lint, but never claims the `structuredRendering.spec.ts -g "time_of_death"` run |
+| `rg "contract: 1" .../definitions` = 10 | Verified: 10, exactly one `contract: 2`, no `buildRequests` left on the definition |
+
+Independently re-verified: `npm run test:unit` → **197/197, 29 suites** (matches the report exactly); `npx tsc --noEmit` clean on the snapshot except the pre-existing generated-module miss (`@/supportedBrowsers`); `eslint` on all five changed paths → exit 0.
+
+### Strengths
+
+- **P1-14 holds at two layers, by execution.** `toRequests([], ctx)` → `[]`, and `composeStructuredV2Requests` never invokes `toRequests` at all on an empty log (instrumented spy: **0 invocations**). The type's own differ is never the sole line of defence.
+- **The `draftPolicy` flip is genuinely proven, not asserted.** Driving the real registry + real draft seams: `resolveStructuredType("time_of_death")` → `{contract: 2, draftPolicy: "serialize", toRequests present, buildRequests absent}`; `unsupportedDraftStructuredTypes([todQuestion], resolveStructuredType)` → `[]` (server drafts unblocked); `draftResponseForStorage` stores `values: []` **with** the edit log — the stored draft carries EDITS, not the projection; `draftResponseHasContent` → true (P1-3 not inverted); `safeSessionSignature` moves on a structured-only edit **and is stable across a values-only baseline refresh**; JSON round-trip → `mergeDraftIntoSeed` → re-projects to the identical value.
+- **The editor actually mounts.** SSR-rendered with a store seeded from a restored draft (`values: []`, one `add` edit): one `&lt;input type="datetime-local"&gt;`, `aria-label="Time of Death"`, **no `&lt;label&gt;` element** (so `structuredRendering.spec.ts:85-91`'s "exactly one label" assertion is satisfied), `disabled` propagates, and the restored value renders from the edit log alone.
+- **Risk 4 is provably closed, and better than the report argues.** No legacy `string[]` payload can exist anywhere: the pre-port definition was `draftPolicy: "exclude"` (never entered a local draft); local drafts additionally gate on `SCHEMA_VERSION`; and the deleted legacy `QuestionnaireForm.tsx` (commit `6c472659f`) refused to save a server draft containing **any** structured question, as does `unsupportedDraftStructuredTypes` today. Executed anyway: a hand-built legacy-shaped response yields `structuredEditsOf → []` and zero requests.
+- The Mode seam was **disclosed** rather than papered over. That is the right instinct even though the resolution is wrong.
+
+### Issues
+
+**Critical** — none.
+
+**Important**
+
+1. **`projectValues` and `toRequests` disagree about what "empty" means — a blank row reads as ANSWERED and submits NOTHING.** `model.ts:16-17` projects every row unconditionally; `model.ts:41` filters `!!row.deceased_datetime` before emitting. Executed through the real seams with an edit log carrying `{rowId:"singleton", op:"add", patch:{deceased_datetime:""}}`:
+   - `structuredEditsOf` keeps it (`structured.ts` deliberately does **not** validate `patch` — "drafts and server dumps are untrusted blobs, a dump written by an older build");
+   - `projectValues` → `[{type:"time_of_death", value:[{deceased_datetime:""}]}]`, and `entryHasContent` on that entry → **`true`** (non-empty array), which lights the outline tick and satisfies `collectRequiredErrors` (`form/validation.ts:108-111`) for a **required** time-of-death question;
+   - `composeStructuredV2Requests` → **`[]`**.
+   
+   Net: the clinician sees an answered section, required validation passes, Save succeeds, and no time of death is recorded. That is the silent-drop class this phase exists to eliminate, and the brief's own test comment (`model.test.ts:60-61`, "a hand-edited draft can still carry one") shows the input was contemplated — only the differ half was pinned. Not reachable through the UI today (`DateTimeInput.tsx:6-11` returns `undefined`, not `""`, and `TimeOfDeathEditor.tsx:44` swallows `undefined`), so this is a hardening gap, not a live bug — but it is the seam Tasks 3/7/8 will copy. One-line fix, and it makes `isEmptyRow` the single authority: `model.ts:16-17` → project `rows.filter((row) =&gt; !isEmptyRow(row))`. The editor still renders the blank input (it reads `rows`, not `values`), so nothing user-visible changes.
+
+2. **The Mode-inference ruling is wrong, and `TimeOfDeathEditor.tsx:15-21` instructs three later ports to repeat it.** Executed all variants under `tsc` against the snapshot:
+   - `useStructuredRows&lt;TimeOfDeathRow&gt;({mode:"single", …})` → `TS2322: Type '"single"' is not assignable to type '"list"'` + `TS2551: Property 'row' does not exist`. The report's diagnosis is **accurate**.
+   - `useStructuredRows&lt;TimeOfDeathRow, "single"&gt;({…})` (what landed) → compiles.
+   - **`useStructuredRows({…})` with NO type arguments → compiles, and `s.row?.row.deceased_datetime` type-checks** — `TRow` infers from `projectValues`/`createSeed`/`isEmptyRow`, `Mode` infers from the `mode: "single"` literal.
+   
+   So the answer is neither (a) nor (b): **supply zero type arguments**. TypeScript has no partial type-argument inference — supplying `TRow` explicitly is precisely what suppresses `Mode`'s inference. I also tested (b) directly: removing the `= "list"` default in the snapshot makes the one-arg form fail *clearly* (`TS2558: Expected 2 type arguments`) but **breaks every list caller that omits `mode`** (`Mode` falls back to the constraint, the conditional distributes, `s.rows` no longer exists). The default must stay; the hook needs no change. Concretely: drop `&lt;TimeOfDeathRow, "single"&gt;` at `TimeOfDeathEditor.tsx:22`, delete the `TimeOfDeathRow` type-only import at `:7`, and replace the comment at `:15-21` with the actual rule ("pass no type arguments — `TRow` infers from `projectValues`/`createSeed`, `Mode` from `mode`"). Worth relaying to Task 3 now, since `appointment` is being written against the same brief text.
+
+3. **The editor omits `baseline` entirely, so the core receives `undefined` — the "still loading / errored" signal — while the comment beside it claims `[]`.** `TimeOfDeathEditor.tsx:25-28` says "Create-only, so `[]` here is the honest complete set, not a 'still loading' stand-in (BASELINE COMPLETENESS CONTRACT)", but no `baseline` key is passed. The Phase 2 plan's Global Constraints say the opposite of what the code does: "Four of the five types here have no baseline at all (create-only), so `[]` is honest for them." Behaviourally inert for `time_of_death` today (executed both ways: identical projection and identical requests for every UI-reachable log, because the log can only ever hold an `add` for `SINGLETON_ROW_ID`), but this is the proving run — pass a module-scope `const NO_BASELINE: readonly BaselineRow&lt;TimeOfDeathRow&gt;[] = []` (module scope so `applyOpts`/`projectRows` memos stay stable), or delete the comment's `[]` claim. As written, the first port teaches the wrong signal to `appointment`, `charge_item` and `files`.
+
+**Minor**
+
+4. `structuredRows.ts:19-20` — "ISO-8601 with offset, exactly what `DateTimeInput` emits (`DateTimeInput.tsx:42`, `toISOWithTimezone`)". `toISOWithTimezone` is at `DateTimeInput.tsx:6-11` and returns `localDate.toISOString()` — always **UTC `Z`**, never an offset (verified: `new Date("2026-08-04T10:00").toISOString()` → `"2026-08-04T04:30:00.000Z"` in Asia/Calcutta). Every fixture in `model.test.ts` uses `+05:30` strings the input cannot produce. Functionally harmless (opaque pass-through), but both the format claim and the line citation are wrong on the first row type every later port will read as the template.
+
+5. `model.ts:25-26` — "Clearing the field annihilates the `add`, the log empties, and the section goes honestly clean — no draft, no request, no dirty prompt." Not what happens: clearing the input makes `toISOWithTimezone` return `undefined`, and `TimeOfDeathEditor.tsx:44` swallows it, so the log keeps its `add` and the controlled input snaps back to the old value. `isEmptyRow` and `clearRow` are both unreachable from this editor. Identical to the legacy widget, so not a regression — but it now matters more, because the section arms dirty and persists a draft the clinician cannot clear. Wiring the `undefined` branch to `single.clearRow()` would make the comment true and cost one line.
+
+6. `model.ts:39-40` discards `resolveChanges`' `removes` with no comment. Unreachable today (a `remove` for `SINGLETON_ROW_ID` always annihilates against the preceding `add`), but `[...creates, ...updates]` is the line Tasks 3/7/8 will copy; a one-line "no un-set endpoint: `deceased_datetime` cannot be cleared through this differ" would stop that being copied silently.
+
+7. `model.ts:40-47` maps over the resolved sets, so a corrupted log carrying two distinct `rowId`s emits two PUTs to the same `/api/v1/patient/{id}/` with different bodies (last-wins, order-dependent). `resolveChanges` dedups per `rowId`, not across them; a singleton differ should collapse to at most one entry.
+
+8. `TimeOfDeathQuestion` (`Questionnaire/QuestionTypes/DeathQuestion.tsx:22`) now has zero importers. Intended (Phase 5 deletes it), but worth confirming `npm run knip` doesn't newly flag it.
+
+### Assessment
+
+**Task quality: Needs fixes.** The vertical is real and the evidence behind it is better than the report claims — P1-14, the draft flip, the widening's load-bearingness and the editor's mount all verified by execution — but the first port ships a projection/differ emptiness disagreement that violates a binding constraint this task was gated on, and its inline comment hard-codes the wrong Mode-inference lesson into three ports that inherit it (one of which is being written right now); both fixes are one-liners.</result>
+<usage><subagent_tokens>213985</subagent_tokens><tool_uses>68</tool_uses><duration_ms>998226</duration_ms></usage>
+</task-notification>
+
+---
+
+<task-notification>
+<task-id>afc4e85bbc885bcb2</task-id>
+<tool-use-id>toolu_01HvSo3nQLC6t5XTRRx3ZsDL</tool-use-id>
+<output-file>/private/tmp/claude-501/-Users-bodhishthomas-code-care-fe/2dabe7d0-29e9-45a7-8554-462aec27da99/tasks/afc4e85bbc885bcb2.output</output-file>
+<status>completed</status>
+<summary>Agent "P2 Task 1: gate + orphan fix" finished</summary>
+<note>A task-notification fires each time this agent stops with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>
+<result>Status: complete. Commit `626a3c40f` — "fix(questionnaire-v2): retain dropped orphan edits, pin the prune's wiring, and harden the fixture smoke spec" (on top of `0658eec08`).
+
+Verification: 219/219 unit tests (including 2 new hook-level wiring tests, confirmed red-then-green by disabling/restoring the effect), both `tsc --noEmit` configs clean, `eslint` clean, and 5/5 Playwright fixture-smoke tests green against a fresh build.
+
+All 7 items fixed: `droppedEdits` added (mount-lifetime-durable record of pruned edits, captured before `commit` erases them), `orphanRowIds`'s self-clearing behavior now documented at its return-shape declaration, a real jsdom+react-dom+jotai hook-rendering test now pins the effect's wiring (verified it goes red when the effect is deleted), the degradation-assertion in `structuredFixtures.spec.ts` now uses the sibling spec's auto-retrying shape, the over-broad "no patient-subject fixture" claim is corrected (`e2e-subject-patient` exists but has no structured question), the five real `-required`/`-optional` variants are now mapped, and the two test-comment/assertion defects are fixed.
+
+Concerns: two other agents landed further Phase 2 port commits (time_of_death, appointment) on this same branch while I worked — confirmed no overlap with my files before each commit; one now has uncommitted changes to `timeOfDeath/*` in the shared working tree that I left untouched. Report-only note added per review request: the prune's `commit` clears the question's validation errors — same underlying gap as master-plan carry-forward #3, now with an additional passive trigger. Full addendum in `.superpowers/sdd/task-1-report.md`.</result>
+<usage><subagent_tokens>373192</subagent_tokens><tool_uses>83</tool_uses><duration_ms>1131205</duration_ms></usage>
+</task-notification>

@@ -1,0 +1,29 @@
+{
+  "cli_version": "0.9.0",
+  "checkpoint_id": "4d30212ad766",
+  "strategy": "manual-commit",
+  "branch": "bodhi/questionnaire-fill",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "src/components/QuestionnaireV2/structured/types/timeOfDeath/TimeOfDeathEditor.tsx",
+    "src/components/QuestionnaireV2/structured/types/timeOfDeath/model.test.ts",
+    "src/components/QuestionnaireV2/structured/types/timeOfDeath/model.ts",
+    "src/types/questionnaire/structuredRows.ts"
+  ],
+  "sessions": [
+    {
+      "metadata": "/4d/30212ad766/0/metadata.json",
+      "transcript": "/4d/30212ad766/0/full.jsonl",
+      "compact_transcript": "/4d/30212ad766/0/transcript.jsonl",
+      "content_hash": "/4d/30212ad766/0/content_hash.txt",
+      "prompt": "/4d/30212ad766/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 693,
+    "cache_creation_tokens": 2192329,
+    "cache_read_tokens": 142959052,
+    "output_tokens": 355957,
+    "api_call_count": 330
+  }
+}

@@ -1,0 +1,204 @@
+{
+  "cli_version": "0.9.0",
+  "checkpoint_id": "4d30212ad766",
+  "session_id": "2dabe7d0-29e9-45a7-8554-462aec27da99",
+  "strategy": "manual-commit",
+  "created_at": "2026-08-04T11:19:05.741156Z",
+  "branch": "bodhi/questionnaire-fill",
+  "checkpoints_count": 1,
+  "save_step_count": 2,
+  "files_touched": [
+    "src/components/QuestionnaireV2/structured/types/timeOfDeath/TimeOfDeathEditor.tsx",
+    "src/components/QuestionnaireV2/structured/types/timeOfDeath/model.test.ts",
+    "src/components/QuestionnaireV2/structured/types/timeOfDeath/model.ts",
+    "src/types/questionnaire/structuredRows.ts"
+  ],
+  "agent": "Claude Code",
+  "model": "claude-fable-5",
+  "turn_id": "dd00674abb2d",
+  "compact_transcript_start": 0,
+  "token_usage": {
+    "input_tokens": 693,
+    "cache_creation_tokens": 2192329,
+    "cache_read_tokens": 142959052,
+    "output_tokens": 355957,
+    "api_call_count": 330
+  },
+  "skill_events_version": 1,
+  "skill_events": [
+    {
+      "id": "claude-skill-toolu_01NQFVMaG1aAGGd8DNB83tfE",
+      "event_type": "tool_invocation",
+      "skill": {
+        "name": "superpowers:receiving-code-review"
+      },
+      "source": {
+        "agent": "claude-code",
+        "signal": "skill_tool_use",
+        "confidence": "explicit"
+      },
+      "turn_id": "dd00674abb2d",
+      "transcript_anchor": {
+        "unit": "line",
+        "start": 16,
+        "end": 17,
+        "entry_ids": [
+          "c4e05307-e7ab-4ee1-b764-dcf3ec71fceb"
+        ],
+        "tool_use_id": "toolu_01NQFVMaG1aAGGd8DNB83tfE"
+      },
+      "native": {
+        "tool_name": "Skill",
+        "tool_use_id": "toolu_01NQFVMaG1aAGGd8DNB83tfE"
+      },
+      "collapse": {
+        "target": "tool_pair",
+        "label": "Skill: superpowers:receiving-code-review",
+        "default_collapsed": true
+      }
+    },
+    {
+      "id": "claude-skill-toolu_01K3ZiRbhUpFk1D88k5FWTx4",
+      "event_type": "tool_invocation",
+      "skill": {
+        "name": "superpowers:brainstorming"
+      },
+      "source": {
+        "agent": "claude-code",
+        "signal": "skill_tool_use",
+        "confidence": "explicit"
+      },
+      "turn_id": "dd00674abb2d",
+      "transcript_anchor": {
+        "unit": "line",
+        "start": 91,
+        "end": 92,
+        "entry_ids": [
+          "4ae7cd73-419f-467c-938c-c11ac5460df8"
+        ],
+        "tool_use_id": "toolu_01K3ZiRbhUpFk1D88k5FWTx4"
+      },
+      "native": {
+        "tool_name": "Skill",
+        "tool_use_id": "toolu_01K3ZiRbhUpFk1D88k5FWTx4"
+      },
+      "collapse": {
+        "target": "tool_pair",
+        "label": "Skill: superpowers:brainstorming",
+        "default_collapsed": true
+      }
+    },
+    {
+      "id": "claude-skill-toolu_019vWbxRJyWf5Qx7n8L7GYqb",
+      "event_type": "tool_invocation",
+      "skill": {
+        "name": "superpowers:writing-plans"
+      },
+      "source": {
+        "agent": "claude-code",
+        "signal": "skill_tool_use",
+        "confidence": "explicit"
+      },
+      "turn_id": "dd00674abb2d",
+      "transcript_anchor": {
+        "unit": "line",
+        "start": 270,
+        "end": 271,
+        "entry_ids": [
+          "f4181952-d461-464d-bef7-83eef2759e04"
+        ],
+        "tool_use_id": "toolu_019vWbxRJyWf5Qx7n8L7GYqb"
+      },
+      "native": {
+        "tool_name": "Skill",
+        "tool_use_id": "toolu_019vWbxRJyWf5Qx7n8L7GYqb"
+      },
+      "collapse": {
+        "target": "tool_pair",
+        "label": "Skill: superpowers:writing-plans",
+        "default_collapsed": true
+      }
+    },
+    {
+      "id": "claude-skill-toolu_017UedMXqRpbrWJM8QTRyxdo",
+      "event_type": "tool_invocation",
+      "skill": {
+        "name": "superpowers:subagent-driven-development"
+      },
+      "source": {
+        "agent": "claude-code",
+        "signal": "skill_tool_use",
+        "confidence": "explicit"
+      },
+      "turn_id": "dd00674abb2d",
+      "transcript_anchor": {
+        "unit": "line",
+        "start": 289,
+        "end": 290,
+        "entry_ids": [
+          "fc2aa75b-a3ac-43a8-a0ff-19cc31ab5c00"
+        ],
+        "tool_use_id": "toolu_017UedMXqRpbrWJM8QTRyxdo"
+      },
+      "native": {
+        "tool_name": "Skill",
+        "tool_use_id": "toolu_017UedMXqRpbrWJM8QTRyxdo"
+      },
+      "collapse": {
+        "target": "tool_pair",
+        "label": "Skill: superpowers:subagent-driven-development",
+        "default_collapsed": true
+      }
+    }
+  ],
+  "session_metrics": {
+    "turn_count": 51
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-08-04T11:19:05.496717Z",
+    "agent_lines": 12,
+    "agent_removed": 2,
+    "human_added": 61,
+    "human_modified": 27,
+    "human_removed": 0,
+    "total_committed": 100,
+    "total_lines_changed": 102,
+    "agent_percentage": 13.725490196078432,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 2,
+      "user_lines_added": 9802,
+      "user_lines_removed": 27,
+      "agent_lines_added": 2904,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        ".context/retros/2026-03-15-1.json": 36,
+        ".husky/commit-msg": 1,
+        ".husky/post-commit": 1,
+        ".husky/post-rewrite": 1,
+        ".husky/pre-push": 1,
+        ".husky/prepare-commit-msg": 1,
+        "docs/superpowers/plans/2026-07-31-questionnaire-v2.md": 2495,
+        "docs/superpowers/plans/2026-08-02-questionnaire-fill-delta.md": 1376,
+        "docs/superpowers/plans/2026-08-02-questionnaire-fill.md": 141,
+        "docs/superpowers/plans/2026-08-02-questionnaire-studio.md": 44,
+        "docs/superpowers/specs/2026-07-31-questionnaire-v2-design.md": 205,
+        "docs/superpowers/specs/2026-08-02-questionnaire-fill-design.md": 292,
+        "docs/superpowers/specs/2026-08-02-questionnaire-fill-flow-design.md": 179,
+        "docs/superpowers/specs/2026-08-02-questionnaire-studio-design.md": 181,
+        "docs/superpowers/specs/annexes/p1-primitives.md": 774,
+        "docs/superpowers/specs/annexes/p1-seams.md": 1537,
+        "docs/superpowers/specs/annexes/p1-shim.md": 1123,
+        "docs/superpowers/specs/annexes/p1-state-core.md": 1326,
+        "src/components/QuestionnaireV2/structured/types/timeOfDeath/TimeOfDeathEditor.tsx": 39,
+        "src/components/QuestionnaireV2/structured/types/timeOfDeath/model.ts": 49
+      },
+      "user_removed_per_file": {
+        "src/components/QuestionnaireV2/structured/types/timeOfDeath/TimeOfDeathEditor.tsx": 15,
+        "src/components/QuestionnaireV2/structured/types/timeOfDeath/model.ts": 12
+      }
+    }
+  ]
+}
