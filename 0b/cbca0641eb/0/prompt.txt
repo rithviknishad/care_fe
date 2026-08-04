@@ -1897,3 +1897,7 @@ Verification: added the reviewer's exact "first baseline must predate the seed" 
 <status>completed</status>
 <summary>Background command "Phase 2 checkpoint sweep" completed (exit code 0)</summary>
 </task-notification>
+
+---
+
+are we super complicating this? lets implement everything pending as 1 single phase and do this clean up, we are wasting a lot of time in this. lets be smart
