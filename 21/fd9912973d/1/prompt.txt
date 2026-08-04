@@ -1062,3 +1062,55 @@ One-line verification: `npm run test:unit` 144/144 pass (incl. 2 new refusal cas
 Concerns: none outstanding — `composeBatch.ts`/`validateStructured.ts` left untouched as instructed (Task 8's remit); the v2 plugin path is now closed at the registration boundary rather than left to resolve-and-drop.</result>
 <usage><subagent_tokens>274387</subagent_tokens><tool_uses>21</tool_uses><duration_ms>473375</duration_ms></usage>
 </task-notification>
+
+---
+
+<task-notification>
+<task-id>a6169ac5a1e14c39f</task-id>
+<tool-use-id>REDACTED</tool-use-id>
+<output-file>/private/tmp/claude-501/-Users-bodhishthomas-code-care-fe/2dabe7d0-29e9-45a7-8554-462aec27da99/tasks/a6169ac5a1e14c39f.output</output-file>
+<status>completed</status>
+<summary>Agent "Review P1 Task 6" finished</summary>
+<note>A task-notification fires each time this agent stops with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>
+<result>### Spec Compliance
+
+The fix is exactly option (a) from my finding, scoped to 3 files (`git show 0c8ffd326 --numstat`: `contract.test.ts +27`, `pluginRegistry.test.ts +58`, `pluginRegistry.ts +26/-1`). Gates re-run by me on the current tree: `npm run test:unit` → `tests 144, suites 19, pass 144, fail 0`; `npx tsc --noEmit` → exit 0; `npx tsc --noEmit -p tests/tsconfig.json` → exit 0; `npx eslint` and `npx prettier --check` on the three changed files → clean.
+
+**1. The silent drop is gone — verified by re-running the exact probe.** Registering the `contract: 2` plugin now logs `Plugin structured type "probe.v2" declares contract v2, which this host does not support yet; skipping it` and nothing enters the map. Same probe, before vs. after:
+
+- before: `composeBatch urls = ["/api/v1/legacy/"]`, `validateStructured errors = [{"question_id":"q1","error":"v1 validate ran"}]` — q2's recorded rows vanished with no signal.
+- after: `validateStructured errors = [{"question_id":"q1",…},{"question_id":"q2","error":"structured_section_unavailable_required"}]`.
+
+A third probe pins the degradation precisely: `resolveStructuredSlotState("probe.v2", …).kind === "unknown_type"`. So the clinician experience is now — **required question**: the slot renders the `unknown_type` notice (`StructuredSlot.tsx` reads that same state) and `collectStructuredErrors` (`validateStructured.ts:80-89`) raises `structured_section_unavailable_required` naming the section, which hard-blocks the whole submit; no success toast, nothing silently omitted. **Optional question**: probed at `required: false` → `validate errors = []`, `composeBatch urls = []` — skipped, but behind a visible notice that says its entries will not be submitted, which is the documented, intentional behavior for every unresolvable type (`registry.ts` `StructuredSlotState` doc).
+
+**2. v1 path still intact end-to-end.** Same run: the no-`contract` plugin still resolves to `contract = 1`, `composeBatch urls = ["/api/v1/legacy/"]`, `v1 validate ran`. Identity probe unchanged too: `stable identity across calls = true`, `new identity after re-register = true`, all 11 core types `contract 1`, `core diagnosis stable = true`.
+
+**3. Refusal shape matches the sibling.** `pluginRegistry.ts:167-172` is `console.error(...)` + `return noopCleanup` — no throw, structurally identical to the ownership refusal at `:145-150`, and placed after it so a cross-namespace v2 definition still reports the ownership problem first. Probed: calling the returned cleanup does not throw (`cleanup is a function, calling it throws? = false`). The `PLUGIN_STRUCTURED_TYPE_PATTERN` throw at `:139-143` is untouched, so the "one bad definition never takes the app down" property holds. The comment names what lifts it: `pluginRegistry.ts:164-166` — "Lift this once Task 8 lands the real v2 fork (or … no later than Phase 5, when v2 becomes the only contract)" — plus a pointer from the function's doc comment at `:133-134`.
+
+**4. The new tests genuinely pin the behavior.** Both new cases run and pass by name (`a contract-v2 plugin definition is refused for the Phase-1 lifetime`, `a contract-v2 refusal does not affect a v1 registration under the same owner`); the second is the one that matters for plugin isolation — it proves the refusal doesn't poison a sibling v1 registration from the same owner. The `makeV2Definition` factory (`pluginRegistry.test.ts:96-107`) is honestly typed as `PluginStructuredTypeDefinitionV2`, not cast, so it is a real compile-time exercise of the v2 arm.
+
+I mutation-tested the cross-check rather than trusting it — copied `contract.ts`/`contract.test.ts` to scratchpad and broke the copy:
+- Mutant A (`normalizeContract` returns 2 for absent): `tests 9, pass 7, fail 2` — killed, including `agree for contract = undefined`.
+- Mutant B (`isV2Definition` treats absent as v2): `tests 9, pass 7, fail 2` — killed by the same case.
+
+So the cross-check would fail on divergence in either direction.
+
+**5. Task 8's files untouched.** `composeBatch.ts` and `validateStructured.ts` do not appear in the commit's numstat, and both stubs still stand with their markers: `composeBatch.ts:79` / `:95` and `validateStructured.ts:100` / `:108`.
+
+### Strengths
+
+- The chosen fix removes the hazard at the source instead of patching the symptom in Task 8's files: the guard branches at `composeBatch.ts:95` and `validateStructured.ts:108` are now genuinely unreachable *by construction* (no core definition is v2 and no plugin can register as v2), which makes the original report's claim true rather than aspirational.
+- The refusal reuses an existing, tested degradation path rather than inventing one, so there is no new UI or error vocabulary to review.
+- The Minor was fixed with a parametrized cross-check rather than by weakening the divergence disclosure.
+
+### Issues
+
+**Minor (residual, not introduced by the fix) — the cross-check pins `contract.ts` to itself, not to `registry.ts:219-225`.** `contract.test.ts:46-53` compares `normalizeContract(c)` against `isV2Definition({contract: c}) ? 2 : 1`, reconstructing the registry's *pattern* rather than importing the registry (which it cannot, under the node:test harness rule). A future edit that flipped the registry's own ternary would pass every unit test. This is inherent to the harness constraint and the comment at `:30-43` is honest about it; the real coverage for that line is the Playwright fill/structured specs. No action needed in Task 6.
+
+**Minor — a v1→v2 upgrade in place leaves the old v1 registration live.** If a plugin re-registers an already-registered type as `contract: 2`, the refusal returns before the last-wins `pluginTypes.set` (`:173-181`), so the previously registered v1 definition keeps serving. That is the safe outcome (the alternative is dropping a working type), and the `console.error` is emitted, but it is worth knowing when Task 8 lifts the gate. Not a defect.
+
+### Assessment — Task quality: Approved
+
+The Important finding is fixed at the right layer and the fix is verified by execution, not assertion: a `contract: 2` registration is now refused with the same console.error + no-op-cleanup shape as the ownership check, degrades to `unknown_type` with a visible notice and a hard block on required questions, and the v1 path — plugin and core — is byte-for-byte the behavior it had before Task 6, with all gates green and both mutation tests killed. Task 8 can proceed; it should delete both TEMPORARY stubs and the Phase-1 gate at `pluginRegistry.ts:151-172` together.</result>
+<usage><subagent_tokens>161963</subagent_tokens><tool_uses>13</tool_uses><duration_ms>200392</duration_ms></usage>
+</task-notification>
