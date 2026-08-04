@@ -763,3 +763,79 @@ Verification: `npm run test:unit` 73/73 pass (16 in editLog suite, +4 new); `tsc
 Concerns: none blocking. Both flagged decision points now consult `baseline` via a new `resolveOpAgainstBaseline` helper (present→update, provably absent→add, unsupplied→conservative "update" fallback, documented as non-guaranteed); false invariant comment corrected; `isEmptyRow` re-attributed as a Task-7 carry-forward in this file; resurrection/update canonicalization asymmetry documented per review (not changed). Report appended to `/Users/bodhishthomas/code/care_fe/.superpowers/sdd/task-3-report.md`.</result>
 <usage><subagent_tokens>166388</subagent_tokens><tool_uses>21</tool_uses><duration_ms>400655</duration_ms></usage>
 </task-notification>
+
+---
+
+<task-notification>
+<task-id>a94b8f561a10cb2ed</task-id>
+<tool-use-id>REDACTED</tool-use-id>
+<output-file>/private/tmp/claude-501/-Users-bodhishthomas-code-care-fe/2dabe7d0-29e9-45a7-8554-462aec27da99/tasks/a94b8f561a10cb2ed.output</output-file>
+<status>completed</status>
+<summary>Agent "Review P1 Task 3" finished</summary>
+<note>A task-notification fires each time this agent stops with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>
+<result>**Verdict: Approved** — both round-1 defects are fixed at the right layer and confirmed by differential execution; the residual items are documentation/contract, not behavior.
+
+### Spec Compliance
+
+Re-verified at head 792e60c1a: `npm run test:unit` 73/73 pass (69 → +4), `npx tsc --noEmit` clean, `npx tsc --noEmit -p tests/tsconfig.json` clean, `npx eslint` on both files clean.
+
+To test by execution rather than reading, I reconstructed the pre-fix module verbatim from the round-1 diff into the scratchpad and ran OLD and NEW side by side on the same sequences:
+
+| sequence | OLD (6cf9f8fbe) | NEW (792e60c1a) |
+|---|---|---|
+| 1. `add→remove`(annihilate)`→remove→add`, baseline={someone-else} | `uuid-1:update` | **`uuid-1:add`** ✓ |
+| 2. `update→add`, baseline={server-9} | `server-9:add` | **`server-9:update`** ✓ |
+| 3. stray `update` after annihilation → `add`, baseline lacks rowId | `uuid-2:add` | `uuid-2:add` (unchanged) |
+| 4. `remove→add`, baseline **unsupplied** | `r1:update` | `r1:update` |
+| 5. `update→add`, baseline **unsupplied** | `r1:add` | **`r1:update`** |
+| 6. `remove→add`, baseline supplied but **empty map** | `r1:update` | **`r1:add`** ✓ |
+| 7. real server row **missing from a partial map**, `update→add` | `server-9:add` | `server-9:add` |
+| 8. genuine baseline row `remove→add` | `server-9:update` | `server-9:update` |
+
+(1) and (2) are the exact round-1 repros — both now correct. (6) shows the fix discriminates "supplied and provably absent" from "unsupplied", which is the whole point of `resolveOpAgainstBaseline` (`editLog.ts:255-261`).
+
+**Question 3 — false invariant gone, replacement true of the code.** Confirmed. `editLog.ts:183-198` now states the invariant is false and gives the forging sequence; I reproduced the intermediate forged state (`[{uuid-1, remove}]` with `uuid-1` absent from baseline) in probe 1. The mechanism claim it rests on — `appendFresh` never consults baseline for a `remove` — is true as written (`editLog.ts:90-103`). The header table (`editLog.ts:54-62`) matches observed behavior on all eight sequences.
+
+**Question 5.** `isEmptyRow` re-attribution (`editLog.ts:4-17`) checked against sources and is accurate: annex §6 puts it in the reducer's `add`+`update` cell (`p1-state-core.md:551`, test matrix `:1309`), §7's `removeRow` (`:576-591`) never mentions it, and the plan assigns the wiring to Task 7 (`2026-08-04-phase1-core-kit.md:217`). Resurrection asymmetry documented not changed (`editLog.ts:211-218`) — matches the round-1 note.
+
+**Round-1 items re-checked** (the fix touched the `coalesce` dispatch and two branches): mutation safety, revert-drop, and position preservation all still hold (probe 9; frozen input untouched, `update`→revert still drops to `[]`, middle entry keeps its index). One inherent behavior worth naming since log order is batch order: an annihilate-then-resurrect moves the row to the **tail** (`a:add,z:add,uuid-mid:add`) — correct, since annihilation erased the slot, but it does change which request the server sees first.
+
+### Question 2 — is the "conservative update" fallback the safe direction?
+
+Executed: with `baseline` unsupplied, both decision points return `update` (probes 4 and 5). **The code picks the failure I would ship**, but for a sturdier reason than the one it gives:
+
+- A silent duplicate clinical row (allergy, symptom, medication statement) persists in the record, misleads the next clinician, and requires a human to find it and mark it entered-in-error. A rejected batch writes nothing and is visible at the point of care. In an EMR, prefer the rejection — even at the cost of a submit that keeps failing until the section is cleared.
+- **But the stated justification over-claims.** `editLog.ts:249-253` asserts the wrong `update` "surfaces as a loud 404/400 from the differ's request". No such differ exists yet, and the ones that do — and the ones the annex plans — don't branch on `op`: the shipped differ POSTs whole rows to `/api/v1/patient/{id}/symptom/upsert/` (`definitions/symptom.tsx:31-38`), and the annex's v2 `resolveChanges`/`toRequests` map every change to `change.row` with create-vs-update decided by whether the row carries `id` (`p1-state-core.md:870-900`, `:1034-1050`). On a true upsert endpoint an `update` carrying an unknown id may well **create** rather than 404 — the silent outcome the comment says it avoids. The op choice is still right at this layer (it is the edit log's semantic record, consumed by PATCH-style differs, validators, and the assistant contract); the comment just claims a downstream guarantee this layer cannot enforce.
+
+### Question 4 — do the 4 new tests pin the fix?
+
+Executed against the reconstructed pre-fix module: **3 of 4 would fail on 6cf9f8fbe**.
+
+- `editLog.test.ts:117` — asserts `add`; old produced `update` → fails on old ✓
+- `editLog.test.ts:192` — asserts `update`; old produced `add` → fails on old ✓
+- `editLog.test.ts:211` — asserts `update`; old produced `add` → fails on old ✓
+- `editLog.test.ts:155` — asserts `add`; **old also produced `add`** (probe 3) → would have passed pre-fix. It does not discriminate.
+
+`editLog.test.ts:107`'s retitle ("no baseline supplied — the documented conservative fallback, not a claimed guarantee") is now accurate.
+
+### Strengths
+
+- One helper, two call sites, decided by data (`editLog.ts:153`, `:220`, `:255-261`) — the minimal correct shape, not a special case per branch.
+- Comments now carry the counter-example rather than a guarantee (`editLog.ts:183-198`, `:224-254`), which is what makes the next reader able to check them.
+- Empty-map-vs-absent-map is a real distinction and the code gets it right (probes 4 vs 6) — a fresh section with genuinely zero server rows resurrects as `add`.
+
+### Issues
+
+**Important — the baseline-completeness obligation is stated only on the private helper** (`editLog.ts:246-254` says "Every real caller … supplies the full baseline map"), while the public option's doc (`editLog.ts:19-29`) still describes only its old, benign role ("can never be detected as reverted — by design"). Before this fix, an absent/partial map was fail-safe: it only suppressed revert detection, which keeps an edit. After it, absence is treated as **proof** the row isn't on the server and selects a data-creating op — probe 7 shows a genuine server row missing from a partial map resolving to `add`, i.e. the exact duplicate-create just fixed. A plausible path exists in this repo: a restored draft seeding `initialEdits` for server rowIds while the baseline fetch failed (cf. `f321cb379`, "keep un-fetchable added forms in the draft on Resume") gives edits on server rows with an empty map. Fix is one sentence on the `baseline` option — "must be the complete fetched server-row set, or `undefined`; never a partial map standing in for not-yet-loaded" — plus the same constraint in Task 7's brief. Does not require reopening this commit if the coordinator carries it forward.
+
+**Minor — `editLog.test.ts:155` does not discriminate** (passes against pre-fix code, verified by execution). Keep it as a regression pin against a future hardcoded `"update"`, but it is not evidence of the fix. The discriminating version of that path — stray `update` on a rowId that *is* in baseline, then `add` — is already covered by `editLog.test.ts:192`.
+
+**Minor — over-claimed downstream failure mode** at `editLog.ts:249-253`, per Question 2 above. Either soften to "the op is the edit log's record of intent; how each differ realizes it is Task 5's contract", or make Task 5's brief carry the obligation that an `add`/`update` distinction actually reaches the wire.
+
+**Minor (carry-forwards, both verified accurate, no action now)** — resurrection asymmetry at `editLog.ts:211-218`; `isEmptyRow` at `editLog.ts:4-17`, which Task 7 will require reopening this file for.
+
+### Assessment — Task quality: Approved
+
+Both round-1 Importants are genuinely fixed (differential execution against the pre-fix module confirms the ops flipped in exactly the two repros and nowhere else harmful), the false invariant is replaced with a description that matches the code, and everything is green. The one Important left is a one-sentence contract note on the `baseline` option — best folded into Task 5/7 briefs rather than another round here.</result>
+<usage><subagent_tokens>123272</subagent_tokens><tool_uses>14</tool_uses><duration_ms>330125</duration_ms></usage>
+</task-notification>
