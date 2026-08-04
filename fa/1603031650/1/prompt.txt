@@ -1241,3 +1241,7 @@ Verification: `npm run test:unit` 184/184 pass, `tsc --noEmit` clean (root + tes
 <status>completed</status>
 <summary>Background command "Phase 1 checkpoint sweep — full questionnaire surface" completed (exit code 0)</summary>
 </task-notification>
+
+---
+
+Can we build out everythign else that was pending
