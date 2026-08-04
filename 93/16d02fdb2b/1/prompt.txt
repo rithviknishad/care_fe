@@ -1017,3 +1017,29 @@ No other issues. Round-1 and round-2 verified items (merge order, key omission, 
 **Task quality: Approved.** The Critical I adjudicated is fixed at the root with the minimal correct change, verified by execution end-to-end through the real reducer — the reclassification lands in `updates`, `projectRows` and `resolveChanges` now agree on count and content in every scenario I could construct across three rounds, the regression test provably fails against the prior commit, and the one caveat I asked for is stated at the call site and true of the actual `encounter` endpoint. Green on all four gates (110/110 unit, tsc both configs, eslint, prettier). Clean — clear to proceed to Tasks 6-8.</result>
 <usage><subagent_tokens>146569</subagent_tokens><tool_uses>8</tool_uses><duration_ms>144541</duration_ms></usage>
 </task-notification>
+
+---
+
+<task-notification>
+<task-id>a80033a93a77f8bb9</task-id>
+<tool-use-id>toolu_01Gh4hSvT7t1ABjv8ho6cddW</tool-use-id>
+<output-file>/private/tmp/claude-501/-Users-bodhishthomas-code-care-fe/2dabe7d0-29e9-45a7-8554-462aec27da99/tasks/a80033a93a77f8bb9.output</output-file>
+<status>completed</status>
+<summary>Agent "Draft Phase 2 plan" finished</summary>
+<note>A task-notification fires each time this agent stops with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>
+<result>Status: done. No source files touched, no commits, no builds.
+
+**Wrote:** `/Users/bodhishthomas/code/care_fe/docs/superpowers/plans/2026-08-04-phase2-ports-simple.md`
+
+**Tasks:** 1 Phase-1 landing gate + structured fixture map · 2 `time_of_death` → v2 · 3 `appointment` model (P1-16 differ + slot rule) · 4 `StructuredFieldError` + `appointment` editor → v2 · 5 `charge_item` model (response-backed, one display strip) · 6 `StructuredList` + `charge_item` editor → v2 · 7 `encounter` model (pure `normalizePatch`/differ) · 8 `encounter` editor → single-row v2 · 9 `files` → v2 (sole draft-exclude) · 10 Playwright matrix: singletons · 11 Playwright matrix: lists + mobile card · 12 Invariant specs (zero-upsert, refetch safety, structured-only dirtiness) · Checkpoint.
+
+**Conflicts found and resolved (all recorded in an "Annex reconciliation" section):**
+- `toRequests` signature: `p1-shim` §a.3 `(edits, ctx)` vs `p1-state-core` §§12/14/15 `(StructuredEditInputFor, ctx)` reading `projection[0]`. Shim wins (spec §5 + Phase 1 Task 6 cite it); `projection[0]` reads become `resolveChanges(edits,{}).updates[0] ?? .creates[0]`, legal because `patch` is the complete row.
+- `resolveChanges`: annex §11's `(input, rowIdOf) =&gt; RowChange[]` vs the **landed** `changes.ts` `(log, options) =&gt; {creates,updates,removes}`. Landed code wins.
+- List row view: annex `StructuredRow` vs landed `ProjectedRow` (`core/types.ts:46-61`). Landed wins; annex names mapped, no second row view.
+- Annex §14 seeds `?toDischarge` with a *partial* patch — impossible under the canonical vocabulary. Resolved by gating the encounter hook's mount on the resolved query, which also discharges the baseline-completeness contract.
+- `p1-shim` §a.3 claims no `TRow extends object` constraint is needed; the landed core constrains it, so `StructuredDataMap.time_of_death: string` must widen to an object row (with `ResponseValue` widened to `string[] | TimeOfDeathRow[]` so the still-compiled legacy widget isn't touched before Phase 5).
+
+**Honest scope call:** `AddEntityControl` and `RowStatusSelect` have **no** genuine Phase-2 consumer (all their forks are Phase 3/4 types) — deferred, with reasons, and the master plan's bullets flagged for update. Flagged as must-verify, not guessed: the fixture slugs/link_ids/labels (Task 1 Step 3), and whether Phase 1 Tasks 6–8 have landed at all — currently only Tasks 1–5 are on the branch.</result>
+<usage><subagent_tokens>293041</subagent_tokens><tool_uses>46</tool_uses><duration_ms>1152591</duration_ms></usage>
+</task-notification>
