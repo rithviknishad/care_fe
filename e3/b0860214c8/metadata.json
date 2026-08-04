@@ -3,7 +3,7 @@
   "checkpoint_id": "e3b0860214c8",
   "strategy": "manual-commit",
   "branch": "bodhi/questionnaire-fill",
-  "checkpoints_count": 1,
+  "checkpoints_count": 4,
   "files_touched": [
     "src/components/QuestionnaireV2/structured/definitions/timeOfDeath.tsx",
     "src/components/QuestionnaireV2/structured/types.ts",
@@ -20,6 +20,20 @@
       "compact_transcript": "/e3/b0860214c8/0/transcript.jsonl",
       "content_hash": "/e3/b0860214c8/0/content_hash.txt",
       "prompt": ""
+    },
+    {
+      "metadata": "/e3/b0860214c8/1/metadata.json",
+      "transcript": "/e3/b0860214c8/1/full.jsonl",
+      "compact_transcript": "/e3/b0860214c8/1/transcript.jsonl",
+      "content_hash": "/e3/b0860214c8/1/content_hash.txt",
+      "prompt": "/e3/b0860214c8/1/prompt.txt"
     }
-  ]
+  ],
+  "token_usage": {
+    "input_tokens": 659,
+    "cache_creation_tokens": 2157105,
+    "cache_read_tokens": 131630647,
+    "output_tokens": 336684,
+    "api_call_count": 313
+  }
 }
