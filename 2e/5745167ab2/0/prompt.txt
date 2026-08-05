@@ -1,14 +1,1 @@
-Can you fully review the changes in the PR and upgrade?
-
-1. The code should be highly maintainable and It should be high quality 
-2. We should clean up uncessary inline commes
-
-<system_notification>
-Reminder: This session currently has an auto-generated or placeholder name. Before replying to the user, call the `rename_session` tool to give it a short, descriptive title based on the user's intent.
-</system_notification>
-
----
-
-<system_notification>
-Detached shell "Run preview server on 4000" (shellId: preview2) has completed. Use read_bash with shellId "preview2" to retrieve its output and exit code.
-</system_notification>
+push?
