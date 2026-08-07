@@ -3,7 +3,7 @@
   "checkpoint_id": "71db1db69812",
   "strategy": "manual-commit",
   "branch": "rithviknishad/fix/diary-typo",
-  "checkpoints_count": 16,
+  "checkpoints_count": 4,
   "files_touched": [
     "public/locale/en.json",
     "src/components/Encounter/CreateEncounterForm.tsx"
@@ -15,34 +15,6 @@
       "compact_transcript": "/71/db1db69812/0/transcript.jsonl",
       "content_hash": "/71/db1db69812/0/content_hash.txt",
       "prompt": "/71/db1db69812/0/prompt.txt"
-    },
-    {
-      "metadata": "/71/db1db69812/1/metadata.json",
-      "transcript": "/71/db1db69812/1/full.jsonl",
-      "compact_transcript": "/71/db1db69812/1/transcript.jsonl",
-      "content_hash": "/71/db1db69812/1/content_hash.txt",
-      "prompt": "/71/db1db69812/1/prompt.txt"
-    },
-    {
-      "metadata": "/71/db1db69812/2/metadata.json",
-      "transcript": "/71/db1db69812/2/full.jsonl",
-      "compact_transcript": "/71/db1db69812/2/transcript.jsonl",
-      "content_hash": "/71/db1db69812/2/content_hash.txt",
-      "prompt": "/71/db1db69812/2/prompt.txt"
-    },
-    {
-      "metadata": "/71/db1db69812/3/metadata.json",
-      "transcript": "/71/db1db69812/3/full.jsonl",
-      "compact_transcript": "/71/db1db69812/3/transcript.jsonl",
-      "content_hash": "/71/db1db69812/3/content_hash.txt",
-      "prompt": "/71/db1db69812/3/prompt.txt"
-    },
-    {
-      "metadata": "/71/db1db69812/4/metadata.json",
-      "transcript": "/71/db1db69812/4/full.jsonl",
-      "compact_transcript": "/71/db1db69812/4/transcript.jsonl",
-      "content_hash": "/71/db1db69812/4/content_hash.txt",
-      "prompt": "/71/db1db69812/4/prompt.txt"
     }
   ],
   "token_usage": {
@@ -51,17 +23,5 @@
     "cache_read_tokens": 0,
     "output_tokens": 0,
     "api_call_count": 0
-  },
-  "combined_attribution": {
-    "calculated_at": "2026-08-07T09:01:40.917735Z",
-    "agent_lines": 2,
-    "agent_removed": 2,
-    "human_added": 0,
-    "human_modified": 0,
-    "human_removed": 0,
-    "total_committed": 2,
-    "total_lines_changed": 4,
-    "agent_percentage": 100,
-    "metric_version": 2
   }
 }
