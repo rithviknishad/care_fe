@@ -3,7 +3,7 @@
   "checkpoint_id": "71db1db69812",
   "strategy": "manual-commit",
   "branch": "rithviknishad/fix/diary-typo",
-  "checkpoints_count": 10,
+  "checkpoints_count": 16,
   "files_touched": [
     "public/locale/en.json",
     "src/components/Encounter/CreateEncounterForm.tsx"
@@ -36,6 +36,13 @@
       "compact_transcript": "/71/db1db69812/3/transcript.jsonl",
       "content_hash": "/71/db1db69812/3/content_hash.txt",
       "prompt": "/71/db1db69812/3/prompt.txt"
+    },
+    {
+      "metadata": "/71/db1db69812/4/metadata.json",
+      "transcript": "/71/db1db69812/4/full.jsonl",
+      "compact_transcript": "/71/db1db69812/4/transcript.jsonl",
+      "content_hash": "/71/db1db69812/4/content_hash.txt",
+      "prompt": "/71/db1db69812/4/prompt.txt"
     }
   ],
   "token_usage": {
