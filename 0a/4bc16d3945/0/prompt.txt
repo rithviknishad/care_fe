@@ -1,5 +1,3 @@
-grumpy reviewer gh agentic workflow thing can't approve pull requests as of now. it can only comment. let's allos approving as well.
+nah, let's not recompile unrelated things. create an issue, assign it to me, and raise a pr.
 
-<system_notification>
-Reminder: This session currently has an auto-generated or placeholder name. Before replying to the user, call the `rename_session` tool to give it a short, descriptive title based on the user's intent.
-</system_notification>
+issue comment and PR body should strictly follow ASD-STE100 simplified technical english.
