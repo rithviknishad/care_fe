@@ -1,11 +1,3 @@
-can we write playwright test for this?
-
----
-
 let's not create any stubs to hack things... can't we use a patient without any encounters or create a new patient that way we don't have any encounters? check the backend's fixtures do figure this out. 
 
 backend codebase is located at ../care
-
-<canvas-context>
-- name="userterm-right-terminal-a28f889e-6a59-4b9f-95fc-5a829c3b81db-1" type="terminal" title="Terminal" panel="open" instance="userterm-right-terminal-a28f889e-6a59-4b9f-95fc-5a829c3b81db-1"
-</canvas-context>
