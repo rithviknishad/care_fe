@@ -1,1 +1,5 @@
 Commit and push
+
+---
+
+You have docker available, code base is available in /code/care remove everything orphaned
