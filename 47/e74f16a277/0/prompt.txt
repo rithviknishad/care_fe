@@ -1,0 +1,11 @@
+analyze what's changed in this PR, and write playwright test accordingly. 
+
+the test should attempt to dispense medicines via encounter (encounter > medicines tab > dispense history tab > dispense. now it should add two medication line items of the same item, but quantity of both line items together should exceed the available stock. single line item cannot be tested here, since front-end validation prevents the batch-request from firing itself in the first place. 
+
+refer how existing playwrights are written. do not try to assume anything, always ask. we have strict guidelines on coding practices and standards.
+
+do not push to the same branch, we'll create a stacked PR once ready.
+
+<system_notification>
+Reminder: This session currently has an auto-generated or placeholder name. Before replying to the user, call the `rename_session` tool to give it a short, descriptive title based on the user's intent.
+</system_notification>
