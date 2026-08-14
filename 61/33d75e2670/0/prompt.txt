@@ -44,3 +44,7 @@ Check other instances in the project, Do they duplicate same component?
 ---
 
 OKay update it then
+
+---
+
+Also, currently the horizontal scroll will be shown only when I try to scroll, Can we display it all the time so that thw user will know there is scroll
