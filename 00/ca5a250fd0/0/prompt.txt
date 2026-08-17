@@ -1,0 +1,14 @@
+Widening badge to ReactNode is fine, but removing the pill wrapper changes every existing Callout, not just the new ones — the "Info"/"Note" badges in the scheduling sheets lose their bordered white pill and now render as bare inline text next to the body copy. The PR swaps those to icons so it's self-consistent, but the prop is still named badge while nothing is badge-shaped anymore; icon (or keeping the pill when a string is passed) would be more legible. Worth confirming the scheduling callouts still read correctly with a bare icon and no label
+
+is this valid?
+
+---
+
+This
+ changes the visible UI text for the “Load from order” button to include
+ an item count. Existing Playwright tests use an exact name match for 
+that button (e.g. `tests/facility/services/locations/inventory/toDispatch.spec.ts:103,105,132,134`), so they will fail unless updated to the new label or to a less brittle selector (regex/partial match).
+
+---
+
+if it valid fix it
