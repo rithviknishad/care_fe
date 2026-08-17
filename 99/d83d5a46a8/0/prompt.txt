@@ -1,0 +1,1 @@
+enable the mark_as_complete button when atleast one supplydelivery in completed or abandonded state
