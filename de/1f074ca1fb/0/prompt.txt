@@ -1,0 +1,5 @@
+enable if with is present the value should be there
+
+---
+
+if with is present the query enabled only if value is present ,if with is not present check only the other 2 conditoin
