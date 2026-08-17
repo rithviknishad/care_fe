@@ -1,0 +1,130 @@
+[chromium] › tests/facility/services/locations/inventory/toDispatch.spec.ts:120:7 › Facility To-Dispatch Orders Inventory Flow › approve incoming delivery order 
+
+    TimeoutError: locator.click: Timeout 10000ms exceeded.
+    Call log:
+      - waiting for getByRole('button', { name: 'Mark as Approved' })
+        - locator resolved to <button disabled data-slot="button" class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-gray-950 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 dark:focus-visible:ring-gray-300 aria-invalid:border-red-500 aria-invalid:ring-red-500/20 bg-primary-700 text-white shadow-sm hover:bg-primary-700/90 dark:bg-prima…>…</button>
+      - attempting click action
+        2 × waiting for element to be visible, enabled and stable
+          - element is not enabled
+        - retrying click action
+        - waiting 20ms
+        2 × waiting for element to be visible, enabled and stable
+          - element is not enabled
+        - retrying click action
+          - waiting 100ms
+        19 × waiting for element to be visible, enabled and stable
+           - element is not enabled
+         - retrying click action
+           - waiting 500ms
+
+
+      138 |     await page.mouse.click(0, 0);
+      139 |     await page.getByRole("button", { name: "Save" }).click();
+    > 140 |     await page.getByRole("button", { name: "Mark as Approved" }).click();
+          |                                                                  ^
+      141 |     await page.goto(pharmacybasePath + "/inventory/internal/dispatch");
+      142 |     await page.getByRole("tab", { name: "Outgoing Deliveries" }).click();
+      143 |     const deliveryRow = page
+        at /home/runner/work/care_fe/care_fe/tests/facility/services/locations/inventory/toDispatch.spec.ts:140:66
+
+    Error Context: test-results/facility-services-location-ae429-ove-incoming-delivery-order-chromium/error-context.md
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    TimeoutError: locator.click: Timeout 10000ms exceeded.
+    Call log:
+      - waiting for getByRole('button', { name: 'Mark as Completed' })
+        - locator resolved to <button disabled data-slot="button" class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-gray-950 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 dark:focus-visible:ring-gray-300 aria-invalid:border-red-500 aria-invalid:ring-red-500/20 bg-primary-700 text-white shadow-sm hover:bg-primary-700/90 dark:bg-prima…>…</button>
+      - attempting click action
+        2 × waiting for element to be visible, enabled and stable
+          - element is not enabled
+        - retrying click action
+        - waiting 20ms
+        2 × waiting for element to be visible, enabled and stable
+          - element is not enabled
+        - retrying click action
+          - waiting 100ms
+        19 × waiting for element to be visible, enabled and stable
+           - element is not enabled
+         - retrying click action
+           - waiting 500ms
+
+
+      160 |       .getByRole("checkbox")
+      161 |       .click();
+    > 162 |     await page.getByRole("button", { name: "Mark as Completed" }).click();
+          |                                                                   ^
+      163 |
+      164 |     await page.goto(bioChembasePath + "/inventory/internal/receive");
+      165 |     await page.getByRole("tab", { name: "Incoming Deliveries" }).click();
+        at /home/runner/work/care_fe/care_fe/tests/facility/services/locations/inventory/toDispatch.spec.ts:162:67
+
+    attachment #1: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results/facility-services-location-ae429-ove-incoming-delivery-order-chromium-retry1/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/facility-services-location-ae429-ove-incoming-delivery-order-chromium-retry1/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/facility-services-location-ae429-ove-incoming-delivery-order-chromium-retry1/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/facility-services-location-ae429-ove-incoming-delivery-order-chromium-retry1/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Retry #2 ───────────────────────────────────────────────────────────────────────────────────────
+
+    TimeoutError: locator.click: Timeout 10000ms exceeded.
+    Call log:
+      - waiting for getByRole('button', { name: 'Mark as Completed' })
+        - locator resolved to <button disabled data-slot="button" class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-gray-950 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 dark:focus-visible:ring-gray-300 aria-invalid:border-red-500 aria-invalid:ring-red-500/20 bg-primary-700 text-white shadow-sm hover:bg-primary-700/90 dark:bg-prima…>…</button>
+      - attempting click action
+        2 × waiting for element to be visible, enabled and stable
+          - element is not enabled
+        - retrying click action
+        - waiting 20ms
+        2 × waiting for element to be visible, enabled and stable
+          - element is not enabled
+        - retrying click action
+          - waiting 100ms
+        19 × waiting for element to be visible, enabled and stable
+           - element is not enabled
+         - retrying click action
+           - waiting 500ms
+
+
+      160 |       .getByRole("checkbox")
+      161 |       .click();
+    > 162 |     await page.getByRole("button", { name: "Mark as Completed" }).click();
+          |                                                                   ^
+      163 |
+      164 |     await page.goto(bioChembasePath + "/inventory/internal/receive");
+      165 |     await page.getByRole("tab", { name: "Incoming Deliveries" }).click();
+        at /home/runner/work/care_fe/care_fe/tests/facility/services/locations/inventory/toDispatch.spec.ts:162:67
+
+    Error Context: test-results/facility-services-location-ae429-ove-incoming-delivery-order-chromium-retry2/error-context.md
+
+
+fix this playwright test , iteratively you can run the test in browser
+
+---
+
+Continue: "Continue to iterate?"
+
+---
+
+in this test before mark as complete all items should be either complete or abandoned , which can done by check the all checklist click recieve and update and click confirm - add this too in this test
+
+---
+
+[Terminal 7b6579d2-78da-4f65-b1b8-e2beff98af4e notification: command completed. The terminal has been cleaned up.]
+Terminal output:
+Using Node v24.18.0
+
+fish is running in private mode, history will not be persisted.
+
+…k/care_fe on  ENG-887-fix-internal-delivery-batch-failing [$!] via  v24.18.0 
+rm -f /tmp/pw-todispatch.log && npx playwright test tests/facility/services/locations/inventory/toDispatch.spec.ts --project=chromium -g "approve incoming delivery order" --reporter=line > /tmp/pw-todispatch.log 2>&1; echo "EXIT=$status"
+EXIT=0
