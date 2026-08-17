@@ -1,0 +1,21 @@
+i need like this if with is present then only call search the with the value , with is selecting from the searchWithOptions
+
+---
+
+i cleared the input and click enter -> then i need to reset the list means the filter should clear
+
+---
+
+enter with an empty input should refetch the api with no name/external identifiers filter
+
+---
+
+explain this code
+
+---
+
+initially the with should undefined , and add enabled condition in the query fetching of encounterlist that the api fetching should be called only if with is present
+
+---
+
+use key-values pair to simplify this code
