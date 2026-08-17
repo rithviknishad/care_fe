@@ -1,0 +1,35 @@
+**Broken (boundary)** — this uses `<=` while the sibling `hasReachedUpsertLimit` just above uses `>=` against the same constant, so the two disagree at exactly one value.
+
+At `selectedDeliveries.length === maxDatapointsPerUpsert`, `hasReachedUpsertLimit` is `true` (the callout says the limit is reached and the form is hidden) but `canReceiveAndUpdateStock` is also `true`, so the button stays enabled and submits.
+
+Which side is right depends on whether the backend cap is inclusive — if `maxDatapointsPerUpsert` datapoints is a valid request, then `hasReachedUpsertLimit` should be `>` and the copy is wrong; if it isn't, this should be `<`.
+ Either way the two derived booleans should be expressed in terms of one
+ another rather than as two independently-written comparisons, so they 
+can't drift:
+
+```
+const isWithinUpsertLimit = selectedDeliveries.length < careConfig.maxDatapointsPerUpsert;
+```
+
+    
+      
+    
+
+    
+  
+
+Worth an actual check against the backend serializer rather than picking one — please verify the boundary.
+
+is this coment valid?
+
+---
+
+fix it
+
+---
+
+Three separate copies of the same amber callout markup (twice in 
+DeliveryOrderShow, once here) with identical classNames and icon. 
+Extract one `<UpsertLimitCallout />` component — when the design inevitably changes you will thank yourself for not hunting down three near-identical blobs.
+
+is this valid?
