@@ -2,7 +2,7 @@
   "cli_version": "0.10.0",
   "checkpoint_id": "8dd721e72f8e",
   "strategy": "manual-commit",
-  "checkpoints_count": 4,
+  "checkpoints_count": 2,
   "files_touched": null,
   "sessions": [
     {
@@ -11,13 +11,6 @@
       "compact_transcript": "/8d/d721e72f8e/0/transcript.jsonl",
       "content_hash": "/8d/d721e72f8e/0/content_hash.txt",
       "prompt": "/8d/d721e72f8e/0/prompt.txt"
-    },
-    {
-      "metadata": "/8d/d721e72f8e/1/metadata.json",
-      "transcript": "/8d/d721e72f8e/1/full.jsonl",
-      "compact_transcript": "/8d/d721e72f8e/1/transcript.jsonl",
-      "content_hash": "/8d/d721e72f8e/1/content_hash.txt",
-      "prompt": "/8d/d721e72f8e/1/prompt.txt"
     }
   ]
 }
