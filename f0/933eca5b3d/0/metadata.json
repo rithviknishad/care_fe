@@ -1,0 +1,64 @@
+{
+  "cli_version": "0.9.0",
+  "checkpoint_id": "f0933eca5b3d",
+  "session_id": "88db0d5c-1532-4b75-9fdc-7c8ef7bf6faf",
+  "strategy": "manual-commit",
+  "created_at": "2026-08-18T11:52:23.020795Z",
+  "branch": "ENG-887-fix-internal-delivery-batch-failing",
+  "checkpoints_count": 10,
+  "save_step_count": 3,
+  "files_touched": [
+    "src/pages/Facility/services/inventory/externalSupply/deliveryOrder/DeliveryOrderShow.tsx"
+  ],
+  "agent": "Copilot CLI",
+  "model": "",
+  "turn_id": "2c88e13bd6fc",
+  "checkpoint_transcript_start": 880,
+  "transcript_lines_at_start": 880,
+  "compact_transcript_start": 199,
+  "token_usage": {
+    "input_tokens": 0,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 0,
+    "output_tokens": 0,
+    "api_call_count": 0
+  },
+  "session_metrics": {
+    "turn_count": 24
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-08-18T11:52:23.002799Z",
+    "agent_lines": 79,
+    "agent_removed": 17,
+    "human_added": 0,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 79,
+    "total_lines_changed": 96,
+    "agent_percentage": 100,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0
+    },
+    {
+      "checkpoint_number": 2,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 3,
+      "agent_lines_removed": 2
+    },
+    {
+      "checkpoint_number": 3,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 3,
+      "agent_lines_removed": 2
+    }
+  ]
+}
