@@ -1,0 +1,7 @@
+<timestamp>Thursday, Aug 13, 2026, 6:55 PM (UTC+5:30)</timestamp>
+
+@care_fe/vite.config.mts:55-78 why these other changes 
+
+I think @care_fe/vite.config.mts:49 -> this enough 
+
+what are other changes for ?
