@@ -1,0 +1,3 @@
+<timestamp>Friday, Aug 14, 2026, 2:59 PM (UTC+5:30)</timestamp>
+
+@care_fe/docs/care-apps-architecture-note.md:54-55 if these two are invalid, then fix it
