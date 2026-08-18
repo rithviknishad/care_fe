@@ -1,0 +1,27 @@
+{
+  "cli_version": "0.9.0",
+  "checkpoint_id": "d86e077334f2",
+  "strategy": "manual-commit",
+  "branch": "ENG-524-audit-react-state-usage-in-encounter-id-search",
+  "checkpoints_count": 3,
+  "files_touched": [
+    "src/components/ui/command.tsx",
+    "src/pages/Encounters/EncounterList.tsx"
+  ],
+  "sessions": [
+    {
+      "metadata": "/d8/6e077334f2/0/metadata.json",
+      "transcript": "/d8/6e077334f2/0/full.jsonl",
+      "compact_transcript": "/d8/6e077334f2/0/transcript.jsonl",
+      "content_hash": "/d8/6e077334f2/0/content_hash.txt",
+      "prompt": "/d8/6e077334f2/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 0,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 0,
+    "output_tokens": 0,
+    "api_call_count": 0
+  }
+}
