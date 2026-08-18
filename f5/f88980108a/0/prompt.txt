@@ -1,0 +1,9 @@
+<timestamp>Monday, Aug 17, 2026, 1:09 AM (UTC+5:30)</timestamp>
+
+can you replicate the erro stata again 
+
+i want to see what is rendeed @care_fe/src/lib/override/register.ts:41-45 or @care_fe/src/components/Common/PluginErrorBoundary.tsx:20-26  I know this is just console 
+
+but just want to see 
+
+and also if it register.ts message then it is a bug right in eror message becasue it is not replaced with default right ?
