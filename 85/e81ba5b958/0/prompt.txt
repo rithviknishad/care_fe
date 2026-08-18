@@ -1,0 +1,8 @@
+<timestamp>Friday, Aug 14, 2026, 10:23 PM (UTC+5:30)</timestamp>
+
+why this is removed ?
+
+- Copies binary assets (images, fonts, lottie, `.css`, etc.) byte-for-byte without rewriting.
+  `@import` / `url()` inside CSS are not followed.
+
+is this invalid ?
