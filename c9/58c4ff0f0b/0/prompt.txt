@@ -1,0 +1,6 @@
+<timestamp>Friday, Aug 14, 2026, 7:55 PM (UTC+5:30)</timestamp>
+
+> 1. Last bullet overclaims reload
+It says the host reloads after a new remoteEntry.js. It does not. You refresh the CARE tab.
+
+are you sure ?
