@@ -1,0 +1,10 @@
+[Image]
+<image_files>
+The following images were provided by the user and saved to the workspace for future use:
+1. /home/yaswanth/.cursor/projects/home-yaswanth-ohc-care/assets/REDACTED.png
+
+These images can be copied for use in other locations.
+</image_files>
+<timestamp>Thursday, Aug 13, 2026, 5:22 PM (UTC+5:30)</timestamp>
+
+why I still do not see fill from kutumba here http://localhost:4000/facility/6909ac5e-37b5-4ff7-8311-65610685ed44/patient/create
