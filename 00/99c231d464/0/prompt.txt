@@ -1,0 +1,9 @@
+<timestamp>Thursday, Aug 13, 2026, 7:54 PM (UTC+5:30)</timestamp>
+
+really ?
+
+Copilot
+AI
+2m ago
+Low
+This doc update introduces support for both src/manifest.ts and src/manifest.tsx, but the earlier “Per-app (apps/.../vite.config.ts)” bullet still states the exposed manifest points only to src/manifest.tsx, which is now outdated/inconsistent. Please update that earlier bullet to mention both supported manifest filenames so the doc reflects the current local-dev behavior.
