@@ -1,0 +1,5 @@
+Add medication row should be available only if there's a draft invoice id, or there are 0 invoices. just like edit medicine line items. do clarify before implementing. do not assume anything. we have strict guidelines on things.
+
+---
+
+Add medication row should be available only if there's a draft invoice id, or there are 0 invoices. just like edit medicine line items. do clarify before implementing. do not assume anything. we have strict guidelines on things.
