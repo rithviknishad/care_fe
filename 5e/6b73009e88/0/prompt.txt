@@ -1,0 +1,5 @@
+<timestamp>Friday, Aug 14, 2026, 5:10 PM (UTC+5:30)</timestamp>
+
+we are on @care_fe/docs/care-apps-architecture-note.md , we fix that when we are on @care_fe/docs/care-apps-local-dev.md 
+
+okay ?
