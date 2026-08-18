@@ -1,0 +1,3 @@
+<timestamp>Thursday, Aug 13, 2026, 5:35 PM (UTC+5:30)</timestamp>
+
+I just rename exisitng one to .tsx from .ys instead od anotehr fiela dn export
