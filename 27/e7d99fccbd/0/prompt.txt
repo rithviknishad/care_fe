@@ -1,0 +1,3 @@
+<timestamp>Sunday, Aug 16, 2026, 8:12 PM (UTC+5:30)</timestamp>
+
+can you look at the code and explain how this works end to end then laterf we will go section by section in thte doc
