@@ -1,0 +1,3 @@
+<timestamp>Friday, Aug 14, 2026, 4:40 PM (UTC+5:30)</timestamp>
+
+but did we clearly  mention that apps/ is for local development and not production ?
