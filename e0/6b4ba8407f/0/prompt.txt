@@ -1,0 +1,5 @@
+<timestamp>Sunday, Aug 16, 2026, 8:15 PM (UTC+5:30)</timestamp>
+
+>  build / npm run dev, Vite plugin autoRegisterComponents.ts rewrites exports under src/ so they call register("PatientCard", PatientCard).
+
+elaborate with an exmaple
