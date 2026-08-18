@@ -1,0 +1,3 @@
+<timestamp>Thursday, Aug 13, 2026, 5:05 PM (UTC+5:30)</timestamp>
+
+so its bug in care_fe auto discovery
