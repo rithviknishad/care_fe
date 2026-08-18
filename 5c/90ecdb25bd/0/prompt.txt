@@ -1,0 +1,68 @@
+add the same logic  Callout for  @sym:AddItemsForm  to restric user add more than careConfig.maxDatapointsPerUpser
+
+---
+
+add scroller and corresponding height to this dialog
+
+---
+
+curl 'https://careapi.ohc.network/api/v1/supply_request/' \
+  --compressed \
+  -X POST \
+  -H 'User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:153.0) Gecko/20100101 Firefox/153.0' \
+  -H 'Accept: application/json' \
+  -H 'Accept-Language: en-US,en;q=0.9' \
+  -H 'Accept-Encoding: gzip, deflate, br, zstd' \
+  -H 'Content-Type: application/json' \
+  -H 'Referer: http://localhost:4000/' \
+  -H 'Origin: http://localhost:4000' \
+  -H 'Sec-Fetch-Dest: empty' \
+  -H 'Sec-Fetch-Mode: cors' \
+  -H 'Sec-Fetch-Site: cross-site' \
+  -H 'authorization: Bearer REDACTED' \
+  -H 'Connection: keep-alive' \
+  --data-raw '{"item":"74fea453-f34c-46cd-bc2c-7c9f0e3f112f","quantity":"1.00","status":"active","order":"e4d42dd0-d5de-4422-b087-45fdad004c3f"}'
+
+  call this api for 100 times
+
+---
+
+curl 'https://careapi.ohc.network/api/v1/supply_request/' \
+  --compressed \
+  -X POST \
+  -H 'User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:153.0) Gecko/20100101 Firefox/153.0' \
+  -H 'Accept: application/json' \
+  -H 'Accept-Language: en-US,en;q=0.9' \
+  -H 'Accept-Encoding: gzip, deflate, br, zstd' \
+  -H 'Content-Type: application/json' \
+  -H 'Referer: http://localhost:4000/' \
+  -H 'Origin: http://localhost:4000' \
+  -H 'Sec-Fetch-Dest: empty' \
+  -H 'Sec-Fetch-Mode: cors' \
+  -H 'Sec-Fetch-Site: cross-site' \
+  -H 'authorization: Bearer REDACTED' \
+  -H 'Connection: keep-alive' \
+  --data-raw '{"item":"74fea453-f34c-46cd-bc2c-7c9f0e3f112f","quantity":"1.00","status":"active","order":"e4d42dd0-d5de-4422-b087-45fdad004c3f"}'
+
+  call this api for 98 times
+
+---
+
+curl 'https://careapi.ohc.network/api/v1/supply_request/' \
+  --compressed \
+  -X POST \
+  -H 'User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:153.0) Gecko/20100101 Firefox/153.0' \
+  -H 'Accept: application/json' \
+  -H 'Accept-Language: en-US,en;q=0.9' \
+  -H 'Accept-Encoding: gzip, deflate, br, zstd' \
+  -H 'Content-Type: application/json' \
+  -H 'Referer: http://localhost:4000/' \
+  -H 'Origin: http://localhost:4000' \
+  -H 'Sec-Fetch-Dest: empty' \
+  -H 'Sec-Fetch-Mode: cors' \
+  -H 'Sec-Fetch-Site: cross-site' \
+  -H 'authorization: Bearer REDACTED' \
+  -H 'Connection: keep-alive' \
+  --data-raw '{"item":"74fea453-f34c-46cd-bc2c-7c9f0e3f112f","quantity":"1.00","status":"active","order":"9abc11d8-7fd8-42bd-802f-41a2e2aa20ad"}'
+
+  call this api for 98 times
