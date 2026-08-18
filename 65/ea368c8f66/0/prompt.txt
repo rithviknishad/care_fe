@@ -1,0 +1,3 @@
+<timestamp>Thursday, Aug 13, 2026, 5:42 PM (UTC+5:30)</timestamp>
+
+@care_fe/docs/care-apps-architecture-note.md:21 explain me in simple words and how it works and write to move my memory repo as learning may be under microfrontends concepts and list or reference any basic concepts i need to know to understand this
