@@ -1,0 +1,9 @@
+<timestamp>Sunday, Aug 16, 2026, 11:58 PM (UTC+5:30)</timestamp>
+
+so do you think the fix is right ?
+
+why manual regisyer is required  ?
+
+and 
+
+if there is only one export then no need of manual register ?
