@@ -1,0 +1,29 @@
+<timestamp>Friday, Aug 14, 2026, 10:42 PM (UTC+5:30)</timestamp>
+
+@care_fe/docs/care-apps-architecture-note.md:91 
+
+coderabbitai Bot
+5 hours ago
+Contributor
+🗄️ Data Integrity & Integration | 🟠 Major | ⚡ Quick win
+
+Align the documented runtime type with src/index.tsx.
+
+The runtime value is documented as Record<string, PlugConfigMeta>, but src/index.tsx is described as declaring meta as one PlugConfigMeta. This creates a public host-to-plugin type contract mismatch. Update the Window declaration and add a type-level check, or track the compatibility issue before merging.
+
+Please verify the declaration and all window.__CARE_PLUGIN_RUNTIME__ consumers:
+
+#!/bin/bash
+set -u
+
+rg -n -C 12 '__CARE_PLUGIN_RUNTIME__|CARE_PLUGIN_RUNTIME|PlugConfigMeta' \
+  src/index.tsx src/pluginTypes.ts src/Utils/plugConfig.ts || true
+
+rg -n -C 4 '__CARE_PLUGIN_RUNTIME__|CARE_PLUGIN_RUNTIME' \
+  src --glob '*.{ts,tsx}' || true
+
+understand the reveiew comment and code around it and explain and then validate whether review comment is valid or not 
+
+is it neccesarry 
+
+if yes, what is the fix
