@@ -1,0 +1,5 @@
+<timestamp>Monday, Aug 17, 2026, 12:21 AM (UTC+5:30)</timestamp>
+
+> import { PrintInvoice } from "./PrintInvoice"; // Box A  ← different thing
+
+why it is a different thing
