@@ -1,0 +1,11 @@
+<timestamp>Monday, Aug 17, 2026, 12:49 AM (UTC+5:30)</timestamp>
+
+so this would have also worked right ?
+
+export function PrintInvoice({ facilityId, invoiceId }: PrintInvoiceProps) {
+
+export default register("PrintInvoice", PrintInvoice);
+
+---
+
+let's test above there case as well
