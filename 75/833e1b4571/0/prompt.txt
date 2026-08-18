@@ -1,0 +1,8 @@
+<timestamp>Friday, Aug 14, 2026, 4:41 PM (UTC+5:30)</timestamp>
+
+> Way B — Playwright / vite build (tests, production)
+apps/ is empty. Plugins only come from REACT_ENABLED_APPS (federation URL) and/or plug_config. Lines 60–62 are about this path.
+
+The mix in 63–64
+
+if teh CI has clone step in yml will that not work ?
