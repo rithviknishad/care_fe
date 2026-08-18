@@ -1,0 +1,7 @@
+<timestamp>Thursday, Aug 13, 2026, 7:39 PM (UTC+5:30)</timestamp>
+
+dam
+
+I checkout out from wrong branch 
+
+can you checkout from main and apply the latest changes there @\home\yaswanth\.cursor\projects\home-yaswanth-ohc-care\terminals\12.txt:113-124
