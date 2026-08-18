@@ -1,0 +1,3 @@
+<timestamp>Tuesday, Aug 18, 2026, 4:54 PM (UTC+5:30)</timestamp>
+
+@care_fe/docs/care-apps-override-architecture.md:237-243 do you think we need to mentuon why as well ? or we already mentioned it somewhere ?
