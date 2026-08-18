@@ -1,0 +1,9 @@
+<timestamp>Sunday, Aug 16, 2026, 10:52 PM (UTC+5:30)</timestamp>
+
+> B is now on. The same pink bar has a sticky note: only if userRole is "doctor".
+
+that is plug page we will not have user logged in there and also it is patient login side and not staff page 
+
+right now I see sign in button 
+
+can you change some other staff side component ?
