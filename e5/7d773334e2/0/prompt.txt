@@ -1,0 +1,3 @@
+<timestamp>Friday, Aug 14, 2026, 8:51 PM (UTC+5:30)</timestamp>
+
+@care_fe/docs/care-apps-local-dev.md:89-91 why that error would happen and why sharing is requried ?
