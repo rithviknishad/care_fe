@@ -1,0 +1,20 @@
+[Image]
+<image_files>
+The following images were provided by the user and saved to the workspace for future use:
+1. /home/yaswanth/.cursor/projects/home-yaswanth-ohc-care/assets/REDACTED.png
+
+These images can be copied for use in other locations.
+</image_files>
+<timestamp>Monday, Aug 17, 2026, 12:44 AM (UTC+5:30)</timestamp>
+
+Yeah now I can see the pink Kutumba
+
+so
+
+questions:
+
+why only one export works and when there are both named and default export why only named export works ?
+
+and if this is case why they did manual register and name change export default register("PrintInvoice", PrintInvoiceBase); because of two exports ?
+
+how name changed fixed it even when there are 2 exports ?
