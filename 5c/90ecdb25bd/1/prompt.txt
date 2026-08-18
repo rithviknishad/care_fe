@@ -1,0 +1,39 @@
+Widening badge to ReactNode is fine, but removing the pill wrapper changes every existing Callout, not just the new ones — the "Info"/"Note" badges in the scheduling sheets lose their bordered white pill and now render as bare inline text next to the body copy. The PR swaps those to icons so it's self-consistent, but the prop is still named badge while nothing is badge-shaped anymore; icon (or keeping the pill when a string is passed) would be more legible. Worth confirming the scheduling callouts still read correctly with a bare icon and no label
+
+is this valid?
+
+---
+
+This
+ changes the visible UI text for the “Load from order” button to include
+ an item count. Existing Playwright tests use an exact name match for 
+that button (e.g. `tests/facility/services/locations/inventory/toDispatch.spec.ts:103,105,132,134`), so they will fail unless updated to the new label or to a less brittle selector (regex/partial match).
+
+---
+
+if it valid fix it
+
+---
+
+**Convention** — this deletes the badge pill from *every* `Callout`
+ in the app to serve two new icon call sites. The white rounded-full 
+container with the per-variant border was the component's visual 
+identity; now `badge` renders bare, so the three pre-existing usages (`CreateScheduleTemplateSheet`, `EditScheduleTemplateSheet` ×2) had to be converted to icons in this same PR just to still look intentional.
+
+Widening `badge` to `ReactNode`
+ is the right call and costs nothing. Removing the wrapper is a 
+shared-component change made to avoid styling a caller. If an icon badge
+ shouldn't get the pill, that's a variant of the badge slot — not a 
+deletion of it. E.g. keep the wrapper and let callers opt out, or render
+ the pill only for string badges (`typeof props.badge === "string"`).
+
+As it stands this is a design change to a `src/CAREUI`
+ primitive smuggled into a supply-delivery bugfix — worth splitting out 
+or getting explicit design sign-off, since nothing outside this diff 
+asked for it.
+
+is this valid/
+
+---
+
+then fix it
