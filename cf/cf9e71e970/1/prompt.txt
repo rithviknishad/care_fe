@@ -1,0 +1,17 @@
+we have a "mark_complete" checkbox for prescriptions right. as long as this is not dirty, we should auto-toggle this based on the following logic:
+
+1. checked only if ALL/EVERY of the selectable/editable line items / medications are is_selected.
+
+2. unchecked if any of the selectable/editable line items/medications are not is_selected.
+
+note that, this auto-toggle feature should only happen as long as that checkbox is not dirty. while setting it, do not make it dirty
+
+---
+
+we have a "mark_complete" checkbox for prescriptions right. as long as this is not dirty, we should auto-toggle this based on the following logic:
+
+1. checked only if ALL/EVERY of the selectable/editable line items / medications are is_selected.
+
+2. unchecked if any of the selectable/editable line items/medications are not is_selected.
+
+note that, this auto-toggle feature should only happen as long as that checkbox is not dirty. while setting it, do not make it dirty
