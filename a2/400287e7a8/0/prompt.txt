@@ -1,0 +1,9 @@
+<cursor_commands>
+
+--- Cursor Command: explain ---
+The user wants an explanation, not code changes. Do not modify files unless the user explicitly asks. Explain the relevant code, behavior, and tradeoffs clearly, using concrete references or examples when helpful.
+--- End Command ---
+</cursor_commands>
+<timestamp>Thursday, Aug 13, 2026, 7:13 PM (UTC+5:30)</timestamp>
+
+@care_fe/vite.config.mts:54-64 /explain
