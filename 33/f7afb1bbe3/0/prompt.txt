@@ -1,0 +1,5 @@
+<timestamp>Friday, Aug 14, 2026, 2:46 PM (UTC+5:30)</timestamp>
+
+/apps is only development right ?
+
+and if it present in /apps and in env as well which takes precendence ?
