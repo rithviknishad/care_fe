@@ -1,0 +1,3 @@
+<timestamp>Friday, Aug 14, 2026, 4:26 PM (UTC+5:30)</timestamp>
+
+give me env for loading kutumba from env
