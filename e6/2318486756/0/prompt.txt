@@ -1,0 +1,3 @@
+<timestamp>Tuesday, Aug 18, 2026, 5:26 PM (UTC+5:30)</timestamp>
+
+how to push entire sessions if it sis no tpusehd @\home\yaswanth\.cursor\projects\home-yaswanth-ohc-care\terminals\4.txt:675-689 during git push
