@@ -1,0 +1,28 @@
+{
+  "cli_version": "0.9.0",
+  "checkpoint_id": "584bc4787654",
+  "strategy": "manual-commit",
+  "branch": "ENG-500-support-for-creating-multiple-diagnostic-reports-in-a-service-request",
+  "checkpoints_count": 2,
+  "files_touched": [
+    "src/pages/Facility/services/serviceRequests/ServiceRequestShow.tsx",
+    "src/pages/Facility/services/serviceRequests/components/DiagnosticReportForm.tsx",
+    "src/pages/Facility/services/serviceRequests/components/DiagnosticReportReview.tsx"
+  ],
+  "sessions": [
+    {
+      "metadata": "/58/4bc4787654/0/metadata.json",
+      "transcript": "/58/4bc4787654/0/full.jsonl",
+      "compact_transcript": "/58/4bc4787654/0/transcript.jsonl",
+      "content_hash": "/58/4bc4787654/0/content_hash.txt",
+      "prompt": "/58/4bc4787654/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 0,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 0,
+    "output_tokens": 0,
+    "api_call_count": 0
+  }
+}
