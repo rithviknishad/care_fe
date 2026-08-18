@@ -1,0 +1,19 @@
+<timestamp>Thursday, Aug 13, 2026, 8:16 PM (UTC+5:30)</timestamp>
+
+is this valid 
+
+- Approach: Detect mode === 'dev', scan apps/ directory for manifest.tsx files, manage two pluginMap paths
+- Approach: Detect mode === 'dev', scan apps/ directory for `src/manifest.ts` or `src/manifest.tsx` files, manage two pluginMap paths
+@coderabbitai
+coderabbitai Bot
+21 minutes ago
+Contributor
+📐 Maintainability & Code Quality | 🟡 Minor | ⚡ Quick win
+
+Align the plan with the Vite implementation.
+
+vite.config.mts uses config.command === "serve" to enable local plugin discovery. It does not test mode === "dev". Update this line to describe the actual condition.
+
+This assessment uses the supplied vite.config.mts implementation.
+
+is this valid let's fix in the docs PR later, just remeber do not make change
