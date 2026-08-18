@@ -1,0 +1,3 @@
+<timestamp>Friday, Aug 14, 2026, 10:50 PM (UTC+5:30)</timestamp>
+
+can you create a todo.md file under my  memory repo and place todo with criop title and description to the point I will file it as jira later
