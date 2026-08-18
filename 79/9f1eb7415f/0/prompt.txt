@@ -1,0 +1,3 @@
+<timestamp>Tuesday, Aug 18, 2026, 4:50 PM (UTC+5:30)</timestamp>
+
+@care_fe/docs/care-apps-plugin-overrides.md:152-167 is this clear and self explainable ?
