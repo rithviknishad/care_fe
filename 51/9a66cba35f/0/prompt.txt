@@ -1,0 +1,5 @@
+<timestamp>Thursday, Aug 13, 2026, 5:03 PM (UTC+5:30)</timestamp>
+
+what is the diff between two extenstions and what is right and what do famous care plus like scribe abdm teleicu device use and what does MFE with fedrated module recommend
+
+One thing to fix in your fork: auto-discovery only looks for src/manifest.tsx, but care_kutumba_fe currently has src/manifest.ts. Either rename it to manifest.tsx or add a thin manifest.tsx that re-exports from
