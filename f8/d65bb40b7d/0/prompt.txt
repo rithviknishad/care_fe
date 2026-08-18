@@ -1,0 +1,25 @@
+<timestamp>Tuesday, Aug 18, 2026, 4:16 PM (UTC+5:30)</timestamp>
+
+let's get back here I did not understand 
+
+Replicated. Two Kutumba conditions, same pink header, same page.
+
+Tree on `/facilities`:
+
+```
+FacilitiesPage     ← we made this a sleeve (host, throwaway)
+  └── LoginHeader  ← already a sleeve
+```
+
+Kutumba: `replacement: KutumbaLoginHeader` (pink **KUTUMBA STACK**).
+
+| `stackPath` | Docs say | What we saw |
+|---|---|---|
+| `["FacilitiesPage", "LoginHeader"]` | pink (child under that parent) | **Sign in** — override did not apply |
+| `["LoginHeader"]` | pink (leaf on its own stack) | **KUTUMBA STACK** pink |
+
+So matching is not dead. The leaf writes its own name on the slow path. The **parent** never writes `FacilitiesPage`, even though it is registered and really renders `LoginHeader`. Adding the parent name to `stackPath` makes the match fail.
+
+The file is back on the failing case: `["FacilitiesPage", "LoginHeader"]`. Refresh the same facilities URL and you should see **Sign in** again, not pink.
+
+Host change (experiment only): `FacilitiesPage` is `register("FacilitiesPage", …)` so the parent is a real sleeve. Without that, the test would only prove “unregistered names don’t appear,” which the companion doc already says.
