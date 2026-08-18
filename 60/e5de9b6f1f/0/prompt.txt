@@ -1,0 +1,99 @@
+<external_links>
+### Potentially Relevant Websearch Results
+
+You should respond as if these information are known to you. Refrain from saying "I am unable to browse the internet" or "I don't have access to the internet" or "I'm unable to provide real-time news updates". This is your internet search results. Please always cite any links you referenced from the above search results in your response in markdown format.
+
+-------
+Website URL: https://entire.io/gh/ohcnetwork/care_fe-checkpoints/sessions
+Website Title: Sessions · ohcnetwork/care_fe-checkpoints · Entire
+Website Content:
+About
+
+Log in
+____
+
+Website URL: https://entire.io/gh/ohcnetwork/care_fe/session/88db0d5c-1532-4b75-9fdc-7c8ef7bf6faf
+Website Title: Session · ohcnetwork/care_fe · Entire
+Website Content:
+About
+
+Log in
+____
+
+Website URL: https://docs.entire.io/guides/checkpoints/store-checkpoints-in-another-repo
+Website Title: Store Checkpoints in Another Repository
+Website Content:
+> ## Documentation Index
+> Fetch the complete documentation index at: https://docs.entire.io/llms.txt
+> Use this file to discover all available pages before exploring further.
+
+# Store Checkpoints in Another Repository
+
+> Push checkpoint history to a repository separate from your source code.
+
+If checkpoint history should live somewhere other than the source repository, configure a [checkpoint remote](/glossary#checkpoint-remote).
+
+## Create a checkpoint repository
+
+Create a separate, empty repository for checkpoint data, then run this from your project:
+
+```bash theme={null}
+entire configure --checkpoint-remote github:owner/repo
+```
+
+Replace `owner/repo` with the repository you created for checkpoint data.
+
+The value uses the format `provider:owner/repo`. Currently, `github` is the supported provider.
+
+## Settings
+
+This writes the checkpoint remote to `.entire/settings.json`:
+
+```json theme={null}
+{
+  "strategy_options": {
+    "checkpoint_remote": {
+      "provider": "github",
+      "repo": "owner/repo"
+    }
+  }
+}
+```
+
+After this is configured, your code continues to live in the main repository, while checkpoint data is pushed to the separate repository.
+
+Commit and push `.entire/settings.json` when the checkpoint remote should apply to the whole project. Entire.io uses that setting to locate checkpoint data.
+
+## When to use another repo
+
+This is useful when:
+
+* checkpoint data should follow a different sharing boundary than source code
+* your team keeps development metadata outside the source repository
+* you want to keep the source repository focused on source code
+
+## Push behavior
+
+When you push code, Entire pushes the configured checkpoint data to the checkpoint repository separately. It uses the same protocol as your Git remote, such as SSH or HTTPS.
+
+If the checkpoint repository cannot be reached, your main Git push still succeeds. Entire keeps the checkpoint data locally and warns that it could not sync.
+
+## Keep checkpoints under the same owner
+
+Use a checkpoint repository with the same owner or organization as your code repository:
+
+* **Same owner** — checkpoints push normally. If your code is at `github.com/acme/app`, a checkpoint repo like `github:acme/app-checkpoints` works because both are owned by `acme`.
+* **Different owner** — Entire won't push checkpoint data to that repository.
+
+The different-owner case is an intentional design to protect forks, keeping fork contributors from needing write access to the upstream project's checkpoint repository.
+
+____
+
+</external_links>
+<timestamp>Tuesday, Aug 18, 2026, 5:57 PM (UTC+5:30)</timestamp>
+
+why session was pushed here https://entire.io/gh/ohcnetwork/care_fe-checkpoints/sessions 
+
+generally they should show up here https://entire.io/gh/ohcnetwork/care_fe/session/88db0d5c-1532-4b75-9fdc-7c8ef7bf6faf 
+
+https://docs.entire.io/guides/checkpoints/store-checkpoints-in-another-repo
