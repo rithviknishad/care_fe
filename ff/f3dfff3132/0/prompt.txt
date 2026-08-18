@@ -1,0 +1,3 @@
+<timestamp>Monday, Aug 17, 2026, 12:56 AM (UTC+5:30)</timestamp>
+
+question: so manual register fixed there issue ? and how when there are two exports ?
