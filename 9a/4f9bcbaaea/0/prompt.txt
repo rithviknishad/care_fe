@@ -1,0 +1,8 @@
+**`Broken`** — every review card shares one collapse state.
+
+`ServiceRequestShow.tsx` holds a single `isExpandReviewCard` (line 98) and passes the same `isExpanded` / `setIsExpanded` down to *every* `DiagnosticReportReviewItem` in this `.map()`.
+ With more than one report — the whole point of this PR — expanding one 
+card expands all of them, and the chevron on any card collapses all of 
+them.
+
+Each item should own its own `useState`, seeded from the parent signal (e.g. `const [expanded, setExpanded] = useState(isExpanded)` plus an effect on the parent flag, or keep an expanded-report-id set in `ServiceRequestShow`). Right now the multi-report UI cannot be operated one report at a time.
