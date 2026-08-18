@@ -1,0 +1,5 @@
+<timestamp>Thursday, Aug 13, 2026, 5:50 PM (UTC+5:30)</timestamp>
+
+@\home\yaswanth\.cursor\projects\home-yaswanth-ohc-care\terminals\12.txt:32-33 I checked out can you fix this in care_fe 
+
+I think fixing it in the care_fe right thing than chanfing all the plugs isn't it ?
