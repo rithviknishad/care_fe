@@ -1,0 +1,12 @@
+<timestamp>Friday, Aug 14, 2026, 10:41 PM (UTC+5:30)</timestamp>
+
+@care_fe/docs/care-apps-architecture-note.md:85 
+
+coderabbitai Bot
+5 hours ago
+Contributor
+📐 Maintainability & Code Quality | 🟡 Minor | ⚡ Quick win
+
+Use a complete sentence for window.CARE_API_URL.
+
+Replace May be "" for same-origin. with It may be "" for same-origin requests.
