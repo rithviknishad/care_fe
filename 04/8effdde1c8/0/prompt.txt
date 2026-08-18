@@ -1,0 +1,5 @@
+<timestamp>Friday, Aug 14, 2026, 3:58 PM (UTC+5:30)</timestamp>
+
+fix the doc points where it  was wrong 
+
+accurate adn clear
