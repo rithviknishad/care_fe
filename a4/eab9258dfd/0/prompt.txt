@@ -1,0 +1,62 @@
+<timestamp>Friday, Aug 14, 2026, 8:55 PM (UTC+5:30)</timestamp>
+
+can you elaborate this further with an exmaple 
+
+Two small “the sentence is a bit too neat” points. The doc is still usable.
+
+---
+
+**1. “Falling back to the host `src/`”** (doc lines 77–80)
+
+The doc sounds like one function tries plugin, then host.
+
+The rewrite does **only** this:
+
+```
+plugin file has:  import x from "@/components/Button"
+                         │
+                         ▼
+look in apps/<slug>/src/components/Button
+                         │
+            found?  yes → rewrite to /@fs/.../apps/<slug>/src/...
+                    no  → leave `@/` unchanged
+```
+
+It does **not** then search `care_fe/src`. If the file isn’t in the plugin, it returns the original `@/` string (line 210: `return match`).
+
+**Then** Vite’s normal alias runs:
+
+```517:518:vite.config.mts
+        "@": path.resolve(__dirname, "./src"),
+```
+
+So `@/components/Button` still in the file → host `src/components/Button`.
+
+Tiny picture:
+
+```
+1. rewrite:  plugin src only
+2. if rewrite gave up:  Vite @ → host src
+```
+
+**Takeaway:** fallback is **two steps**, not one. Same end result: plugin file wins, else host file.
+
+---
+
+**2. Symlinks** (`isDirectory()`)
+
+Discovery:
+
+```59:61:vite.config.mts
+  return fs
+    .readdirSync(appsDir, { withFileTypes: true })
+    .filter((entry) => entry.isDirectory())
+```
+
+`isDirectory()` on a **symlink** is false. `ln -s forks/kutumba apps/care_kutumba_fe` is skipped even if `manifest.tsx` exists.
+
+The **Local Dev Workflow** section already says copy/clone, not `ln -s`. This discovery section doesn’t repeat it. That’s why it’s a nit, not a lie.
+
+**Takeaway:** don’t document symlink here again unless you want this section to stand alone. The earlier paragraph already covers it.
+
+and correct/poitn whats wrong in Documentation points
