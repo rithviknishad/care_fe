@@ -1,0 +1,5 @@
+<timestamp>Tuesday, Aug 18, 2026, 2:35 PM (UTC+5:30)</timestamp>
+
+> Still a hole in this same block: line 94 (and the later Stack-Aware Path section). It reads as if stackPath works. It does not, for the parent-push reason we already found. That nit is not written into the doc yet.
+
+whats this ?
