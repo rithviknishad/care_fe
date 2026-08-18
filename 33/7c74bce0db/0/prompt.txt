@@ -1,0 +1,7 @@
+<timestamp>Monday, Aug 17, 2026, 12:54 AM (UTC+5:30)</timestamp>
+
+so why do you think they ended up making this change in PrintInvoice lack knowledge of this ?
+
+and 
+
+also lets still @care_fe/src/pages/Facility/billing/invoice/PrintInvoice.tsx  itself by dropping defaultr export
