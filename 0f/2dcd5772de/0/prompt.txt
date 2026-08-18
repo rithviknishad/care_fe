@@ -1,0 +1,47 @@
+`onValueChange` writes `{ with: searchWith }`, but `searchWith` comes from `qParams.with` and is `undefined`
+ initially. This means typing in the search box never sets a default 
+search mode, so the API call won’t be filtered (and clearing the input 
+can leave `with` set, disabling the query)
+
+is this valid?
+
+---
+
+give me a simple reply for this comment that it is not valid in maximum 2 sentence
+
+---
+
+the label and htmlFor is duplicated for multiple reports. element id's should be unique in the DOM.
+
+---
+
+remove the search icon from comand
+
+---
+
+The old `<input>` carried `h-9 w-full rounded-md border bg-white px-2 shadow-sm`. `CommandInput`'s wrapper is `flex h-9 items-center gap-2 border-b px-3` — a bottom rule only, no full border, no rounding, no shadow, transparent background (the parent `Command` here is `bg-transparent`). So this search field will no longer look like the other bordered controls it sits beside in the same toolbar row.
+
+match with older classNmae
+
+---
+
+`enabled: isExpanded` means collapsing the card unmounts nothing but stops the refetch, and the header below happily renders `last_updated` from `fullReport` — which is `undefined` until expanded, so it shows `-`. Collapse a report and its timestamp vanishes. Either keep the query enabled or don't key the header off it.
+
+is it valid comment?
+
+---
+
+Success is declared purely on `results.some(r => r.reference_id === "upsert-observations")`
+ — the presence of a result, not whether it succeeded. If the batch 
+returns a per-item error you still toast "saved successfully" and 
+collapse the card. Check the actual status.
+
+is it valid?
+
+---
+
+give me reply in simple 1 line sentance
+
+---
+
+remove any link items , give me pure sentance only
