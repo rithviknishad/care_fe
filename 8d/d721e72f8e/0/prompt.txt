@@ -1,0 +1,182 @@
+<timestamp>Tuesday, Aug 18, 2026, 7:14 PM (UTC+5:30)</timestamp>
+
+@care_fe/tests/organization/patient/helpers.ts:25 looks like having 2 All encounters broke the tests fix it 
+
+ 1) [chromium] › tests/organization/patient/encounter/organizationEncounterAccess.spec.ts:8:7 › Patient Encounter Access via Organization › can view encounter from organization patient encounters tab 
+
+    Error: locator.click: Error: strict mode violation: getByRole('link', { name: /all encounters/i }) resolved to 2 elements:
+        1) <a href="/facility/220644d6-4b09-4db4-aebf-0a84e51e0867/encounters/patients/all" class="flex h-7 min-w-0 -translate-x-px items-center gap-2 overflow-hidden rounded-md px-2 outline-hidden ring-sidebar-ring focus-visible:ring-2 active:bg-sidebar-accent active:text-sidebar-accent-foreground disabled:pointer-events-none disabled:opacity-50 aria-disabled:pointer-events-none aria-disabled:opacity-50 [&>span:last-child]:truncate [&>svg]:size-4 [&>svg]:shrink-0 [&>svg]:text-sidebar-accent-foreground data…>All Encounters</a> aka getByRole('link', { name: 'All Encounters', exact: true })
+        2) <a href="/facility/220644d6-4b09-4db4-aebf-0a84e51e0867/encounters/patients/all" class="block h-full min-w-0 rounded-lg ring-primary-400 ring-offset-2 transition-all duration-200 hover:ring-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-400 focus-visible:ring-offset-2">…</a> aka getByRole('link', { name: 'Stethoscope Duo All' })
+
+    Call log:
+      - waiting for getByRole('link', { name: /all encounters/i })
+
+       at organization/patient/helpers.ts:25
+
+      23 |   await page.getByRole("button", { name: "Toggle Sidebar" }).click();
+      24 |   await page.getByRole("button", { name: "Patients", exact: true }).click();
+    > 25 |   await page.getByRole("link", { name: /all encounters/i }).click();
+         |                                                             ^
+      26 |   const patientName = await getPatientNameFromCard(page);
+      27 |
+      28 |   // Navigate to organization
+        at navigateToOrganizationPatient (/home/runner/work/care_fe/care_fe/tests/organization/patient/helpers.ts:25:61)
+        at /home/runner/work/care_fe/care_fe/tests/organization/patient/encounter/organizationEncounterAccess.spec.ts:11:5
+
+    Error Context: test-results/organization-patient-encou-4e64f-tion-patient-encounters-tab-chromium/error-context.md
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    Error: locator.click: Error: strict mode violation: getByRole('link', { name: /all encounters/i }) resolved to 2 elements:
+        1) <a href="/facility/220644d6-4b09-4db4-aebf-0a84e51e0867/encounters/patients/all" class="flex h-7 min-w-0 -translate-x-px items-center gap-2 overflow-hidden rounded-md px-2 outline-hidden ring-sidebar-ring focus-visible:ring-2 active:bg-sidebar-accent active:text-sidebar-accent-foreground disabled:pointer-events-none disabled:opacity-50 aria-disabled:pointer-events-none aria-disabled:opacity-50 [&>span:last-child]:truncate [&>svg]:size-4 [&>svg]:shrink-0 [&>svg]:text-sidebar-accent-foreground data…>All Encounters</a> aka getByRole('link', { name: 'All Encounters', exact: true })
+        2) <a href="/facility/220644d6-4b09-4db4-aebf-0a84e51e0867/encounters/patients/all" class="block h-full min-w-0 rounded-lg ring-primary-400 ring-offset-2 transition-all duration-200 hover:ring-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-400 focus-visible:ring-offset-2">…</a> aka getByRole('link', { name: 'Stethoscope Duo All' })
+
+    Call log:
+      - waiting for getByRole('link', { name: /all encounters/i })
+
+       at organization/patient/helpers.ts:25
+
+      23 |   await page.getByRole("button", { name: "Toggle Sidebar" }).click();
+      24 |   await page.getByRole("button", { name: "Patients", exact: true }).click();
+    > 25 |   await page.getByRole("link", { name: /all encounters/i }).click();
+         |                                                             ^
+      26 |   const patientName = await getPatientNameFromCard(page);
+      27 |
+      28 |   // Navigate to organization
+        at navigateToOrganizationPatient (/home/runner/work/care_fe/care_fe/tests/organization/patient/helpers.ts:25:61)
+        at /home/runner/work/care_fe/care_fe/tests/organization/patient/encounter/organizationEncounterAccess.spec.ts:11:5
+
+    attachment #1: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results/organization-patient-encou-4e64f-tion-patient-encounters-tab-chromium-retry1/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/organization-patient-encou-4e64f-tion-patient-encounters-tab-chromium-retry1/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/organization-patient-encou-4e64f-tion-patient-encounters-tab-chromium-retry1/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/organization-patient-encou-4e64f-tion-patient-encounters-tab-chromium-retry1/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Retry #2 ───────────────────────────────────────────────────────────────────────────────────────
+
+    Error: locator.click: Error: strict mode violation: getByRole('link', { name: /all encounters/i }) resolved to 2 elements:
+        1) <a href="/facility/220644d6-4b09-4db4-aebf-0a84e51e0867/encounters/patients/all" class="flex h-7 min-w-0 -translate-x-px items-center gap-2 overflow-hidden rounded-md px-2 outline-hidden ring-sidebar-ring focus-visible:ring-2 active:bg-sidebar-accent active:text-sidebar-accent-foreground disabled:pointer-events-none disabled:opacity-50 aria-disabled:pointer-events-none aria-disabled:opacity-50 [&>span:last-child]:truncate [&>svg]:size-4 [&>svg]:shrink-0 [&>svg]:text-sidebar-accent-foreground data…>All Encounters</a> aka getByRole('link', { name: 'All Encounters', exact: true })
+        2) <a href="/facility/220644d6-4b09-4db4-aebf-0a84e51e0867/encounters/patients/all" class="block h-full min-w-0 rounded-lg ring-primary-400 ring-offset-2 transition-all duration-200 hover:ring-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-400 focus-visible:ring-offset-2">…</a> aka getByRole('link', { name: 'Stethoscope Duo All' })
+
+    Call log:
+      - waiting for getByRole('link', { name: /all encounters/i })
+
+       at organization/patient/helpers.ts:25
+
+      23 |   await page.getByRole("button", { name: "Toggle Sidebar" }).click();
+      24 |   await page.getByRole("button", { name: "Patients", exact: true }).click();
+    > 25 |   await page.getByRole("link", { name: /all encounters/i }).click();
+         |                                                             ^
+      26 |   const patientName = await getPatientNameFromCard(page);
+      27 |
+      28 |   // Navigate to organization
+        at navigateToOrganizationPatient (/home/runner/work/care_fe/care_fe/tests/organization/patient/helpers.ts:25:61)
+        at /home/runner/work/care_fe/care_fe/tests/organization/patient/encounter/organizationEncounterAccess.spec.ts:11:5
+
+    Error Context: test-results/organization-patient-encou-4e64f-tion-patient-encounters-tab-chromium-retry2/error-context.md
+
+  2) [chromium] › tests/organization/patient/encounter/patientInfoHoverCard.spec.ts:8:7 › PatientInfoHoverCard Conditional Rendering › should NOT show Patient Home button in encounter accessed via organization route 
+
+    Error: locator.click: Error: strict mode violation: getByRole('link', { name: /all encounters/i }) resolved to 2 elements:
+        1) <a href="/facility/220644d6-4b09-4db4-aebf-0a84e51e0867/encounters/patients/all" class="flex h-7 min-w-0 -translate-x-px items-center gap-2 overflow-hidden rounded-md px-2 outline-hidden ring-sidebar-ring focus-visible:ring-2 active:bg-sidebar-accent active:text-sidebar-accent-foreground disabled:pointer-events-none disabled:opacity-50 aria-disabled:pointer-events-none aria-disabled:opacity-50 [&>span:last-child]:truncate [&>svg]:size-4 [&>svg]:shrink-0 [&>svg]:text-sidebar-accent-foreground data…>All Encounters</a> aka getByRole('link', { name: 'All Encounters', exact: true })
+        2) <a href="/facility/220644d6-4b09-4db4-aebf-0a84e51e0867/encounters/patients/all" class="block h-full min-w-0 rounded-lg ring-primary-400 ring-offset-2 transition-all duration-200 hover:ring-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-400 focus-visible:ring-offset-2">…</a> aka getByRole('link', { name: 'Stethoscope Duo All' })
+
+    Call log:
+      - waiting for getByRole('link', { name: /all encounters/i })
+
+       at organization/patient/helpers.ts:25
+
+      23 |   await page.getByRole("button", { name: "Toggle Sidebar" }).click();
+      24 |   await page.getByRole("button", { name: "Patients", exact: true }).click();
+    > 25 |   await page.getByRole("link", { name: /all encounters/i }).click();
+         |                                                             ^
+      26 |   const patientName = await getPatientNameFromCard(page);
+      27 |
+      28 |   // Navigate to organization
+        at navigateToOrganizationPatient (/home/runner/work/care_fe/care_fe/tests/organization/patient/helpers.ts:25:61)
+        at /home/runner/work/care_fe/care_fe/tests/organization/patient/encounter/patientInfoHoverCard.spec.ts:11:5
+
+    Error Context: test-results/organization-patient-encou-c0c5e-ssed-via-organization-route-chromium/error-context.md
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    Error: locator.click: Error: strict mode violation: getByRole('link', { name: /all encounters/i }) resolved to 2 elements:
+        1) <a href="/facility/220644d6-4b09-4db4-aebf-0a84e51e0867/encounters/patients/all" class="flex h-7 min-w-0 -translate-x-px items-center gap-2 overflow-hidden rounded-md px-2 outline-hidden ring-sidebar-ring focus-visible:ring-2 active:bg-sidebar-accent active:text-sidebar-accent-foreground disabled:pointer-events-none disabled:opacity-50 aria-disabled:pointer-events-none aria-disabled:opacity-50 [&>span:last-child]:truncate [&>svg]:size-4 [&>svg]:shrink-0 [&>svg]:text-sidebar-accent-foreground data…>All Encounters</a> aka getByRole('link', { name: 'All Encounters', exact: true })
+        2) <a href="/facility/220644d6-4b09-4db4-aebf-0a84e51e0867/encounters/patients/all" class="block h-full min-w-0 rounded-lg ring-primary-400 ring-offset-2 transition-all duration-200 hover:ring-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-400 focus-visible:ring-offset-2">…</a> aka getByRole('link', { name: 'Stethoscope Duo All' })
+
+    Call log:
+      - waiting for getByRole('link', { name: /all encounters/i })
+
+       at organization/patient/helpers.ts:25
+
+      23 |   await page.getByRole("button", { name: "Toggle Sidebar" }).click();
+      24 |   await page.getByRole("button", { name: "Patients", exact: true }).click();
+    > 25 |   await page.getByRole("link", { name: /all encounters/i }).click();
+         |                                                             ^
+      26 |   const patientName = await getPatientNameFromCard(page);
+      27 |
+      28 |   // Navigate to organization
+        at navigateToOrganizationPatient (/home/runner/work/care_fe/care_fe/tests/organization/patient/helpers.ts:25:61)
+        at /home/runner/work/care_fe/care_fe/tests/organization/patient/encounter/patientInfoHoverCard.spec.ts:11:5
+
+    attachment #1: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results/organization-patient-encou-c0c5e-ssed-via-organization-route-chromium-retry1/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/organization-patient-encou-c0c5e-ssed-via-organization-route-chromium-retry1/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/organization-patient-encou-c0c5e-ssed-via-organization-route-chromium-retry1/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/organization-patient-encou-c0c5e-ssed-via-organization-route-chromium-retry1/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Retry #2 ───────────────────────────────────────────────────────────────────────────────────────
+
+    Error: locator.click: Error: strict mode violation: getByRole('link', { name: /all encounters/i }) resolved to 2 elements:
+        1) <a href="/facility/220644d6-4b09-4db4-aebf-0a84e51e0867/encounters/patients/all" class="flex h-7 min-w-0 -translate-x-px items-center gap-2 overflow-hidden rounded-md px-2 outline-hidden ring-sidebar-ring focus-visible:ring-2 active:bg-sidebar-accent active:text-sidebar-accent-foreground disabled:pointer-events-none disabled:opacity-50 aria-disabled:pointer-events-none aria-disabled:opacity-50 [&>span:last-child]:truncate [&>svg]:size-4 [&>svg]:shrink-0 [&>svg]:text-sidebar-accent-foreground data…>All Encounters</a> aka getByRole('link', { name: 'All Encounters', exact: true })
+        2) <a href="/facility/220644d6-4b09-4db4-aebf-0a84e51e0867/encounters/patients/all" class="block h-full min-w-0 rounded-lg ring-primary-400 ring-offset-2 transition-all duration-200 hover:ring-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-400 focus-visible:ring-offset-2">…</a> aka getByRole('link', { name: 'Stethoscope Duo All' })
+
+    Call log:
+      - waiting for getByRole('link', { name: /all encounters/i })
+
+       at organization/patient/helpers.ts:25
+
+      23 |   await page.getByRole("button", { name: "Toggle Sidebar" }).click();
+      24 |   await page.getByRole("button", { name: "Patients", exact: true }).click();
+    > 25 |   await page.getByRole("link", { name: /all encounters/i }).click();
+         |                                                             ^
+      26 |   const patientName = await getPatientNameFromCard(page);
+      27 |
+      28 |   // Navigate to organization
+        at navigateToOrganizationPatient (/home/runner/work/care_fe/care_fe/tests/organization/patient/helpers.ts:25:61)
+        at /home/runner/work/care_fe/care_fe/tests/organization/patient/encounter/patientInfoHoverCard.spec.ts:11:5
+
+    Error Context: test-results/organization-patient-encou-c0c5e-ssed-via-organization-route-chromium-retry2/error-context.md
+
+  3) [chromium] › tests/facility/settings/observationDefinition/observationDefinition.spec.ts:257:7 › Observation Definition Form with Interpretation › should create observation definition with component-level interpretation 
+
+    TimeoutError: locator.click: Timeout 10000ms exceeded.
+    Call log:
+      - waiting for getByRole('option', { name: 'meq/g' }).first()
+
+      289 |     await page.waitForLoadState("networkidle");
+      290 |     await page.getByPlaceholder("Search for units").fill(unit);
+    > 291 |     await page.getByRole("option", { name: unit }).first().click();
+          |                                                            ^
+      292 |
+      293 |     // Add component-level interpretation
+      294 |     await page
+        at /home/runner/work/care_fe/care_fe/tests/facility/settings/observationDefinition/observationDefinition.spec.ts:291:60
+
+    Error Context: test-results/facility-settings-observat-837de-ponent-level-interpretation-chromium/error-context.md
