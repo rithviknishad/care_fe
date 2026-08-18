@@ -1,0 +1,3 @@
+<timestamp>Friday, Aug 14, 2026, 10:53 PM (UTC+5:30)</timestamp>
+
+can you write a replication for this bug so that I can replicate it on care_kutumaba_fe
