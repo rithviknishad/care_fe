@@ -1,0 +1,13 @@
+<timestamp>Friday, Aug 14, 2026, 9:06 PM (UTC+5:30)</timestamp>
+
+@care_fe/docs/care-apps-local-dev.md:98-174 next section 
+
+I have no idea
+
+I think this is buikt in care plugs v3 
+
+so first first study the related code and then explain me in simple words what it is why it is needed and what problem does it solve 
+
+then validate the doc content 
+
+and then point any mistakes with proper backing
