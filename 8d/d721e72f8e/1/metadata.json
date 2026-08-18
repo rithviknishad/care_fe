@@ -1,0 +1,12 @@
+{
+  "cli_version": "0.10.0",
+  "checkpoint_id": "8dd721e72f8e",
+  "session_id": "93fc36d4-28f8-4a24-a67f-428a371f2136",
+  "strategy": "manual-commit",
+  "created_at": "2026-08-18T19:44:34.894931793Z",
+  "checkpoints_count": 2,
+  "files_touched": null,
+  "agent": "Cursor",
+  "model": "",
+  "compact_transcript_start": 0
+}

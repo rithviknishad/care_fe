@@ -1,0 +1,11 @@
+<timestamp>Tuesday, Aug 18, 2026, 8:12 PM (UTC+5:30)</timestamp>
+
+@care_fe/public/locale/en.json:2766 
+
+in other languages thet can chaneg order right ? in ml.json or where ever isn't it ?
+
+for example:   "greet_user": "<1>{{time_of_day}}, </1> <2>{{user}} 👋</2>",
+
+ concatenating "Good {{time_of_day}}" is a translator's nightmare — many languages don't compose greetings that way. Prefer three full greeting keys (good_morning/good_afternoon/good_evening) instead of stitching sentences from fragments.
+
+what do you think
