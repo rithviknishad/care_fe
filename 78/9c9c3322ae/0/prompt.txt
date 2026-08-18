@@ -1,0 +1,5 @@
+<timestamp>Tuesday, Aug 18, 2026, 4:30 PM (UTC+5:30)</timestamp>
+
+> Notebook had both sleeves. Guest book only had LoginHeader (or nothing useful for the parent). So stackPath said no.
+
+but we are sending from plug right  { stackPath: ["FacilitiesPage", "LoginHeader"] }, you  mean not present in engine ?
