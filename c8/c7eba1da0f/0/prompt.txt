@@ -1,0 +1,5 @@
+<timestamp>Friday, Aug 14, 2026, 6:23 PM (UTC+5:30)</timestamp>
+
+>  but that is care.config.ts parsing REACT_ENABLED_APPS, not Vite remotes.
+
+elabirate
