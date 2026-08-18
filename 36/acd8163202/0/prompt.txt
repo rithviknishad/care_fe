@@ -1,0 +1,14 @@
+<uploaded_documents>
+The following documents have been saved to your filesystem. You can read them using your file-reading tool or other tools:
+- /home/yaswanth/.cursor/projects/home-yaswanth-ohc-care/uploads/changes-0.md
+</uploaded_documents>
+<timestamp>Friday, Aug 14, 2026, 5:48 PM (UTC+5:30)</timestamp>
+
+> Loaded from pluginMap.ts, generated at setup
+Wrong. src/pluginMap.ts is an empty unused []. Nobody generates it. Build-time is careConfig.careApps + localDevPluginConfigs via getBuildTimePlugConfigs().
+
+I think before v3 we used have npm run setup 
+
+https://github.com/ohcnetwork/care_fe/pull/16229/changes#diff-7ae45ad102eab3b6d7e7896acd08c427a9b25b346470d7bc6507b6481575d519 
+
+what is diff, how it working now and previously
