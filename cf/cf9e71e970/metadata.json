@@ -3,14 +3,18 @@
   "checkpoint_id": "cfcf9e71e970",
   "strategy": "manual-commit",
   "branch": "feat/pharmacy-ux-upgrade",
-  "checkpoints_count": 2,
+  "checkpoints_count": 3,
   "files_touched": [
     "public/locale/en.json",
+    "src/pages/Facility/services/inventory/DispenseLotSelector.tsx",
     "src/pages/Facility/services/inventory/InventoryItemsSelector.tsx",
     "src/pages/Facility/services/inventory/utils.ts",
+    "src/pages/Facility/services/pharmacy/DispenseOrderView.tsx",
+    "src/pages/Facility/services/pharmacy/PrescriptionQueue.tsx",
     "src/pages/Facility/services/pharmacy/billMedications/BillMedicationsPrescriptionCard.tsx",
     "src/pages/Facility/services/pharmacy/billMedications/utils/itemsAutoSelect.ts",
     "src/pages/Facility/services/pharmacy/billMedications/utils/useInventoryItemsAutoSelect.ts",
+    "src/pages/Facility/services/pharmacy/components/AddDispenseMedicationRow.tsx",
     "src/pages/Facility/services/pharmacy/components/AddMedicationSheet.tsx",
     "src/pages/Facility/services/pharmacy/components/EditDispenseSheet.tsx"
   ],
@@ -21,6 +25,13 @@
       "compact_transcript": "/cf/cf9e71e970/0/transcript.jsonl",
       "content_hash": "/cf/cf9e71e970/0/content_hash.txt",
       "prompt": "/cf/cf9e71e970/0/prompt.txt"
+    },
+    {
+      "metadata": "/cf/cf9e71e970/1/metadata.json",
+      "transcript": "/cf/cf9e71e970/1/full.jsonl",
+      "compact_transcript": "/cf/cf9e71e970/1/transcript.jsonl",
+      "content_hash": "/cf/cf9e71e970/1/content_hash.txt",
+      "prompt": "/cf/cf9e71e970/1/prompt.txt"
     }
   ],
   "token_usage": {
