@@ -1,0 +1,9 @@
+<timestamp>Tuesday, Aug 18, 2026, 4:21 PM (UTC+5:30)</timestamp>
+
+so you mean stack path does not work today ?
+
+and 
+
+> with the current manifest: you should see Sign in, not pink. That is the failing case, on purpose.
+
+i can see only the sign button why ?
