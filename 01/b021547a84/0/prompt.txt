@@ -1,0 +1,5 @@
+<timestamp>Monday, Aug 17, 2026, 12:17 AM (UTC+5:30)</timestamp>
+
+> export default register("PrintInvoice", PrintInvoice); 
+
+do having same names will not work ?
