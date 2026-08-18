@@ -1,0 +1,8 @@
+<timestamp>Sunday, Aug 16, 2026, 11:55 PM (UTC+5:30)</timestamp>
+
+> CARE files often write both anyway:
+
+export function Foo() { ... }  // named
+export default Foo;            // default
+
+most of the care_fe  files
