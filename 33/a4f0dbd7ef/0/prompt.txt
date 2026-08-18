@@ -1,0 +1,5 @@
+<timestamp>Thursday, Aug 13, 2026, 5:26 PM (UTC+5:30)</timestamp>
+
+> getLocalPluginDefinitions() in vite.config.mts only keeps entries where entry.isDirectory() is true. For symlinks, Node reports isDirectory: false and isSymbolicLink: true, so symlinked plugins are ignored.
+
+why and you said symlink will work
