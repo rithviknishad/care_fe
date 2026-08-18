@@ -1,0 +1,33 @@
+{
+  "cli_version": "0.9.0",
+  "checkpoint_id": "cfcf9e71e970",
+  "strategy": "manual-commit",
+  "branch": "feat/pharmacy-ux-upgrade",
+  "checkpoints_count": 2,
+  "files_touched": [
+    "public/locale/en.json",
+    "src/pages/Facility/services/inventory/InventoryItemsSelector.tsx",
+    "src/pages/Facility/services/inventory/utils.ts",
+    "src/pages/Facility/services/pharmacy/billMedications/BillMedicationsPrescriptionCard.tsx",
+    "src/pages/Facility/services/pharmacy/billMedications/utils/itemsAutoSelect.ts",
+    "src/pages/Facility/services/pharmacy/billMedications/utils/useInventoryItemsAutoSelect.ts",
+    "src/pages/Facility/services/pharmacy/components/AddMedicationSheet.tsx",
+    "src/pages/Facility/services/pharmacy/components/EditDispenseSheet.tsx"
+  ],
+  "sessions": [
+    {
+      "metadata": "/cf/cf9e71e970/0/metadata.json",
+      "transcript": "/cf/cf9e71e970/0/full.jsonl",
+      "compact_transcript": "/cf/cf9e71e970/0/transcript.jsonl",
+      "content_hash": "/cf/cf9e71e970/0/content_hash.txt",
+      "prompt": "/cf/cf9e71e970/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 0,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 0,
+    "output_tokens": 0,
+    "api_call_count": 0
+  }
+}

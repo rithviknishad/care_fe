@@ -1,0 +1,13 @@
+can we improve this? let's not use badge. let's make it use the full size of the cell and improve the no stock design a lot! this looks so ugly now!
+
+---
+
+can we improve this? let's not use badge. let's make it use the full size of the cell and improve the no stock design a lot! this looks so ugly now!
+
+---
+
+ExpiredItemsWarning should show a warning in the dropdown content of the count just to give the user a heads up that the inventory contains expired/expiring soon items.
+
+---
+
+ExpiredItemsWarning should show a warning in the dropdown content of the count just to give the user a heads up that the inventory contains expired/expiring soon items.
