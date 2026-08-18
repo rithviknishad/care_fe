@@ -1,0 +1,3 @@
+<timestamp>Friday, Aug 14, 2026, 2:26 PM (UTC+5:30)</timestamp>
+
+I am on docs/refresh-care-apps-plugin-docs fix the above  mode === 'dev' only we already fixed remaining things in ENG-* PR for tsx
