@@ -1,0 +1,9 @@
+<timestamp>Friday, Aug 14, 2026, 2:44 PM (UTC+5:30)</timestamp>
+
+you mean this will show in admin apps dashbaord ?
+
+kutumba: {
+  url: "http://localhost:4173/…",   ← frontend overwrote
+  theme: "green"                    ← DB-only, kept
+}
+source: "build"                     ← not editable in admin
