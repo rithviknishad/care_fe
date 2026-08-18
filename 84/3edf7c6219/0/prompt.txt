@@ -1,0 +1,3 @@
+<timestamp>Friday, Aug 14, 2026, 9:30 PM (UTC+5:30)</timestamp>
+
+@care_fe/docs/care-apps-local-dev.md:157-165 should command be ran from plugin directlry or care fe directpey ?
