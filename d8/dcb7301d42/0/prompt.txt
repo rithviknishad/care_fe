@@ -1,0 +1,5 @@
+<timestamp>Monday, Aug 17, 2026, 12:29 AM (UTC+5:30)</timestamp>
+
+explain with an example in simple words and later tell what is the diff between export const LoginHeader export function LoginHeader export default ?
+
+and later change the LoginHeader to name  + default so that we test whether that works otr not
