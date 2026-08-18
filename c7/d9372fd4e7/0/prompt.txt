@@ -1,0 +1,5 @@
+<timestamp>Sunday, Aug 16, 2026, 8:21 PM (UTC+5:30)</timestamp>
+
+@care_fe/docs/care-apps-override-architecture.md:1-11 first section 
+
+verify with code
