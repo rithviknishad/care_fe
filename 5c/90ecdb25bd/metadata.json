@@ -3,7 +3,7 @@
   "checkpoint_id": "5c90ecdb25bd",
   "strategy": "manual-commit",
   "branch": "ENG-887-fix-internal-delivery-batch-failing",
-  "checkpoints_count": 6,
+  "checkpoints_count": 4,
   "files_touched": [
     "src/pages/Facility/services/inventory/externalSupply/deliveryOrder/AddSupplyDeliveryForm.tsx",
     "src/pages/Facility/services/inventory/externalSupply/requestOrder/AddItemsForm.tsx",
@@ -16,13 +16,6 @@
       "compact_transcript": "/5c/90ecdb25bd/0/transcript.jsonl",
       "content_hash": "/5c/90ecdb25bd/0/content_hash.txt",
       "prompt": "/5c/90ecdb25bd/0/prompt.txt"
-    },
-    {
-      "metadata": "/5c/90ecdb25bd/1/metadata.json",
-      "transcript": "/5c/90ecdb25bd/1/full.jsonl",
-      "compact_transcript": "/5c/90ecdb25bd/1/transcript.jsonl",
-      "content_hash": "/5c/90ecdb25bd/1/content_hash.txt",
-      "prompt": "/5c/90ecdb25bd/1/prompt.txt"
     }
   ],
   "token_usage": {
@@ -31,17 +24,5 @@
     "cache_read_tokens": 0,
     "output_tokens": 0,
     "api_call_count": 0
-  },
-  "combined_attribution": {
-    "calculated_at": "2026-08-18T09:33:43.391224Z",
-    "agent_lines": 41,
-    "agent_removed": 9,
-    "human_added": 0,
-    "human_modified": 0,
-    "human_removed": 0,
-    "total_committed": 41,
-    "total_lines_changed": 50,
-    "agent_percentage": 100,
-    "metric_version": 2
   }
 }
