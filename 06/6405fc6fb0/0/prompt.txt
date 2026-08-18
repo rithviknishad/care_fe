@@ -1,0 +1,5 @@
+<timestamp>Friday, Aug 14, 2026, 8:50 PM (UTC+5:30)</timestamp>
+
+> host src/ fallback is Vite’s @ alias after a failed rewrite, not a second search inside the rewrite; isDirectory() still skips symlinks (already covered earlier in the file).
+
+elaborat, point and explain in simple way
