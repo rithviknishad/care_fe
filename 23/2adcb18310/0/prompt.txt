@@ -1,0 +1,5 @@
+<timestamp>Monday, Aug 17, 2026, 12:07 AM (UTC+5:30)</timestamp>
+
+> ship PrintInvoice in env (deploy/config), or
+
+this is simple rigth ?
