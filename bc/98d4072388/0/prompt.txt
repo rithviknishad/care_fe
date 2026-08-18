@@ -1,0 +1,3 @@
+<timestamp>Sunday, Aug 16, 2026, 11:43 PM (UTC+5:30)</timestamp>
+
+so why it is done that way in @care_fe/src/pages/Facility/billing/invoice/PrintInvoice.tsx  , why not from env ?
