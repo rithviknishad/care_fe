@@ -1,0 +1,23 @@
+**`Broken`** (efficiency) — the `enabled` guards were dropped, so this now fires 2N requests on mount.
+
+This query and the `fileApi.list` query just below both lost their `enabled` conditions, and the component early-returns a skeleton while `isLoadingReport`. Since `DiagnosticReportReviewItem` is rendered once per report, opening a service request with N reports issues N `retrieveDiagnosticReport` + N `files` calls immediately, regardless of whether any card is expanded.
+
+Compare `DiagnosticReportItem` in `DiagnosticReportForm.tsx`, which does this correctly with `enabled: !!report.id && isExpanded`.
+ Same guard belongs here (and the skeleton should only render for an 
+expanded card, otherwise every collapsed header is replaced by a 
+skeleton block on load).
+
+is this valid? if yes fix it other wise give me reson for it why it is invalid without any links included
+
+---
+
+The update-report payload sends `status: report.status` from the stale list prop instead of `fullReport.status`.
+ The full report is what you just fetched and edited against; if it 
+drifted (someone approved it in another tab), you happily write the old 
+status back. Use the fetched report as the source of truth.
+
+is this valid?
+
+---
+
+yes
