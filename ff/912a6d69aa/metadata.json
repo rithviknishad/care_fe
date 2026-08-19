@@ -3,8 +3,9 @@
   "checkpoint_id": "ff912a6d69aa",
   "strategy": "manual-commit",
   "branch": "feat/pharmacy-ux-upgrade",
-  "checkpoints_count": 1,
+  "checkpoints_count": 2,
   "files_touched": [
+    "public/locale/en.json",
     "src/pages/Facility/services/inventory/DispenseLotSelector.tsx"
   ],
   "sessions": [
@@ -14,6 +15,13 @@
       "compact_transcript": "/ff/912a6d69aa/0/transcript.jsonl",
       "content_hash": "/ff/912a6d69aa/0/content_hash.txt",
       "prompt": "/ff/912a6d69aa/0/prompt.txt"
+    },
+    {
+      "metadata": "/ff/912a6d69aa/1/metadata.json",
+      "transcript": "/ff/912a6d69aa/1/full.jsonl",
+      "compact_transcript": "/ff/912a6d69aa/1/transcript.jsonl",
+      "content_hash": "/ff/912a6d69aa/1/content_hash.txt",
+      "prompt": "/ff/912a6d69aa/1/prompt.txt"
     }
   ],
   "token_usage": {
