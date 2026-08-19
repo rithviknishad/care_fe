@@ -3,9 +3,8 @@
   "checkpoint_id": "ff912a6d69aa",
   "strategy": "manual-commit",
   "branch": "feat/pharmacy-ux-upgrade",
-  "checkpoints_count": 2,
+  "checkpoints_count": 1,
   "files_touched": [
-    "public/locale/en.json",
     "src/pages/Facility/services/inventory/DispenseLotSelector.tsx"
   ],
   "sessions": [
@@ -15,13 +14,6 @@
       "compact_transcript": "/ff/912a6d69aa/0/transcript.jsonl",
       "content_hash": "/ff/912a6d69aa/0/content_hash.txt",
       "prompt": "/ff/912a6d69aa/0/prompt.txt"
-    },
-    {
-      "metadata": "/ff/912a6d69aa/1/metadata.json",
-      "transcript": "/ff/912a6d69aa/1/full.jsonl",
-      "compact_transcript": "/ff/912a6d69aa/1/transcript.jsonl",
-      "content_hash": "/ff/912a6d69aa/1/content_hash.txt",
-      "prompt": "/ff/912a6d69aa/1/prompt.txt"
     }
   ],
   "token_usage": {
@@ -30,17 +22,5 @@
     "cache_read_tokens": 0,
     "output_tokens": 0,
     "api_call_count": 0
-  },
-  "combined_attribution": {
-    "calculated_at": "2026-08-19T11:41:13.186778Z",
-    "agent_lines": 51,
-    "agent_removed": 14,
-    "human_added": 0,
-    "human_modified": 0,
-    "human_removed": 0,
-    "total_committed": 51,
-    "total_lines_changed": 65,
-    "agent_percentage": 100,
-    "metric_version": 2
   }
 }
