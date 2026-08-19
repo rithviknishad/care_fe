@@ -1,0 +1,1000 @@
+**`Broken`** (efficiency) — the `enabled` guards were dropped, so this now fires 2N requests on mount.
+
+This query and the `fileApi.list` query just below both lost their `enabled` conditions, and the component early-returns a skeleton while `isLoadingReport`. Since `DiagnosticReportReviewItem` is rendered once per report, opening a service request with N reports issues N `retrieveDiagnosticReport` + N `files` calls immediately, regardless of whether any card is expanded.
+
+Compare `DiagnosticReportItem` in `DiagnosticReportForm.tsx`, which does this correctly with `enabled: !!report.id && isExpanded`.
+ Same guard belongs here (and the skeleton should only render for an 
+expanded card, otherwise every collapsed header is replaced by a 
+skeleton block on load).
+
+is this valid? if yes fix it other wise give me reson for it why it is invalid without any links included
+
+---
+
+The update-report payload sends `status: report.status` from the stale list prop instead of `fullReport.status`.
+ The full report is what you just fetched and edited against; if it 
+drifted (someone approved it in another tab), you happily write the old 
+status back. Use the fetched report as the source of truth.
+
+is this valid?
+
+---
+
+yes
+
+---
+
+giive me the pr title and description for this brnach's pr by comparing the changes i made in this pr with develop branch
+
+---
+
+[Terminal b05c6af6-508e-4bad-9a23-1fe4d3b25dce notification: command may be waiting for input — assess the output below.]
+This note is not a signal to end the turn — pick one of the actions below and continue.
+  1. If the command may still be producing output or the shell prompt has not returned, call get_terminal_output with id="b05c6af6-508e-4bad-9a23-1fe4d3b25dce" to continue polling. This is the default and safest action when unsure.
+  2. Only if the output clearly ends with a real non-secret input prompt (Continue? (y/n), Enter selection, etc. — a normal shell prompt like `$` or `#` does NOT count), call the vscode_askQuestions tool to ask the user, then send each answer using send_to_terminal with id="b05c6af6-508e-4bad-9a23-1fe4d3b25dce" (which returns the next few lines of output). Repeat one prompt at a time. NEVER route secret prompts (passwords, passphrases, tokens, API keys, etc.) through vscode_askQuestions — answers to that tool are sent through the model. For secret prompts, tell the user to type the value directly into the terminal and stop.
+Terminal output:
+Using Node v24.18.0
+
+fish is running in private mode, history will not be persisted.
+
+…k/care_fe on  ENG-887-fix-internal-delivery-batch-failing [$!] via  v24.18.0 
+ls -lt test-results/ | head; echo "---running check---"; pgrep -f "playwright test" | head
+total 0
+drwxr-xr-x@ 3 nikhilac  staff  96 Aug 17 15:21 setup-patientAccount.setup-f3507--create-and-save-account-id-setup
+drwxr-xr-x@ 3 nikhilac  staff  96 Aug 17 15:20 setup-patient.setup.ts-nav-16d42-ve-patient-and-encounter-id-setup
+---running check---
+45891
+45914
+
+…k/care_fe on  ENG-887-fix-internal-delivery-batch-failing [$!] via  v24.18.0 
+pgrep -f "playwright test" >/dev/null && echo "STILL RUNNING" || echo "DONE"; ls
+ -lt test-results/*.json 2>/dev/null; cat test-results.json 2>/dev/null | python3 -c "import json,sys; d=json.load(sys.stdin); print([( s['title'], s.get('ok')) for suite in d.get('suites',[]) for s in [suite]])" 2>/dev/null | head
+STILL RUNNING
+fish: No matches for wildcard 'test-results/*.json'. See `help wildcards-globbing`.
+pgrep -f "playwright test" >/dev/null && echo "STILL RUNNING" || echo "DONE"; ls -lt test-results/*.json 2>/dev/null; cat test-results.json 2>/dev/null | python3 -c "import json,sys; d=json.load(sys.stdin); print([( s['title'], s.get('ok')) for suite in d.get('suites',[]) for s in [suite]])" 2>/dev/null | head
+                                                                                     ^~~~~~~~~~~~~~~~~~^
+[]
+
+…k/care_fe on  ENG-887-fix-internal-delivery-batch-failing [$!] via  v24.18.0 
+pgrep -f "playwright" ; echo "exit=$status"
+43235
+43243
+43283
+43285
+43293
+43294
+43296
+43570
+43571
+43705
+45891
+45914
+exit=0
+
+…k/care_fe on  ENG-887-fix-internal-delivery-batch-failing [$!] via  v24.18.0 
+pgrep -f "playwright test" >/dev/null && echo RUNNING || echo FINISHED
+RUNNING
+
+…k/care_fe on  ENG-887-fix-internal-delivery-batch-failing [$!] via  v24.18.0 
+cd /Users/nikhilac/ohc.network/care_fe && npx playwright test tests/facility/services/locations/inventory/toDispatch.spec.ts --project=chromium --reporter=line > /tmp/pw-todispatch.log 2>&1 &
+echo "started pid $last_pid"
+started pid 48315
+
+…care_fe on  ENG-887-fix-internal-delivery-batch-failing [$!] via  v24.18.0 ✦ 
+sleep 30; tail -20 /tmp/pw-todispatch.log; echo "---"; pgrep -f "playwright test" >/dev/null && echo RUNNING || echo FINISHED
+    Call log:
+      - waiting for getByRole('button', { name: 'Create Account' })
+
+
+      34 |     } else {
+      35 |       // Create new account
+    > 36 |       await page.getByRole("button", { name: "Create Account" }).click();
+         |                                                                  ^
+      37 |
+      38 |       // Generate random account name using faker
+      39 |       const accountName = faker.finance.accountName();
+        at /Users/nikhilac/ohc.network/care_fe/tests/setup/patientAccount.setup.ts:36:66
+
+    Error Context: test-results/setup-patientAccount.setup-f3507--create-and-save-account-id-setup/error-context.md
+
+
+  1 failed
+    [setup] › tests/setup/patientAccount.setup.ts:10:5 › navigate to an patient - create and save account id 
+  2 did not run
+  7 passed (15.8s)
+---
+FINISHED
+
+fish: Job 1, 'npx playwright test tests/facil…' has ended
+
+
+
+…k/care_fe on  ENG-887-fix-internal-delivery-batch-failing [$!] via  v24.18.0 
+sleep 45 && cat /tmp/pw-todispatch.log
+◇ injected env (10) from .env.local // tip: ⌘ suppress logs { quiet: true }
+◇ injected env (16) from .env // tip: ⌘ override existing { override: true }
+⚠️ No DB snapshot found. Run 'npm run playwright:db-reset' to create one.
+🔄 Refreshing authentication tokens...
+✅ Tokens refreshed successfully
+
+Running 9 tests using 6 workers
+
+◇ injected env (0) from .env.local // tip: ⌘ enable debugging { debug: true }
+
+◇ injected env (0) from .env // tip: ⌘ override existing { override: true }
+
+◇ injected env (0) from .env.local // tip: ◈ encrypted .env [www.dotenvx.com]
+
+◇ injected env (0) from .env // tip: ⌘ enable debugging { debug: true }
+
+[1/9] [setup] › tests/setup/facilityAdmin.setup.ts:5:6 › authenticate as facility admin
+◇ injected env (0) from .env.local // tip: ⌘ enable debugging { debug: true }
+
+◇ injected env (0) from .env // tip: ◈ encrypted .env [www.dotenvx.com]
+
+[2/9] [setup] › tests/setup/facility.setup.ts:6:5 › enter facility via UI and save facility id
+◇ injected env (0) from .env.local // tip: ⌁ auth for agents [www.vestauth.com]
+
+◇ injected env (0) from .env // tip: ⌁ auth for agents [www.vestauth.com]
+
+◇ injected env (0) from .env.local // tip: ◈ encrypted .env [www.dotenvx.com]
+
+◇ injected env (0) from .env // tip: ⌘ custom filepath { path: '/custom/path/.env' }
+
+[3/9] [setup] › tests/setup/nurse.setup.ts:5:6 › authenticate as nurse
+◇ injected env (0) from .env.local // tip: ◈ encrypted .env [www.dotenvx.com]
+
+◇ injected env (0) from .env // tip: ⌘ multiple files { path: ['.env.local', '.env'] }
+
+[4/9] [setup] › tests/setup/auth.setup.ts:5:6 › authenticate
+[5/9] [setup] › tests/setup/patient.setup.ts:8:5 › navigate to an encounter and save patient and encounter id
+[6/9] [setup] › tests/setup/patientAccount.setup.ts:10:5 › navigate to an patient - create and save account id
+[setup] › tests/setup/facility.setup.ts:6:5 › enter facility via UI and save facility id
+✅ Facility ID saved: fd40640a-4b2c-42ab-8834-7b4aca7c83c8
+
+[7/9] [setup] › tests/setup/staff.setup.ts:5:6 › authenticate as staff
+[8/9] [setup] › tests/setup/questionnaire.setup.ts:8:5 › ensure enable-when questionnaire exists
+[setup] › tests/setup/questionnaire.setup.ts:8:5 › ensure enable-when questionnaire exists
+♻️ Questionnaire version changed (0.1 → 2.1), updating: enable-when-test
+
+✅ Questionnaire updated: enable-when-test
+
+[setup] › tests/setup/patient.setup.ts:8:5 › navigate to an encounter and save patient and encounter id
+✅ Patient ID saved: 12191535-de5b-4b2f-8ba1-3e1c6aee380e
+
+✅ Encounter ID saved: 52d43de7-9a0c-436b-994e-e7df96c8fba9
+
+[setup] › tests/setup/patientAccount.setup.ts:10:5 › navigate to an patient - create and save account id
+✅ Account created and saved: f65ec093-4977-42e0-8e21-ec91a621fc27
+
+◇ injected env (0) from .env.local // tip: ⌘ enable debugging { debug: true }
+
+◇ injected env (0) from .env // tip: ⌘ custom filepath { path: '/custom/path/.env' }
+
+[9/9] [chromium] › tests/facility/services/locations/inventory/toDispatch.spec.ts:120:7 › Facility To-Dispatch Orders Inventory Flow › approve incoming delivery order
+  9 passed (26.0s)
+
+…k/care_fe on  ENG-887-fix-internal-delivery-batch-failing [$!] via  v24.18.0 
+set -l TOKEN 'REDACTED'
+set -l ok 0
+set -l fail 0
+for i in (seq 98)
+    set -l code (curl -s -o /dev/null -w '%{http_code}' -X POST 'https://careapi.ohc.network/api/v1/supply_request/' \
+                -H 'Accept: application/json' \
+                -H 'Content-Type: application/json' \
+                -H 'Origin: http://localhost:4000' \
+                -H "authorization: Bearer $TOKEN" \
+                --data-raw '{"item":"74fea453-f34c-46cd-bc2c-7c9f0e3f112f","quantity":"1.00","status":"active","order":"e4d42dd0-d5de-4422-b087-45fdad004c3f"}')
+
+    if test "$code" = "201" -o "$code" = "200"
+        set ok (math $ok + 1)
+    else
+        set fail (math $fail + 1)
+        echo "request $i -> HTTP $code"
+    end
+end
+echo "DONE: ok=$ok fail=$fail"
+DONE: ok=98 fail=0
+
+…k/care_fe on  ENG-887-fix-internal-delivery-batch-failing [$!] via  v24.18.0 
+set -l TOKEN 'REDACTED'
+set -l ok 0
+set -l fail 0
+for i in (seq 98)
+    set -l code (curl -s -o /dev/null -w '%{http_code}' -X POST 'https://careapi.ohc.network/api/v1/supply_request/' \
+                -H 'Accept: application/json' \
+                -H 'Content-Type: application/json' \
+                -H 'Origin: http://localhost:4000' \
+                -H "authorization: Bearer $TOKEN" \
+                --data-raw '{"item":"74fea453-f34c-46cd-bc2c-7c9f0e3f112f","quantity":"1.00","status":"active","order":"9abc11d8-7fd8-42bd-802f-41a2e2aa20ad"}')
+
+    if test "$code" = "201" -o "$code" = "200"
+        set ok (math $ok + 1)
+    else
+        set fail (math $fail + 1)
+        echo "request $i -> HTTP $code"
+    end
+end
+echo "DONE: ok=$ok fail=$fail"
+DONE: ok=98 fail=0
+
+…k/care_fe on  ENG-887-fix-internal-delivery-batch-failing [$!] via  v24.18.0 
+git rev-parse --abbrev-ref HEAD; echo "---"; git log develop..HEAD --oneline | cat
+ENG-500-support-for-creating-multiple-diagnostic-reports-in-a-service-request
+---
+3c14ff642 added state to handle expansion
+13682bbfd updated isExpanded code
+fae4a10a1 review comments and ai
+af22752f1 updated routes
+18876428f corrected route
+bd722ac9c corrected import path
+5e6a0094f resolved merge conflicts
+2ea00b1d0 [ENG-736] Fix Diagnostic report print is broken in Organization level (#16556)
+1070eebf6 grumpy suggestions
+37a3959b5 [ENG-907] fix: correct formatting (#16679)
+a6e38375c Update Permissions-Policy for microphone access (#16668)
+606036b2f [ENG-846] fixes error handling in batch request (#16677)
+89394e93d [ENG-882] Gate empty-state Create Encounter button by can_create_encounter permission (#16640)
+d5878887e fix: Pass hidePrefixSuffix=true to formatName for all Avatar name props (#16134)
+a90600f7c Fixes Appointment slots query cache key omits resource type/id (#16595)
+d86c6f1c8 [ENG-877] typo correction in diet preference option: "Dairy free" (#16646)
+351d8a618 [ENG-874] Allow empty REACT_CARE_API_URL for relative same-origin API requests (#16615)
+7332dd095 Remove unneeded defensive code in useMultiFilterState (#16552)
+bf62b0123 test: add consent creation & editing E2E tests (13 cases) (#16362)
+43bd28288 Add colour support for tag configs (#16109)
+951f2cb7d removed conclusion saved toast
+8db1ab337 clarify showCreateReportForm variable by adding comment
+912477acc Adding secondary reviewer for care fe (#16633)
+664711489 [ENG-784] Encounter Action button is clipping out (#16590)
+dd9b12fe1 Merge AGENTS.md into CLAUDE.md for unified guidance (#16531)
+47abd7fa0 [ENG-746] Hide "completed" from encounter status (#16570)
+67f5b9872 Improve clone command dependency syncing (#16400)
+d15173ee8 [QA-214] Fix flaky device service history edit flow test (#16572)
+8b760681b Fix "Show on Map" link oversized clickable area (fixes #16536) (#16581)
+addeaa55b 🧹 Remove stale diagnosis__* i18n keys (#16643)
+1799e3787 added diag report name on detial card
+cade7bb10 added github actins suggestions
+b5de7403f cleanups
+9a74b2fdf used batchRequest for observation and report submission
+788b5ee00 cleanups
+c9ce11417 grumpy suggestions
+79cbbbf43 some cleanups
+b4e5d4d55 done suggested changes
+cfcaa110a useQueries to retrieve all report in detail
+0256a28f9 added DR name in right pannel of DR list in encounter
+ae41da75e used DR  api instead of getting it from SR
+ef3e1853f requested changes
+30a15178b added translation
+79ff66170 Copilot suggestions
+cca7592d7 Merge branch 'develop' into ENG-500-support-for-creating-multiple-diagnostic-reports-in-a-service-request
+3cea86c37 cleanup observation history
+53d39eb22 fix print page error
+8fb53bf29 resolved copilot suggestions
+24b2c5520 Resolved merge conflicts
+ac46a0323 review and product suggestions
+8cc6d10ec resolved merge conflicts
+257deb55f Copilot suggestions
+f15ef2e6b minor cleanups
+88ef6891b revert the facility route
+d55cc579f revert the facility route
+f011c4ec5 removed org routes
+0e5afd598 cleanups
+76861d694 added view all report
+8614e1099 Copilot suggestions
+e2537fca2 removed onError handler
+db602f297 requested changes
+af05e7b92 corrected toast
+41bb2fa0f cleanups
+af5db1bfc test fix
+13acde307 ai suggestions
+29314ad21 Merge branch 'develop' into ENG-500-support-for-creating-multiple-diagnostic-reports-in-a-service-request
+f28b7f152 copilot and greptile suggestions
+0d1dc49f3 Merge branch 'ENG-500-support-for-creating-multiple-diagnostic-reports-in-a-service-request' of github.com:ohcnetwork/care_fe into ENG-500-support-for-creating-multiple-diagnostic-reports-in-a-service-request
+7df41e270 applied grayish to notReviewable tests
+a8f3809c0 Merge branch 'develop' into ENG-500-support-for-creating-multiple-diagnostic-reports-in-a-service-request
+5fcab8ea1 ENG-500 Support for creating multiple diagnostic reports in a service request
+
+…r-creating-multiple-diagnostic-reports-in-a-service-request [$] via  v24.18.0
+
+---
+
+[Terminal 34835556-a274-4e0e-87dd-805cfc38c702 notification: command may be waiting for input — assess the output below.]
+This note is not a signal to end the turn — pick one of the actions below and continue.
+  1. If the command may still be producing output or the shell prompt has not returned, call get_terminal_output with id="34835556-a274-4e0e-87dd-805cfc38c702" to continue polling. This is the default and safest action when unsure.
+  2. Only if the output clearly ends with a real non-secret input prompt (Continue? (y/n), Enter selection, etc. — a normal shell prompt like `$` or `#` does NOT count), call the vscode_askQuestions tool to ask the user, then send each answer using send_to_terminal with id="34835556-a274-4e0e-87dd-805cfc38c702" (which returns the next few lines of output). Repeat one prompt at a time. NEVER route secret prompts (passwords, passphrases, tokens, API keys, etc.) through vscode_askQuestions — answers to that tool are sent through the model. For secret prompts, tell the user to type the value directly into the terminal and stop.
+Terminal output:
+Using Node v24.18.0
+
+fish is running in private mode, history will not be persisted.
+
+…k/care_fe on  ENG-887-fix-internal-delivery-batch-failing [$!] via  v24.18.0 
+ls -lt test-results/ | head; echo "---running check---"; pgrep -f "playwright test" | head
+total 0
+drwxr-xr-x@ 3 nikhilac  staff  96 Aug 17 15:21 setup-patientAccount.setup-f3507--create-and-save-account-id-setup
+drwxr-xr-x@ 3 nikhilac  staff  96 Aug 17 15:20 setup-patient.setup.ts-nav-16d42-ve-patient-and-encounter-id-setup
+---running check---
+45891
+45914
+
+…k/care_fe on  ENG-887-fix-internal-delivery-batch-failing [$!] via  v24.18.0 
+pgrep -f "playwright test" >/dev/null && echo "STILL RUNNING" || echo "DONE"; ls
+ -lt test-results/*.json 2>/dev/null; cat test-results.json 2>/dev/null | python3 -c "import json,sys; d=json.load(sys.stdin); print([( s['title'], s.get('ok')) for suite in d.get('suites',[]) for s in [suite]])" 2>/dev/null | head
+STILL RUNNING
+fish: No matches for wildcard 'test-results/*.json'. See `help wildcards-globbing`.
+pgrep -f "playwright test" >/dev/null && echo "STILL RUNNING" || echo "DONE"; ls -lt test-results/*.json 2>/dev/null; cat test-results.json 2>/dev/null | python3 -c "import json,sys; d=json.load(sys.stdin); print([( s['title'], s.get('ok')) for suite in d.get('suites',[]) for s in [suite]])" 2>/dev/null | head
+                                                                                     ^~~~~~~~~~~~~~~~~~^
+[]
+
+…k/care_fe on  ENG-887-fix-internal-delivery-batch-failing [$!] via  v24.18.0 
+pgrep -f "playwright" ; echo "exit=$status"
+43235
+43243
+43283
+43285
+43293
+43294
+43296
+43570
+43571
+43705
+45891
+45914
+exit=0
+
+…k/care_fe on  ENG-887-fix-internal-delivery-batch-failing [$!] via  v24.18.0 
+pgrep -f "playwright test" >/dev/null && echo RUNNING || echo FINISHED
+RUNNING
+
+…k/care_fe on  ENG-887-fix-internal-delivery-batch-failing [$!] via  v24.18.0 
+cd /Users/nikhilac/ohc.network/care_fe && npx playwright test tests/facility/services/locations/inventory/toDispatch.spec.ts --project=chromium --reporter=line > /tmp/pw-todispatch.log 2>&1 &
+echo "started pid $last_pid"
+started pid 48315
+
+…care_fe on  ENG-887-fix-internal-delivery-batch-failing [$!] via  v24.18.0 ✦ 
+sleep 30; tail -20 /tmp/pw-todispatch.log; echo "---"; pgrep -f "playwright test" >/dev/null && echo RUNNING || echo FINISHED
+    Call log:
+      - waiting for getByRole('button', { name: 'Create Account' })
+
+
+      34 |     } else {
+      35 |       // Create new account
+    > 36 |       await page.getByRole("button", { name: "Create Account" }).click();
+         |                                                                  ^
+      37 |
+      38 |       // Generate random account name using faker
+      39 |       const accountName = faker.finance.accountName();
+        at /Users/nikhilac/ohc.network/care_fe/tests/setup/patientAccount.setup.ts:36:66
+
+    Error Context: test-results/setup-patientAccount.setup-f3507--create-and-save-account-id-setup/error-context.md
+
+
+  1 failed
+    [setup] › tests/setup/patientAccount.setup.ts:10:5 › navigate to an patient - create and save account id 
+  2 did not run
+  7 passed (15.8s)
+---
+FINISHED
+
+fish: Job 1, 'npx playwright test tests/facil…' has ended
+
+
+
+…k/care_fe on  ENG-887-fix-internal-delivery-batch-failing [$!] via  v24.18.0 
+sleep 45 && cat /tmp/pw-todispatch.log
+◇ injected env (10) from .env.local // tip: ⌘ suppress logs { quiet: true }
+◇ injected env (16) from .env // tip: ⌘ override existing { override: true }
+⚠️ No DB snapshot found. Run 'npm run playwright:db-reset' to create one.
+🔄 Refreshing authentication tokens...
+✅ Tokens refreshed successfully
+
+Running 9 tests using 6 workers
+
+◇ injected env (0) from .env.local // tip: ⌘ enable debugging { debug: true }
+
+◇ injected env (0) from .env // tip: ⌘ override existing { override: true }
+
+◇ injected env (0) from .env.local // tip: ◈ encrypted .env [www.dotenvx.com]
+
+◇ injected env (0) from .env // tip: ⌘ enable debugging { debug: true }
+
+[1/9] [setup] › tests/setup/facilityAdmin.setup.ts:5:6 › authenticate as facility admin
+◇ injected env (0) from .env.local // tip: ⌘ enable debugging { debug: true }
+
+◇ injected env (0) from .env // tip: ◈ encrypted .env [www.dotenvx.com]
+
+[2/9] [setup] › tests/setup/facility.setup.ts:6:5 › enter facility via UI and save facility id
+◇ injected env (0) from .env.local // tip: ⌁ auth for agents [www.vestauth.com]
+
+◇ injected env (0) from .env // tip: ⌁ auth for agents [www.vestauth.com]
+
+◇ injected env (0) from .env.local // tip: ◈ encrypted .env [www.dotenvx.com]
+
+◇ injected env (0) from .env // tip: ⌘ custom filepath { path: '/custom/path/.env' }
+
+[3/9] [setup] › tests/setup/nurse.setup.ts:5:6 › authenticate as nurse
+◇ injected env (0) from .env.local // tip: ◈ encrypted .env [www.dotenvx.com]
+
+◇ injected env (0) from .env // tip: ⌘ multiple files { path: ['.env.local', '.env'] }
+
+[4/9] [setup] › tests/setup/auth.setup.ts:5:6 › authenticate
+[5/9] [setup] › tests/setup/patient.setup.ts:8:5 › navigate to an encounter and save patient and encounter id
+[6/9] [setup] › tests/setup/patientAccount.setup.ts:10:5 › navigate to an patient - create and save account id
+[setup] › tests/setup/facility.setup.ts:6:5 › enter facility via UI and save facility id
+✅ Facility ID saved: fd40640a-4b2c-42ab-8834-7b4aca7c83c8
+
+[7/9] [setup] › tests/setup/staff.setup.ts:5:6 › authenticate as staff
+[8/9] [setup] › tests/setup/questionnaire.setup.ts:8:5 › ensure enable-when questionnaire exists
+[setup] › tests/setup/questionnaire.setup.ts:8:5 › ensure enable-when questionnaire exists
+♻️ Questionnaire version changed (0.1 → 2.1), updating: enable-when-test
+
+✅ Questionnaire updated: enable-when-test
+
+[setup] › tests/setup/patient.setup.ts:8:5 › navigate to an encounter and save patient and encounter id
+✅ Patient ID saved: 12191535-de5b-4b2f-8ba1-3e1c6aee380e
+
+✅ Encounter ID saved: 52d43de7-9a0c-436b-994e-e7df96c8fba9
+
+[setup] › tests/setup/patientAccount.setup.ts:10:5 › navigate to an patient - create and save account id
+✅ Account created and saved: f65ec093-4977-42e0-8e21-ec91a621fc27
+
+◇ injected env (0) from .env.local // tip: ⌘ enable debugging { debug: true }
+
+◇ injected env (0) from .env // tip: ⌘ custom filepath { path: '/custom/path/.env' }
+
+[9/9] [chromium] › tests/facility/services/locations/inventory/toDispatch.spec.ts:120:7 › Facility To-Dispatch Orders Inventory Flow › approve incoming delivery order
+  9 passed (26.0s)
+
+…k/care_fe on  ENG-887-fix-internal-delivery-batch-failing [$!] via  v24.18.0 
+set -l TOKEN 'REDACTED'
+set -l ok 0
+set -l fail 0
+for i in (seq 98)
+    set -l code (curl -s -o /dev/null -w '%{http_code}' -X POST 'https://careapi.ohc.network/api/v1/supply_request/' \
+                -H 'Accept: application/json' \
+                -H 'Content-Type: application/json' \
+                -H 'Origin: http://localhost:4000' \
+                -H "authorization: Bearer $TOKEN" \
+                --data-raw '{"item":"74fea453-f34c-46cd-bc2c-7c9f0e3f112f","quantity":"1.00","status":"active","order":"e4d42dd0-d5de-4422-b087-45fdad004c3f"}')
+
+    if test "$code" = "201" -o "$code" = "200"
+        set ok (math $ok + 1)
+    else
+        set fail (math $fail + 1)
+        echo "request $i -> HTTP $code"
+    end
+end
+echo "DONE: ok=$ok fail=$fail"
+DONE: ok=98 fail=0
+
+…k/care_fe on  ENG-887-fix-internal-delivery-batch-failing [$!] via  v24.18.0 
+set -l TOKEN 'REDACTED'
+set -l ok 0
+set -l fail 0
+for i in (seq 98)
+    set -l code (curl -s -o /dev/null -w '%{http_code}' -X POST 'https://careapi.ohc.network/api/v1/supply_request/' \
+                -H 'Accept: application/json' \
+                -H 'Content-Type: application/json' \
+                -H 'Origin: http://localhost:4000' \
+                -H "authorization: Bearer $TOKEN" \
+                --data-raw '{"item":"74fea453-f34c-46cd-bc2c-7c9f0e3f112f","quantity":"1.00","status":"active","order":"9abc11d8-7fd8-42bd-802f-41a2e2aa20ad"}')
+
+    if test "$code" = "201" -o "$code" = "200"
+        set ok (math $ok + 1)
+    else
+        set fail (math $fail + 1)
+        echo "request $i -> HTTP $code"
+    end
+end
+echo "DONE: ok=$ok fail=$fail"
+DONE: ok=98 fail=0
+
+…k/care_fe on  ENG-887-fix-internal-delivery-batch-failing [$!] via  v24.18.0 
+git rev-parse --abbrev-ref HEAD; echo "---"; git log develop..HEAD --oneline | cat
+ENG-500-support-for-creating-multiple-diagnostic-reports-in-a-service-request
+---
+3c14ff642 added state to handle expansion
+13682bbfd updated isExpanded code
+fae4a10a1 review comments and ai
+af22752f1 updated routes
+18876428f corrected route
+bd722ac9c corrected import path
+5e6a0094f resolved merge conflicts
+2ea00b1d0 [ENG-736] Fix Diagnostic report print is broken in Organization level (#16556)
+1070eebf6 grumpy suggestions
+37a3959b5 [ENG-907] fix: correct formatting (#16679)
+a6e38375c Update Permissions-Policy for microphone access (#16668)
+606036b2f [ENG-846] fixes error handling in batch request (#16677)
+89394e93d [ENG-882] Gate empty-state Create Encounter button by can_create_encounter permission (#16640)
+d5878887e fix: Pass hidePrefixSuffix=true to formatName for all Avatar name props (#16134)
+a90600f7c Fixes Appointment slots query cache key omits resource type/id (#16595)
+d86c6f1c8 [ENG-877] typo correction in diet preference option: "Dairy free" (#16646)
+351d8a618 [ENG-874] Allow empty REACT_CARE_API_URL for relative same-origin API requests (#16615)
+7332dd095 Remove unneeded defensive code in useMultiFilterState (#16552)
+bf62b0123 test: add consent creation & editing E2E tests (13 cases) (#16362)
+43bd28288 Add colour support for tag configs (#16109)
+951f2cb7d removed conclusion saved toast
+8db1ab337 clarify showCreateReportForm variable by adding comment
+912477acc Adding secondary reviewer for care fe (#16633)
+664711489 [ENG-784] Encounter Action button is clipping out (#16590)
+dd9b12fe1 Merge AGENTS.md into CLAUDE.md for unified guidance (#16531)
+47abd7fa0 [ENG-746] Hide "completed" from encounter status (#16570)
+67f5b9872 Improve clone command dependency syncing (#16400)
+d15173ee8 [QA-214] Fix flaky device service history edit flow test (#16572)
+8b760681b Fix "Show on Map" link oversized clickable area (fixes #16536) (#16581)
+addeaa55b 🧹 Remove stale diagnosis__* i18n keys (#16643)
+1799e3787 added diag report name on detial card
+cade7bb10 added github actins suggestions
+b5de7403f cleanups
+9a74b2fdf used batchRequest for observation and report submission
+788b5ee00 cleanups
+c9ce11417 grumpy suggestions
+79cbbbf43 some cleanups
+b4e5d4d55 done suggested changes
+cfcaa110a useQueries to retrieve all report in detail
+0256a28f9 added DR name in right pannel of DR list in encounter
+ae41da75e used DR  api instead of getting it from SR
+ef3e1853f requested changes
+30a15178b added translation
+79ff66170 Copilot suggestions
+cca7592d7 Merge branch 'develop' into ENG-500-support-for-creating-multiple-diagnostic-reports-in-a-service-request
+3cea86c37 cleanup observation history
+53d39eb22 fix print page error
+8fb53bf29 resolved copilot suggestions
+24b2c5520 Resolved merge conflicts
+ac46a0323 review and product suggestions
+8cc6d10ec resolved merge conflicts
+257deb55f Copilot suggestions
+f15ef2e6b minor cleanups
+88ef6891b revert the facility route
+d55cc579f revert the facility route
+f011c4ec5 removed org routes
+0e5afd598 cleanups
+76861d694 added view all report
+8614e1099 Copilot suggestions
+e2537fca2 removed onError handler
+db602f297 requested changes
+af05e7b92 corrected toast
+41bb2fa0f cleanups
+af5db1bfc test fix
+13acde307 ai suggestions
+29314ad21 Merge branch 'develop' into ENG-500-support-for-creating-multiple-diagnostic-reports-in-a-service-request
+f28b7f152 copilot and greptile suggestions
+0d1dc49f3 Merge branch 'ENG-500-support-for-creating-multiple-diagnostic-reports-in-a-service-request' of github.com:ohcnetwork/care_fe into ENG-500-support-for-creating-multiple-diagnostic-reports-in-a-service-request
+7df41e270 applied grayish to notReviewable tests
+a8f3809c0 Merge branch 'develop' into ENG-500-support-for-creating-multiple-diagnostic-reports-in-a-service-request
+5fcab8ea1 ENG-500 Support for creating multiple diagnostic reports in a service request
+
+…r-creating-multiple-diagnostic-reports-in-a-service-request [$] via  v24.18.0 
+git --no-pager diff --stat (git merge-base develop HEAD)..HEAD | cat
+ .env                                               |    4 +-
+ .example.env                                       |    4 +
+ .github/agents/care-review.agent.md                |  397 +++++
+ .github/workflows/care-review.lock.yml             | 1714 ++++++++++++++++++++
+ .github/workflows/care-review.md                   |  235 +++
+ AGENTS.md                                          |   81 +-
+ CLAUDE.md                                          |    4 +-
+ docs/architecture.md                               |   97 ++
+ docs/care-apps-local-dev.md                        |   11 +-
+ docs/local-development.md                          |   64 +
+ docs/testing.md                                    |   69 +
+ nginx/nginx.conf                                   |    2 +-
+ package.json                                       |    3 +-
+ public/locale/en.json                              |   32 +-
+ scripts/clone-component.ts                         |  242 ++-
+ scripts/generate-headers.ts                        |    6 +-
+ scripts/validate-env.ts                            |    6 +-
+ src/Routers/routes/FacilityRoutes.tsx              |   13 +
+ src/Utils/request/README.md                        |   76 +
+ src/Utils/request/batch.ts                         |  159 +-
+ src/components/CareTeam/CareTeamSheet.tsx          |    2 +-
+ src/components/Consent/ConsentFormSheet.tsx        |   44 +-
+ src/components/Facility/FacilityMapLink.tsx        |    2 +-
+ src/components/Files/FileUploadDialog.tsx          |   18 +-
+ src/components/Notes/NoteManager.tsx               |    2 +-
+ .../Patient/Common/ClinicalInformationRow.tsx      |    2 +-
+ .../Patient/PatientDetailsTab/EncounterHistory.tsx |   37 +-
+ src/components/Patient/PatientInfoCard.tsx         |   18 +-
+ src/components/Patient/PatientTagsDisplay.tsx      |   16 +-
+ src/components/Patient/allergy/AllergyTable.tsx    |    2 +-
+ .../Patient/diagnosis/DiagnosisTable.tsx           |    2 +-
+ src/components/Patient/symptoms/SymptomTable.tsx   |    2 +-
+ .../QuestionTypes/EncounterQuestion.tsx            |   30 +-
+ src/components/Schedule/ScheduleResourceIcon.tsx   |    2 +-
+ .../Tags/MultiFilterStyleTagSelector.tsx           |   28 +-
+ src/components/Tags/TagBadge.tsx                   |   13 +-
+ src/components/Tags/TagColorDot.tsx                |   39 +
+ src/components/Tags/tagColor.ts                    |   27 +
+ src/components/ui/multi-filter/tagFilter.tsx       |   59 +-
+ .../ui/multi-filter/utils/useMultiFilterState.tsx  |    2 +-
+ src/components/ui/sidebar/nav-user.tsx             |    4 +-
+ src/hooks/useFileUpload.tsx                        |    4 +-
+ src/pages/Admin/TagConfig/TagConfigForm.tsx        |   79 +
+ src/pages/Appointments/AppointmentDetail.tsx       |    6 +-
+ src/pages/Appointments/AppointmentsPage.tsx        |   13 +-
+ src/pages/Encounters/EncounterShow.tsx             |   18 +-
+ src/pages/Encounters/tabs/diagnostic-reports.tsx   |   20 +-
+ .../diagnosticReports/DiagnosticReportPrint.tsx    |  360 +---
+ .../DiagnosticReportPrintPreview.tsx               |  341 ++++
+ .../diagnosticReports/DiagnosticReportView.tsx     |   22 +-
+ .../MultipleDiagnosticReportsPrint.tsx             |   83 +
+ .../services/pharmacy/DispensedMedicationList.tsx  |    3 -
+ .../Facility/services/pharmacy/DispensesView.tsx   |   11 +-
+ .../serviceRequests/ServiceRequestShow.tsx         |   89 +-
+ .../components/DiagnosticReportForm.tsx            | 1158 +++++++------
+ .../components/DiagnosticReportReview.tsx          |  474 +++---
+ .../components/WorkflowProgress.tsx                |   88 +-
+ src/types/emr/tagConfig/tagConfig.ts               |    3 +-
+ tests/PLAYWRIGHT_GUIDE.md                          |    1 +
+ .../encounter/consent/consentCreation.spec.ts      |  391 +++++
+ .../encounter/medicine/prescriptionCreate.spec.ts  |   14 +-
+ .../serviceRequests/ServiceRequestCreate.spec.ts   |   11 +-
+ .../encounters/encounterHistoryPermission.spec.ts  |  165 ++
+ .../patientDetails/files/patientFiles.spec.ts      |   93 +-
+ .../settings/devices/deviceServiceHistory.spec.ts  |   38 +-
+ tests/setup/staff.setup.ts                         |   24 +
+ 66 files changed, 5696 insertions(+), 1383 deletions(-)
+
+…r-creating-multiple-diagnostic-reports-in-a-service-request [$] via  v24.18.0
+
+---
+
+yes
+
+---
+
+[Terminal 90eaf51c-5b3c-4fef-98aa-c9929a4bd64a notification: command may be waiting for input — assess the output below.]
+This note is not a signal to end the turn — pick one of the actions below and continue.
+  1. If the command may still be producing output or the shell prompt has not returned, call get_terminal_output with id="90eaf51c-5b3c-4fef-98aa-c9929a4bd64a" to continue polling. This is the default and safest action when unsure.
+  2. Only if the output clearly ends with a real non-secret input prompt (Continue? (y/n), Enter selection, etc. — a normal shell prompt like `$` or `#` does NOT count), call the vscode_askQuestions tool to ask the user, then send each answer using send_to_terminal with id="90eaf51c-5b3c-4fef-98aa-c9929a4bd64a" (which returns the next few lines of output). Repeat one prompt at a time. NEVER route secret prompts (passwords, passphrases, tokens, API keys, etc.) through vscode_askQuestions — answers to that tool are sent through the model. For secret prompts, tell the user to type the value directly into the terminal and stop.
+Terminal output:
+Using Node v24.18.0
+
+fish is running in private mode, history will not be persisted.
+
+…k/care_fe on  ENG-887-fix-internal-delivery-batch-failing [$!] via  v24.18.0 
+ls -lt test-results/ | head; echo "---running check---"; pgrep -f "playwright test" | head
+total 0
+drwxr-xr-x@ 3 nikhilac  staff  96 Aug 17 15:21 setup-patientAccount.setup-f3507--create-and-save-account-id-setup
+drwxr-xr-x@ 3 nikhilac  staff  96 Aug 17 15:20 setup-patient.setup.ts-nav-16d42-ve-patient-and-encounter-id-setup
+---running check---
+45891
+45914
+
+…k/care_fe on  ENG-887-fix-internal-delivery-batch-failing [$!] via  v24.18.0 
+pgrep -f "playwright test" >/dev/null && echo "STILL RUNNING" || echo "DONE"; ls
+ -lt test-results/*.json 2>/dev/null; cat test-results.json 2>/dev/null | python3 -c "import json,sys; d=json.load(sys.stdin); print([( s['title'], s.get('ok')) for suite in d.get('suites',[]) for s in [suite]])" 2>/dev/null | head
+STILL RUNNING
+fish: No matches for wildcard 'test-results/*.json'. See `help wildcards-globbing`.
+pgrep -f "playwright test" >/dev/null && echo "STILL RUNNING" || echo "DONE"; ls -lt test-results/*.json 2>/dev/null; cat test-results.json 2>/dev/null | python3 -c "import json,sys; d=json.load(sys.stdin); print([( s['title'], s.get('ok')) for suite in d.get('suites',[]) for s in [suite]])" 2>/dev/null | head
+                                                                                     ^~~~~~~~~~~~~~~~~~^
+[]
+
+…k/care_fe on  ENG-887-fix-internal-delivery-batch-failing [$!] via  v24.18.0 
+pgrep -f "playwright" ; echo "exit=$status"
+43235
+43243
+43283
+43285
+43293
+43294
+43296
+43570
+43571
+43705
+45891
+45914
+exit=0
+
+…k/care_fe on  ENG-887-fix-internal-delivery-batch-failing [$!] via  v24.18.0 
+pgrep -f "playwright test" >/dev/null && echo RUNNING || echo FINISHED
+RUNNING
+
+…k/care_fe on  ENG-887-fix-internal-delivery-batch-failing [$!] via  v24.18.0 
+cd /Users/nikhilac/ohc.network/care_fe && npx playwright test tests/facility/services/locations/inventory/toDispatch.spec.ts --project=chromium --reporter=line > /tmp/pw-todispatch.log 2>&1 &
+echo "started pid $last_pid"
+started pid 48315
+
+…care_fe on  ENG-887-fix-internal-delivery-batch-failing [$!] via  v24.18.0 ✦ 
+sleep 30; tail -20 /tmp/pw-todispatch.log; echo "---"; pgrep -f "playwright test" >/dev/null && echo RUNNING || echo FINISHED
+    Call log:
+      - waiting for getByRole('button', { name: 'Create Account' })
+
+
+      34 |     } else {
+      35 |       // Create new account
+    > 36 |       await page.getByRole("button", { name: "Create Account" }).click();
+         |                                                                  ^
+      37 |
+      38 |       // Generate random account name using faker
+      39 |       const accountName = faker.finance.accountName();
+        at /Users/nikhilac/ohc.network/care_fe/tests/setup/patientAccount.setup.ts:36:66
+
+    Error Context: test-results/setup-patientAccount.setup-f3507--create-and-save-account-id-setup/error-context.md
+
+
+  1 failed
+    [setup] › tests/setup/patientAccount.setup.ts:10:5 › navigate to an patient - create and save account id 
+  2 did not run
+  7 passed (15.8s)
+---
+FINISHED
+
+fish: Job 1, 'npx playwright test tests/facil…' has ended
+
+
+
+…k/care_fe on  ENG-887-fix-internal-delivery-batch-failing [$!] via  v24.18.0 
+sleep 45 && cat /tmp/pw-todispatch.log
+◇ injected env (10) from .env.local // tip: ⌘ suppress logs { quiet: true }
+◇ injected env (16) from .env // tip: ⌘ override existing { override: true }
+⚠️ No DB snapshot found. Run 'npm run playwright:db-reset' to create one.
+🔄 Refreshing authentication tokens...
+✅ Tokens refreshed successfully
+
+Running 9 tests using 6 workers
+
+◇ injected env (0) from .env.local // tip: ⌘ enable debugging { debug: true }
+
+◇ injected env (0) from .env // tip: ⌘ override existing { override: true }
+
+◇ injected env (0) from .env.local // tip: ◈ encrypted .env [www.dotenvx.com]
+
+◇ injected env (0) from .env // tip: ⌘ enable debugging { debug: true }
+
+[1/9] [setup] › tests/setup/facilityAdmin.setup.ts:5:6 › authenticate as facility admin
+◇ injected env (0) from .env.local // tip: ⌘ enable debugging { debug: true }
+
+◇ injected env (0) from .env // tip: ◈ encrypted .env [www.dotenvx.com]
+
+[2/9] [setup] › tests/setup/facility.setup.ts:6:5 › enter facility via UI and save facility id
+◇ injected env (0) from .env.local // tip: ⌁ auth for agents [www.vestauth.com]
+
+◇ injected env (0) from .env // tip: ⌁ auth for agents [www.vestauth.com]
+
+◇ injected env (0) from .env.local // tip: ◈ encrypted .env [www.dotenvx.com]
+
+◇ injected env (0) from .env // tip: ⌘ custom filepath { path: '/custom/path/.env' }
+
+[3/9] [setup] › tests/setup/nurse.setup.ts:5:6 › authenticate as nurse
+◇ injected env (0) from .env.local // tip: ◈ encrypted .env [www.dotenvx.com]
+
+◇ injected env (0) from .env // tip: ⌘ multiple files { path: ['.env.local', '.env'] }
+
+[4/9] [setup] › tests/setup/auth.setup.ts:5:6 › authenticate
+[5/9] [setup] › tests/setup/patient.setup.ts:8:5 › navigate to an encounter and save patient and encounter id
+[6/9] [setup] › tests/setup/patientAccount.setup.ts:10:5 › navigate to an patient - create and save account id
+[setup] › tests/setup/facility.setup.ts:6:5 › enter facility via UI and save facility id
+✅ Facility ID saved: fd40640a-4b2c-42ab-8834-7b4aca7c83c8
+
+[7/9] [setup] › tests/setup/staff.setup.ts:5:6 › authenticate as staff
+[8/9] [setup] › tests/setup/questionnaire.setup.ts:8:5 › ensure enable-when questionnaire exists
+[setup] › tests/setup/questionnaire.setup.ts:8:5 › ensure enable-when questionnaire exists
+♻️ Questionnaire version changed (0.1 → 2.1), updating: enable-when-test
+
+✅ Questionnaire updated: enable-when-test
+
+[setup] › tests/setup/patient.setup.ts:8:5 › navigate to an encounter and save patient and encounter id
+✅ Patient ID saved: 12191535-de5b-4b2f-8ba1-3e1c6aee380e
+
+✅ Encounter ID saved: 52d43de7-9a0c-436b-994e-e7df96c8fba9
+
+[setup] › tests/setup/patientAccount.setup.ts:10:5 › navigate to an patient - create and save account id
+✅ Account created and saved: f65ec093-4977-42e0-8e21-ec91a621fc27
+
+◇ injected env (0) from .env.local // tip: ⌘ enable debugging { debug: true }
+
+◇ injected env (0) from .env // tip: ⌘ custom filepath { path: '/custom/path/.env' }
+
+[9/9] [chromium] › tests/facility/services/locations/inventory/toDispatch.spec.ts:120:7 › Facility To-Dispatch Orders Inventory Flow › approve incoming delivery order
+  9 passed (26.0s)
+
+…k/care_fe on  ENG-887-fix-internal-delivery-batch-failing [$!] via  v24.18.0 
+set -l TOKEN 'REDACTED'
+set -l ok 0
+set -l fail 0
+for i in (seq 98)
+    set -l code (curl -s -o /dev/null -w '%{http_code}' -X POST 'https://careapi.ohc.network/api/v1/supply_request/' \
+                -H 'Accept: application/json' \
+                -H 'Content-Type: application/json' \
+                -H 'Origin: http://localhost:4000' \
+                -H "authorization: Bearer $TOKEN" \
+                --data-raw '{"item":"74fea453-f34c-46cd-bc2c-7c9f0e3f112f","quantity":"1.00","status":"active","order":"e4d42dd0-d5de-4422-b087-45fdad004c3f"}')
+
+    if test "$code" = "201" -o "$code" = "200"
+        set ok (math $ok + 1)
+    else
+        set fail (math $fail + 1)
+        echo "request $i -> HTTP $code"
+    end
+end
+echo "DONE: ok=$ok fail=$fail"
+DONE: ok=98 fail=0
+
+…k/care_fe on  ENG-887-fix-internal-delivery-batch-failing [$!] via  v24.18.0 
+set -l TOKEN 'REDACTED'
+set -l ok 0
+set -l fail 0
+for i in (seq 98)
+    set -l code (curl -s -o /dev/null -w '%{http_code}' -X POST 'https://careapi.ohc.network/api/v1/supply_request/' \
+                -H 'Accept: application/json' \
+                -H 'Content-Type: application/json' \
+                -H 'Origin: http://localhost:4000' \
+                -H "authorization: Bearer $TOKEN" \
+                --data-raw '{"item":"74fea453-f34c-46cd-bc2c-7c9f0e3f112f","quantity":"1.00","status":"active","order":"9abc11d8-7fd8-42bd-802f-41a2e2aa20ad"}')
+
+    if test "$code" = "201" -o "$code" = "200"
+        set ok (math $ok + 1)
+    else
+        set fail (math $fail + 1)
+        echo "request $i -> HTTP $code"
+    end
+end
+echo "DONE: ok=$ok fail=$fail"
+DONE: ok=98 fail=0
+
+…k/care_fe on  ENG-887-fix-internal-delivery-batch-failing [$!] via  v24.18.0 
+git rev-parse --abbrev-ref HEAD; echo "---"; git log develop..HEAD --oneline | cat
+ENG-500-support-for-creating-multiple-diagnostic-reports-in-a-service-request
+---
+3c14ff642 added state to handle expansion
+13682bbfd updated isExpanded code
+fae4a10a1 review comments and ai
+af22752f1 updated routes
+18876428f corrected route
+bd722ac9c corrected import path
+5e6a0094f resolved merge conflicts
+2ea00b1d0 [ENG-736] Fix Diagnostic report print is broken in Organization level (#16556)
+1070eebf6 grumpy suggestions
+37a3959b5 [ENG-907] fix: correct formatting (#16679)
+a6e38375c Update Permissions-Policy for microphone access (#16668)
+606036b2f [ENG-846] fixes error handling in batch request (#16677)
+89394e93d [ENG-882] Gate empty-state Create Encounter button by can_create_encounter permission (#16640)
+d5878887e fix: Pass hidePrefixSuffix=true to formatName for all Avatar name props (#16134)
+a90600f7c Fixes Appointment slots query cache key omits resource type/id (#16595)
+d86c6f1c8 [ENG-877] typo correction in diet preference option: "Dairy free" (#16646)
+351d8a618 [ENG-874] Allow empty REACT_CARE_API_URL for relative same-origin API requests (#16615)
+7332dd095 Remove unneeded defensive code in useMultiFilterState (#16552)
+bf62b0123 test: add consent creation & editing E2E tests (13 cases) (#16362)
+43bd28288 Add colour support for tag configs (#16109)
+951f2cb7d removed conclusion saved toast
+8db1ab337 clarify showCreateReportForm variable by adding comment
+912477acc Adding secondary reviewer for care fe (#16633)
+664711489 [ENG-784] Encounter Action button is clipping out (#16590)
+dd9b12fe1 Merge AGENTS.md into CLAUDE.md for unified guidance (#16531)
+47abd7fa0 [ENG-746] Hide "completed" from encounter status (#16570)
+67f5b9872 Improve clone command dependency syncing (#16400)
+d15173ee8 [QA-214] Fix flaky device service history edit flow test (#16572)
+8b760681b Fix "Show on Map" link oversized clickable area (fixes #16536) (#16581)
+addeaa55b 🧹 Remove stale diagnosis__* i18n keys (#16643)
+1799e3787 added diag report name on detial card
+cade7bb10 added github actins suggestions
+b5de7403f cleanups
+9a74b2fdf used batchRequest for observation and report submission
+788b5ee00 cleanups
+c9ce11417 grumpy suggestions
+79cbbbf43 some cleanups
+b4e5d4d55 done suggested changes
+cfcaa110a useQueries to retrieve all report in detail
+0256a28f9 added DR name in right pannel of DR list in encounter
+ae41da75e used DR  api instead of getting it from SR
+ef3e1853f requested changes
+30a15178b added translation
+79ff66170 Copilot suggestions
+cca7592d7 Merge branch 'develop' into ENG-500-support-for-creating-multiple-diagnostic-reports-in-a-service-request
+3cea86c37 cleanup observation history
+53d39eb22 fix print page error
+8fb53bf29 resolved copilot suggestions
+24b2c5520 Resolved merge conflicts
+ac46a0323 review and product suggestions
+8cc6d10ec resolved merge conflicts
+257deb55f Copilot suggestions
+f15ef2e6b minor cleanups
+88ef6891b revert the facility route
+d55cc579f revert the facility route
+f011c4ec5 removed org routes
+0e5afd598 cleanups
+76861d694 added view all report
+8614e1099 Copilot suggestions
+e2537fca2 removed onError handler
+db602f297 requested changes
+af05e7b92 corrected toast
+41bb2fa0f cleanups
+af5db1bfc test fix
+13acde307 ai suggestions
+29314ad21 Merge branch 'develop' into ENG-500-support-for-creating-multiple-diagnostic-reports-in-a-service-request
+f28b7f152 copilot and greptile suggestions
+0d1dc49f3 Merge branch 'ENG-500-support-for-creating-multiple-diagnostic-reports-in-a-service-request' of github.com:ohcnetwork/care_fe into ENG-500-support-for-creating-multiple-diagnostic-reports-in-a-service-request
+7df41e270 applied grayish to notReviewable tests
+a8f3809c0 Merge branch 'develop' into ENG-500-support-for-creating-multiple-diagnostic-reports-in-a-service-request
+5fcab8ea1 ENG-500 Support for creating multiple diagnostic reports in a service request
+
+…r-creating-multiple-diagnostic-reports-in-a-service-request [$] via  v24.18.0 
+git --no-pager diff --stat (git merge-base develop HEAD)..HEAD | cat
+ .env                                               |    4 +-
+ .example.env                                       |    4 +
+ .github/agents/care-review.agent.md                |  397 +++++
+ .github/workflows/care-review.lock.yml             | 1714 ++++++++++++++++++++
+ .github/workflows/care-review.md                   |  235 +++
+ AGENTS.md                                          |   81 +-
+ CLAUDE.md                                          |    4 +-
+ docs/architecture.md                               |   97 ++
+ docs/care-apps-local-dev.md                        |   11 +-
+ docs/local-development.md                          |   64 +
+ docs/testing.md                                    |   69 +
+ nginx/nginx.conf                                   |    2 +-
+ package.json                                       |    3 +-
+ public/locale/en.json                              |   32 +-
+ scripts/clone-component.ts                         |  242 ++-
+ scripts/generate-headers.ts                        |    6 +-
+ scripts/validate-env.ts                            |    6 +-
+ src/Routers/routes/FacilityRoutes.tsx              |   13 +
+ src/Utils/request/README.md                        |   76 +
+ src/Utils/request/batch.ts                         |  159 +-
+ src/components/CareTeam/CareTeamSheet.tsx          |    2 +-
+ src/components/Consent/ConsentFormSheet.tsx        |   44 +-
+ src/components/Facility/FacilityMapLink.tsx        |    2 +-
+ src/components/Files/FileUploadDialog.tsx          |   18 +-
+ src/components/Notes/NoteManager.tsx               |    2 +-
+ .../Patient/Common/ClinicalInformationRow.tsx      |    2 +-
+ .../Patient/PatientDetailsTab/EncounterHistory.tsx |   37 +-
+ src/components/Patient/PatientInfoCard.tsx         |   18 +-
+ src/components/Patient/PatientTagsDisplay.tsx      |   16 +-
+ src/components/Patient/allergy/AllergyTable.tsx    |    2 +-
+ .../Patient/diagnosis/DiagnosisTable.tsx           |    2 +-
+ src/components/Patient/symptoms/SymptomTable.tsx   |    2 +-
+ .../QuestionTypes/EncounterQuestion.tsx            |   30 +-
+ src/components/Schedule/ScheduleResourceIcon.tsx   |    2 +-
+ .../Tags/MultiFilterStyleTagSelector.tsx           |   28 +-
+ src/components/Tags/TagBadge.tsx                   |   13 +-
+ src/components/Tags/TagColorDot.tsx                |   39 +
+ src/components/Tags/tagColor.ts                    |   27 +
+ src/components/ui/multi-filter/tagFilter.tsx       |   59 +-
+ .../ui/multi-filter/utils/useMultiFilterState.tsx  |    2 +-
+ src/components/ui/sidebar/nav-user.tsx             |    4 +-
+ src/hooks/useFileUpload.tsx                        |    4 +-
+ src/pages/Admin/TagConfig/TagConfigForm.tsx        |   79 +
+ src/pages/Appointments/AppointmentDetail.tsx       |    6 +-
+ src/pages/Appointments/AppointmentsPage.tsx        |   13 +-
+ src/pages/Encounters/EncounterShow.tsx             |   18 +-
+ src/pages/Encounters/tabs/diagnostic-reports.tsx   |   20 +-
+ .../diagnosticReports/DiagnosticReportPrint.tsx    |  360 +---
+ .../DiagnosticReportPrintPreview.tsx               |  341 ++++
+ .../diagnosticReports/DiagnosticReportView.tsx     |   22 +-
+ .../MultipleDiagnosticReportsPrint.tsx             |   83 +
+ .../services/pharmacy/DispensedMedicationList.tsx  |    3 -
+ .../Facility/services/pharmacy/DispensesView.tsx   |   11 +-
+ .../serviceRequests/ServiceRequestShow.tsx         |   89 +-
+ .../components/DiagnosticReportForm.tsx            | 1158 +++++++------
+ .../components/DiagnosticReportReview.tsx          |  474 +++---
+ .../components/WorkflowProgress.tsx                |   88 +-
+ src/types/emr/tagConfig/tagConfig.ts               |    3 +-
+ tests/PLAYWRIGHT_GUIDE.md                          |    1 +
+ .../encounter/consent/consentCreation.spec.ts      |  391 +++++
+ .../encounter/medicine/prescriptionCreate.spec.ts  |   14 +-
+ .../serviceRequests/ServiceRequestCreate.spec.ts   |   11 +-
+ .../encounters/encounterHistoryPermission.spec.ts  |  165 ++
+ .../patientDetails/files/patientFiles.spec.ts      |   93 +-
+ .../settings/devices/deviceServiceHistory.spec.ts  |   38 +-
+ tests/setup/staff.setup.ts                         |   24 +
+ 66 files changed, 5696 insertions(+), 1383 deletions(-)
+
+…r-creating-multiple-diagnostic-reports-in-a-service-request [$] via  v24.18.0 
+git checkout ENG-500-support-for-creating-multiple-diagnostic-reports-in-a-service-request 2>/dev/null; git --no-pager diff --stat origin/develop...HEAD | cat
+Your branch is up to date with 'origin/ENG-500-support-for-creating-multiple-diagnostic-reports-in-a-service-request'.
+ public/locale/en.json                              |   22 +-
+ src/Routers/routes/FacilityRoutes.tsx              |   13 +
+ src/components/Files/FileUploadDialog.tsx          |   18 +-
+ src/hooks/useFileUpload.tsx                        |    4 +-
+ src/pages/Encounters/tabs/diagnostic-reports.tsx   |   20 +-
+ .../diagnosticReports/DiagnosticReportPrint.tsx    |  360 +-----
+ .../DiagnosticReportPrintPreview.tsx               |  341 ++++++
+ .../diagnosticReports/DiagnosticReportView.tsx     |   22 +-
+ .../MultipleDiagnosticReportsPrint.tsx             |   83 ++
+ .../serviceRequests/ServiceRequestShow.tsx         |   89 +-
+ .../components/DiagnosticReportForm.tsx            | 1158 ++++++++++++--------
+ .../components/DiagnosticReportReview.tsx          |  474 ++++----
+ .../components/WorkflowProgress.tsx                |   88 +-
+ .../serviceRequests/ServiceRequestCreate.spec.ts   |   11 +-
+ 14 files changed, 1614 insertions(+), 1089 deletions(-)
+
+…r-creating-multiple-diagnostic-reports-in-a-service-request [$] via  v24.18.0
