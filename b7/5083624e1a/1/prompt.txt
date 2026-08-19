@@ -1,0 +1,35 @@
+this atom is not being read anywhere. do we really need it? what's the purpose of simply setting the value to the atom?
+
+confirm the usage and remove it?
+
+---
+
+can we use selectedSearchType here?
+
+---
+
+searchWith is now derived as "external_identifier if set, else name". So the moment the user clears the input while in external-identifier mode, qParams.external_identifier becomes empty and the mode silently snaps back to Name. The old state at least remembered what the user picked. Persist the mode in the URL (or state) instead of inferring it
+
+is this valid
+
+---
+
+The success path only invalidates `["serviceRequest", facilityId, serviceRequestId]` when observations were part of the batch. But the `update-report` sub-request always runs and writes `conclusion` / report metadata, and `ServiceRequestShow` derives `diagnosticReports` from `request.diagnostic_reports` on that same `serviceRequest`
+ query. So saving a conclusion-only edit (no observation values) leaves 
+the parent's report list stale — the review card below still shows the 
+old conclusion until something else refetches.
+
+Suggest moving the `serviceRequest` invalidation out of the `if` and keeping only the toast inside it.
+
+is this valid?
+
+---
+
+The success path only invalidates `["serviceRequest", facilityId, serviceRequestId]` when observations were part of the batch. But the `update-report` sub-request always runs and writes `conclusion` / report metadata, and `ServiceRequestShow` derives `diagnosticReports` from `request.diagnostic_reports` on that same `serviceRequest`
+ query. So saving a conclusion-only edit (no observation values) leaves 
+the parent's report list stale — the review card below still shows the 
+old conclusion until something else refetches.
+
+Suggest moving the `serviceRequest` invalidation out of the `if` and keeping only the toast inside it.
+
+is this valid?
