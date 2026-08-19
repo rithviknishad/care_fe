@@ -1,0 +1,5 @@
+when there are no items, we show no stock. but can we also include expired items warning thing as well within that, so that user has clarity whether all items in inventory is expired, or genuinely no stock. redesign with this in mind now.
+
+---
+
+when there are no items, we show no stock. but can we also include expired items warning thing as well within that, so that user has clarity whether all items in inventory is expired, or genuinely no stock. redesign with this in mind now.
