@@ -1,0 +1,53 @@
+{
+  "cli_version": "0.9.0",
+  "checkpoint_id": "ba8e8c96fac8",
+  "session_id": "6f462675-083c-4226-a424-f996d83672d4",
+  "strategy": "manual-commit",
+  "created_at": "2026-08-20T09:52:59.36574Z",
+  "branch": "rithviknishad/psychic-happiness",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "src/Utils/keyboardShortcutComponents.tsx",
+    "src/config/keyboardShortcuts.json",
+    "src/context/ShortcutContext.tsx",
+    "src/hooks/useKeyboardShortcuts.ts",
+    "src/hooks/utils/evaluateShortcutCondition.ts"
+  ],
+  "agent": "Copilot CLI",
+  "model": "claude-opus-5",
+  "turn_id": "c214997a6151",
+  "checkpoint_transcript_start": 410,
+  "transcript_lines_at_start": 410,
+  "compact_transcript_start": 42,
+  "token_usage": {
+    "input_tokens": 0,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 0,
+    "output_tokens": 10534,
+    "api_call_count": 25
+  },
+  "session_metrics": {
+    "turn_count": 1
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-08-20T09:52:59.336302Z",
+    "agent_lines": 112,
+    "agent_removed": 350,
+    "human_added": 0,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 112,
+    "total_lines_changed": 462,
+    "agent_percentage": 100,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0
+    }
+  ]
+}
