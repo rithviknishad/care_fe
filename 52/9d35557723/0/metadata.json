@@ -1,0 +1,61 @@
+{
+  "cli_version": "0.9.0",
+  "checkpoint_id": "529d35557723",
+  "session_id": "9e89dc7e-bbc0-432c-ad13-d47f0ca1064b",
+  "strategy": "manual-commit",
+  "created_at": "2026-08-20T10:46:11.071819Z",
+  "branch": "ENG-524-audit-react-state-usage-in-encounter-id-search",
+  "checkpoints_count": 4,
+  "save_step_count": 3,
+  "files_touched": [
+    "src/pages/Encounters/EncounterList.tsx"
+  ],
+  "agent": "Copilot CLI",
+  "model": "",
+  "turn_id": "d378c7aa282e",
+  "compact_transcript_start": 0,
+  "token_usage": {
+    "input_tokens": 0,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 0,
+    "output_tokens": 0,
+    "api_call_count": 0
+  },
+  "session_metrics": {
+    "turn_count": 19
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-08-20T10:46:11.056275Z",
+    "agent_lines": 70,
+    "agent_removed": 176,
+    "human_added": 2,
+    "human_modified": 23,
+    "human_removed": 0,
+    "total_committed": 86,
+    "total_lines_changed": 271,
+    "agent_percentage": 90.7749077490775,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 2,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0
+    },
+    {
+      "checkpoint_number": 3,
+      "user_lines_added": 9,
+      "user_lines_removed": 8,
+      "agent_lines_added": 8,
+      "agent_lines_removed": 9,
+      "user_added_per_file": {
+        "src/pages/Encounters/EncounterList.tsx": 9
+      },
+      "user_removed_per_file": {
+        "src/pages/Encounters/EncounterList.tsx": 8
+      }
+    }
+  ]
+}
