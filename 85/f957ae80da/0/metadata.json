@@ -1,0 +1,55 @@
+{
+  "cli_version": "0.9.0",
+  "checkpoint_id": "85f957ae80da",
+  "session_id": "9e89dc7e-bbc0-432c-ad13-d47f0ca1064b",
+  "strategy": "manual-commit",
+  "created_at": "2026-08-20T12:10:13.210933Z",
+  "branch": "ENG-524-audit-react-state-usage-in-encounter-id-search",
+  "checkpoints_count": 1,
+  "save_step_count": 2,
+  "files_touched": [
+    "src/atoms/encounterFilterAtom.ts"
+  ],
+  "agent": "Copilot CLI",
+  "model": "",
+  "turn_id": "f1796a1cf9f5",
+  "compact_transcript_start": 0,
+  "token_usage": {
+    "input_tokens": 0,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 0,
+    "output_tokens": 0,
+    "api_call_count": 0
+  },
+  "session_metrics": {
+    "turn_count": 20
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-08-20T12:10:13.192728Z",
+    "agent_lines": 1,
+    "agent_removed": 0,
+    "human_added": 1,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 2,
+    "total_lines_changed": 5,
+    "agent_percentage": 20,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 2,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0
+    },
+    {
+      "checkpoint_number": 3,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 1,
+      "agent_lines_removed": 0
+    }
+  ]
+}
