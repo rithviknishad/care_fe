@@ -3,7 +3,7 @@
   "checkpoint_id": "529d35557723",
   "strategy": "manual-commit",
   "branch": "ENG-524-audit-react-state-usage-in-encounter-id-search",
-  "checkpoints_count": 4,
+  "checkpoints_count": 8,
   "files_touched": [
     "src/pages/Encounters/EncounterList.tsx"
   ],
@@ -14,6 +14,13 @@
       "compact_transcript": "/52/9d35557723/0/transcript.jsonl",
       "content_hash": "/52/9d35557723/0/content_hash.txt",
       "prompt": "/52/9d35557723/0/prompt.txt"
+    },
+    {
+      "metadata": "/52/9d35557723/1/metadata.json",
+      "transcript": "/52/9d35557723/1/full.jsonl",
+      "compact_transcript": "/52/9d35557723/1/transcript.jsonl",
+      "content_hash": "/52/9d35557723/1/content_hash.txt",
+      "prompt": "/52/9d35557723/1/prompt.txt"
     }
   ],
   "token_usage": {
