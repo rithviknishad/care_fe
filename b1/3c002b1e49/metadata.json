@@ -3,7 +3,7 @@
   "checkpoint_id": "b13c002b1e49",
   "strategy": "manual-commit",
   "branch": "ENG-267-patient-name-enforce-all-first-letters-to-be-capital",
-  "checkpoints_count": 17,
+  "checkpoints_count": 13,
   "files_touched": [
     "public/locale/en.json",
     "src/components/Facility/ConsultationDetails/PrintAllQuestionnaireResponses.tsx",
@@ -32,13 +32,6 @@
       "compact_transcript": "/b1/3c002b1e49/0/transcript.jsonl",
       "content_hash": "/b1/3c002b1e49/0/content_hash.txt",
       "prompt": "/b1/3c002b1e49/0/prompt.txt"
-    },
-    {
-      "metadata": "/b1/3c002b1e49/1/metadata.json",
-      "transcript": "/b1/3c002b1e49/1/full.jsonl",
-      "compact_transcript": "/b1/3c002b1e49/1/transcript.jsonl",
-      "content_hash": "/b1/3c002b1e49/1/content_hash.txt",
-      "prompt": "/b1/3c002b1e49/1/prompt.txt"
     }
   ],
   "token_usage": {
@@ -47,17 +40,5 @@
     "cache_read_tokens": 0,
     "output_tokens": 0,
     "api_call_count": 0
-  },
-  "combined_attribution": {
-    "calculated_at": "2026-08-20T06:45:18.306461Z",
-    "agent_lines": 154,
-    "agent_removed": 116,
-    "human_added": 0,
-    "human_modified": 0,
-    "human_removed": 0,
-    "total_committed": 154,
-    "total_lines_changed": 270,
-    "agent_percentage": 100,
-    "metric_version": 2
   }
 }
