@@ -1,0 +1,50 @@
+{
+  "cli_version": "0.9.0",
+  "checkpoint_id": "7ca6688e5774",
+  "session_id": "2a87ad03-8f08-438e-a4d2-d12feb1eea51",
+  "strategy": "manual-commit",
+  "created_at": "2026-08-20T08:13:01.7003Z",
+  "branch": "rithviknishad/effect-needs-cleanup",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "src/components/Tokens/CreateTokenForm.tsx",
+    "src/components/ui/multi-filter/tagFilter.tsx",
+    "src/pages/Facility/settings/locations/LocationForm.tsx",
+    "src/pages/Facility/settings/locations/LocationMap.tsx",
+    "src/pages/Facility/settings/observationDefinition/ObservationDefinitionForm.tsx",
+    "src/pages/Scheduling/components/CreateScheduleTemplateSheet.tsx",
+    "src/pages/Scheduling/components/EditScheduleTemplateSheet.tsx"
+  ],
+  "agent": "Copilot CLI",
+  "model": "",
+  "turn_id": "fb761a35ab58",
+  "compact_transcript_start": 0,
+  "token_usage": {
+    "input_tokens": 0,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 0,
+    "output_tokens": 50459,
+    "api_call_count": 109
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-08-20T08:13:01.663798Z",
+    "agent_lines": 180,
+    "agent_removed": 116,
+    "human_added": 0,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 180,
+    "total_lines_changed": 296,
+    "agent_percentage": 100,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0
+    }
+  ]
+}

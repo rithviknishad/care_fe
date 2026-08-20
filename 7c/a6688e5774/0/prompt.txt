@@ -1,0 +1,136 @@
+<cross_session_message>
+from_project_session_id: bd5ae655-5aa5-4b13-9204-4a0a82815774
+from_session_id: c0da0d91-8d7d-43f4-b0a8-31404b864ffa
+from_project_session_name: React doctor fixes
+from_display_name: React doctor fixes
+from_project_session_branch: rithviknishad/psychic-parakeet
+from_project_repo: ohcnetwork/care_fe
+requested_mode: autopilot
+
+To reply to the sender, use the send_session_message tool with session_id: "bd5ae655-5aa5-4b13-9204-4a0a82815774"
+</cross_session_message>
+
+Fix ONE React Doctor rule in the care_fe repository, then open a pull request. Work autonomously in this worktree. Do not touch any other rule.
+
+## The finding
+
+Rule: `react-doctor/effect-needs-cleanup` (severity: error, category: Bugs, priority P1)
+Count: 12 occurrences.
+
+```
+src/components/Tokens/CreateTokenForm.tsx:114
+src/components/ui/multi-filter/tagFilter.tsx:423
+src/pages/Facility/services/pharmacy/hooks/useMedicationBill.ts:308
+src/pages/Facility/settings/locations/LocationForm.tsx:126
+src/pages/Facility/settings/locations/LocationForm.tsx:137
+src/pages/Facility/settings/locations/LocationMap.tsx:377
+src/pages/Facility/settings/locations/LocationMap.tsx:431
+src/pages/Facility/settings/observationDefinition/ObservationDefinitionForm.tsx:332
+src/pages/Scheduling/components/CreateScheduleTemplateSheet.tsx:257
+src/pages/Scheduling/components/CreateScheduleTemplateSheet.tsx:291
+src/pages/Scheduling/components/EditScheduleTemplateSheet.tsx:620
+src/pages/Scheduling/components/EditScheduleTemplateSheet.tsx:690
+```
+
+Note: `src/pages/Facility/services/pharmacy/hooks/useMedicationBill.ts` does not exist on `develop`. The scan ran against a checkout with uncommitted work. Confirm this yourself. If the file is absent, skip it and say so in your report.
+
+Line numbers come from an older scan. Re-run React Doctor yourself to get current line numbers.
+
+## Step 1 — read the canonical recipe first
+
+Run this and read the whole file before you change any code:
+
+```bash
+curl -sSL -H 'Cache-Control: no-cache' https://react.doctor/docs/rules/react-doctor/effect-needs-cleanup.md -o /tmp/rd-cleanup.md && cat /tmp/rd-cleanup.md
+```
+
+Read the validation prompt and the fix prompt in full. The recipe names two false-positive predicates. Apply them honestly. Do not delete a timer to silence the rule. Do not add an empty `return () => {}`. Do not add a lint suppression comment.
+
+## Step 2 — there are two different root causes here
+
+### Root cause A: an uncancelled `setTimeout` inside an effect
+
+This is a real leak. Example, `src/components/ui/multi-filter/tagFilter.tsx`:
+
+```tsx
+useEffect(() => {
+  if (!open) {
+    setTimeout(() => { onSubMenuOpen(false); }, 100);
+  } else {
+    onSubMenuOpen(true);
+  }
+}, [open, onSubMenuOpen]);
+```
+
+The timer keeps running after the component unmounts. It then calls a parent callback on a component that is gone. Fix per recipe (A): capture the id and clear it.
+
+```tsx
+useEffect(() => {
+  if (open) { onSubMenuOpen(true); return; }
+  const id = setTimeout(() => { onSubMenuOpen(false); }, 100);
+  return () => clearTimeout(id);
+}, [open, onSubMenuOpen]);
+```
+
+`src/pages/Facility/settings/locations/LocationMap.tsx` has the same shape. It calls `setTimeout(() => fitView({...}), ...)` inside an effect. Read the whole effect. Apply the same fix.
+
+### Root cause B: `form.watch(...)` called inside an effect or a helper function
+
+The detector matches `.watch` as a subscription. In react-hook-form, `form.watch("name")` with a string argument reads a value; it does not return an unsubscribe handle. So there is no handle to release. But this is still a real defect, and the correct root-cause fix removes the `.watch` call from the effect.
+
+The react-hook-form documentation says: do not call `watch()` inside an effect or a render-phase helper. Use the `useWatch` hook at the top level of the component. `useWatch` subscribes correctly, re-renders the component when the value changes, and cleans itself up on unmount. `form.watch()` inside an effect reads a value that the effect's dependency array does not track, so the effect can run with a stale value.
+
+So for each of these sites, hoist the reads to `useWatch` at the top level of the component and add the resulting values to the effect dependency array:
+
+```tsx
+// before
+useEffect(() => {
+  const name = form.watch("name");
+  const beds = form.watch("numberOfBeds");
+  ...
+}, [/* name and beds are not tracked */]);
+
+// after
+const name = useWatch({ control: form.control, name: "name" });
+const beds = useWatch({ control: form.control, name: "numberOfBeds" });
+useEffect(() => {
+  ...
+}, [name, beds]);
+```
+
+These files use root cause B:
+
+- `src/components/Tokens/CreateTokenForm.tsx`
+- `src/pages/Facility/settings/locations/LocationForm.tsx` (2 sites)
+- `src/pages/Facility/settings/observationDefinition/ObservationDefinitionForm.tsx`
+- `src/pages/Scheduling/components/CreateScheduleTemplateSheet.tsx` (2 sites)
+- `src/pages/Scheduling/components/EditScheduleTemplateSheet.tsx` (2 sites)
+
+Warning: some of these `form.watch` reads sit inside plain helper functions, not inside `useEffect`. Examples: `CreateScheduleTemplateSheet.tsx` around lines 257 and 291, and `ObservationDefinitionForm.tsx` around line 332. Read each one. If the helper runs during render, `useWatch` is still the correct fix. If the helper is an event handler that runs on a user action, `form.getValues("name")` is the correct fix, because a handler must read the current value and must not subscribe. Choose per site, with evidence from the code. Explain each choice in your report.
+
+Caution: `useWatch` re-renders the component whenever the watched field changes. In `CreateScheduleTemplateSheet.tsx` the reads are inside a `useFieldArray` loop with an `index`. Do not put a hook inside a loop or a `.map` callback. That breaks the Rules of Hooks. Extract a child component per row so each row owns its own `useWatch`. This is recipe (B) from the `rules-of-hooks` guidance.
+
+## Step 3 — verify
+
+1. `npx tsc --noEmit` must pass with no new errors.
+2. `npx react-doctor@latest --verbose` must report 0 `effect-needs-cleanup` findings. This takes several minutes; use a long timeout and be patient.
+3. Confirm you did not add new `rules-of-hooks` or `exhaustive-deps` errors.
+4. Test the real behaviour. Run the forms you changed. The bed-name auto-fill in `LocationForm`, the slot calculation in the two schedule sheets, and the category default in `CreateTokenForm` must all still work. Read `docs/local-development.md` and `docs/testing.md`. Run any Playwright test that covers these screens, for example `npx playwright test tests/facility/`.
+
+## Step 4 — pull request
+
+Commit your work and open a pull request with `create_pull_request`.
+
+- Base branch: `develop`.
+- Title: `\ud83d\udc1b Cleans up effect timers and replaces form.watch with useWatch`
+- Body: explain both root causes in plain language, list the files, and paste the before/after React Doctor output for this rule.
+
+If the change turns out to be too large for one pull request, split root cause A and root cause B into two pull requests. Say so in your report.
+
+## Writing style
+
+Write every comment, commit message and PR description in ASD-STE100 Simplified Technical English. Use the active voice. Use short sentences. Give one idea per sentence. Do not use jargon.
+
+## Report back
+
+When you are done, reply with: the PR URL or URLs, the exact React Doctor before/after counts for `effect-needs-cleanup`, the files you changed, the decision you made at each `form.watch` site and why, and any check you could not run.
