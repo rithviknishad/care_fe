@@ -1,0 +1,27 @@
+{
+  "cli_version": "0.9.0",
+  "checkpoint_id": "67958bb1a165",
+  "strategy": "manual-commit",
+  "branch": "rithviknishad/psychic-happiness",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "src/hooks/useKeyboardShortcuts.ts",
+    "src/hooks/utils/evaluateShortcutCondition.ts"
+  ],
+  "sessions": [
+    {
+      "metadata": "/67/958bb1a165/0/metadata.json",
+      "transcript": "/67/958bb1a165/0/full.jsonl",
+      "compact_transcript": "/67/958bb1a165/0/transcript.jsonl",
+      "content_hash": "/67/958bb1a165/0/content_hash.txt",
+      "prompt": "/67/958bb1a165/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 0,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 0,
+    "output_tokens": 15048,
+    "api_call_count": 36
+  }
+}

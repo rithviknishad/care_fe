@@ -1,0 +1,117 @@
+<cross_session_message>
+from_project_session_id: bd5ae655-5aa5-4b13-9204-4a0a82815774
+from_session_id: c0da0d91-8d7d-43f4-b0a8-31404b864ffa
+from_project_session_name: React doctor fixes
+from_display_name: React doctor fixes
+from_project_session_branch: rithviknishad/psychic-parakeet
+from_project_repo: ohcnetwork/care_fe
+requested_mode: autopilot
+
+To reply to the sender, use the send_session_message tool with session_id: "bd5ae655-5aa5-4b13-9204-4a0a82815774"
+</cross_session_message>
+
+Fix ONE React Doctor error in the care_fe repository, then open a pull request. Work autonomously in this worktree. Do not touch any other rule.
+
+## The finding
+
+Rule: `react-doctor/no-eval` (severity: error, category: Security, priority P0)
+File: `src/hooks/useKeyboardShortcuts.ts`, line 65
+Message: "`new Function()` is a code-injection vulnerability: it builds and runs code from a string."
+
+The current code is:
+
+```ts
+const evaluateWhenCondition = useCallback(
+  (whenClause: string): boolean => {
+    if (whenClause === "always") return true;
+
+    const evalContext = {
+      canEdit: conditions.canEdit || false,
+      canCreate: conditions.canCreate || false,
+      readOnly: conditions.readOnly || false,
+      questionnairesEnabled: conditions.questionnairesEnabled || false,
+      ...conditions,
+    };
+
+    try {
+      let expression = whenClause;
+      Object.entries(evalContext).forEach(([key, value]) => {
+        const regex = new RegExp(`\\b${key}\\b`, "g");
+        expression = expression.replace(regex, String(value));
+      });
+      return new Function(`return ${expression}`)();
+    } catch (error) {
+      console.warn(`Failed to evaluate shortcut condition: ${whenClause}`, error);
+      return false;
+    }
+  },
+  [conditions],
+);
+```
+
+## Step 1 — read the canonical recipe first
+
+Run this and read the whole file before you change any code:
+
+```bash
+curl -sSL -H 'Cache-Control: no-cache' https://react.doctor/docs/rules/react-doctor/no-eval.md -o /tmp/rd-noeval.md && cat /tmp/rd-noeval.md
+```
+
+The recipe says: refactor templated code generation into a pre-compiled function or a lookup table. Do not keep `new Function`. Do not add a lint suppression comment.
+
+## Step 2 — the evidence you must collect
+
+The `when` clauses come from `src/config/keyboardShortcuts.json`. Read that file. Confirm which `when` values exist today. My check found that every entry uses `when: "always"`, so the `new Function` branch is dead today. Confirm this yourself:
+
+```bash
+python3 -c "import json;d=json.load(open('src/config/keyboardShortcuts.json'));print(sorted({s['when'] for v in d.values() for s in v}))"
+```
+
+Also check whether plugins or `care-apps` can supply shortcut config at runtime. Search the repository:
+
+```bash
+grep -rn "keyboardShortcuts" src/ care.config.ts
+```
+
+This matters. If external code can supply a `when` string, the risk is real code injection. If only this static JSON file supplies it, the risk is lower but the pattern is still a Content-Security-Policy violation: `new Function` needs `unsafe-eval`, which a healthcare application should not allow.
+
+## Step 3 — the fix
+
+Replace the string evaluator with a safe evaluator. Write a small parser or evaluator that supports only what the `when` grammar needs:
+
+- The literal `always`.
+- Identifiers that name a key in `ShortcutConditions`.
+- The operators `!`, `&&`, `||`.
+- Parentheses.
+- The literals `true` and `false`.
+
+Any token that is not in this list must make the evaluator return `false` and log a warning, the same as the current `catch` block does.
+
+Put the evaluator in its own module, for example `src/hooks/utils/evaluateShortcutCondition.ts`, and export a pure function. Follow `.github/instructions/hooks.instructions.md` and `.github/instructions/utils.instructions.md`.
+
+Also fix the second defect in the same code: the current version does a text replace of every condition key into the expression string. A condition value that is a string could inject more code. Your evaluator must read values from the conditions object directly. It must never build a string.
+
+Keep the exported behaviour of `useKeyboardShortcuts` the same. `when: "always"` must still return `true`.
+
+## Step 4 — verify
+
+1. `npx tsc --noEmit` must pass with no new errors.
+2. `npx react-doctor@latest --verbose` must no longer report `no-eval`. This takes several minutes; use a long timeout and be patient.
+3. Prove the evaluator works. Write a small throwaway node script that feeds it `always`, `canEdit`, `!readOnly`, `canEdit && !readOnly`, `canEdit || canCreate`, and a bad input such as `fetch('/x')`. Confirm the results. Delete the script afterwards.
+4. Start the app with `npm run dev` and confirm the keyboard shortcuts still work.
+
+## Step 5 — pull request
+
+Commit your work and open a pull request with `create_pull_request`.
+
+- Base branch: `develop`.
+- Title: `\ud83d\udd12 Removes new Function() from keyboard shortcut conditions`
+- Body: explain the risk in plain language, the fix, and paste the before/after React Doctor output for this rule.
+
+## Writing style
+
+Write every comment, commit message and PR description in ASD-STE100 Simplified Technical English. Use the active voice. Use short sentences. Give one idea per sentence. Do not use jargon.
+
+## Report back
+
+When you are done, reply with: the PR URL, the exact React Doctor before/after counts for `no-eval`, the files you changed, whether external plugins can supply `when` strings, and any check you could not run.
