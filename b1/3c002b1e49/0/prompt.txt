@@ -1,0 +1,108 @@
+why it is wrap with <name>
+
+---
+
+why don't we change isStrong to also go with valueClassName then? let's not have two ways to achieve things
+
+---
+
+since font-semibold is used everywhere so keep it in the DetialRow itself
+
+---
+
+do the same pattern here too
+
+---
+
+do the same thing here and  capitalize name
+
+---
+
+do the same pattern here too
+
+---
+
+do the same pattern here too
+
+---
+
+this too
+
+---
+
+use capitalize class for the patient name in the file
+
+---
+
+use the `valueClassName` here too
+
+---
+
+capitalize the patient name here too
+
+---
+
+capitalize this name too , only name
+
+---
+
+Similarly check the entire code base and find did i miss captialize patient name in any where
+
+---
+
+You are working in the CARE frontend repo (React + TypeScript). Task: ensure every place a PATIENT name is RENDERED to the user has the Tailwind `capitalize` class, per repo convention.
+
+RULE (from .github/instructions): Whenever `patient.name` (a single free-text field from PatientRead, accessed as `patient.name`, `patientData.name`, `encounter.patient.name`, `account.patient.name`, `token.patient.name`, `request.encounter.patient.name`, `appointment.patient.name`, `deliveryOrder.patient.name`, `selectedPatient.name`, `report.encounter.patient.name`, `invoice.account.patient.name`, `payment.account.patient.name`, `delivery.patient?.name`, `device.current_encounter.patient.name`, etc.) is rendered as visible text in JSX, it MUST appear in title case via the Tailwind `capitalize` class. Preferred: add `capitalize` to the existing element that renders the name, or wrap it: `<span className="capitalize">{patient.name}</span>`. Do NOT mutate/transform the stored value.
+
+IMPORTANT — DO NOT modify these usages (they are NOT visible name text or already handled):
+- `Avatar name={...}` props — skip.
+- `href=`/URL/`encodeURIComponent(...)`/`patient_name=` query params — skip.
+- i18n `values={{ patientName: ... }}` or `values={{ name: ... }}` or `<Trans values=...>` — skip (unless there is a corresponding `<name>` component; do not touch).
+- Passing as a prop like `patientName={...}` or `name={...}` or building an object `name: \`... - ${patient.name}\`` — skip.
+- `formatName(...)` calls — these are for user/practitioner names, skip.
+- Any element that ALREADY has a `capitalize` class on the element rendering the name — skip (already correct).
+
+For each site below, READ the file around the line to confirm it's a visible JSX render of a patient name, then add `capitalize` to the rendering element (or wrap in a `<span className="capitalize">`). If the name is concatenated with other text in one element, prefer wrapping just the name in a `<span className="capitalize">`. Preserve exact formatting/indentation and keep code valid. If an element already has a className, append ` capitalize` to it rather than adding a second className attribute.
+
+Candidate sites to review and fix if they are uncapitalized visible patient-name renders:
+- src/components/Encounter/EncounterInfoCard.tsx:65  {encounter.patient.name}
+- src/components/Medicine/MedicationAdministration/PrintMedicationAdministration.tsx:353  {encounter?.patient.name}
+- src/components/Facility/DuplicatePatientDialog.tsx:84  {patient.name}
+- src/components/Patient/PatientIdentifierFilter.tsx:260  {patient.name}
+- src/components/Patient/PatientIdentifierFilter.tsx:477  {selectedPatient.name}
+- src/components/Patient/PatientIdentifierSelector.tsx:416  {patient.name} (dropdown list item)
+- src/components/Patient/PatientIndex.tsx:525  {encounter.patient.name}
+- src/components/Resource/ResourceForm.tsx:257  {patientData.name}
+- src/components/ServiceRequest/ServiceRequestTable.tsx:83  {request.encounter.patient.name}
+- src/components/ui/sidebar/patient-switcher.tsx:79, 104, 114  {patient.name}/{selectedPatient?.name} (skip the Avatar name= ones; skip the `|| "User"` used as Avatar name prop; only add capitalize to visible text renders)
+- src/pages/Appointments/AppointmentsPage.tsx:734, 963  {patient.name}
+- src/pages/Appointments/components/AppointmentTokenCard.tsx:93  {patient.name || "--"}
+- src/pages/Appointments/components/PrintAppointments.tsx:217  {appointment.patient.name}
+- src/pages/Facility/billing/account/AccountList.tsx:281  {account.patient.name}
+- src/pages/Facility/billing/account/CreateInvoice.tsx:436  {account.patient.name}
+- src/pages/Facility/billing/invoice/InvoiceShow.tsx:435, 795  {invoice.account.patient.name}
+- src/pages/Facility/billing/invoice/PrintInvoice.tsx:178  {invoice.account.patient.name}
+- src/pages/Facility/billing/invoice/PrintInvoices.tsx:192  {firstInvoice.account.patient.name}
+- src/pages/Facility/billing/paymentReconciliation/PaymentReconciliationShow.tsx:189  {payment.account.patient.name || "-"}
+- src/pages/Facility/queues/ManageQueueFinishedTab.tsx:111  {token.patient.name}
+- src/pages/Facility/queues/OngoingQueueTokenCard.tsx:332  token.patient.name (inside a ternary rendering text)
+- src/pages/Facility/queues/TokenCard.tsx:88  {token.patient.name}
+- src/pages/Facility/services/diagnosticReports/DiagnosticReportPrint.tsx:226  {report.encounter?.patient?.name}
+- src/pages/Facility/services/pharmacy/MedicationRequestList.tsx:349  {item.encounter.patient.name}
+- src/pages/Facility/services/pharmacy/MedicationReturnList.tsx:197  {delivery.patient?.name}
+- src/pages/Facility/services/pharmacy/MedicationReturnShow.tsx:431  {deliveryOrder.patient.name}
+- src/pages/Facility/services/pharmacy/PrintDispenseOrder.tsx:150  value={patient.name} (this is a DetailRow — add valueClassName="capitalize" to that DetailRow instead of wrapping)
+- src/pages/Facility/services/serviceRequests/PatientHoverCard.tsx:102  {patient.name}
+- src/pages/Facility/services/serviceRequests/ServiceRequestList.tsx:94  {request.encounter.patient.name}
+- src/pages/Facility/settings/devices/components/DeviceEncounterCard.tsx:43  {encounter.patient.name}
+- src/pages/Facility/settings/devices/DeviceShow.tsx:204  {device.current_encounter.patient.name}
+- src/pages/Organization/OrganizationPatients.tsx:156  {patient.name} (skip the Avatar name= on 151)
+- src/pages/Patient/components/AppointmentDialog.tsx:105  {appointment.patient.name}
+- src/pages/PublicAppointments/PatientSelect.tsx:53  {patient.name}
+- src/pages/PublicAppointments/Success.tsx:77  {appointmentData?.patient.name}
+
+Note: line numbers may be slightly off; locate by the code content. Some already-capitalized sites you may encounter (skip): PatientIdentifierSelector.tsx:443, PatientIndex.tsx:393, PatientInfoHoverCard.tsx:46, Resource/ResourceDetails.tsx:39, PrintAppointments.tsx:159, ManageQueueFinishedTab.tsx:224, MedicationDispenseHistory.tsx:337, PrescriptionPreview (uses valueClassName capitalize), PrintChargeItems (valueClassName capitalize), PrintPaymentReconciliation (valueClassName font-semibold capitalize), PrintMedicationReturn.tsx:144 (valueClassName capitalize), PrintAllQuestionnaireResponses.tsx:166 (valueClassName capitalize), Demography.tsx (already wrapped).
+
+After editing, run get_errors on each file you modified and ensure there are no NEW TypeScript/syntax errors introduced by your edits (pre-existing Tailwind lint suggestions like `h-[200px]` or `break-words` are fine to ignore). Do NOT run lint/prettier/build.
+
+Report back: a concise list of files changed with the specific line(s)/element(s) where you added `capitalize`, and a list of candidate sites you deliberately SKIPPED with a one-line reason (e.g., "Avatar name prop", "already capitalized", "href param", "not a patient name"). Make the code edits yourself.

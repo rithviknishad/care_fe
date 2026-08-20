@@ -1,0 +1,44 @@
+{
+  "cli_version": "0.9.0",
+  "checkpoint_id": "b13c002b1e49",
+  "strategy": "manual-commit",
+  "branch": "ENG-267-patient-name-enforce-all-first-letters-to-be-capital",
+  "checkpoints_count": 13,
+  "files_touched": [
+    "public/locale/en.json",
+    "src/components/Facility/ConsultationDetails/PrintAllQuestionnaireResponses.tsx",
+    "src/components/Patient/PatientDetailsTab/Demography.tsx",
+    "src/components/Prescription/PrescriptionPreview.tsx",
+    "src/pages/Appointments/AppointmentDetail.tsx",
+    "src/pages/Appointments/AppointmentPrint.tsx",
+    "src/pages/Facility/billing/account/components/PrintChargeItems.tsx",
+    "src/pages/Facility/billing/invoice/PrintInvoice.tsx",
+    "src/pages/Facility/billing/paymentReconciliation/PrintPaymentReconciliation.tsx",
+    "src/pages/Facility/queues/CancelTokenDialog.tsx",
+    "src/pages/Facility/queues/ManageQueueFinishedTab.tsx",
+    "src/pages/Facility/queues/OngoingQueueTokenCard.tsx",
+    "src/pages/Facility/services/pharmacy/CreateDispenseSheet.tsx",
+    "src/pages/Facility/services/pharmacy/CreateMedicationReturnSheet.tsx",
+    "src/pages/Facility/services/pharmacy/MedicationRequestList.tsx",
+    "src/pages/Facility/services/pharmacy/MedicationReturnSheet.tsx",
+    "src/pages/Facility/services/pharmacy/PrintDispenseOrder.tsx",
+    "src/pages/Facility/services/pharmacy/PrintMedicationReturn.tsx",
+    "src/pages/Patient/History/index.tsx"
+  ],
+  "sessions": [
+    {
+      "metadata": "/b1/3c002b1e49/0/metadata.json",
+      "transcript": "/b1/3c002b1e49/0/full.jsonl",
+      "compact_transcript": "/b1/3c002b1e49/0/transcript.jsonl",
+      "content_hash": "/b1/3c002b1e49/0/content_hash.txt",
+      "prompt": "/b1/3c002b1e49/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 0,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 0,
+    "output_tokens": 0,
+    "api_call_count": 0
+  }
+}
