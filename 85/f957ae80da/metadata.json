@@ -3,7 +3,7 @@
   "checkpoint_id": "85f957ae80da",
   "strategy": "manual-commit",
   "branch": "ENG-524-audit-react-state-usage-in-encounter-id-search",
-  "checkpoints_count": 1,
+  "checkpoints_count": 5,
   "files_touched": [
     "src/atoms/encounterFilterAtom.ts"
   ],
@@ -14,6 +14,13 @@
       "compact_transcript": "/85/f957ae80da/0/transcript.jsonl",
       "content_hash": "/85/f957ae80da/0/content_hash.txt",
       "prompt": "/85/f957ae80da/0/prompt.txt"
+    },
+    {
+      "metadata": "/85/f957ae80da/1/metadata.json",
+      "transcript": "/85/f957ae80da/1/full.jsonl",
+      "compact_transcript": "/85/f957ae80da/1/transcript.jsonl",
+      "content_hash": "/85/f957ae80da/1/content_hash.txt",
+      "prompt": "/85/f957ae80da/1/prompt.txt"
     }
   ],
   "token_usage": {
