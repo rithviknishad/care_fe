@@ -1,19 +1,1 @@
-Identify why Care PR reviwer and Grumpy PR reviewer is failing in this PR
-https://github.com/ohcnetwork/care_fe/pull/16583
-
-<github_references>
-#16583 - [ENG-267] Patient Name: Enforce all first letters to be capital. [pr] [OPEN] (https://github.com/ohcnetwork/care_fe/pull/16583)
- Labels: needs review, Tested
-</github_references>
-
-<system_notification>
-Reminder: This session currently has an auto-generated or placeholder name. Before replying to the user, call the `rename_session` tool to give it a short, descriptive title based on the user's intent.
-</system_notification>
-
----
-
 What about getting rid of one here? Which is the better and well rounded reviewer here? And what can be imported from the oother one?
-
-<system_notification>
-Reminder: This session currently has an auto-generated or placeholder name. Before replying to the user, call the `rename_session` tool to give it a short, descriptive title based on the user's intent.
-</system_notification>
