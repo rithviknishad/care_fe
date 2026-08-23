@@ -1,0 +1,31 @@
+{
+  "cli_version": "0.9.0",
+  "checkpoint_id": "e6299fe4d103",
+  "strategy": "manual-commit",
+  "branch": "amjithtitus09-literate-robot",
+  "checkpoints_count": 1,
+  "files_touched": [
+    ".github/agents/care-review.agent.md",
+    ".github/agents/grumpy-reviewer.agent.md",
+    ".github/workflows/care-review.lock.yml",
+    ".github/workflows/care-review.md",
+    ".github/workflows/grumpy-reviewer.lock.yml",
+    ".github/workflows/grumpy-reviewer.md"
+  ],
+  "sessions": [
+    {
+      "metadata": "/e6/299fe4d103/0/metadata.json",
+      "transcript": "/e6/299fe4d103/0/full.jsonl",
+      "compact_transcript": "/e6/299fe4d103/0/transcript.jsonl",
+      "content_hash": "/e6/299fe4d103/0/content_hash.txt",
+      "prompt": "/e6/299fe4d103/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 0,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 0,
+    "output_tokens": 26956,
+    "api_call_count": 57
+  }
+}
