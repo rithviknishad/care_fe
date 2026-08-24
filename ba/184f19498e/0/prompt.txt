@@ -1,0 +1,9 @@
+this can block the component memoizing right? or it can cause rerendering as the object changes always. Refactor this for better
+
+---
+
+I was talking about this
+
+---
+
+No, just make it a separate component, So the object ref won't change every time
