@@ -1,0 +1,46 @@
+{
+  "cli_version": "0.9.0",
+  "checkpoint_id": "d5d76d1f25b9",
+  "strategy": "manual-commit",
+  "branch": "cursor/d69c5a49",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "src/components/Location/LocationSheet.tsx",
+    "src/components/Location/hooks/useLocationMutations.ts",
+    "src/components/Location/utils/locationHelpers.ts",
+    "src/components/Patient/LinkDepartmentsSheet.tsx",
+    "src/components/Questionnaire/QuestionnaireForm.tsx",
+    "src/components/Questionnaire/structured/handlers.ts",
+    "src/components/Questionnaire/structured/types.ts",
+    "src/hooks/useLocationManagement.ts",
+    "src/pages/Facility/billing/account/TransferPaymentSheet.tsx",
+    "src/pages/Facility/billing/invoice/components/InvoiceChargeItemTitle.tsx",
+    "src/pages/Facility/services/pharmacy/billMedications/utils/useBillMedications.ts",
+    "src/pages/Facility/services/pharmacy/components/AddMedicationReturnItemForm.tsx",
+    "src/pages/Facility/services/pharmacy/hooks/useUpdateDispenseOrderStatus.ts",
+    "src/pages/Facility/services/serviceRequests/ServiceRequestShow.tsx",
+    "src/pages/Facility/settings/locations/LocationForm.tsx",
+    "src/pages/Facility/settings/locations/LocationImport.tsx",
+    "src/types/base/batch/batch.ts",
+    "src/types/base/batch/batchApi.ts",
+    "src/types/emr/allergyIntolerance/allergyIntoleranceApi.ts",
+    "src/types/emr/diagnosis/diagnosisApi.ts",
+    "src/types/emr/medicationStatement/medicationStatementApi.ts"
+  ],
+  "sessions": [
+    {
+      "metadata": "/d5/d76d1f25b9/0/metadata.json",
+      "transcript": "/d5/d76d1f25b9/0/full.jsonl",
+      "compact_transcript": "/d5/d76d1f25b9/0/transcript.jsonl",
+      "content_hash": "/d5/d76d1f25b9/0/content_hash.txt",
+      "prompt": "/d5/d76d1f25b9/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 282,
+    "cache_creation_tokens": 323482,
+    "cache_read_tokens": 26777307,
+    "output_tokens": 70968,
+    "api_call_count": 1
+  }
+}
