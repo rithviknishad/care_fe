@@ -1,0 +1,24 @@
+`query.paginated` loops until it has fetched **every** page regardless of `pageSize` — it does not cap the result set. So this does not enforce the upsert limit; it only shrinks each page from the default `maxLimit`
+ (200) to 100, doubling the number of round trips for orders with 
+>100 deliveries. If the intent was one-shot fetching, this achieves 
+the opposite. If the intent was capping, `maxPages: 1` is the knob (and then `results.length` genuinely reflects the cap).
+
+is this vali?
+
+---
+
+but the be page upsert limit is same as in frontend - 100
+
+---
+
+include the limit as the per page limit now that we know the max limit? so that everything is fetched in one API call itself (mostly).
+
+this is a review comment after that i added the pagelimit - what he meant by - explain me in simple manner
+
+---
+
+so what should i change?
+
+---
+
+then why he said that add page limit ?

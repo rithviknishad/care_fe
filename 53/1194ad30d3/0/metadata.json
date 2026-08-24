@@ -1,0 +1,91 @@
+{
+  "cli_version": "0.9.0",
+  "checkpoint_id": "531194ad30d3",
+  "session_id": "9e89dc7e-bbc0-432c-ad13-d47f0ca1064b",
+  "strategy": "manual-commit",
+  "created_at": "2026-08-24T08:59:20.421065Z",
+  "branch": "ENG-887-fix-internal-delivery-batch-failing",
+  "checkpoints_count": 6,
+  "save_step_count": 5,
+  "files_touched": [
+    "src/pages/Facility/services/inventory/externalSupply/deliveryOrder/DeliveryOrderShow.tsx"
+  ],
+  "agent": "Copilot CLI",
+  "model": "",
+  "turn_id": "945d062b4ecb",
+  "checkpoint_transcript_start": 648,
+  "transcript_lines_at_start": 648,
+  "compact_transcript_start": 140,
+  "token_usage": {
+    "input_tokens": 0,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 0,
+    "output_tokens": 0,
+    "api_call_count": 0
+  },
+  "session_metrics": {
+    "turn_count": 26
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-08-24T08:59:20.401568Z",
+    "agent_lines": 0,
+    "agent_removed": 0,
+    "human_added": 0,
+    "human_modified": 1,
+    "human_removed": 16,
+    "total_committed": 0,
+    "total_lines_changed": 17,
+    "agent_percentage": 0,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 82,
+      "user_lines_removed": 17,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        "src/pages/Facility/services/inventory/externalSupply/deliveryOrder/DeliveryOrderShow.tsx": 82
+      },
+      "user_removed_per_file": {
+        "src/pages/Facility/services/inventory/externalSupply/deliveryOrder/DeliveryOrderShow.tsx": 17
+      }
+    },
+    {
+      "checkpoint_number": 2,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 5,
+      "agent_lines_removed": 7
+    },
+    {
+      "checkpoint_number": 3,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 5,
+      "agent_lines_removed": 7
+    },
+    {
+      "checkpoint_number": 4,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 5,
+      "agent_lines_removed": 7
+    },
+    {
+      "checkpoint_number": 5,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 5,
+      "agent_lines_removed": 8
+    },
+    {
+      "checkpoint_number": 6,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0
+    }
+  ]
+}
