@@ -1,0 +1,13 @@
+`hasReachedUpsertLimit` is `boolean | undefined` because you led with `supplyDeliveries &&`. It then guards rendering of the add form: while the query is loading it is `undefined`, so the form flashes in and then vanishes. Prefix with `!!` or default the count to 0.
+
+is this valid?
+
+---
+
+but the every() will return if the array is empty so is this valid?
+
+---
+
+`Callout` wraps `children` inside a `<span className="font-medium">…</span>`. This creates invalid DOM nesting when callers pass block elements (e.g. the updated usages pass `<p>`), which triggers React `validateDOMNesting` warnings and can affect layout. Render `children` directly (e.g. inside a `<div>`), and only apply typography classes on the container or let callers style their content.
+
+fix this
