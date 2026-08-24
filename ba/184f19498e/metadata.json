@@ -3,7 +3,7 @@
   "checkpoint_id": "ba184f19498e",
   "strategy": "manual-commit",
   "branch": "ENG-111-clicking-on-an-inventory-item-should-display-all-supply-deliveries",
-  "checkpoints_count": 3,
+  "checkpoints_count": 4,
   "files_touched": [
     "src/pages/Facility/services/inventory/InventoryList.tsx"
   ],
@@ -14,6 +14,13 @@
       "compact_transcript": "/ba/184f19498e/0/transcript.jsonl",
       "content_hash": "/ba/184f19498e/0/content_hash.txt",
       "prompt": "/ba/184f19498e/0/prompt.txt"
+    },
+    {
+      "metadata": "/ba/184f19498e/1/metadata.json",
+      "transcript": "/ba/184f19498e/1/full.jsonl",
+      "compact_transcript": "/ba/184f19498e/1/transcript.jsonl",
+      "content_hash": "/ba/184f19498e/1/content_hash.txt",
+      "prompt": "/ba/184f19498e/1/prompt.txt"
     }
   ],
   "token_usage": {
