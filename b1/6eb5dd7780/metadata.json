@@ -1,0 +1,31 @@
+{
+  "cli_version": "0.9.0",
+  "checkpoint_id": "b16eb5dd7780",
+  "strategy": "manual-commit",
+  "branch": "cursor/a67aa7e5",
+  "checkpoints_count": 2,
+  "files_touched": [
+    "src/Utils/inventory.ts",
+    "src/components/ui/multi-filter/dateFilter.tsx",
+    "src/components/ui/multi-filter/filterConfigs.tsx",
+    "src/components/ui/multi-filter/utils/Utils.tsx",
+    "src/pages/Facility/services/inventory/InventoryList.tsx",
+    "src/types/inventory/product/inventory.ts"
+  ],
+  "sessions": [
+    {
+      "metadata": "/b1/6eb5dd7780/0/metadata.json",
+      "transcript": "/b1/6eb5dd7780/0/full.jsonl",
+      "compact_transcript": "/b1/6eb5dd7780/0/transcript.jsonl",
+      "content_hash": "/b1/6eb5dd7780/0/content_hash.txt",
+      "prompt": "/b1/6eb5dd7780/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 38,
+    "cache_creation_tokens": 249399,
+    "cache_read_tokens": 4315373,
+    "output_tokens": 9241,
+    "api_call_count": 2
+  }
+}

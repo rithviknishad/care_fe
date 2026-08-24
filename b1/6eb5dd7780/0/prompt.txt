@@ -1,0 +1,23 @@
+<timestamp>Thursday, Aug 20, 2026, 7:11 PM (UTC+5:30)</timestamp>
+
+Add expiry date filter in src/pages/Facility/services/inventory/InventoryList.tsx .
+
+But before that, let's re-write the whole filters logic and all in that page to use src/components/ui/multi-filter/utils/useMultiFilter.tsx .
+
+We have added product_expiration_date_after and product_expiration_date_before date range filters to the API. so we can use that for the expiration date filters.
+
+It's easy to achieve that with useMultiFilter. refer how date filters are used elsewhere in the codebase. We can also have additional presets, "Expired" and "Expiring soon" which basically would respect what's configured in careConfig about the epxiration date thing.
+
+Do not assume things, do ask any doubts if you have. we have strict guidelines on things.
+
+---
+
+in sorting, can we also support sorting by expiration date as well? ordering key is: product__expiration_date, which supports desc and asc with - sign prefixed like everywhere else.
+
+---
+
+Execute the selected diff-tab commit-and-push action.
+
+---
+
+can we add a badge in the expiration date column of the table for each of the line items. a warning badge icon kinda thing for expiring soon, and a danger badge icon kinda thing for expired. so that users have visual indication of expiring soon and expired items.
