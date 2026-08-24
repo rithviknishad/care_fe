@@ -1,0 +1,9 @@
+<timestamp>Thursday, Aug 20, 2026, 7:06 PM (UTC+5:30)</timestamp>
+
+Use new `useBatchRequest` hook in favour of manually calling the batch API via useMutation. replace all batch request api calls with useBatchRequest in the entire codebase, so that error handling and all is handled. Once done, remove src/types/base/batch/batchApi.ts.
+
+Feel free to refer existing usages of it. If you have any doubts/confusion, do ask. do not assume stuff. we have strict guidelines on things.
+
+---
+
+Execute the selected diff-tab commit-and-push action.
