@@ -13,7 +13,3 @@ Do not assume things, do ask any doubts if you have. we have strict guidelines o
 ---
 
 in sorting, can we also support sorting by expiration date as well? ordering key is: product__expiration_date, which supports desc and asc with - sign prefixed like everywhere else.
-
----
-
-Execute the selected diff-tab commit-and-push action.
