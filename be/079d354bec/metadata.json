@@ -1,0 +1,26 @@
+{
+  "cli_version": "0.9.0",
+  "checkpoint_id": "be079d354bec",
+  "strategy": "manual-commit",
+  "branch": "ENG-964-remove-the-usage-of-encounter-class-history-from-fe",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "src/pages/Encounters/EncounterProperties.tsx"
+  ],
+  "sessions": [
+    {
+      "metadata": "/be/079d354bec/0/metadata.json",
+      "transcript": "/be/079d354bec/0/full.jsonl",
+      "compact_transcript": "/be/079d354bec/0/transcript.jsonl",
+      "content_hash": "/be/079d354bec/0/content_hash.txt",
+      "prompt": "/be/079d354bec/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 0,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 0,
+    "output_tokens": 0,
+    "api_call_count": 0
+  }
+}
