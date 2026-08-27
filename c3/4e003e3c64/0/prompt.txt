@@ -1,0 +1,11 @@
+wht  the encounter class is not updating : this is the new be change merged pr : https://github.com/ohcnetwork/care/pull/3743/changes
+
+refer this and find any front end change needed for this
+
+---
+
+so i removed that field from EncounterQuestion is this the right option, is this effect any where ?
+
+---
+
+yes
