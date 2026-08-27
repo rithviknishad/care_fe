@@ -1,0 +1,7 @@
+`cn(hasReachedUpsertLimit && "hidden")` to hide a separator? Just do not render it: `{!hasReachedUpsertLimit && <p>-{t("or")}-</p>}`. Rendering an element solely to hide it with a class is how DOM soup starts.
+
+is this valid?
+
+---
+
+yes
