@@ -1,0 +1,28 @@
+{
+  "cli_version": "0.9.0",
+  "checkpoint_id": "de1feff6bcd1",
+  "strategy": "manual-commit",
+  "branch": "amjithtitus09-literate-robot",
+  "checkpoints_count": 1,
+  "files_touched": [
+    ".github/workflows/care-review.lock.yml",
+    ".github/workflows/care-review.md",
+    ".github/workflows/retry-agentic-runs.yml"
+  ],
+  "sessions": [
+    {
+      "metadata": "/de/1feff6bcd1/0/metadata.json",
+      "transcript": "/de/1feff6bcd1/0/full.jsonl",
+      "compact_transcript": "/de/1feff6bcd1/0/transcript.jsonl",
+      "content_hash": "/de/1feff6bcd1/0/content_hash.txt",
+      "prompt": "/de/1feff6bcd1/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 0,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 0,
+    "output_tokens": 26028,
+    "api_call_count": 33
+  }
+}
