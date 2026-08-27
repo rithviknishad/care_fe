@@ -1,0 +1,26 @@
+{
+  "cli_version": "0.9.0",
+  "checkpoint_id": "d1fe7944663f",
+  "strategy": "manual-commit",
+  "branch": "ENG-964-remove-the-usage-of-encounter-class-history-from-fe",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "tests/facility/patient/encounter/encounter.spec.ts"
+  ],
+  "sessions": [
+    {
+      "metadata": "/d1/fe7944663f/0/metadata.json",
+      "transcript": "/d1/fe7944663f/0/full.jsonl",
+      "compact_transcript": "/d1/fe7944663f/0/transcript.jsonl",
+      "content_hash": "/d1/fe7944663f/0/content_hash.txt",
+      "prompt": "/d1/fe7944663f/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 0,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 0,
+    "output_tokens": 0,
+    "api_call_count": 0
+  }
+}

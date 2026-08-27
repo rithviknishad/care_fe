@@ -1,0 +1,61 @@
+{
+  "cli_version": "0.9.0",
+  "checkpoint_id": "d1fe7944663f",
+  "session_id": "9e89dc7e-bbc0-432c-ad13-d47f0ca1064b",
+  "strategy": "manual-commit",
+  "created_at": "2026-08-27T10:42:38.895156Z",
+  "branch": "ENG-964-remove-the-usage-of-encounter-class-history-from-fe",
+  "checkpoints_count": 1,
+  "save_step_count": 1,
+  "files_touched": [
+    "tests/facility/patient/encounter/encounter.spec.ts"
+  ],
+  "agent": "Copilot CLI",
+  "model": "",
+  "turn_id": "a73cc9e0700d",
+  "checkpoint_transcript_start": 1184,
+  "transcript_lines_at_start": 1184,
+  "compact_transcript_start": 282,
+  "token_usage": {
+    "input_tokens": 0,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 0,
+    "output_tokens": 0,
+    "api_call_count": 0
+  },
+  "session_metrics": {
+    "turn_count": 48
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-08-27T10:42:38.861847Z",
+    "agent_lines": 0,
+    "agent_removed": 0,
+    "human_added": 0,
+    "human_modified": 4,
+    "human_removed": 6,
+    "total_committed": 0,
+    "total_lines_changed": 10,
+    "agent_percentage": 0,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 216,
+      "user_lines_removed": 216,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        "src/components/Questionnaire/QuestionTypes/EncounterQuestion.tsx": 209,
+        "src/types/emr/encounter/encounter.ts": 2,
+        "tests/facility/patient/encounter/encounter.spec.ts": 5
+      },
+      "user_removed_per_file": {
+        "src/components/Questionnaire/QuestionTypes/EncounterQuestion.tsx": 206,
+        "src/components/Questionnaire/structured/handlers.ts": 1,
+        "src/types/emr/encounter/encounter.ts": 1,
+        "tests/facility/patient/encounter/encounter.spec.ts": 8
+      }
+    }
+  ]
+}
