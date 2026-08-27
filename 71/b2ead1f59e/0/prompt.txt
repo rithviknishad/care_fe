@@ -1,0 +1,200 @@
+now in backend donot support for edit encounter class so can we change this type too
+
+---
+
+in be encounter_class removed from base spec and added in create and list spec
+i done the same chane in fe too verify it
+
+---
+
+) [chromium] › tests/facility/patient/encounter/encounter.spec.ts:47:7 › Create an Encounter › through patient home 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('combobox').filter({ hasText: 'Virtual' })
+    Expected: visible
+    Timeout: 10000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" with timeout 10000ms
+      - waiting for getByRole('combobox').filter({ hasText: 'Virtual' })
+
+
+      75 |     await expect(
+      76 |       page.getByRole("combobox").filter({ hasText: randomEncounterClass }),
+    > 77 |     ).toBeVisible();
+         |       ^
+      78 |   });
+      79 |
+      80 |   test("through phone number + year", async ({ page }) => {
+        at /home/runner/work/care_fe/care_fe/tests/facility/patient/encounter/encounter.spec.ts:77:7
+
+    Error Context: test-results/facility-patient-encounter-ce0ec-ounter-through-patient-home-chromium/error-context.md
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('combobox').filter({ hasText: 'Home Health' })
+    Expected: visible
+    Timeout: 10000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" with timeout 10000ms
+      - waiting for getByRole('combobox').filter({ hasText: 'Home Health' })
+
+
+      75 |     await expect(
+      76 |       page.getByRole("combobox").filter({ hasText: randomEncounterClass }),
+    > 77 |     ).toBeVisible();
+         |       ^
+      78 |   });
+      79 |
+      80 |   test("through phone number + year", async ({ page }) => {
+        at /home/runner/work/care_fe/care_fe/tests/facility/patient/encounter/encounter.spec.ts:77:7
+
+    attachment #1: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results/facility-patient-encounter-ce0ec-ounter-through-patient-home-chromium-retry1/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/facility-patient-encounter-ce0ec-ounter-through-patient-home-chromium-retry1/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/facility-patient-encounter-ce0ec-ounter-through-patient-home-chromium-retry1/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/facility-patient-encounter-ce0ec-ounter-through-patient-home-chromium-retry1/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Retry #2 ───────────────────────────────────────────────────────────────────────────────────────
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByText('Encounter created successfully')
+    Expected: visible
+    Timeout: 10000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" with timeout 10000ms
+      - waiting for getByText('Encounter created successfully')
+
+
+      63 |     await expect(
+      64 |       page.getByText("Encounter created successfully"),
+    > 65 |     ).toBeVisible();
+         |       ^
+      66 |     await expect(
+      67 |       page.getByRole("heading", { name: randomEncounterClass }),
+      68 |     ).toBeVisible();
+        at /home/runner/work/care_fe/care_fe/tests/facility/patient/encounter/encounter.spec.ts:65:7
+
+    Error Context: test-results/facility-patient-encounter-ce0ec-ounter-through-patient-home-chromium-retry2/error-context.md
+
+  2) [chromium] › tests/facility/patient/encounter/encounter.spec.ts:80:7 › Create an Encounter › through phone number + year 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('combobox').filter({ hasText: 'Home Health' })
+    Expected: visible
+    Timeout: 10000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" with timeout 10000ms
+      - waiting for getByRole('combobox').filter({ hasText: 'Home Health' })
+
+
+      156 |     await expect(
+      157 |       page.getByRole("combobox").filter({ hasText: randomEncounterClass }),
+    > 158 |     ).toBeVisible();
+          |       ^
+      159 |     await expect(
+      160 |       page.getByRole("combobox").filter({ hasText: randomEncounterPriority }),
+      161 |     ).toBeVisible();
+        at /home/runner/work/care_fe/care_fe/tests/facility/patient/encounter/encounter.spec.ts:158:7
+
+    Error Context: test-results/facility-patient-encounter-1b612-r-through-phone-number-year-chromium/error-context.md
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByText('Encounter created successfully')
+    Expected: visible
+    Timeout: 10000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" with timeout 10000ms
+      - waiting for getByText('Encounter created successfully')
+
+
+      139 |     await expect(
+      140 |       page.getByText("Encounter created successfully"),
+    > 141 |     ).toBeVisible();
+          |       ^
+    Timeout: 10000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" with timeout 10000ms
+      - waiting for getByText('Test note YqR1ksPVq8')
+
+
+      186 |
+      187 |     // Verify note is visible
+    > 188 |     await expect(page.getByText(noteText)).toBeVisible();
+          |                                            ^
+      189 |   });
+      190 |
+      191 |   test("create consent without note → See Details → no note section", async ({
+        at /home/runner/work/care_fe/care_fe/tests/facility/patient/encounter/consent/consentCreation.spec.ts:188:44
+
+    Error Context: test-results/facility-patient-encounter-b8c7f--See-Details-→-note-visible-chromium/error-context.md
+
+  4) [chromium] › tests/facility/patient/encounter/consent/consentCreation.spec.ts:208:7 › Consent Creation › create consent with custom Valid From and Valid Until → dates on card and detail 
+
+    Error: expect(locator).toContainText(expected) failed
+
+    Locator: getByRole('heading', { name: 'Valid Period', exact: true }).locator('xpath=following-sibling::p')
+    Expected substring: "August 28, 2026"
+    Received string:    "August 27, 2026 ,  9:45 AM - N/A"
+    Timeout: 10000ms
+
+    Call log:
+      - Expect "toContainText" with timeout 10000ms
+      - waiting for getByRole('heading', { name: 'Valid Period', exact: true }).locator('xpath=following-sibling::p')
+        20 × locator resolved to <p class="text-base font-semibold text-gray-700">August 27, 2026 ,  9:45 AM - N/A</p>
+           - unexpected value "August 27, 2026 ,  9:45 AM - N/A"
+
+
+      232 |
+      233 |     const validPeriod = detailFieldValue(page, "Valid Period");
+    > 234 |     await expect(validPeriod).toContainText(format(validFrom, "MMMM d, yyyy"));
+          |                               ^
+      235 |     await expect(validPeriod).toContainText(format(validUntil, "MMMM d, yyyy"));
+      236 |   });
+      237 |
+        at /home/runner/work/care_fe/care_fe/tests/facility/patient/encounter/consent/consentCreation.spec.ts:234:31
+
+    Error Context: test-results/facility-patient-encounter-abb0e--→-dates-on-card-and-detail-chromium/error-context.md
+
+  2 failed
+    [chromium] › tests/facility/patient/encounter/encounter.spec.ts:47:7 › Create an Encounter › through patient home 
+    [chromium] › tests/facility/patient/encounter/encounter.spec.ts:80:7 › Create an Encounter › through phone number + year 
+  2 flaky
+    [chromium] › tests/facility/patient/encounter/consent/consentCreation.spec.ts:170:7 › Consent Creation › create consent with note → See Details → note visible 
+    [chromium] › tests/facility/patient/encounter/consent/consentCreation.spec.ts:208:7 › Consent Creation › create consent with custom Valid From and Valid Until → dates on card and detail 
+  1 skipped
+  115 passed (5.2m)
+
+
+the playwright test is failing , fix it
+
+---
+
+check any corrections in the @sym:EncounterQuestion file
