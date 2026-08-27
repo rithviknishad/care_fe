@@ -1,0 +1,172 @@
+`validateEncounterQuestion` now requires `hospitalization.discharge_disposition` for *all*
+ discharged encounters. For encounter classes where hospitalization 
+details are intentionally cleared/hidden (e.g. amb/vr/hh), this will 
+still raise a validation error and can block questionnaire submission.
+
+This issue also appears on line 205 of the same file
+
+is this valid?
+
+---
+
+[chromium] › tests/facility/patient/encounter/encounter.spec.ts:47:7 › Create an Encounter › through patient home 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('combobox', { name: 'Status' })
+    Expected: visible
+    Timeout: 10000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" with timeout 10000ms
+      - waiting for getByRole('combobox', { name: 'Status' })
+
+
+      74 |     // Encounter class is immutable after creation and no longer editable here,
+      75 |     // so verify the update form loaded via its Status combobox instead.
+    > 76 |     await expect(page.getByRole("combobox", { name: "Status" })).toBeVisible();
+         |                                                                  ^
+      77 |   });
+      78 |
+      79 |   test("through phone number + year", async ({ page }) => {
+        at /home/runner/work/care_fe/care_fe/tests/facility/patient/encounter/encounter.spec.ts:76:66
+
+    Error Context: test-results/facility-patient-encounter-ce0ec-ounter-through-patient-home-chromium/error-context.md
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('combobox', { name: 'Status' })
+    Expected: visible
+    Timeout: 10000ms
+    Error: element(s) not found
+
+    Locator: getByText('Test note P4TB0Pgkb1')
+    Expected: visible
+    Timeout: 10000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" with timeout 10000ms
+      - waiting for getByText('Test note P4TB0Pgkb1')
+
+
+      186 |
+      187 |     // Verify note is visible
+    > 188 |     await expect(page.getByText(noteText)).toBeVisible();
+          |                                            ^
+      189 |   });
+      190 |
+      191 |   test("create consent without note → See Details → no note section", async ({
+        at /home/runner/work/care_fe/care_fe/tests/facility/patient/encounter/consent/consentCreation.spec.ts:188:44
+
+    Error Context: test-results/facility-patient-encounter-b8c7f--See-Details-→-note-visible-chromium/error-context.md
+
+  1 failed
+    [chromium] › tests/facility/patient/encounter/encounter.spec.ts:47:7 › Create an Encounter › through patient home 
+  3 flaky
+    [chromium] › tests/admin/valueset/valuesetEdit.spec.ts:59:7 › ValueSet Edit › should edit all fields in valueset and verify changes 
+    [chromium] › tests/facility/billing/accountTransfer.spec.ts:371:7 › Account Transfer Payment › should show error when transfer amount exceeds total paid 
+    [chromium] › tests/facility/patient/encounter/consent/consentCreation.spec.ts:170:7 › Consent Creation › create consent with note → See Details → note visible 
+  116 passed (4.0m)
+
+
+this test is breaking fix it
+
+---
+
+update this chagne
+
+---
+
+[chromium] › tests/facility/patient/encounter/encounter.spec.ts:47:7 › Create an Encounter › through patient home 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('combobox', { name: 'Status' })
+    Expected: visible
+    Timeout: 10000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" with timeout 10000ms
+      - waiting for getByRole('combobox', { name: 'Status' })
+
+
+      74 |     // Encounter class is immutable after creation and no longer editable here,
+      75 |     // so verify the update form loaded via its Status combobox instead.
+    > 76 |     await expect(page.getByRole("combobox", { name: "Status" })).toBeVisible();
+         |                                                                  ^
+      77 |   });
+      78 |
+      79 |   test("through phone number + year", async ({ page }) => {
+        at /home/runner/work/care_fe/care_fe/tests/facility/patient/encounter/encounter.spec.ts:76:66
+
+    Error Context: test-results/facility-patient-encounter-ce0ec-ounter-through-patient-home-chromium/error-context.md
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('combobox', { name: 'Status' })
+    Expected: visible
+    Timeout: 10000ms
+    Error: element(s) not found
+
+    Locator: getByText('Test note P4TB0Pgkb1')
+    Expected: visible
+    Timeout: 10000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" with timeout 10000ms
+      - waiting for getByText('Test note P4TB0Pgkb1')
+
+
+      186 |
+      187 |     // Verify note is visible
+    > 188 |     await expect(page.getByText(noteText)).toBeVisible();
+          |                                            ^
+      189 |   });
+      190 |
+      191 |   test("create consent without note → See Details → no note section", async ({
+        at /home/runner/work/care_fe/care_fe/tests/facility/patient/encounter/consent/consentCreation.spec.ts:188:44
+
+    Error Context: test-results/facility-patient-encounter-b8c7f--See-Details-→-note-visible-chromium/error-context.md
+
+  1 failed
+    [chromium] › tests/facility/patient/encounter/encounter.spec.ts:47:7 › Create an Encounter › through patient home 
+  3 flaky
+    [chromium] › tests/admin/valueset/valuesetEdit.spec.ts:59:7 › ValueSet Edit › should edit all fields in valueset and verify changes 
+    [chromium] › tests/facility/billing/accountTransfer.spec.ts:371:7 › Account Transfer Payment › should show error when transfer amount exceeds total paid 
+    [chromium] › tests/facility/patient/encounter/consent/consentCreation.spec.ts:170:7 › Consent Creation › create consent with note → See Details → note visible 
+  116 passed (4.0m)
+
+
+this test is breaking fix it
+
+---
+
+`validateEncounterQuestion` now requires `hospitalization.discharge_disposition` for *all*
+ discharged encounters. For encounter classes where hospitalization 
+details are intentionally cleared/hidden (e.g. amb/vr/hh), this will 
+still raise a validation error and can block questionnaire submission.
+
+This issue also appears on line 205 of the same file.
+
+verify this if this valid fix it
+
+---
+
+["imp", "obsenc", "emer"] - hese set of classes are repeated. can we consider making it a const? `HOSPITALIZATION_ENCOUNTER_CLASSES`
+
+---
+
+newEncounter.hospitalization
+ can become null when merging EncounterRead into state 
+(EncounterRead.hospitalization is typed as Hospitalization | null). 
+Spreading a null value (`...newEncounter.hospitalization`) will throw at runtime (including in the else branch below). Use null-safe spreads in both places.
+
+is this vaid?
