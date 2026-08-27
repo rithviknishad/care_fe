@@ -1,0 +1,2460 @@
+chromium] › tests/admin/questionnaire/questionnaire.spec.ts:135:9 › Questionnaire Visibility by Status and Subject Type › Encounter Subject Type Questionnaires › Active + Encounter Subject -> Visible in encounter, not in patient updates 
+
+    TimeoutError: locator.click: Timeout 10000ms exceeded.
+    Call log:
+      - waiting for getByRole('link', { name: 'Update Encounter' })
+
+
+      73 |
+      74 |     await page.getByText("View Encounter").first().click();
+    > 75 |     await page.getByRole("link", { name: "Update Encounter" }).click();
+         |                                                                ^
+      76 |   }
+      77 |
+      78 |   async function navigateToPatientUpdatesPage(page: Page) {
+        at navigateToEncounterPage (/home/runner/work/care_fe/care_fe/tests/admin/questionnaire/questionnaire.spec.ts:75:64)
+        at /home/runner/work/care_fe/care_fe/tests/admin/questionnaire/questionnaire.spec.ts:144:7
+
+    Error Context: test-results/admin-questionnaire-questi-6158d-nter-not-in-patient-updates-chromium/error-context.md
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    TimeoutError: locator.click: Timeout 10000ms exceeded.
+    Call log:
+      - waiting for getByRole('link', { name: 'Update Encounter' })
+
+
+      73 |
+      74 |     await page.getByText("View Encounter").first().click();
+    > 75 |     await page.getByRole("link", { name: "Update Encounter" }).click();
+         |                                                                ^
+      76 |   }
+      77 |
+      78 |   async function navigateToPatientUpdatesPage(page: Page) {
+        at navigateToEncounterPage (/home/runner/work/care_fe/care_fe/tests/admin/questionnaire/questionnaire.spec.ts:75:64)
+        at /home/runner/work/care_fe/care_fe/tests/admin/questionnaire/questionnaire.spec.ts:144:7
+
+    attachment #1: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results/admin-questionnaire-questi-6158d-nter-not-in-patient-updates-chromium-retry1/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/admin-questionnaire-questi-6158d-nter-not-in-patient-updates-chromium-retry1/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/admin-questionnaire-questi-6158d-nter-not-in-patient-updates-chromium-retry1/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/admin-questionnaire-questi-6158d-nter-not-in-patient-updates-chromium-retry1/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Retry #2 ───────────────────────────────────────────────────────────────────────────────────────
+
+    TimeoutError: locator.click: Timeout 10000ms exceeded.
+    Call log:
+      - waiting for getByRole('link', { name: 'Update Encounter' })
+
+
+      73 |
+      74 |     await page.getByText("View Encounter").first().click();
+    > 75 |     await page.getByRole("link", { name: "Update Encounter" }).click();
+         |                                                                ^
+      76 |   }
+      77 |
+      78 |   async function navigateToPatientUpdatesPage(page: Page) {
+        at navigateToEncounterPage (/home/runner/work/care_fe/care_fe/tests/admin/questionnaire/questionnaire.spec.ts:75:64)
+        at /home/runner/work/care_fe/care_fe/tests/admin/questionnaire/questionnaire.spec.ts:144:7
+
+    Error Context: test-results/admin-questionnaire-questi-6158d-nter-not-in-patient-updates-chromium-retry2/error-context.md
+
+  2) [chromium] › tests/admin/questionnaire/questionnaire.spec.ts:148:9 › Questionnaire Visibility by Status and Subject Type › Encounter Subject Type Questionnaires › Draft + Encounter Subject -> Not visible in encounter, not in patient updates 
+
+    TimeoutError: locator.click: Timeout 10000ms exceeded.
+    Call log:
+      - waiting for getByRole('link', { name: 'Update Encounter' })
+
+
+      73 |
+      74 |     await page.getByText("View Encounter").first().click();
+    > 75 |     await page.getByRole("link", { name: "Update Encounter" }).click();
+         |                                                                ^
+      76 |   }
+      77 |
+      78 |   async function navigateToPatientUpdatesPage(page: Page) {
+        at navigateToEncounterPage (/home/runner/work/care_fe/care_fe/tests/admin/questionnaire/questionnaire.spec.ts:75:64)
+        at /home/runner/work/care_fe/care_fe/tests/admin/questionnaire/questionnaire.spec.ts:157:7
+
+    Error Context: test-results/admin-questionnaire-questi-2a6f5-nter-not-in-patient-updates-chromium/error-context.md
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    TimeoutError: locator.click: Timeout 10000ms exceeded.
+    Call log:
+      - waiting for getByRole('link', { name: 'Update Encounter' })
+
+
+      73 |
+      74 |     await page.getByText("View Encounter").first().click();
+    > 75 |     await page.getByRole("link", { name: "Update Encounter" }).click();
+         |                                                                ^
+      76 |   }
+      77 |
+      78 |   async function navigateToPatientUpdatesPage(page: Page) {
+        at navigateToEncounterPage (/home/runner/work/care_fe/care_fe/tests/admin/questionnaire/questionnaire.spec.ts:75:64)
+        at /home/runner/work/care_fe/care_fe/tests/admin/questionnaire/questionnaire.spec.ts:157:7
+
+    attachment #1: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results/admin-questionnaire-questi-2a6f5-nter-not-in-patient-updates-chromium-retry1/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/admin-questionnaire-questi-2a6f5-nter-not-in-patient-updates-chromium-retry1/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/admin-questionnaire-questi-2a6f5-nter-not-in-patient-updates-chromium-retry1/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/admin-questionnaire-questi-2a6f5-nter-not-in-patient-updates-chromium-retry1/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Retry #2 ───────────────────────────────────────────────────────────────────────────────────────
+
+    TimeoutError: locator.click: Timeout 10000ms exceeded.
+    Call log:
+      - waiting for getByRole('link', { name: 'Update Encounter' })
+
+
+      73 |
+      74 |     await page.getByText("View Encounter").first().click();
+    > 75 |     await page.getByRole("link", { name: "Update Encounter" }).click();
+         |                                                                ^
+      76 |   }
+      77 |
+      78 |   async function navigateToPatientUpdatesPage(page: Page) {
+        at navigateToEncounterPage (/home/runner/work/care_fe/care_fe/tests/admin/questionnaire/questionnaire.spec.ts:75:64)
+        at /home/runner/work/care_fe/care_fe/tests/admin/questionnaire/questionnaire.spec.ts:157:7
+
+    Error Context: test-results/admin-questionnaire-questi-2a6f5-nter-not-in-patient-updates-chromium-retry2/error-context.md
+
+  3) [chromium] › tests/admin/questionnaire/questionnaire.spec.ts:161:9 › Questionnaire Visibility by Status and Subject Type › Encounter Subject Type Questionnaires › Retired + Encounter Subject -> Not visible in encounter, not in patient updates 
+
+    TimeoutError: locator.click: Timeout 10000ms exceeded.
+    Call log:
+      - waiting for getByRole('link', { name: 'Update Encounter' })
+
+
+      73 |
+      74 |     await page.getByText("View Encounter").first().click();
+    > 75 |     await page.getByRole("link", { name: "Update Encounter" }).click();
+         |                                                                ^
+      76 |   }
+      77 |
+      78 |   async function navigateToPatientUpdatesPage(page: Page) {
+        at navigateToEncounterPage (/home/runner/work/care_fe/care_fe/tests/admin/questionnaire/questionnaire.spec.ts:75:64)
+        at /home/runner/work/care_fe/care_fe/tests/admin/questionnaire/questionnaire.spec.ts:170:7
+
+    Error Context: test-results/admin-questionnaire-questi-920cf-nter-not-in-patient-updates-chromium/error-context.md
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    TimeoutError: locator.click: Timeout 10000ms exceeded.
+    Call log:
+      - waiting for getByRole('link', { name: 'Update Encounter' })
+
+
+      73 |
+      74 |     await page.getByText("View Encounter").first().click();
+    > 75 |     await page.getByRole("link", { name: "Update Encounter" }).click();
+         |                                                                ^
+      76 |   }
+      77 |
+      78 |   async function navigateToPatientUpdatesPage(page: Page) {
+        at navigateToEncounterPage (/home/runner/work/care_fe/care_fe/tests/admin/questionnaire/questionnaire.spec.ts:75:64)
+        at /home/runner/work/care_fe/care_fe/tests/admin/questionnaire/questionnaire.spec.ts:170:7
+
+    attachment #1: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results/admin-questionnaire-questi-920cf-nter-not-in-patient-updates-chromium-retry1/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/admin-questionnaire-questi-920cf-nter-not-in-patient-updates-chromium-retry1/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/admin-questionnaire-questi-920cf-nter-not-in-patient-updates-chromium-retry1/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/admin-questionnaire-questi-920cf-nter-not-in-patient-updates-chromium-retry1/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Retry #2 ───────────────────────────────────────────────────────────────────────────────────────
+
+    TimeoutError: locator.click: Timeout 10000ms exceeded.
+    Call log:
+      - waiting for getByRole('link', { name: 'Update Encounter' })
+
+
+      73 |
+      74 |     await page.getByText("View Encounter").first().click();
+    > 75 |     await page.getByRole("link", { name: "Update Encounter" }).click();
+         |                                                                ^
+      76 |   }
+      77 |
+      78 |   async function navigateToPatientUpdatesPage(page: Page) {
+        at navigateToEncounterPage (/home/runner/work/care_fe/care_fe/tests/admin/questionnaire/questionnaire.spec.ts:75:64)
+        at /home/runner/work/care_fe/care_fe/tests/admin/questionnaire/questionnaire.spec.ts:170:7
+
+    Error Context: test-results/admin-questionnaire-questi-920cf-nter-not-in-patient-updates-chromium-retry2/error-context.md
+
+  4) [chromium] › tests/admin/questionnaire/questionnaire.spec.ts:176:9 › Questionnaire Visibility by Status and Subject Type › Patient Subject Type Questionnaires › Active + Patient Subject -> Visible in patient updates, not in encounter 
+
+    TimeoutError: locator.click: Timeout 10000ms exceeded.
+    Call log:
+      - waiting for locator('[data-slot=\'patient-info-hover-card-trigger\']').last()
+
+
+      90 |       .locator("[data-slot='patient-info-hover-card-trigger']")
+      91 |       .last()
+    > 92 |       .click();
+         |        ^
+      93 |
+      94 |     await page.getByRole("link", { name: "View Profile" }).click();
+      95 |
+        at navigateToPatientUpdatesPage (/home/runner/work/care_fe/care_fe/tests/admin/questionnaire/questionnaire.spec.ts:92:8)
+        at /home/runner/work/care_fe/care_fe/tests/admin/questionnaire/questionnaire.spec.ts:185:7
+
+    Error Context: test-results/admin-questionnaire-questi-a6340-nt-updates-not-in-encounter-chromium/error-context.md
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    TimeoutError: locator.click: Timeout 10000ms exceeded.
+    Call log:
+      - waiting for locator('[data-slot=\'patient-info-hover-card-trigger\']').last()
+
+
+      90 |       .locator("[data-slot='patient-info-hover-card-trigger']")
+      91 |       .last()
+    > 92 |       .click();
+         |        ^
+      93 |
+      94 |     await page.getByRole("link", { name: "View Profile" }).click();
+      95 |
+        at navigateToPatientUpdatesPage (/home/runner/work/care_fe/care_fe/tests/admin/questionnaire/questionnaire.spec.ts:92:8)
+        at /home/runner/work/care_fe/care_fe/tests/admin/questionnaire/questionnaire.spec.ts:185:7
+
+    attachment #1: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results/admin-questionnaire-questi-a6340-nt-updates-not-in-encounter-chromium-retry1/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/admin-questionnaire-questi-a6340-nt-updates-not-in-encounter-chromium-retry1/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/admin-questionnaire-questi-a6340-nt-updates-not-in-encounter-chromium-retry1/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/admin-questionnaire-questi-a6340-nt-updates-not-in-encounter-chromium-retry1/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Retry #2 ───────────────────────────────────────────────────────────────────────────────────────
+
+    TimeoutError: locator.click: Timeout 10000ms exceeded.
+    Call log:
+      - waiting for locator('[data-slot=\'patient-info-hover-card-trigger\']').last()
+
+
+      90 |       .locator("[data-slot='patient-info-hover-card-trigger']")
+      91 |       .last()
+    > 92 |       .click();
+         |        ^
+      93 |
+      94 |     await page.getByRole("link", { name: "View Profile" }).click();
+      95 |
+        at navigateToPatientUpdatesPage (/home/runner/work/care_fe/care_fe/tests/admin/questionnaire/questionnaire.spec.ts:92:8)
+        at /home/runner/work/care_fe/care_fe/tests/admin/questionnaire/questionnaire.spec.ts:185:7
+
+    Error Context: test-results/admin-questionnaire-questi-a6340-nt-updates-not-in-encounter-chromium-retry2/error-context.md
+
+  5) [chromium] › tests/admin/questionnaire/questionnaire.spec.ts:189:9 › Questionnaire Visibility by Status and Subject Type › Patient Subject Type Questionnaires › Draft + Patient Subject -> Not visible in patient updates, not in encounter 
+
+    TimeoutError: locator.click: Timeout 10000ms exceeded.
+    Call log:
+      - waiting for locator('[data-slot=\'patient-info-hover-card-trigger\']').last()
+
+
+      90 |       .locator("[data-slot='patient-info-hover-card-trigger']")
+      91 |       .last()
+    > 92 |       .click();
+         |        ^
+      93 |
+      94 |     await page.getByRole("link", { name: "View Profile" }).click();
+      95 |
+        at navigateToPatientUpdatesPage (/home/runner/work/care_fe/care_fe/tests/admin/questionnaire/questionnaire.spec.ts:92:8)
+        at /home/runner/work/care_fe/care_fe/tests/admin/questionnaire/questionnaire.spec.ts:198:7
+
+    Error Context: test-results/admin-questionnaire-questi-4bcd9-nt-updates-not-in-encounter-chromium/error-context.md
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    TimeoutError: locator.click: Timeout 10000ms exceeded.
+    Call log:
+      - waiting for locator('[data-slot=\'patient-info-hover-card-trigger\']').last()
+
+
+      90 |       .locator("[data-slot='patient-info-hover-card-trigger']")
+      91 |       .last()
+    > 92 |       .click();
+         |        ^
+      93 |
+      94 |     await page.getByRole("link", { name: "View Profile" }).click();
+      95 |
+        at navigateToPatientUpdatesPage (/home/runner/work/care_fe/care_fe/tests/admin/questionnaire/questionnaire.spec.ts:92:8)
+        at /home/runner/work/care_fe/care_fe/tests/admin/questionnaire/questionnaire.spec.ts:198:7
+
+    attachment #1: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results/admin-questionnaire-questi-4bcd9-nt-updates-not-in-encounter-chromium-retry1/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/admin-questionnaire-questi-4bcd9-nt-updates-not-in-encounter-chromium-retry1/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/admin-questionnaire-questi-4bcd9-nt-updates-not-in-encounter-chromium-retry1/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/admin-questionnaire-questi-4bcd9-nt-updates-not-in-encounter-chromium-retry1/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Retry #2 ───────────────────────────────────────────────────────────────────────────────────────
+
+    TimeoutError: locator.click: Timeout 10000ms exceeded.
+    Call log:
+      - waiting for locator('[data-slot=\'patient-info-hover-card-trigger\']').last()
+
+
+      90 |       .locator("[data-slot='patient-info-hover-card-trigger']")
+      91 |       .last()
+    > 92 |       .click();
+         |        ^
+      93 |
+      94 |     await page.getByRole("link", { name: "View Profile" }).click();
+      95 |
+        at navigateToPatientUpdatesPage (/home/runner/work/care_fe/care_fe/tests/admin/questionnaire/questionnaire.spec.ts:92:8)
+        at /home/runner/work/care_fe/care_fe/tests/admin/questionnaire/questionnaire.spec.ts:198:7
+
+    Error Context: test-results/admin-questionnaire-questi-4bcd9-nt-updates-not-in-encounter-chromium-retry2/error-context.md
+
+  6) [chromium] › tests/admin/questionnaire/questionnaire.spec.ts:202:9 › Questionnaire Visibility by Status and Subject Type › Patient Subject Type Questionnaires › Retired + Patient Subject -> Not visible in patient updates, not in encounter 
+
+    TimeoutError: locator.click: Timeout 10000ms exceeded.
+    Call log:
+      - waiting for locator('[data-slot=\'patient-info-hover-card-trigger\']').last()
+
+
+      90 |       .locator("[data-slot='patient-info-hover-card-trigger']")
+      91 |       .last()
+    > 92 |       .click();
+         |        ^
+      93 |
+      94 |     await page.getByRole("link", { name: "View Profile" }).click();
+      95 |
+        at navigateToPatientUpdatesPage (/home/runner/work/care_fe/care_fe/tests/admin/questionnaire/questionnaire.spec.ts:92:8)
+        at /home/runner/work/care_fe/care_fe/tests/admin/questionnaire/questionnaire.spec.ts:211:7
+
+    Error Context: test-results/admin-questionnaire-questi-28e7a-nt-updates-not-in-encounter-chromium/error-context.md
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    TimeoutError: locator.click: Timeout 10000ms exceeded.
+    Call log:
+      - waiting for locator('[data-slot=\'patient-info-hover-card-trigger\']').last()
+
+
+      90 |       .locator("[data-slot='patient-info-hover-card-trigger']")
+      91 |       .last()
+    > 92 |       .click();
+         |        ^
+      93 |
+      94 |     await page.getByRole("link", { name: "View Profile" }).click();
+      95 |
+        at navigateToPatientUpdatesPage (/home/runner/work/care_fe/care_fe/tests/admin/questionnaire/questionnaire.spec.ts:92:8)
+        at /home/runner/work/care_fe/care_fe/tests/admin/questionnaire/questionnaire.spec.ts:211:7
+
+    attachment #1: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results/admin-questionnaire-questi-28e7a-nt-updates-not-in-encounter-chromium-retry1/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/admin-questionnaire-questi-28e7a-nt-updates-not-in-encounter-chromium-retry1/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/admin-questionnaire-questi-28e7a-nt-updates-not-in-encounter-chromium-retry1/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/admin-questionnaire-questi-28e7a-nt-updates-not-in-encounter-chromium-retry1/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Retry #2 ───────────────────────────────────────────────────────────────────────────────────────
+
+    TimeoutError: locator.click: Timeout 10000ms exceeded.
+    Call log:
+      - waiting for locator('[data-slot=\'patient-info-hover-card-trigger\']').last()
+
+
+      90 |       .locator("[data-slot='patient-info-hover-card-trigger']")
+      91 |       .last()
+    > 92 |       .click();
+         |        ^
+      93 |
+      94 |     await page.getByRole("link", { name: "View Profile" }).click();
+      95 |
+        at navigateToPatientUpdatesPage (/home/runner/work/care_fe/care_fe/tests/admin/questionnaire/questionnaire.spec.ts:92:8)
+        at /home/runner/work/care_fe/care_fe/tests/admin/questionnaire/questionnaire.spec.ts:211:7
+
+    Error Context: test-results/admin-questionnaire-questi-28e7a-nt-updates-not-in-encounter-chromium-retry2/error-context.md
+
+  7) [chromium] › tests/facility/patient/encounter/careTeam/linkCareTeam.spec.ts:71:9 › Manage care team for an encounter › Adding members › Add a care team member with role › Open care team sheet 
+
+    TimeoutError: locator.click: Timeout 10000ms exceeded.
+    Call log:
+      - waiting for getByRole('tab', { name: 'Actions' })
+
+
+       8 |
+       9 | const openCareTeamDialog = async (page: Page) => {
+    > 10 |   await page.getByRole("tab", { name: "Actions" }).click();
+         |                                                    ^
+      11 |   await page.getByRole("button", { name: "Manage Care Team" }).click();
+      12 |   await expect(
+      13 |     page.getByRole("dialog", { name: "Manage Care Team" }),
+        at openCareTeamDialog (/home/runner/work/care_fe/care_fe/tests/facility/patient/encounter/careTeam/linkCareTeam.spec.ts:10:52)
+        at /home/runner/work/care_fe/care_fe/tests/facility/patient/encounter/careTeam/linkCareTeam.spec.ts:73:15
+        at /home/runner/work/care_fe/care_fe/tests/facility/patient/encounter/careTeam/linkCareTeam.spec.ts:72:7
+
+    Error Context: test-results/facility-patient-encounter-1c911--care-team-member-with-role-chromium/error-context.md
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    TimeoutError: locator.click: Timeout 10000ms exceeded.
+    Call log:
+      - waiting for getByRole('tab', { name: 'Actions' })
+
+
+       8 |
+       9 | const openCareTeamDialog = async (page: Page) => {
+       8 |
+       9 | const openCareTeamDialog = async (page: Page) => {
+    > 10 |   await page.getByRole("tab", { name: "Actions" }).click();
+         |                                                    ^
+      11 |   await page.getByRole("button", { name: "Manage Care Team" }).click();
+      12 |   await expect(
+      13 |     page.getByRole("dialog", { name: "Manage Care Team" }),
+        at openCareTeamDialog (/home/runner/work/care_fe/care_fe/tests/facility/patient/encounter/careTeam/linkCareTeam.spec.ts:10:52)
+        at /home/runner/work/care_fe/care_fe/tests/facility/patient/encounter/careTeam/linkCareTeam.spec.ts:118:15
+        at /home/runner/work/care_fe/care_fe/tests/facility/patient/encounter/careTeam/linkCareTeam.spec.ts:117:7
+
+    Error Context: test-results/facility-patient-encounter-1930b-member-with-same-role-twice-chromium/error-context.md
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    TimeoutError: locator.click: Timeout 10000ms exceeded.
+    Call log:
+      - waiting for getByRole('tab', { name: 'Actions' })
+
+
+       8 |
+       9 | const openCareTeamDialog = async (page: Page) => {
+    > 10 |   await page.getByRole("tab", { name: "Actions" }).click();
+         |                                                    ^
+      11 |   await page.getByRole("button", { name: "Manage Care Team" }).click();
+      12 |   await expect(
+      13 |     page.getByRole("dialog", { name: "Manage Care Team" }),
+        at openCareTeamDialog (/home/runner/work/care_fe/care_fe/tests/facility/patient/encounter/careTeam/linkCareTeam.spec.ts:10:52)
+        at /home/runner/work/care_fe/care_fe/tests/facility/patient/encounter/careTeam/linkCareTeam.spec.ts:118:15
+        at /home/runner/work/care_fe/care_fe/tests/facility/patient/encounter/careTeam/linkCareTeam.spec.ts:117:7
+
+    attachment #1: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results/facility-patient-encounter-1930b-member-with-same-role-twice-chromium-retry1/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/facility-patient-encounter-1930b-member-with-same-role-twice-chromium-retry1/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/facility-patient-encounter-1930b-member-with-same-role-twice-chromium-retry1/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/facility-patient-encounter-1930b-member-with-same-role-twice-chromium-retry1/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Retry #2 ───────────────────────────────────────────────────────────────────────────────────────
+
+    TimeoutError: locator.click: Timeout 10000ms exceeded.
+    Call log:
+      - waiting for getByRole('tab', { name: 'Actions' })
+
+
+       8 |
+       9 | const openCareTeamDialog = async (page: Page) => {
+    > 10 |   await page.getByRole("tab", { name: "Actions" }).click();
+         |                                                    ^
+      11 |   await page.getByRole("button", { name: "Manage Care Team" }).click();
+      12 |   await expect(
+      13 |     page.getByRole("dialog", { name: "Manage Care Team" }),
+        at openCareTeamDialog (/home/runner/work/care_fe/care_fe/tests/facility/patient/encounter/careTeam/linkCareTeam.spec.ts:10:52)
+        at /home/runner/work/care_fe/care_fe/tests/facility/patient/encounter/careTeam/linkCareTeam.spec.ts:118:15
+        at /home/runner/work/care_fe/care_fe/tests/facility/patient/encounter/careTeam/linkCareTeam.spec.ts:117:7
+
+    Error Context: test-results/facility-patient-encounter-1930b-member-with-same-role-twice-chromium-retry2/error-context.md
+
+  9) [chromium] › tests/facility/patient/encounter/careTeam/linkCareTeam.spec.ts:167:7 › Manage care team for an encounter › Add button is disabled initially when opening care team sheet › Open care team sheet 
+
+    TimeoutError: locator.click: Timeout 10000ms exceeded.
+    Call log:
+      - waiting for getByRole('tab', { name: 'Actions' })
+
+
+       8 |
+       9 | const openCareTeamDialog = async (page: Page) => {
+    > 10 |   await page.getByRole("tab", { name: "Actions" }).click();
+         |                                                    ^
+      11 |   await page.getByRole("button", { name: "Manage Care Team" }).click();
+      12 |   await expect(
+      13 |     page.getByRole("dialog", { name: "Manage Care Team" }),
+        at openCareTeamDialog (/home/runner/work/care_fe/care_fe/tests/facility/patient/encounter/careTeam/linkCareTeam.spec.ts:10:52)
+        at /home/runner/work/care_fe/care_fe/tests/facility/patient/encounter/careTeam/linkCareTeam.spec.ts:171:13
+        at /home/runner/work/care_fe/care_fe/tests/facility/patient/encounter/careTeam/linkCareTeam.spec.ts:170:5
+
+    Error Context: test-results/facility-patient-encounter-16d5f-hen-opening-care-team-sheet-chromium/error-context.md
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    TimeoutError: locator.click: Timeout 10000ms exceeded.
+    Call log:
+      - waiting for getByRole('tab', { name: 'Actions' })
+
+
+       8 |
+       9 | const openCareTeamDialog = async (page: Page) => {
+    > 10 |   await page.getByRole("tab", { name: "Actions" }).click();
+         |                                                    ^
+      11 |   await page.getByRole("button", { name: "Manage Care Team" }).click();
+      12 |   await expect(
+      13 |     page.getByRole("dialog", { name: "Manage Care Team" }),
+        at openCareTeamDialog (/home/runner/work/care_fe/care_fe/tests/facility/patient/encounter/careTeam/linkCareTeam.spec.ts:10:52)
+        at /home/runner/work/care_fe/care_fe/tests/facility/patient/encounter/careTeam/linkCareTeam.spec.ts:171:13
+        at /home/runner/work/care_fe/care_fe/tests/facility/patient/encounter/careTeam/linkCareTeam.spec.ts:170:5
+
+    attachment #1: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results/facility-patient-encounter-16d5f-hen-opening-care-team-sheet-chromium-retry1/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/facility-patient-encounter-16d5f-hen-opening-care-team-sheet-chromium-retry1/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/facility-patient-encounter-16d5f-hen-opening-care-team-sheet-chromium-retry1/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/facility-patient-encounter-16d5f-hen-opening-care-team-sheet-chromium-retry1/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Retry #2 ───────────────────────────────────────────────────────────────────────────────────────
+
+    TimeoutError: locator.click: Timeout 10000ms exceeded.
+    Call log:
+      - waiting for getByRole('tab', { name: 'Actions' })
+
+
+       8 |
+       9 | const openCareTeamDialog = async (page: Page) => {
+    > 10 |   await page.getByRole("tab", { name: "Actions" }).click();
+         |                                                    ^
+      11 |   await page.getByRole("button", { name: "Manage Care Team" }).click();
+      12 |   await expect(
+      13 |     page.getByRole("dialog", { name: "Manage Care Team" }),
+        at openCareTeamDialog (/home/runner/work/care_fe/care_fe/tests/facility/patient/encounter/careTeam/linkCareTeam.spec.ts:10:52)
+        at /home/runner/work/care_fe/care_fe/tests/facility/patient/encounter/careTeam/linkCareTeam.spec.ts:171:13
+        at /home/runner/work/care_fe/care_fe/tests/facility/patient/encounter/careTeam/linkCareTeam.spec.ts:170:5
+
+    Error Context: test-results/facility-patient-encounter-16d5f-hen-opening-care-team-sheet-chromium-retry2/error-context.md
+
+  10) [chromium] › tests/facility/patient/encounter/careTeam/linkCareTeam.spec.ts:180:7 › Manage care team for an encounter › Closing without clicking Add does not save care team member › Open care team sheet 
+
+    TimeoutError: locator.click: Timeout 10000ms exceeded.
+    Call log:
+      - waiting for getByRole('tab', { name: 'Actions' })
+
+
+       8 |
+       9 | const openCareTeamDialog = async (page: Page) => {
+    > 10 |   await page.getByRole("tab", { name: "Actions" }).click();
+         |                                                    ^
+      11 |   await page.getByRole("button", { name: "Manage Care Team" }).click();
+      12 |   await expect(
+      13 |     page.getByRole("dialog", { name: "Manage Care Team" }),
+        at openCareTeamDialog (/home/runner/work/care_fe/care_fe/tests/facility/patient/encounter/careTeam/linkCareTeam.spec.ts:10:52)
+        at /home/runner/work/care_fe/care_fe/tests/facility/patient/encounter/careTeam/linkCareTeam.spec.ts:184:13
+        at /home/runner/work/care_fe/care_fe/tests/facility/patient/encounter/careTeam/linkCareTeam.spec.ts:183:5
+
+    Error Context: test-results/facility-patient-encounter-5659b-s-not-save-care-team-member-chromium/error-context.md
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    TimeoutError: locator.click: Timeout 10000ms exceeded.
+    Call log:
+      - waiting for getByRole('tab', { name: 'Actions' })
+
+
+       8 |
+       9 | const openCareTeamDialog = async (page: Page) => {
+    > 10 |   await page.getByRole("tab", { name: "Actions" }).click();
+         |                                                    ^
+      11 |   await page.getByRole("button", { name: "Manage Care Team" }).click();
+      12 |   await expect(
+      13 |     page.getByRole("dialog", { name: "Manage Care Team" }),
+        at openCareTeamDialog (/home/runner/work/care_fe/care_fe/tests/facility/patient/encounter/careTeam/linkCareTeam.spec.ts:10:52)
+        at /home/runner/work/care_fe/care_fe/tests/facility/patient/encounter/careTeam/linkCareTeam.spec.ts:184:13
+        at /home/runner/work/care_fe/care_fe/tests/facility/patient/encounter/careTeam/linkCareTeam.spec.ts:183:5
+
+    attachment #1: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results/facility-patient-encounter-5659b-s-not-save-care-team-member-chromium-retry1/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/facility-patient-encounter-5659b-s-not-save-care-team-member-chromium-retry1/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/facility-patient-encounter-5659b-s-not-save-care-team-member-chromium-retry1/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/facility-patient-encounter-5659b-s-not-save-care-team-member-chromium-retry1/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Retry #2 ───────────────────────────────────────────────────────────────────────────────────────
+
+    TimeoutError: locator.click: Timeout 10000ms exceeded.
+    Call log:
+      - waiting for getByRole('tab', { name: 'Actions' })
+
+
+       8 |
+       9 | const openCareTeamDialog = async (page: Page) => {
+    > 10 |   await page.getByRole("tab", { name: "Actions" }).click();
+         |                                                    ^
+      11 |   await page.getByRole("button", { name: "Manage Care Team" }).click();
+      12 |   await expect(
+      13 |     page.getByRole("dialog", { name: "Manage Care Team" }),
+        at openCareTeamDialog (/home/runner/work/care_fe/care_fe/tests/facility/patient/encounter/careTeam/linkCareTeam.spec.ts:10:52)
+        at /home/runner/work/care_fe/care_fe/tests/facility/patient/encounter/careTeam/linkCareTeam.spec.ts:184:13
+        at /home/runner/work/care_fe/care_fe/tests/facility/patient/encounter/careTeam/linkCareTeam.spec.ts:183:5
+
+    Error Context: test-results/facility-patient-encounter-5659b-s-not-save-care-team-member-chromium-retry2/error-context.md
+
+  11) [chromium] › tests/facility/patient/encounter/careTeam/linkCareTeam.spec.ts:225:7 › Manage care team for an encounter › Add button becomes enabled after selecting member and role › Open care team sheet 
+
+    TimeoutError: locator.click: Timeout 10000ms exceeded.
+    Call log:
+      - waiting for getByRole('tab', { name: 'Actions' })
+
+
+       8 |
+       9 | const openCareTeamDialog = async (page: Page) => {
+    > 10 |   await page.getByRole("tab", { name: "Actions" }).click();
+         |                                                    ^
+      11 |   await page.getByRole("button", { name: "Manage Care Team" }).click();
+      12 |   await expect(
+      13 |     page.getByRole("dialog", { name: "Manage Care Team" }),
+        at openCareTeamDialog (/home/runner/work/care_fe/care_fe/tests/facility/patient/encounter/careTeam/linkCareTeam.spec.ts:10:52)
+        at /home/runner/work/care_fe/care_fe/tests/facility/patient/encounter/careTeam/linkCareTeam.spec.ts:229:13
+        at /home/runner/work/care_fe/care_fe/tests/facility/patient/encounter/careTeam/linkCareTeam.spec.ts:228:5
+
+    Error Context: test-results/facility-patient-encounter-b0434-r-selecting-member-and-role-chromium/error-context.md
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    TimeoutError: locator.click: Timeout 10000ms exceeded.
+    Call log:
+      - waiting for getByRole('tab', { name: 'Actions' })
+
+
+       8 |
+       9 | const openCareTeamDialog = async (page: Page) => {
+    > 10 |   await page.getByRole("tab", { name: "Actions" }).click();
+         |                                                    ^
+      11 |   await page.getByRole("button", { name: "Manage Care Team" }).click();
+      12 |   await expect(
+      13 |     page.getByRole("dialog", { name: "Manage Care Team" }),
+        at openCareTeamDialog (/home/runner/work/care_fe/care_fe/tests/facility/patient/encounter/careTeam/linkCareTeam.spec.ts:10:52)
+        at /home/runner/work/care_fe/care_fe/tests/facility/patient/encounter/careTeam/linkCareTeam.spec.ts:229:13
+        at /home/runner/work/care_fe/care_fe/tests/facility/patient/encounter/careTeam/linkCareTeam.spec.ts:228:5
+
+    attachment #1: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results/facility-patient-encounter-b0434-r-selecting-member-and-role-chromium-retry1/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/facility-patient-encounter-b0434-r-selecting-member-and-role-chromium-retry1/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/facility-patient-encounter-b0434-r-selecting-member-and-role-chromium-retry1/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/facility-patient-encounter-b0434-r-selecting-member-and-role-chromium-retry1/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Retry #2 ───────────────────────────────────────────────────────────────────────────────────────
+
+    TimeoutError: locator.click: Timeout 10000ms exceeded.
+    Call log:
+      - waiting for getByRole('tab', { name: 'Actions' })
+
+
+       8 |
+       9 | const openCareTeamDialog = async (page: Page) => {
+    > 10 |   await page.getByRole("tab", { name: "Actions" }).click();
+         |                                                    ^
+      11 |   await page.getByRole("button", { name: "Manage Care Team" }).click();
+      12 |   await expect(
+      13 |     page.getByRole("dialog", { name: "Manage Care Team" }),
+        at openCareTeamDialog (/home/runner/work/care_fe/care_fe/tests/facility/patient/encounter/careTeam/linkCareTeam.spec.ts:10:52)
+        at /home/runner/work/care_fe/care_fe/tests/facility/patient/encounter/careTeam/linkCareTeam.spec.ts:229:13
+        at /home/runner/work/care_fe/care_fe/tests/facility/patient/encounter/careTeam/linkCareTeam.spec.ts:228:5
+
+    Error Context: test-results/facility-patient-encounter-b0434-r-selecting-member-and-role-chromium-retry2/error-context.md
+
+  12) [chromium] › tests/facility/patient/encounter/encounter.spec.ts:47:7 › Create an Encounter › through patient home 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('heading', { name: 'Emergency' })
+    Expected: visible
+    Timeout: 10000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" with timeout 10000ms
+      - waiting for getByRole('heading', { name: 'Emergency' })
+
+
+      66 |     await expect(
+      67 |       page.getByRole("heading", { name: randomEncounterClass }),
+    > 68 |     ).toBeVisible();
+         |       ^
+      69 |
+      70 |     //verify encounter details on the details tab
+      71 |     await page.getByRole("tab", { name: "Details" }).click();
+        at /home/runner/work/care_fe/care_fe/tests/facility/patient/encounter/encounter.spec.ts:68:7
+
+    Error Context: test-results/facility-patient-encounter-ce0ec-ounter-through-patient-home-chromium/error-context.md
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('heading', { name: 'Emergency' })
+    Expected: visible
+    Timeout: 10000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" with timeout 10000ms
+      - waiting for getByRole('heading', { name: 'Emergency' })
+
+
+      66 |     await expect(
+      67 |       page.getByRole("heading", { name: randomEncounterClass }),
+    > 68 |     ).toBeVisible();
+         |       ^
+      69 |
+      70 |     //verify encounter details on the details tab
+      71 |     await page.getByRole("tab", { name: "Details" }).click();
+        at /home/runner/work/care_fe/care_fe/tests/facility/patient/encounter/encounter.spec.ts:68:7
+
+    attachment #1: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results/facility-patient-encounter-ce0ec-ounter-through-patient-home-chromium-retry1/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/facility-patient-encounter-ce0ec-ounter-through-patient-home-chromium-retry1/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/facility-patient-encounter-ce0ec-ounter-through-patient-home-chromium-retry1/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/facility-patient-encounter-ce0ec-ounter-through-patient-home-chromium-retry1/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Retry #2 ───────────────────────────────────────────────────────────────────────────────────────
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByText('Encounter created successfully')
+    Expected: visible
+    Timeout: 10000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" with timeout 10000ms
+      - waiting for getByText('Encounter created successfully')
+
+
+      63 |     await expect(
+      64 |       page.getByText("Encounter created successfully"),
+    > 65 |     ).toBeVisible();
+         |       ^
+      66 |     await expect(
+      67 |       page.getByRole("heading", { name: randomEncounterClass }),
+      68 |     ).toBeVisible();
+        at /home/runner/work/care_fe/care_fe/tests/facility/patient/encounter/encounter.spec.ts:65:7
+
+    Error Context: test-results/facility-patient-encounter-ce0ec-ounter-through-patient-home-chromium-retry2/error-context.md
+
+  13) [chromium] › tests/facility/patient/encounter/encounter.spec.ts:80:7 › Create an Encounter › through phone number + year 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('heading', { name: 'Inpatient' })
+    Expected: visible
+    Timeout: 10000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" with timeout 10000ms
+      - waiting for getByRole('heading', { name: 'Inpatient' })
+
+
+      144 |     await expect(
+      145 |       page.getByRole("heading", { name: randomEncounterClass }),
+    > 146 |     ).toBeVisible();
+          |       ^
+      147 |
+      148 |     //verify encounter details on the details tab
+      149 |     await page.getByRole("tab", { name: "Details" }).click();
+        at /home/runner/work/care_fe/care_fe/tests/facility/patient/encounter/encounter.spec.ts:146:7
+
+    Error Context: test-results/facility-patient-encounter-1b612-r-through-phone-number-year-chromium/error-context.md
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('heading', { name: 'Inpatient' })
+    Expected: visible
+    Timeout: 10000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" with timeout 10000ms
+      - waiting for getByRole('heading', { name: 'Inpatient' })
+
+
+      144 |     await expect(
+      145 |       page.getByRole("heading", { name: randomEncounterClass }),
+    > 146 |     ).toBeVisible();
+          |       ^
+      147 |
+      148 |     //verify encounter details on the details tab
+      149 |     await page.getByRole("tab", { name: "Details" }).click();
+        at /home/runner/work/care_fe/care_fe/tests/facility/patient/encounter/encounter.spec.ts:146:7
+
+    attachment #1: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results/facility-patient-encounter-1b612-r-through-phone-number-year-chromium-retry1/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/facility-patient-encounter-1b612-r-through-phone-number-year-chromium-retry1/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/facility-patient-encounter-1b612-r-through-phone-number-year-chromium-retry1/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/facility-patient-encounter-1b612-r-through-phone-number-year-chromium-retry1/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Retry #2 ───────────────────────────────────────────────────────────────────────────────────────
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByText('Encounter created successfully')
+    Expected: visible
+    Timeout: 10000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" with timeout 10000ms
+      - waiting for getByText('Encounter created successfully')
+
+
+      139 |     await expect(
+      140 |       page.getByText("Encounter created successfully"),
+    > 141 |     ).toBeVisible();
+          |       ^
+      142 |
+      143 |     //verify on encounter page
+      144 |     await expect(
+        at /home/runner/work/care_fe/care_fe/tests/facility/patient/encounter/encounter.spec.ts:141:7
+
+    Error Context: test-results/facility-patient-encounter-1b612-r-through-phone-number-year-chromium-retry2/error-context.md
+
+  14) [chromium] › tests/facility/patient/encounter/encounterDepartmentAssociation.spec.ts:68:7 › Manage departments/teams association to an encounter › Delete organization from encounter 
+
+    TimeoutError: locator.click: Timeout 10000ms exceeded.
+    Call log:
+      - waiting for getByRole('tab', { name: 'Actions' })
+
+
+      20 |
+      21 |   async function openDepartmentsDialog(page: Page) {
+    > 22 |     await page.getByRole("tab", { name: "Actions" }).click();
+         |                                                      ^
+      23 |     await page.getByRole("button", { name: "Update Department" }).click();
+      24 |   }
+      25 |
+        at openDepartmentsDialog (/home/runner/work/care_fe/care_fe/tests/facility/patient/encounter/encounterDepartmentAssociation.spec.ts:22:54)
+        at /home/runner/work/care_fe/care_fe/tests/facility/patient/encounter/encounterDepartmentAssociation.spec.ts:18:11
+
+    Error Context: test-results/facility-patient-encounter-8de39-organization-from-encounter-chromium/error-context.md
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    TimeoutError: locator.click: Timeout 10000ms exceeded.
+    Call log:
+      - waiting for getByRole('tab', { name: 'Actions' })
+
+
+      20 |
+      21 |   async function openDepartmentsDialog(page: Page) {
+    > 22 |     await page.getByRole("tab", { name: "Actions" }).click();
+         |                                                      ^
+      23 |     await page.getByRole("button", { name: "Update Department" }).click();
+      24 |   }
+      25 |
+        at openDepartmentsDialog (/home/runner/work/care_fe/care_fe/tests/facility/patient/encounter/encounterDepartmentAssociation.spec.ts:22:54)
+        at /home/runner/work/care_fe/care_fe/tests/facility/patient/encounter/encounterDepartmentAssociation.spec.ts:18:11
+
+    attachment #1: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results/facility-patient-encounter-8de39-organization-from-encounter-chromium-retry1/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/facility-patient-encounter-8de39-organization-from-encounter-chromium-retry1/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/facility-patient-encounter-8de39-organization-from-encounter-chromium-retry1/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/facility-patient-encounter-8de39-organization-from-encounter-chromium-retry1/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Retry #2 ───────────────────────────────────────────────────────────────────────────────────────
+
+    TimeoutError: locator.click: Timeout 10000ms exceeded.
+    Call log:
+      - waiting for getByRole('tab', { name: 'Actions' })
+
+
+      20 |
+      21 |   async function openDepartmentsDialog(page: Page) {
+    > 22 |     await page.getByRole("tab", { name: "Actions" }).click();
+         |                                                      ^
+      23 |     await page.getByRole("button", { name: "Update Department" }).click();
+      24 |   }
+      25 |
+        at openDepartmentsDialog (/home/runner/work/care_fe/care_fe/tests/facility/patient/encounter/encounterDepartmentAssociation.spec.ts:22:54)
+        at /home/runner/work/care_fe/care_fe/tests/facility/patient/encounter/encounterDepartmentAssociation.spec.ts:18:11
+
+    Error Context: test-results/facility-patient-encounter-8de39-organization-from-encounter-chromium-retry2/error-context.md
+
+  15) [chromium] › tests/facility/patient/encounter/encounterDepartmentAssociation.spec.ts:74:7 › Manage departments/teams association to an encounter › Add additional organization to existing encounter 
+
+    TimeoutError: locator.click: Timeout 10000ms exceeded.
+    Call log:
+      - waiting for getByRole('tab', { name: 'Actions' })
+
+
+      20 |
+      21 |   async function openDepartmentsDialog(page: Page) {
+    > 22 |     await page.getByRole("tab", { name: "Actions" }).click();
+         |                                                      ^
+      23 |     await page.getByRole("button", { name: "Update Department" }).click();
+      24 |   }
+      25 |
+        at openDepartmentsDialog (/home/runner/work/care_fe/care_fe/tests/facility/patient/encounter/encounterDepartmentAssociation.spec.ts:22:54)
+        at /home/runner/work/care_fe/care_fe/tests/facility/patient/encounter/encounterDepartmentAssociation.spec.ts:18:11
+
+    Error Context: test-results/facility-patient-encounter-c1c9e-ation-to-existing-encounter-chromium/error-context.md
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    TimeoutError: locator.click: Timeout 10000ms exceeded.
+    Call log:
+      - waiting for getByRole('tab', { name: 'Actions' })
+
+
+      20 |
+      21 |   async function openDepartmentsDialog(page: Page) {
+    > 22 |     await page.getByRole("tab", { name: "Actions" }).click();
+         |                                                      ^
+      23 |     await page.getByRole("button", { name: "Update Department" }).click();
+      24 |   }
+      25 |
+        at openDepartmentsDialog (/home/runner/work/care_fe/care_fe/tests/facility/patient/encounter/encounterDepartmentAssociation.spec.ts:22:54)
+        at /home/runner/work/care_fe/care_fe/tests/facility/patient/encounter/encounterDepartmentAssociation.spec.ts:18:11
+
+    attachment #1: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results/facility-patient-encounter-c1c9e-ation-to-existing-encounter-chromium-retry1/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/facility-patient-encounter-c1c9e-ation-to-existing-encounter-chromium-retry1/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/facility-patient-encounter-c1c9e-ation-to-existing-encounter-chromium-retry1/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/facility-patient-encounter-c1c9e-ation-to-existing-encounter-chromium-retry1/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Retry #2 ───────────────────────────────────────────────────────────────────────────────────────
+
+    TimeoutError: locator.click: Timeout 10000ms exceeded.
+    Call log:
+      - waiting for getByRole('tab', { name: 'Actions' })
+
+
+      20 |
+      21 |   async function openDepartmentsDialog(page: Page) {
+    > 22 |     await page.getByRole("tab", { name: "Actions" }).click();
+         |                                                      ^
+      23 |     await page.getByRole("button", { name: "Update Department" }).click();
+      24 |   }
+      25 |
+        at openDepartmentsDialog (/home/runner/work/care_fe/care_fe/tests/facility/patient/encounter/encounterDepartmentAssociation.spec.ts:22:54)
+        at /home/runner/work/care_fe/care_fe/tests/facility/patient/encounter/encounterDepartmentAssociation.spec.ts:18:11
+
+    Error Context: test-results/facility-patient-encounter-c1c9e-ation-to-existing-encounter-chromium-retry2/error-context.md
+
+  16) [chromium] › tests/facility/patient/encounter/encounterFutureDateRestriction.spec.ts:95:7 › Encounter Future Date Restriction › should allow future dates when status is Planned 
+
+    Error: expect(locator).not.toBeVisible() failed
+
+    Locator:  getByRole('dialog', { name: 'Initiate Patient Encounter' })
+    Expected: not visible
+    Received: visible
+    Timeout:  10000ms
+
+    Call log:
+      - Expect "not toBeVisible" with timeout 10000ms
+      - waiting for getByRole('dialog', { name: 'Initiate Patient Encounter' })
+        23 × locator resolved to <div role="dialog" tabindex="-1" id="radix-_r_1c_" data-state="open" data-slot="sheet-content" aria-labelledby="radix-_r_1d_" aria-describedby="radix-_r_1e_" class="fixed z-50 gap-4 bg-white p-6 shadow-lg transition ease-in-out data-[state=closed]:duration-300 data-[state=open]:duration-500 data-[state=open]:animate-in data-[state=closed]:animate-out dark:bg-gray-950 inset-y-0 right-0 h-full w-full border-l border-gray-200 data-[state=closed]:slide-out-to-right data-[state=open]:slide-in-from-right…>…</div>
+           - unexpected value "visible"
+
+
+      117 |
+      118 |     // Wait for encounter to be created and dialog to close
+    > 119 |     await expect(encounterDialog).not.toBeVisible();
+          |                                       ^
+      120 |
+      121 |     // Verify Encounter Actions button is visible after encounter creation
+      122 |     await expect(
+        at /home/runner/work/care_fe/care_fe/tests/facility/patient/encounter/encounterFutureDateRestriction.spec.ts:119:39
+
+    Error Context: test-results/facility-patient-encounter-1d85d-ates-when-status-is-Planned-chromium/error-context.md
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    Error: expect(locator).not.toBeVisible() failed
+
+    Locator:  getByRole('dialog', { name: 'Initiate Patient Encounter' })
+    Expected: not visible
+    Received: visible
+    Timeout:  10000ms
+
+    Call log:
+      - Expect "not toBeVisible" with timeout 10000ms
+      - waiting for getByRole('dialog', { name: 'Initiate Patient Encounter' })
+        23 × locator resolved to <div role="dialog" tabindex="-1" id="radix-_r_1c_" data-state="open" data-slot="sheet-content" aria-labelledby="radix-_r_1d_" aria-describedby="radix-_r_1e_" class="fixed z-50 gap-4 bg-white p-6 shadow-lg transition ease-in-out data-[state=closed]:duration-300 data-[state=open]:duration-500 data-[state=open]:animate-in data-[state=closed]:animate-out dark:bg-gray-950 inset-y-0 right-0 h-full w-full border-l border-gray-200 data-[state=closed]:slide-out-to-right data-[state=open]:slide-in-from-right…>…</div>
+           - unexpected value "visible"
+
+
+      117 |
+      118 |     // Wait for encounter to be created and dialog to close
+    > 119 |     await expect(encounterDialog).not.toBeVisible();
+          |                                       ^
+      120 |
+      121 |     // Verify Encounter Actions button is visible after encounter creation
+      122 |     await expect(
+        at /home/runner/work/care_fe/care_fe/tests/facility/patient/encounter/encounterFutureDateRestriction.spec.ts:119:39
+
+    attachment #1: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results/facility-patient-encounter-1d85d-ates-when-status-is-Planned-chromium-retry1/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/facility-patient-encounter-1d85d-ates-when-status-is-Planned-chromium-retry1/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/facility-patient-encounter-1d85d-ates-when-status-is-Planned-chromium-retry1/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/facility-patient-encounter-1d85d-ates-when-status-is-Planned-chromium-retry1/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Retry #2 ───────────────────────────────────────────────────────────────────────────────────────
+
+    Error: expect(locator).not.toBeVisible() failed
+
+    Locator:  getByRole('dialog', { name: 'Initiate Patient Encounter' })
+    Expected: not visible
+    Received: visible
+    Timeout:  10000ms
+
+    Call log:
+      - Expect "not toBeVisible" with timeout 10000ms
+      - waiting for getByRole('dialog', { name: 'Initiate Patient Encounter' })
+        23 × locator resolved to <div role="dialog" tabindex="-1" id="radix-_r_1c_" data-state="open" data-slot="sheet-content" aria-labelledby="radix-_r_1d_" aria-describedby="radix-_r_1e_" class="fixed z-50 gap-4 bg-white p-6 shadow-lg transition ease-in-out data-[state=closed]:duration-300 data-[state=open]:duration-500 data-[state=open]:animate-in data-[state=closed]:animate-out dark:bg-gray-950 inset-y-0 right-0 h-full w-full border-l border-gray-200 data-[state=closed]:slide-out-to-right data-[state=open]:slide-in-from-right…>…</div>
+           - unexpected value "visible"
+
+
+      117 |
+      118 |     // Wait for encounter to be created and dialog to close
+    > 119 |     await expect(encounterDialog).not.toBeVisible();
+          |                                       ^
+      120 |
+      121 |     // Verify Encounter Actions button is visible after encounter creation
+      122 |     await expect(
+        at /home/runner/work/care_fe/care_fe/tests/facility/patient/encounter/encounterFutureDateRestriction.spec.ts:119:39
+
+    Error Context: test-results/facility-patient-encounter-1d85d-ates-when-status-is-Planned-chromium-retry2/error-context.md
+
+  17) [chromium] › tests/facility/patient/encounter/encounterShortcuts.spec.ts:25:9 › Encounter Keyboard Shortcuts › Tab Navigation Shortcuts › should navigate to Plots tab using 'g p' shortcut 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('tab', { name: 'Overview' })
+    Expected: visible
+    Timeout: 10000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" with timeout 10000ms
+      - waiting for getByRole('tab', { name: 'Overview' })
+
+
+      17 |
+      18 |     await page.goto(encounterUrl);
+    > 19 |     await expect(page.getByRole("tab", { name: "Overview" })).toBeVisible();
+         |                                                               ^
+      20 |   });
+      21 |
+      22 |   // --- Navigation Shortcuts (g + key sequences) ---
+        at /home/runner/work/care_fe/care_fe/tests/facility/patient/encounter/encounterShortcuts.spec.ts:19:63
+
+    Error Context: test-results/facility-patient-encounter-cfb32-lots-tab-using-g-p-shortcut-chromium/error-context.md
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('tab', { name: 'Overview' })
+    Expected: visible
+    Timeout: 10000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" with timeout 10000ms
+      - waiting for getByRole('tab', { name: 'Overview' })
+
+
+      17 |
+      18 |     await page.goto(encounterUrl);
+    > 19 |     await expect(page.getByRole("tab", { name: "Overview" })).toBeVisible();
+         |                                                               ^
+      20 |   });
+      21 |
+      22 |   // --- Navigation Shortcuts (g + key sequences) ---
+        at /home/runner/work/care_fe/care_fe/tests/facility/patient/encounter/encounterShortcuts.spec.ts:19:63
+
+    attachment #1: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results/facility-patient-encounter-cfb32-lots-tab-using-g-p-shortcut-chromium-retry1/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/facility-patient-encounter-cfb32-lots-tab-using-g-p-shortcut-chromium-retry1/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/facility-patient-encounter-cfb32-lots-tab-using-g-p-shortcut-chromium-retry1/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/facility-patient-encounter-cfb32-lots-tab-using-g-p-shortcut-chromium-retry1/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Retry #2 ───────────────────────────────────────────────────────────────────────────────────────
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('tab', { name: 'Overview' })
+    Expected: visible
+    Timeout: 10000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" with timeout 10000ms
+      - waiting for getByRole('tab', { name: 'Overview' })
+
+
+      17 |
+      18 |     await page.goto(encounterUrl);
+    > 19 |     await expect(page.getByRole("tab", { name: "Overview" })).toBeVisible();
+         |                                                               ^
+      20 |   });
+      21 |
+      22 |   // --- Navigation Shortcuts (g + key sequences) ---
+        at /home/runner/work/care_fe/care_fe/tests/facility/patient/encounter/encounterShortcuts.spec.ts:19:63
+
+    Error Context: test-results/facility-patient-encounter-cfb32-lots-tab-using-g-p-shortcut-chromium-retry2/error-context.md
+
+  18) [chromium] › tests/facility/patient/encounter/encounterShortcuts.spec.ts:40:9 › Encounter Keyboard Shortcuts › Tab Navigation Shortcuts › should navigate to Medicines tab using 'g m' shortcut 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('tab', { name: 'Overview' })
+    Expected: visible
+    Timeout: 10000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" with timeout 10000ms
+      - waiting for getByRole('tab', { name: 'Overview' })
+
+
+      17 |
+      18 |     await page.goto(encounterUrl);
+    > 19 |     await expect(page.getByRole("tab", { name: "Overview" })).toBeVisible();
+         |                                                               ^
+      20 |   });
+      21 |
+      22 |   // --- Navigation Shortcuts (g + key sequences) ---
+        at /home/runner/work/care_fe/care_fe/tests/facility/patient/encounter/encounterShortcuts.spec.ts:19:63
+
+    Error Context: test-results/facility-patient-encounter-b35ee-ines-tab-using-g-m-shortcut-chromium/error-context.md
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('tab', { name: 'Overview' })
+    Expected: visible
+    Timeout: 10000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" with timeout 10000ms
+      - waiting for getByRole('tab', { name: 'Overview' })
+
+
+      17 |
+      18 |     await page.goto(encounterUrl);
+    > 19 |     await expect(page.getByRole("tab", { name: "Overview" })).toBeVisible();
+         |                                                               ^
+      20 |   });
+      21 |
+      22 |   // --- Navigation Shortcuts (g + key sequences) ---
+        at /home/runner/work/care_fe/care_fe/tests/facility/patient/encounter/encounterShortcuts.spec.ts:19:63
+
+    attachment #1: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results/facility-patient-encounter-b35ee-ines-tab-using-g-m-shortcut-chromium-retry1/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/facility-patient-encounter-b35ee-ines-tab-using-g-m-shortcut-chromium-retry1/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/facility-patient-encounter-b35ee-ines-tab-using-g-m-shortcut-chromium-retry1/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/facility-patient-encounter-b35ee-ines-tab-using-g-m-shortcut-chromium-retry1/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Retry #2 ───────────────────────────────────────────────────────────────────────────────────────
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('tab', { name: 'Overview' })
+    Expected: visible
+    Timeout: 10000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" with timeout 10000ms
+      - waiting for getByRole('tab', { name: 'Overview' })
+
+
+      17 |
+      18 |     await page.goto(encounterUrl);
+    > 19 |     await expect(page.getByRole("tab", { name: "Overview" })).toBeVisible();
+         |                                                               ^
+      20 |   });
+      21 |
+      22 |   // --- Navigation Shortcuts (g + key sequences) ---
+        at /home/runner/work/care_fe/care_fe/tests/facility/patient/encounter/encounterShortcuts.spec.ts:19:63
+
+    Error Context: test-results/facility-patient-encounter-b35ee-ines-tab-using-g-m-shortcut-chromium-retry2/error-context.md
+
+  19) [chromium] › tests/facility/patient/encounter/encounterShortcuts.spec.ts:53:9 › Encounter Keyboard Shortcuts › Tab Navigation Shortcuts › should navigate to Notes tab using 'g n' shortcut 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('tab', { name: 'Overview' })
+    Expected: visible
+    Timeout: 10000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" with timeout 10000ms
+      - waiting for getByRole('tab', { name: 'Overview' })
+
+
+      17 |
+      18 |     await page.goto(encounterUrl);
+    > 19 |     await expect(page.getByRole("tab", { name: "Overview" })).toBeVisible();
+         |                                                               ^
+      20 |   });
+      21 |
+      22 |   // --- Navigation Shortcuts (g + key sequences) ---
+        at /home/runner/work/care_fe/care_fe/tests/facility/patient/encounter/encounterShortcuts.spec.ts:19:63
+
+    Error Context: test-results/facility-patient-encounter-56db2-otes-tab-using-g-n-shortcut-chromium/error-context.md
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('tab', { name: 'Overview' })
+    Expected: visible
+    Timeout: 10000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" with timeout 10000ms
+      - waiting for getByRole('tab', { name: 'Overview' })
+
+
+      17 |
+      18 |     await page.goto(encounterUrl);
+    > 19 |     await expect(page.getByRole("tab", { name: "Overview" })).toBeVisible();
+         |                                                               ^
+      20 |   });
+      21 |
+      22 |   // --- Navigation Shortcuts (g + key sequences) ---
+        at /home/runner/work/care_fe/care_fe/tests/facility/patient/encounter/encounterShortcuts.spec.ts:19:63
+
+    attachment #1: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results/facility-patient-encounter-56db2-otes-tab-using-g-n-shortcut-chromium-retry1/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/facility-patient-encounter-56db2-otes-tab-using-g-n-shortcut-chromium-retry1/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/facility-patient-encounter-56db2-otes-tab-using-g-n-shortcut-chromium-retry1/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/facility-patient-encounter-56db2-otes-tab-using-g-n-shortcut-chromium-retry1/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Retry #2 ───────────────────────────────────────────────────────────────────────────────────────
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('tab', { name: 'Overview' })
+    Expected: visible
+    Timeout: 10000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" with timeout 10000ms
+      - waiting for getByRole('tab', { name: 'Overview' })
+
+
+      17 |
+      18 |     await page.goto(encounterUrl);
+    > 19 |     await expect(page.getByRole("tab", { name: "Overview" })).toBeVisible();
+         |                                                               ^
+      20 |   });
+      21 |
+      22 |   // --- Navigation Shortcuts (g + key sequences) ---
+        at /home/runner/work/care_fe/care_fe/tests/facility/patient/encounter/encounterShortcuts.spec.ts:19:63
+
+    Error Context: test-results/facility-patient-encounter-56db2-otes-tab-using-g-n-shortcut-chromium-retry2/error-context.md
+
+  20) [chromium] › tests/facility/patient/encounter/encounterShortcuts.spec.ts:71:9 › Encounter Keyboard Shortcuts › Quick Action Shortcuts › should open allergy form using 'a' shortcut 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('tab', { name: 'Overview' })
+    Expected: visible
+    Timeout: 10000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" with timeout 10000ms
+      - waiting for getByRole('tab', { name: 'Overview' })
+
+
+      17 |
+      18 |     await page.goto(encounterUrl);
+    > 19 |     await expect(page.getByRole("tab", { name: "Overview" })).toBeVisible();
+         |                                                               ^
+      20 |   });
+      21 |
+      22 |   // --- Navigation Shortcuts (g + key sequences) ---
+        at /home/runner/work/care_fe/care_fe/tests/facility/patient/encounter/encounterShortcuts.spec.ts:19:63
+
+    Error Context: test-results/facility-patient-encounter-b4b7a-lergy-form-using-a-shortcut-chromium/error-context.md
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('tab', { name: 'Overview' })
+    Expected: visible
+    Timeout: 10000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" with timeout 10000ms
+      - waiting for getByRole('tab', { name: 'Overview' })
+
+
+      17 |
+      18 |     await page.goto(encounterUrl);
+    > 19 |     await expect(page.getByRole("tab", { name: "Overview" })).toBeVisible();
+         |                                                               ^
+      20 |   });
+      21 |
+      22 |   // --- Navigation Shortcuts (g + key sequences) ---
+        at /home/runner/work/care_fe/care_fe/tests/facility/patient/encounter/encounterShortcuts.spec.ts:19:63
+
+    attachment #1: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results/facility-patient-encounter-b4b7a-lergy-form-using-a-shortcut-chromium-retry1/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/facility-patient-encounter-b4b7a-lergy-form-using-a-shortcut-chromium-retry1/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/facility-patient-encounter-b4b7a-lergy-form-using-a-shortcut-chromium-retry1/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/facility-patient-encounter-b4b7a-lergy-form-using-a-shortcut-chromium-retry1/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Retry #2 ───────────────────────────────────────────────────────────────────────────────────────
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('tab', { name: 'Overview' })
+    Expected: visible
+    Timeout: 10000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" with timeout 10000ms
+      - waiting for getByRole('tab', { name: 'Overview' })
+
+
+      17 |
+      18 |     await page.goto(encounterUrl);
+    > 19 |     await expect(page.getByRole("tab", { name: "Overview" })).toBeVisible();
+         |                                                               ^
+      20 |   });
+      21 |
+      22 |   // --- Navigation Shortcuts (g + key sequences) ---
+        at /home/runner/work/care_fe/care_fe/tests/facility/patient/encounter/encounterShortcuts.spec.ts:19:63
+
+    Error Context: test-results/facility-patient-encounter-b4b7a-lergy-form-using-a-shortcut-chromium-retry2/error-context.md
+
+  21) [chromium] › tests/facility/patient/encounter/encounterShortcuts.spec.ts:79:9 › Encounter Keyboard Shortcuts › Quick Action Shortcuts › should open medication form using 'k' shortcut 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('tab', { name: 'Overview' })
+    Expected: visible
+    Timeout: 10000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" with timeout 10000ms
+      - waiting for getByRole('tab', { name: 'Overview' })
+
+
+      17 |
+      18 |     await page.goto(encounterUrl);
+    > 19 |     await expect(page.getByRole("tab", { name: "Overview" })).toBeVisible();
+         |                                                               ^
+      20 |   });
+      21 |
+      22 |   // --- Navigation Shortcuts (g + key sequences) ---
+        at /home/runner/work/care_fe/care_fe/tests/facility/patient/encounter/encounterShortcuts.spec.ts:19:63
+
+    Error Context: test-results/facility-patient-encounter-23983-ation-form-using-k-shortcut-chromium/error-context.md
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('tab', { name: 'Overview' })
+    Expected: visible
+    Timeout: 10000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" with timeout 10000ms
+      - waiting for getByRole('tab', { name: 'Overview' })
+
+
+      17 |
+      18 |     await page.goto(encounterUrl);
+    > 19 |     await expect(page.getByRole("tab", { name: "Overview" })).toBeVisible();
+         |                                                               ^
+      20 |   });
+      21 |
+      22 |   // --- Navigation Shortcuts (g + key sequences) ---
+        at /home/runner/work/care_fe/care_fe/tests/facility/patient/encounter/encounterShortcuts.spec.ts:19:63
+
+    attachment #1: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results/facility-patient-encounter-23983-ation-form-using-k-shortcut-chromium-retry1/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/facility-patient-encounter-23983-ation-form-using-k-shortcut-chromium-retry1/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/facility-patient-encounter-23983-ation-form-using-k-shortcut-chromium-retry1/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/facility-patient-encounter-23983-ation-form-using-k-shortcut-chromium-retry1/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Retry #2 ───────────────────────────────────────────────────────────────────────────────────────
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('tab', { name: 'Overview' })
+    Expected: visible
+    Timeout: 10000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" with timeout 10000ms
+      - waiting for getByRole('tab', { name: 'Overview' })
+
+
+      17 |
+      18 |     await page.goto(encounterUrl);
+    > 19 |     await expect(page.getByRole("tab", { name: "Overview" })).toBeVisible();
+         |                                                               ^
+      20 |   });
+      21 |
+      22 |   // --- Navigation Shortcuts (g + key sequences) ---
+        at /home/runner/work/care_fe/care_fe/tests/facility/patient/encounter/encounterShortcuts.spec.ts:19:63
+
+    Error Context: test-results/facility-patient-encounter-23983-ation-form-using-k-shortcut-chromium-retry2/error-context.md
+
+  22) [chromium] › tests/facility/patient/encounter/encounterShortcuts.spec.ts:87:9 › Encounter Keyboard Shortcuts › Quick Action Shortcuts › should open service request form using 'r' shortcut 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('tab', { name: 'Overview' })
+    Expected: visible
+    Timeout: 10000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" with timeout 10000ms
+      - waiting for getByRole('tab', { name: 'Overview' })
+
+
+      17 |
+      18 |     await page.goto(encounterUrl);
+    > 19 |     await expect(page.getByRole("tab", { name: "Overview" })).toBeVisible();
+         |                                                               ^
+      20 |   });
+      21 |
+      22 |   // --- Navigation Shortcuts (g + key sequences) ---
+        at /home/runner/work/care_fe/care_fe/tests/facility/patient/encounter/encounterShortcuts.spec.ts:19:63
+
+    Error Context: test-results/facility-patient-encounter-dde11-quest-form-using-r-shortcut-chromium/error-context.md
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('tab', { name: 'Overview' })
+    Expected: visible
+    Timeout: 10000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" with timeout 10000ms
+      - waiting for getByRole('tab', { name: 'Overview' })
+
+
+      17 |
+      18 |     await page.goto(encounterUrl);
+    > 19 |     await expect(page.getByRole("tab", { name: "Overview" })).toBeVisible();
+         |                                                               ^
+      20 |   });
+      21 |
+      22 |   // --- Navigation Shortcuts (g + key sequences) ---
+        at /home/runner/work/care_fe/care_fe/tests/facility/patient/encounter/encounterShortcuts.spec.ts:19:63
+
+    attachment #1: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results/facility-patient-encounter-dde11-quest-form-using-r-shortcut-chromium-retry1/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/facility-patient-encounter-dde11-quest-form-using-r-shortcut-chromium-retry1/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/facility-patient-encounter-dde11-quest-form-using-r-shortcut-chromium-retry1/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/facility-patient-encounter-dde11-quest-form-using-r-shortcut-chromium-retry1/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Retry #2 ───────────────────────────────────────────────────────────────────────────────────────
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('tab', { name: 'Overview' })
+    Expected: visible
+    Timeout: 10000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" with timeout 10000ms
+      - waiting for getByRole('tab', { name: 'Overview' })
+
+
+      17 |
+      18 |     await page.goto(encounterUrl);
+    > 19 |     await expect(page.getByRole("tab", { name: "Overview" })).toBeVisible();
+         |                                                               ^
+      20 |   });
+      21 |
+      22 |   // --- Navigation Shortcuts (g + key sequences) ---
+        at /home/runner/work/care_fe/care_fe/tests/facility/patient/encounter/encounterShortcuts.spec.ts:19:63
+
+    Error Context: test-results/facility-patient-encounter-dde11-quest-form-using-r-shortcut-chromium-retry2/error-context.md
+
+  23) [chromium] › tests/facility/patient/encounter/encounterShortcuts.spec.ts:101:9 › Encounter Keyboard Shortcuts › Command Dialog and Other Shortcuts › should open command dialog using 'Shift+E' shortcut 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('tab', { name: 'Overview' })
+    Expected: visible
+    Timeout: 10000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" with timeout 10000ms
+      - waiting for getByRole('tab', { name: 'Overview' })
+
+
+      17 |
+      18 |     await page.goto(encounterUrl);
+    > 19 |     await expect(page.getByRole("tab", { name: "Overview" })).toBeVisible();
+         |                                                               ^
+      20 |   });
+      21 |
+      22 |   // --- Navigation Shortcuts (g + key sequences) ---
+        at /home/runner/work/care_fe/care_fe/tests/facility/patient/encounter/encounterShortcuts.spec.ts:19:63
+
+    Error Context: test-results/facility-patient-encounter-b4f67-alog-using-Shift-E-shortcut-chromium/error-context.md
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('tab', { name: 'Overview' })
+    Expected: visible
+    Timeout: 10000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" with timeout 10000ms
+      - waiting for getByRole('tab', { name: 'Overview' })
+
+
+      17 |
+      18 |     await page.goto(encounterUrl);
+    > 19 |     await expect(page.getByRole("tab", { name: "Overview" })).toBeVisible();
+         |                                                               ^
+      20 |   });
+      21 |
+      22 |   // --- Navigation Shortcuts (g + key sequences) ---
+        at /home/runner/work/care_fe/care_fe/tests/facility/patient/encounter/encounterShortcuts.spec.ts:19:63
+
+    attachment #1: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results/facility-patient-encounter-b4f67-alog-using-Shift-E-shortcut-chromium-retry1/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/facility-patient-encounter-b4f67-alog-using-Shift-E-shortcut-chromium-retry1/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/facility-patient-encounter-b4f67-alog-using-Shift-E-shortcut-chromium-retry1/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/facility-patient-encounter-b4f67-alog-using-Shift-E-shortcut-chromium-retry1/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Retry #2 ───────────────────────────────────────────────────────────────────────────────────────
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('tab', { name: 'Overview' })
+    Expected: visible
+    Timeout: 10000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" with timeout 10000ms
+      - waiting for getByRole('tab', { name: 'Overview' })
+
+
+      17 |
+      18 |     await page.goto(encounterUrl);
+    > 19 |     await expect(page.getByRole("tab", { name: "Overview" })).toBeVisible();
+         |                                                               ^
+      20 |   });
+      21 |
+      22 |   // --- Navigation Shortcuts (g + key sequences) ---
+        at /home/runner/work/care_fe/care_fe/tests/facility/patient/encounter/encounterShortcuts.spec.ts:19:63
+
+    Error Context: test-results/facility-patient-encounter-b4f67-alog-using-Shift-E-shortcut-chromium-retry2/error-context.md
+
+  24) [chromium] › tests/facility/patient/encounter/encounterShortcuts.spec.ts:110:9 › Encounter Keyboard Shortcuts › Command Dialog and Other Shortcuts › should open keyboard shortcuts help using 'Shift+?' shortcut 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('tab', { name: 'Overview' })
+    Expected: visible
+    Timeout: 10000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" with timeout 10000ms
+      - waiting for getByRole('tab', { name: 'Overview' })
+
+
+      17 |
+      18 |     await page.goto(encounterUrl);
+    > 19 |     await expect(page.getByRole("tab", { name: "Overview" })).toBeVisible();
+         |                                                               ^
+      20 |   });
+      21 |
+      22 |   // --- Navigation Shortcuts (g + key sequences) ---
+        at /home/runner/work/care_fe/care_fe/tests/facility/patient/encounter/encounterShortcuts.spec.ts:19:63
+
+    Error Context: test-results/facility-patient-encounter-fe4c5-s-help-using-Shift-shortcut-chromium/error-context.md
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('tab', { name: 'Overview' })
+    Expected: visible
+    Timeout: 10000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" with timeout 10000ms
+      - waiting for getByRole('tab', { name: 'Overview' })
+
+
+      17 |
+      18 |     await page.goto(encounterUrl);
+    > 19 |     await expect(page.getByRole("tab", { name: "Overview" })).toBeVisible();
+         |                                                               ^
+      20 |   });
+      21 |
+      22 |   // --- Navigation Shortcuts (g + key sequences) ---
+        at /home/runner/work/care_fe/care_fe/tests/facility/patient/encounter/encounterShortcuts.spec.ts:19:63
+
+    attachment #1: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results/facility-patient-encounter-fe4c5-s-help-using-Shift-shortcut-chromium-retry1/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/facility-patient-encounter-fe4c5-s-help-using-Shift-shortcut-chromium-retry1/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/facility-patient-encounter-fe4c5-s-help-using-Shift-shortcut-chromium-retry1/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/facility-patient-encounter-fe4c5-s-help-using-Shift-shortcut-chromium-retry1/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Retry #2 ───────────────────────────────────────────────────────────────────────────────────────
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('tab', { name: 'Overview' })
+    Expected: visible
+    Timeout: 10000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" with timeout 10000ms
+      - waiting for getByRole('tab', { name: 'Overview' })
+
+
+      17 |
+      18 |     await page.goto(encounterUrl);
+    > 19 |     await expect(page.getByRole("tab", { name: "Overview" })).toBeVisible();
+         |                                                               ^
+      20 |   });
+      21 |
+      22 |   // --- Navigation Shortcuts (g + key sequences) ---
+        at /home/runner/work/care_fe/care_fe/tests/facility/patient/encounter/encounterShortcuts.spec.ts:19:63
+
+    Error Context: test-results/facility-patient-encounter-fe4c5-s-help-using-Shift-shortcut-chromium-retry2/error-context.md
+
+  25) [chromium] › tests/facility/patient/encounter/encounterShortcuts.spec.ts:119:9 › Encounter Keyboard Shortcuts › Command Dialog and Other Shortcuts › should navigate back to Overview tab using 'g g' shortcut after switching tabs 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('tab', { name: 'Overview' })
+    Expected: visible
+    Timeout: 10000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" with timeout 10000ms
+      - waiting for getByRole('tab', { name: 'Overview' })
+
+
+      17 |
+      18 |     await page.goto(encounterUrl);
+    > 19 |     await expect(page.getByRole("tab", { name: "Overview" })).toBeVisible();
+         |                                                               ^
+      20 |   });
+      21 |
+      22 |   // --- Navigation Shortcuts (g + key sequences) ---
+        at /home/runner/work/care_fe/care_fe/tests/facility/patient/encounter/encounterShortcuts.spec.ts:19:63
+
+    Error Context: test-results/facility-patient-encounter-bc1bd-ortcut-after-switching-tabs-chromium/error-context.md
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('tab', { name: 'Overview' })
+    Expected: visible
+    Timeout: 10000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" with timeout 10000ms
+      - waiting for getByRole('tab', { name: 'Overview' })
+
+
+      17 |
+      18 |     await page.goto(encounterUrl);
+    > 19 |     await expect(page.getByRole("tab", { name: "Overview" })).toBeVisible();
+         |                                                               ^
+      20 |   });
+      21 |
+      22 |   // --- Navigation Shortcuts (g + key sequences) ---
+        at /home/runner/work/care_fe/care_fe/tests/facility/patient/encounter/encounterShortcuts.spec.ts:19:63
+
+    attachment #1: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results/facility-patient-encounter-bc1bd-ortcut-after-switching-tabs-chromium-retry1/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/facility-patient-encounter-bc1bd-ortcut-after-switching-tabs-chromium-retry1/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/facility-patient-encounter-bc1bd-ortcut-after-switching-tabs-chromium-retry1/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/facility-patient-encounter-bc1bd-ortcut-after-switching-tabs-chromium-retry1/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Retry #2 ───────────────────────────────────────────────────────────────────────────────────────
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('tab', { name: 'Overview' })
+    Expected: visible
+    Timeout: 10000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" with timeout 10000ms
+      - waiting for getByRole('tab', { name: 'Overview' })
+
+
+      17 |
+      18 |     await page.goto(encounterUrl);
+    > 19 |     await expect(page.getByRole("tab", { name: "Overview" })).toBeVisible();
+         |                                                               ^
+      20 |   });
+      21 |
+      22 |   // --- Navigation Shortcuts (g + key sequences) ---
+        at /home/runner/work/care_fe/care_fe/tests/facility/patient/encounter/encounterShortcuts.spec.ts:19:63
+
+    Error Context: test-results/facility-patient-encounter-bc1bd-ortcut-after-switching-tabs-chromium-retry2/error-context.md
+
+  26) [chromium] › tests/facility/patient/encounter/forms/enableWhen/boolean.spec.ts:42:9 › Enable When — Boolean Operators › 'exists' operator › T1: source unanswered → dependent hidden [required] → submits › Verify submitted values on overview and hidden dependent absent 
+
+    TimeoutError: locator.scrollIntoViewIfNeeded: Timeout 10000ms exceeded.
+    Call log:
+      - waiting for locator('tr').filter({ has: locator('td').filter({ hasText: 'Is Smoker' }) }).first()
+
+
+       at helper/questionnaire.ts:124
+
+      122 |       })
+      123 |       .first();
+    > 124 |     await row.scrollIntoViewIfNeeded();
+          |               ^
+      125 |     await expect(row.locator("td").nth(1)).toContainText(value);
+      126 |   }
+      127 | }
+        at verifyLabelledValues (/home/runner/work/care_fe/care_fe/tests/helper/questionnaire.ts:124:15)
+        at /home/runner/work/care_fe/care_fe/tests/facility/patient/encounter/forms/enableWhen/boolean.spec.ts:56:9
+        at /home/runner/work/care_fe/care_fe/tests/facility/patient/encounter/forms/enableWhen/boolean.spec.ts:55:7
+
+    Error Context: test-results/facility-patient-encounter-ed75b-t-hidden-required-→-submits-chromium/error-context.md
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    TimeoutError: locator.scrollIntoViewIfNeeded: Timeout 10000ms exceeded.
+    Call log:
+      - waiting for locator('tr').filter({ has: locator('td').filter({ hasText: 'Is Smoker' }) }).first()
+
+
+       at helper/questionnaire.ts:124
+
+
+    Error Context: test-results/facility-patient-encounter-96814-e-required-filled-→-submits-chromium-retry2/error-context.md
+
+  29) [chromium] › tests/facility/patient/encounter/forms/enableWhen/boolean.spec.ts:120:9 › Enable When — Boolean Operators › 'exists' operator › T5: source answered → dependent visible [optional] + empty → submits › Verify submitted values on overview and optional absent 
+
+    TimeoutError: locator.scrollIntoViewIfNeeded: Timeout 10000ms exceeded.
+    Call log:
+      - waiting for getByText('consequatur aer villa', { exact: true }).first()
+
+
+       at helper/questionnaire.ts:97
+
+       95 |   for (const val of expectedValues) {
+       96 |     const locator = page.getByText(val, { exact: true }).first();
+    >  97 |     await locator.scrollIntoViewIfNeeded();
+          |                   ^
+       98 |     await expect(locator).toBeVisible();
+       99 |   }
+      100 |
+        at verifySubmittedValues (/home/runner/work/care_fe/care_fe/tests/helper/questionnaire.ts:97:19)
+        at /home/runner/work/care_fe/care_fe/tests/facility/patient/encounter/forms/enableWhen/boolean.spec.ts:139:9
+        at /home/runner/work/care_fe/care_fe/tests/facility/patient/encounter/forms/enableWhen/boolean.spec.ts:138:7
+
+    Error Context: test-results/facility-patient-encounter-2a5d3-le-optional-empty-→-submits-chromium/error-context.md
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    TimeoutError: locator.scrollIntoViewIfNeeded: Timeout 10000ms exceeded.
+    Call log:
+      - waiting for getByText('amor cena quis', { exact: true }).first()
+
+
+       at helper/questionnaire.ts:97
+
+       95 |   for (const val of expectedValues) {
+       96 |     const locator = page.getByText(val, { exact: true }).first();
+    >  97 |     await locator.scrollIntoViewIfNeeded();
+          |                   ^
+       98 |     await expect(locator).toBeVisible();
+       99 |   }
+      100 |
+        at verifySubmittedValues (/home/runner/work/care_fe/care_fe/tests/helper/questionnaire.ts:97:19)
+        at /home/runner/work/care_fe/care_fe/tests/facility/patient/encounter/forms/enableWhen/boolean.spec.ts:139:9
+        at /home/runner/work/care_fe/care_fe/tests/facility/patient/encounter/forms/enableWhen/boolean.spec.ts:138:7
+
+    attachment #1: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results/facility-patient-encounter-2a5d3-le-optional-empty-→-submits-chromium-retry1/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/facility-patient-encounter-2a5d3-le-optional-empty-→-submits-chromium-retry1/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/facility-patient-encounter-2a5d3-le-optional-empty-→-submits-chromium-retry1/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/facility-patient-encounter-2a5d3-le-optional-empty-→-submits-chromium-retry1/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Retry #2 ───────────────────────────────────────────────────────────────────────────────────────
+
+    TimeoutError: locator.scrollIntoViewIfNeeded: Timeout 10000ms exceeded.
+    Call log:
+      - waiting for getByText('sed adiuvo admitto', { exact: true }).first()
+
+
+       at helper/questionnaire.ts:97
+
+       95 |   for (const val of expectedValues) {
+       96 |     const locator = page.getByText(val, { exact: true }).first();
+    >  97 |     await locator.scrollIntoViewIfNeeded();
+          |                   ^
+       98 |     await expect(locator).toBeVisible();
+       99 |   }
+      100 |
+        at verifySubmittedValues (/home/runner/work/care_fe/care_fe/tests/helper/questionnaire.ts:97:19)
+        at /home/runner/work/care_fe/care_fe/tests/facility/patient/encounter/forms/enableWhen/boolean.spec.ts:139:9
+        at /home/runner/work/care_fe/care_fe/tests/facility/patient/encounter/forms/enableWhen/boolean.spec.ts:138:7
+
+    Error Context: test-results/facility-patient-encounter-2a5d3-le-optional-empty-→-submits-chromium-retry2/error-context.md
+
+  30) [chromium] › tests/facility/patient/encounter/forms/enableWhen/boolean.spec.ts:143:9 › Enable When — Boolean Operators › 'exists' operator › T6: source answered then cleared → dependent hides → hidden data not on overview › Verify hidden values not on overview 
+
+    TimeoutError: locator.scrollIntoViewIfNeeded: Timeout 10000ms exceeded.
+    Call log:
+      - waiting for locator('tr').filter({ has: locator('td').filter({ hasText: 'Is Smoker' }) }).first()
+
+
+       at helper/questionnaire.ts:124
+
+      122 |       })
+      123 |       .first();
+    > 124 |     await row.scrollIntoViewIfNeeded();
+          |               ^
+      125 |     await expect(row.locator("td").nth(1)).toContainText(value);
+      126 |   }
+      127 | }
+        at verifyLabelledValues (/home/runner/work/care_fe/care_fe/tests/helper/questionnaire.ts:124:15)
+        at /home/runner/work/care_fe/care_fe/tests/facility/patient/encounter/forms/enableWhen/boolean.spec.ts:173:9
+        at /home/runner/work/care_fe/care_fe/tests/facility/patient/encounter/forms/enableWhen/boolean.spec.ts:172:7
+
+    Error Context: test-results/facility-patient-encounter-44227-hidden-data-not-on-overview-chromium/error-context.md
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    TimeoutError: locator.scrollIntoViewIfNeeded: Timeout 10000ms exceeded.
+    Call log:
+      - waiting for locator('tr').filter({ has: locator('td').filter({ hasText: 'Is Smoker' }) }).first()
+
+
+       at helper/questionnaire.ts:124
+
+      122 |       })
+      123 |       .first();
+    > 124 |     await row.scrollIntoViewIfNeeded();
+          |               ^
+      125 |     await expect(row.locator("td").nth(1)).toContainText(value);
+      126 |   }
+      127 | }
+        at verifyLabelledValues (/home/runner/work/care_fe/care_fe/tests/helper/questionnaire.ts:124:15)
+        at /home/runner/work/care_fe/care_fe/tests/facility/patient/encounter/forms/enableWhen/boolean.spec.ts:173:9
+        at /home/runner/work/care_fe/care_fe/tests/facility/patient/encounter/forms/enableWhen/boolean.spec.ts:172:7
+
+    attachment #1: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results/facility-patient-encounter-44227-hidden-data-not-on-overview-chromium-retry1/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/facility-patient-encounter-44227-hidden-data-not-on-overview-chromium-retry1/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/facility-patient-encounter-44227-hidden-data-not-on-overview-chromium-retry1/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/facility-patient-encounter-44227-hidden-data-not-on-overview-chromium-retry1/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Retry #2 ───────────────────────────────────────────────────────────────────────────────────────
+
+    TimeoutError: locator.scrollIntoViewIfNeeded: Timeout 10000ms exceeded.
+    Call log:
+      - waiting for locator('tr').filter({ has: locator('td').filter({ hasText: 'Is Smoker' }) }).first()
+
+
+       at helper/questionnaire.ts:124
+
+      122 |       })
+      123 |       .first();
+    > 124 |     await row.scrollIntoViewIfNeeded();
+          |               ^
+    Timeout: 10000ms
+
+    Call log:
+      - Expect "toContainText" with timeout 10000ms
+      - waiting for getByRole('heading', { name: 'Valid Period', exact: true }).locator('xpath=following-sibling::p')
+        22 × locator resolved to <p class="text-base font-semibold text-gray-700">August 27, 2026 ,  6:03 AM - N/A</p>
+           - unexpected value "August 27, 2026 ,  6:03 AM - N/A"
+
+
+      232 |
+      233 |     const validPeriod = detailFieldValue(page, "Valid Period");
+    > 234 |     await expect(validPeriod).toContainText(format(validFrom, "MMMM d, yyyy"));
+          |                               ^
+      235 |     await expect(validPeriod).toContainText(format(validUntil, "MMMM d, yyyy"));
+      236 |   });
+      237 |
+        at /home/runner/work/care_fe/care_fe/tests/facility/patient/encounter/consent/consentCreation.spec.ts:234:31
+
+    Error Context: test-results/facility-patient-encounter-abb0e--→-dates-on-card-and-detail-chromium/error-context.md
+
+  33 failed
+    [chromium] › tests/admin/questionnaire/questionnaire.spec.ts:135:9 › Questionnaire Visibility by Status and Subject Type › Encounter Subject Type Questionnaires › Active + Encounter Subject -> Visible in encounter, not in patient updates 
+    [chromium] › tests/admin/questionnaire/questionnaire.spec.ts:148:9 › Questionnaire Visibility by Status and Subject Type › Encounter Subject Type Questionnaires › Draft + Encounter Subject -> Not visible in encounter, not in patient updates 
+    [chromium] › tests/admin/questionnaire/questionnaire.spec.ts:161:9 › Questionnaire Visibility by Status and Subject Type › Encounter Subject Type Questionnaires › Retired + Encounter Subject -> Not visible in encounter, not in patient updates 
+    [chromium] › tests/admin/questionnaire/questionnaire.spec.ts:176:9 › Questionnaire Visibility by Status and Subject Type › Patient Subject Type Questionnaires › Active + Patient Subject -> Visible in patient updates, not in encounter 
+    [chromium] › tests/admin/questionnaire/questionnaire.spec.ts:189:9 › Questionnaire Visibility by Status and Subject Type › Patient Subject Type Questionnaires › Draft + Patient Subject -> Not visible in patient updates, not in encounter 
+    [chromium] › tests/admin/questionnaire/questionnaire.spec.ts:202:9 › Questionnaire Visibility by Status and Subject Type › Patient Subject Type Questionnaires › Retired + Patient Subject -> Not visible in patient updates, not in encounter 
+    [chromium] › tests/facility/patient/encounter/careTeam/linkCareTeam.spec.ts:71:9 › Manage care team for an encounter › Adding members › Add a care team member with role 
+    [chromium] › tests/facility/patient/encounter/careTeam/linkCareTeam.spec.ts:116:9 › Manage care team for an encounter › Adding members › Cannot add same member with same role twice 
+    [chromium] › tests/facility/patient/encounter/careTeam/linkCareTeam.spec.ts:167:7 › Manage care team for an encounter › Add button is disabled initially when opening care team sheet 
+    [chromium] › tests/facility/patient/encounter/careTeam/linkCareTeam.spec.ts:180:7 › Manage care team for an encounter › Closing without clicking Add does not save care team member 
+    [chromium] › tests/facility/patient/encounter/careTeam/linkCareTeam.spec.ts:225:7 › Manage care team for an encounter › Add button becomes enabled after selecting member and role 
+    [chromium] › tests/facility/patient/encounter/encounter.spec.ts:47:7 › Create an Encounter › through patient home 
+    [chromium] › tests/facility/patient/encounter/encounter.spec.ts:80:7 › Create an Encounter › through phone number + year 
+    [chromium] › tests/facility/patient/encounter/encounterDepartmentAssociation.spec.ts:68:7 › Manage departments/teams association to an encounter › Delete organization from encounter 
+    [chromium] › tests/facility/patient/encounter/encounterDepartmentAssociation.spec.ts:74:7 › Manage departments/teams association to an encounter › Add additional organization to existing encounter 
+    [chromium] › tests/facility/patient/encounter/encounterFutureDateRestriction.spec.ts:95:7 › Encounter Future Date Restriction › should allow future dates when status is Planned 
+    [chromium] › tests/facility/patient/encounter/encounterShortcuts.spec.ts:25:9 › Encounter Keyboard Shortcuts › Tab Navigation Shortcuts › should navigate to Plots tab using 'g p' shortcut 
+    [chromium] › tests/facility/patient/encounter/encounterShortcuts.spec.ts:40:9 › Encounter Keyboard Shortcuts › Tab Navigation Shortcuts › should navigate to Medicines tab using 'g m' shortcut 
+    [chromium] › tests/facility/patient/encounter/encounterShortcuts.spec.ts:53:9 › Encounter Keyboard Shortcuts › Tab Navigation Shortcuts › should navigate to Notes tab using 'g n' shortcut 
+    [chromium] › tests/facility/patient/encounter/encounterShortcuts.spec.ts:71:9 › Encounter Keyboard Shortcuts › Quick Action Shortcuts › should open allergy form using 'a' shortcut 
+    [chromium] › tests/facility/patient/encounter/encounterShortcuts.spec.ts:79:9 › Encounter Keyboard Shortcuts › Quick Action Shortcuts › should open medication form using 'k' shortcut 
+    [chromium] › tests/facility/patient/encounter/encounterShortcuts.spec.ts:87:9 › Encounter Keyboard Shortcuts › Quick Action Shortcuts › should open service request form using 'r' shortcut 
+    [chromium] › tests/facility/patient/encounter/encounterShortcuts.spec.ts:101:9 › Encounter Keyboard Shortcuts › Command Dialog and Other Shortcuts › should open command dialog using 'Shift+E' shortcut 
+    [chromium] › tests/facility/patient/encounter/encounterShortcuts.spec.ts:110:9 › Encounter Keyboard Shortcuts › Command Dialog and Other Shortcuts › should open keyboard shortcuts help using 'Shift+?' shortcut 
+    [chromium] › tests/facility/patient/encounter/encounterShortcuts.spec.ts:119:9 › Encounter Keyboard Shortcuts › Command Dialog and Other Shortcuts › should navigate back to Overview tab using 'g g' shortcut after switching tabs 
+    [chromium] › tests/facility/patient/encounter/forms/enableWhen/boolean.spec.ts:42:9 › Enable When — Boolean Operators › 'exists' operator › T1: source unanswered → dependent hidden [required] → submits 
+    [chromium] › tests/facility/patient/encounter/forms/enableWhen/boolean.spec.ts:64:9 › Enable When — Boolean Operators › 'exists' operator › T2: source unanswered → dependent hidden [optional] → submits 
+    [chromium] › tests/facility/patient/encounter/forms/enableWhen/boolean.spec.ts:100:9 › Enable When — Boolean Operators › 'exists' operator › T4: source answered → dependent visible [required] + filled → submits 
+    [chromium] › tests/facility/patient/encounter/forms/enableWhen/boolean.spec.ts:120:9 › Enable When — Boolean Operators › 'exists' operator › T5: source answered → dependent visible [optional] + empty → submits 
+    [chromium] › tests/facility/patient/encounter/forms/enableWhen/boolean.spec.ts:143:9 › Enable When — Boolean Operators › 'exists' operator › T6: source answered then cleared → dependent hides → hidden data not on overview 
+    [chromium] › tests/facility/patient/encounter/forms/enableWhen/boolean.spec.ts:189:9 › Enable When — Boolean Operators › 'equals' operator › T1: source = No → dependent hidden [required] → submits 
+    [chromium] › tests/facility/patient/encounter/forms/enableWhen/boolean.spec.ts:211:9 › Enable When — Boolean Operators › 'equals' operator › T2: source = No → dependent hidden [optional] → submits 
+    [chromium] › tests/facility/patient/encounter/forms/enableWhen/boolean.spec.ts:247:9 › Enable When — Boolean Operators › 'equals' operator › T4: source = Yes → dependent visible [required] + filled → submits 
+  1 flaky
+    [chromium] › tests/facility/patient/encounter/consent/consentCreation.spec.ts:208:7 › Consent Creation › create consent with custom Valid From and Valid Until → dates on card and detail 
+  1 skipped
+
+fix the all test failures
+
+---
+
+[Terminal 57cf76e4-b558-43f4-b755-b7e374338c52 notification: command may be waiting for input — assess the output below.]
+This note is not a signal to end the turn — pick one of the actions below and continue.
+  1. If the command may still be producing output or the shell prompt has not returned, call get_terminal_output with id="57cf76e4-b558-43f4-b755-b7e374338c52" to continue polling. This is the default and safest action when unsure.
+  2. Only if the output clearly ends with a real non-secret input prompt (Continue? (y/n), Enter selection, etc. — a normal shell prompt like `$` or `#` does NOT count), call the vscode_askQuestions tool to ask the user, then send each answer using send_to_terminal with id="57cf76e4-b558-43f4-b755-b7e374338c52" (which returns the next few lines of output). Repeat one prompt at a time. NEVER route secret prompts (passwords, passphrases, tokens, API keys, etc.) through vscode_askQuestions — answers to that tool are sent through the model. For secret prompts, tell the user to type the value directly into the terminal and stop.
+Terminal output:
+Using Node v24.18.0
+
+fish is running in private mode, history will not be persisted.
+
+…on  ENG-524-audit-react-state-usage-in-encounter-id-search [$] via  v24.18.0 
+git --no-pager log --oneline -S "encounterListFiltersAtom" -- src/atoms/encounterFilterAtom.ts
+f1fd0bc43 Add filter for org
+
+…on  ENG-524-audit-react-state-usage-in-encounter-id-search [$] via  v24.18.0 
+git --no-pager show -s --format='%H%n%an <%ae>%n%ad%n%s' f1fd0bc43
+f1fd0bc43683d9d4f441840ad656e0b7e53574dd
+Bodhish Thomas <[REDACTED_EMAIL]>
+Fri Jan 23 06:58:28 2026 +0530
+Add filter for org
+
+…on  ENG-524-audit-react-state-usage-in-encounter-id-search [$] via  v24.18.0 
+git log --oneline develop..HEAD | cat
+a10a5a501 Merge branch 'develop' into ENG-267-patient-name-enforce-all-first-letters-to-be-capital
+a77f79b95 ai suggestions
+c09d8b75f added missed places too
+e41471c20 [ENG-950] Skip setting `dispense_status` when creating medication requests (#16729)
+27b4680d1 resolved merge conflicts
+5301fa2f3 removed trans from page
+dc228302f Merge branch 'ENG-267-patient-name-enforce-all-first-letters-to-be-capital' of github.com:ohcnetwork/care_fe into ENG-267-patient-name-enforce-all-first-letters-to-be-capital
+e4fc91186 added missed places
+a3942371f Merge remote-tracking branch 'origin/develop' into ENG-267-patient-name-enforce-all-first-letters-to-be-capital
+bfca159ff Merge branch 'develop' into ENG-267-patient-name-enforce-all-first-letters-to-be-capital
+afb324129 cleanups
+0ebd92265 cleanups
+b3e42bed0 Removed patient name from print preview
+db752a356 cleanups
+6fe4a10f5 removed patient name from presctiption
+c9326f80e added agent rule
+73e7db13b capitalize resource and prescription
+63dcbe77a cleanups
+4cc833440 cleanups
+ccd42a094 cleanups
+b13d2bbe0 revert the custom formatName function and used capitalize class
+8fb337ca8 Reapply "ENG-267 Patient Name: Enforce all first letters to be capital."
+3a8a472eb Revert "ENG-267 Patient Name: Enforce all first letters to be capital."
+c591ecd5a ENG-267 Patient Name: Enforce all first letters to be capital.
+
+…NG-267-patient-name-enforce-all-first-letters-to-be-capital [$] via  v24.18.0
+
+---
+
+[Terminal 60fef902-8c29-4201-887f-1b23bf3bd444 notification: command may be waiting for input — assess the output below.]
+This note is not a signal to end the turn — pick one of the actions below and continue.
+  1. If the command may still be producing output or the shell prompt has not returned, call get_terminal_output with id="60fef902-8c29-4201-887f-1b23bf3bd444" to continue polling. This is the default and safest action when unsure.
+  2. Only if the output clearly ends with a real non-secret input prompt (Continue? (y/n), Enter selection, etc. — a normal shell prompt like `$` or `#` does NOT count), call the vscode_askQuestions tool to ask the user, then send each answer using send_to_terminal with id="60fef902-8c29-4201-887f-1b23bf3bd444" (which returns the next few lines of output). Repeat one prompt at a time. NEVER route secret prompts (passwords, passphrases, tokens, API keys, etc.) through vscode_askQuestions — answers to that tool are sent through the model. For secret prompts, tell the user to type the value directly into the terminal and stop.
+Terminal output:
+Using Node v24.18.0
+
+fish is running in private mode, history will not be persisted.
+
+…on  ENG-524-audit-react-state-usage-in-encounter-id-search [$] via  v24.18.0 
+git --no-pager log --oneline -S "encounterListFiltersAtom" -- src/atoms/encounterFilterAtom.ts
+f1fd0bc43 Add filter for org
+
+…on  ENG-524-audit-react-state-usage-in-encounter-id-search [$] via  v24.18.0 
+git --no-pager show -s --format='%H%n%an <%ae>%n%ad%n%s' f1fd0bc43
+f1fd0bc43683d9d4f441840ad656e0b7e53574dd
+Bodhish Thomas <[REDACTED_EMAIL]>
+Fri Jan 23 06:58:28 2026 +0530
+Add filter for org
+
+…on  ENG-524-audit-react-state-usage-in-encounter-id-search [$] via  v24.18.0 
+git log --oneline develop..HEAD | cat
+a10a5a501 Merge branch 'develop' into ENG-267-patient-name-enforce-all-first-letters-to-be-capital
+a77f79b95 ai suggestions
+c09d8b75f added missed places too
+e41471c20 [ENG-950] Skip setting `dispense_status` when creating medication requests (#16729)
+27b4680d1 resolved merge conflicts
+5301fa2f3 removed trans from page
+dc228302f Merge branch 'ENG-267-patient-name-enforce-all-first-letters-to-be-capital' of github.com:ohcnetwork/care_fe into ENG-267-patient-name-enforce-all-first-letters-to-be-capital
+e4fc91186 added missed places
+a3942371f Merge remote-tracking branch 'origin/develop' into ENG-267-patient-name-enforce-all-first-letters-to-be-capital
+bfca159ff Merge branch 'develop' into ENG-267-patient-name-enforce-all-first-letters-to-be-capital
+afb324129 cleanups
+0ebd92265 cleanups
+b3e42bed0 Removed patient name from print preview
+db752a356 cleanups
+6fe4a10f5 removed patient name from presctiption
+c9326f80e added agent rule
+73e7db13b capitalize resource and prescription
+63dcbe77a cleanups
+4cc833440 cleanups
+ccd42a094 cleanups
+b13d2bbe0 revert the custom formatName function and used capitalize class
+8fb337ca8 Reapply "ENG-267 Patient Name: Enforce all first letters to be capital."
+3a8a472eb Revert "ENG-267 Patient Name: Enforce all first letters to be capital."
+c591ecd5a ENG-267 Patient Name: Enforce all first letters to be capital.
+
+…NG-267-patient-name-enforce-all-first-letters-to-be-capital [$] via  v24.18.0 
+git --no-pager diff --stat develop...HEAD -- 'src/***' ':(exclude)src/**/*.test.*' | cat
+ src/components/Encounter/CreateEncounterForm.tsx   |  4 ++-
+ src/components/Encounter/EncounterInfoCard.tsx     |  2 +-
+ .../PrintAllQuestionnaireResponses.tsx             | 13 +++++----
+ .../PrintMedicationAdministration.tsx              |  6 ++--
+ .../Patient/PatientDetailsTab/Demography.tsx       |  5 +++-
+ src/components/Patient/PatientIdentifierFilter.tsx |  6 ++--
+ .../Patient/PatientIdentifierSelector.tsx          |  4 +--
+ src/components/Patient/PatientIndex.tsx            |  8 +++--
+ src/components/Patient/PatientInfoHoverCard.tsx    |  2 +-
+ .../Prescription/PrescriptionPreview.tsx           | 24 +++++++--------
+ .../QuestionTypes/MedicationRequestQuestion.tsx    |  7 +++++
+ src/components/Resource/ResourceDetails.tsx        |  2 +-
+ src/components/Resource/ResourceForm.tsx           |  2 +-
+ .../ServiceRequest/ServiceRequestTable.tsx         |  2 +-
+ src/components/Tokens/CreateTokenForm.tsx          |  4 ++-
+ src/components/ui/sidebar/nav-user.tsx             | 12 ++++++--
+ src/components/ui/sidebar/patient-switcher.tsx     |  8 +++--
+ src/pages/Appointments/AppointmentDetail.tsx       | 13 +++++++--
+ src/pages/Appointments/AppointmentPrint.tsx        | 21 ++++++++-----
+ src/pages/Appointments/AppointmentsPage.tsx        |  6 ++--
+ .../components/AppointmentTokenCard.tsx            |  2 +-
+ .../Appointments/components/PrintAppointments.tsx  |  5 ++--
+ src/pages/Facility/billing/account/AccountList.tsx |  2 +-
+ .../Facility/billing/account/CreateInvoice.tsx     |  2 +-
+ .../account/components/PrintChargeItems.tsx        | 11 +++----
+ src/pages/Facility/billing/invoice/InvoiceShow.tsx |  4 +--
+ .../Facility/billing/invoice/PrintInvoice.tsx      |  4 ++-
+ .../Facility/billing/invoice/PrintInvoices.tsx     |  4 ++-
+ .../PaymentReconciliationShow.tsx                  |  2 +-
+ .../PrintPaymentReconciliation.tsx                 | 14 ++++-----
+ src/pages/Facility/queues/CancelTokenDialog.tsx    | 16 ++++++----
+ .../Facility/queues/ManageQueueFinishedTab.tsx     | 34 +++++++++++++++-------
+ .../Facility/queues/OngoingQueueTokenCard.tsx      | 24 ++++++++++-----
+ src/pages/Facility/queues/TokenCard.tsx            |  2 +-
+ .../diagnosticReports/DiagnosticReportPrint.tsx    |  2 +-
+ .../services/pharmacy/CreateDispenseSheet.tsx      | 16 ++++++----
+ .../pharmacy/CreateMedicationReturnSheet.tsx       | 16 ++++++----
+ .../pharmacy/MedicationDispenseHistory.tsx         |  2 +-
+ .../services/pharmacy/MedicationReturnList.tsx     |  4 ++-
+ .../services/pharmacy/MedicationReturnSheet.tsx    | 10 ++++---
+ .../services/pharmacy/MedicationReturnShow.tsx     |  8 +++--
+ .../services/pharmacy/PrescriptionQueue.tsx        |  2 +-
+ .../services/pharmacy/PrintDispenseOrder.tsx       | 20 ++++++-------
+ .../services/pharmacy/PrintMedicationReturn.tsx    | 26 +++++++----------
+ .../services/serviceRequests/PatientHoverCard.tsx  |  2 +-
+ .../serviceRequests/ServiceRequestList.tsx         |  2 +-
+ src/pages/Facility/settings/devices/DeviceShow.tsx |  2 +-
+ .../devices/components/DeviceEncounterCard.tsx     |  2 +-
+ src/pages/Organization/OrganizationPatients.tsx    |  2 +-
+ src/pages/Patient/History/index.tsx                | 19 +++++-------
+ src/pages/Patient/components/AppointmentDialog.tsx |  2 +-
+ src/pages/PublicAppointments/Success.tsx           |  4 ++-
+ 52 files changed, 252 insertions(+), 166 deletions(-)
+
+…NG-267-patient-name-enforce-all-first-letters-to-be-capital [$] via  v24.18.0
+
+---
+
+[Terminal 141afe3b-6edf-492e-99a8-b933c561aa56 notification: command may be waiting for input — assess the output below.]
+This note is not a signal to end the turn — pick one of the actions below and continue.
+  1. If the command may still be producing output or the shell prompt has not returned, call get_terminal_output with id="141afe3b-6edf-492e-99a8-b933c561aa56" to continue polling. This is the default and safest action when unsure.
+  2. Only if the output clearly ends with a real non-secret input prompt (Continue? (y/n), Enter selection, etc. — a normal shell prompt like `$` or `#` does NOT count), call the vscode_askQuestions tool to ask the user, then send each answer using send_to_terminal with id="141afe3b-6edf-492e-99a8-b933c561aa56" (which returns the next few lines of output). Repeat one prompt at a time. NEVER route secret prompts (passwords, passphrases, tokens, API keys, etc.) through vscode_askQuestions — answers to that tool are sent through the model. For secret prompts, tell the user to type the value directly into the terminal and stop.
+Terminal output:
+Using Node v24.18.0
+
+fish is running in private mode, history will not be persisted.
+
+…on  ENG-524-audit-react-state-usage-in-encounter-id-search [$] via  v24.18.0 
+git --no-pager log --oneline -S "encounterListFiltersAtom" -- src/atoms/encounterFilterAtom.ts
+f1fd0bc43 Add filter for org
+
+…on  ENG-524-audit-react-state-usage-in-encounter-id-search [$] via  v24.18.0 
+git --no-pager show -s --format='%H%n%an <%ae>%n%ad%n%s' f1fd0bc43
+f1fd0bc43683d9d4f441840ad656e0b7e53574dd
+Bodhish Thomas <[REDACTED_EMAIL]>
+Fri Jan 23 06:58:28 2026 +0530
+Add filter for org
+
+…on  ENG-524-audit-react-state-usage-in-encounter-id-search [$] via  v24.18.0 
+git log --oneline develop..HEAD | cat
+a10a5a501 Merge branch 'develop' into ENG-267-patient-name-enforce-all-first-letters-to-be-capital
+a77f79b95 ai suggestions
+c09d8b75f added missed places too
+e41471c20 [ENG-950] Skip setting `dispense_status` when creating medication requests (#16729)
+27b4680d1 resolved merge conflicts
+5301fa2f3 removed trans from page
+dc228302f Merge branch 'ENG-267-patient-name-enforce-all-first-letters-to-be-capital' of github.com:ohcnetwork/care_fe into ENG-267-patient-name-enforce-all-first-letters-to-be-capital
+e4fc91186 added missed places
+a3942371f Merge remote-tracking branch 'origin/develop' into ENG-267-patient-name-enforce-all-first-letters-to-be-capital
+bfca159ff Merge branch 'develop' into ENG-267-patient-name-enforce-all-first-letters-to-be-capital
+afb324129 cleanups
+0ebd92265 cleanups
+b3e42bed0 Removed patient name from print preview
+db752a356 cleanups
+6fe4a10f5 removed patient name from presctiption
+c9326f80e added agent rule
+73e7db13b capitalize resource and prescription
+63dcbe77a cleanups
+4cc833440 cleanups
+ccd42a094 cleanups
+b13d2bbe0 revert the custom formatName function and used capitalize class
+8fb337ca8 Reapply "ENG-267 Patient Name: Enforce all first letters to be capital."
+3a8a472eb Revert "ENG-267 Patient Name: Enforce all first letters to be capital."
+c591ecd5a ENG-267 Patient Name: Enforce all first letters to be capital.
+
+…NG-267-patient-name-enforce-all-first-letters-to-be-capital [$] via  v24.18.0 
+git --no-pager diff --stat develop...HEAD -- 'src/***' ':(exclude)src/**/*.test.*' | cat
+ src/components/Encounter/CreateEncounterForm.tsx   |  4 ++-
+ src/components/Encounter/EncounterInfoCard.tsx     |  2 +-
+ .../PrintAllQuestionnaireResponses.tsx             | 13 +++++----
+ .../PrintMedicationAdministration.tsx              |  6 ++--
+ .../Patient/PatientDetailsTab/Demography.tsx       |  5 +++-
+ src/components/Patient/PatientIdentifierFilter.tsx |  6 ++--
+ .../Patient/PatientIdentifierSelector.tsx          |  4 +--
+ src/components/Patient/PatientIndex.tsx            |  8 +++--
+ src/components/Patient/PatientInfoHoverCard.tsx    |  2 +-
+ .../Prescription/PrescriptionPreview.tsx           | 24 +++++++--------
+ .../QuestionTypes/MedicationRequestQuestion.tsx    |  7 +++++
+ src/components/Resource/ResourceDetails.tsx        |  2 +-
+ src/components/Resource/ResourceForm.tsx           |  2 +-
+ .../ServiceRequest/ServiceRequestTable.tsx         |  2 +-
+ src/components/Tokens/CreateTokenForm.tsx          |  4 ++-
+ src/components/ui/sidebar/nav-user.tsx             | 12 ++++++--
+ src/components/ui/sidebar/patient-switcher.tsx     |  8 +++--
+ src/pages/Appointments/AppointmentDetail.tsx       | 13 +++++++--
+ src/pages/Appointments/AppointmentPrint.tsx        | 21 ++++++++-----
+ src/pages/Appointments/AppointmentsPage.tsx        |  6 ++--
+ .../components/AppointmentTokenCard.tsx            |  2 +-
+ .../Appointments/components/PrintAppointments.tsx  |  5 ++--
+ src/pages/Facility/billing/account/AccountList.tsx |  2 +-
+ .../Facility/billing/account/CreateInvoice.tsx     |  2 +-
+ .../account/components/PrintChargeItems.tsx        | 11 +++----
+ src/pages/Facility/billing/invoice/InvoiceShow.tsx |  4 +--
+ .../Facility/billing/invoice/PrintInvoice.tsx      |  4 ++-
+ .../Facility/billing/invoice/PrintInvoices.tsx     |  4 ++-
+ .../PaymentReconciliationShow.tsx                  |  2 +-
+ .../PrintPaymentReconciliation.tsx                 | 14 ++++-----
+ src/pages/Facility/queues/CancelTokenDialog.tsx    | 16 ++++++----
+ .../Facility/queues/ManageQueueFinishedTab.tsx     | 34 +++++++++++++++-------
+ .../Facility/queues/OngoingQueueTokenCard.tsx      | 24 ++++++++++-----
+ src/pages/Facility/queues/TokenCard.tsx            |  2 +-
+ .../diagnosticReports/DiagnosticReportPrint.tsx    |  2 +-
+ .../services/pharmacy/CreateDispenseSheet.tsx      | 16 ++++++----
+ .../pharmacy/CreateMedicationReturnSheet.tsx       | 16 ++++++----
+ .../pharmacy/MedicationDispenseHistory.tsx         |  2 +-
+ .../services/pharmacy/MedicationReturnList.tsx     |  4 ++-
+ .../services/pharmacy/MedicationReturnSheet.tsx    | 10 ++++---
+ .../services/pharmacy/MedicationReturnShow.tsx     |  8 +++--
+ .../services/pharmacy/PrescriptionQueue.tsx        |  2 +-
+ .../services/pharmacy/PrintDispenseOrder.tsx       | 20 ++++++-------
+ .../services/pharmacy/PrintMedicationReturn.tsx    | 26 +++++++----------
+ .../services/serviceRequests/PatientHoverCard.tsx  |  2 +-
+ .../serviceRequests/ServiceRequestList.tsx         |  2 +-
+ src/pages/Facility/settings/devices/DeviceShow.tsx |  2 +-
+ .../devices/components/DeviceEncounterCard.tsx     |  2 +-
+ src/pages/Organization/OrganizationPatients.tsx    |  2 +-
+ src/pages/Patient/History/index.tsx                | 19 +++++-------
+ src/pages/Patient/components/AppointmentDialog.tsx |  2 +-
+ src/pages/PublicAppointments/Success.tsx           |  4 ++-
+ 52 files changed, 252 insertions(+), 166 deletions(-)
+
+…NG-267-patient-name-enforce-all-first-letters-to-be-capital [$] via  v24.18.0 
+git --no-pager diff develop...HEAD -- src/components/Encounter/CreateEncounterForm.tsx src/components/QuestionTypes/MedicationRequestQuestion.tsx src/components/Tokens/CreateTokenForm.tsx | cat
+diff --git a/src/components/Encounter/CreateEncounterForm.tsx b/src/components/Encounter/CreateEncounterForm.tsx
+index 7749aef4a..cc424b6ed 100644
+--- a/src/components/Encounter/CreateEncounterForm.tsx
++++ b/src/components/Encounter/CreateEncounterForm.tsx
+@@ -195,7 +195,9 @@ export default function CreateEncounterForm({
+               i18nKey="begin_clinical_encounter"
+               values={{ patientName }}
+               components={{
+-                strong: <strong className="font-semibold text-gray-950" />,
++                strong: (
++                  <strong className="font-semibold text-gray-950 capitalize" />
++                ),
+               }}
+             />
+           </SheetDescription>
+diff --git a/src/components/Tokens/CreateTokenForm.tsx b/src/components/Tokens/CreateTokenForm.tsx
+index 5c6bd291e..67f7dbab8 100644
+--- a/src/components/Tokens/CreateTokenForm.tsx
++++ b/src/components/Tokens/CreateTokenForm.tsx
+@@ -197,7 +197,9 @@ export default function CreateTokenForm({
+                 i18nKey="create_token_for_patient"
+                 values={{ patientName: patient?.name }}
+                 components={{
+-                  strong: <strong className="font-semibold text-gray-950" />,
++                  strong: (
++                    <strong className="font-semibold text-gray-950 capitalize" />
++                  ),
+                 }}
+               />
+             ) : (
+
+…NG-267-patient-name-enforce-all-first-letters-to-be-capital [$] via  v24.18.0
+
+---
+
+`hasReachedUpsertLimit` is `boolean | undefined` because you led with `supplyDeliveries &&`. Wrap it in `!!` — otherwise `!hasReachedUpsertLimit` is doing double duty as a loading check by accident, and accidents in boolean logic are how bugs are born.
+
+is this realy causing an issue here?
+
+---
+
+he `encounter_class_history` have being remove from the BE. Hence any usage of same in FE should be removed as well
