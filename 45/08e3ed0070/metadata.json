@@ -1,0 +1,30 @@
+{
+  "cli_version": "0.9.0",
+  "checkpoint_id": "4508e3ed0070",
+  "strategy": "manual-commit",
+  "branch": "ENG-267-patient-name-enforce-all-first-letters-to-be-capital",
+  "checkpoints_count": 4,
+  "files_touched": [
+    "src/components/Medicine/MedicationAdministration/PrintMedicationAdministration.tsx",
+    "src/components/Patient/PatientIndex.tsx",
+    "src/components/ui/sidebar/nav-user.tsx",
+    "src/pages/Appointments/AppointmentPrint.tsx",
+    "src/pages/Facility/queues/OngoingQueueTokenCard.tsx"
+  ],
+  "sessions": [
+    {
+      "metadata": "/45/08e3ed0070/0/metadata.json",
+      "transcript": "/45/08e3ed0070/0/full.jsonl",
+      "compact_transcript": "/45/08e3ed0070/0/transcript.jsonl",
+      "content_hash": "/45/08e3ed0070/0/content_hash.txt",
+      "prompt": "/45/08e3ed0070/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 0,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 0,
+    "output_tokens": 0,
+    "api_call_count": 0
+  }
+}

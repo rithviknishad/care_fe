@@ -1,0 +1,35 @@
+`capitalize` is now on the wrapper that renders `token.patient ? token.patient.name : renderTokenNumber(token)`.
+ So when there is no patient you are also title-casing a token number. 
+Harmless today, silently wrong the moment token numbers contain letters.
+ Put the class on the name branch only.
+
+---
+
+`{patient?.name || phoneNumber}` under `capitalize`
+ - so when there is no patient you are title-casing a phone number. It 
+happens to be digits so nothing visibly breaks, but applying a name 
+formatting rule to a non-name value is exactly how these things rot. 
+Same pattern repeats a few lines down.
+
+---
+
+**`Broken`** — `capitalize` is applied to a composite string, not just the name.
+
+`valueClassName` lands on the whole value, which is ``${patient?.name} | ${formatPatientAge(patient, true)}, ${t(`GENDER__${patient.gender}`)}``. `text-transform: capitalize` therefore also hits:
+
+- the abbreviated age from `formatPatientAge(patient, true)` → `ageUnit()` returns `age_years_short` etc. (`"{{count}}y"`, `"{{count}}m"`, `"{{count}}d"`), so `32y` prints as `32Y` and `4m 3d` as `4M 3D`;
+- the gender label (`GENDER__male` → already `"Male"`, so harmless, but it is being transformed regardless).
+
+Minimal fix: keep the class scoped to the name only, e.g. split into a dedicated row for the name with `valueClassName="capitalize"` and a separate row for age/gender, or change `DetailRow`'s `value` to accept `ReactNode` here and wrap just the name in `<span className="capitalize">`
+
+---
+
+**React Doctor** · `react-doctor/js-combine-iterations` *(warning)*
+
+This loops over your list twice because .filter().map() makes two passes, so do it in one pass with .reduce() or a for...of loop
+
+**Fix** → Combine `.map().filter()` style chains into one pass with `.reduce()` or a `for...of` loop, so you only loop over the list once
+
+[](https://react.doctor/docs/rules/react-doctor/js-combine-iterations)
+
+is this vali?
