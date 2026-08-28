@@ -1,0 +1,90 @@
+{
+  "cli_version": "0.9.0",
+  "checkpoint_id": "318f2a0ff2dc",
+  "session_id": "9e89dc7e-bbc0-432c-ad13-d47f0ca1064b",
+  "strategy": "manual-commit",
+  "created_at": "2026-08-28T13:43:28.142084Z",
+  "branch": "ENG-500-support-for-creating-multiple-diagnostic-reports-in-a-service-request",
+  "checkpoints_count": 6,
+  "save_step_count": 6,
+  "files_touched": [
+    "public/locale/en.json",
+    "src/pages/Facility/services/diagnosticReports/MultipleDiagnosticReportsPrint.tsx",
+    "src/pages/Facility/services/serviceRequests/components/DiagnosticReportForm.tsx"
+  ],
+  "agent": "Copilot CLI",
+  "model": "",
+  "turn_id": "bfb6c281f9c9",
+  "compact_transcript_start": 0,
+  "token_usage": {
+    "input_tokens": 0,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 0,
+    "output_tokens": 0,
+    "api_call_count": 0
+  },
+  "session_metrics": {
+    "turn_count": 86
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-08-28T13:43:28.086687Z",
+    "agent_lines": 0,
+    "agent_removed": 4,
+    "human_added": 239,
+    "human_modified": 464,
+    "human_removed": 0,
+    "total_committed": 345,
+    "total_lines_changed": 707,
+    "agent_percentage": 0.5657708628005658,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 2,
+      "user_lines_added": 3,
+      "user_lines_removed": 1,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        "src/pages/Facility/services/inventory/externalSupply/deliveryOrder/DeliveryOrderShow.tsx": 3
+      },
+      "user_removed_per_file": {
+        "src/pages/Facility/services/inventory/externalSupply/deliveryOrder/DeliveryOrderShow.tsx": 1
+      }
+    },
+    {
+      "checkpoint_number": 3,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0
+    },
+    {
+      "checkpoint_number": 4,
+      "user_lines_added": 701,
+      "user_lines_removed": 462,
+      "agent_lines_added": 463,
+      "agent_lines_removed": 701,
+      "user_added_per_file": {
+        "src/pages/Facility/services/serviceRequests/components/DiagnosticReportForm.tsx": 701
+      },
+      "user_removed_per_file": {
+        "src/pages/Facility/services/serviceRequests/components/DiagnosticReportForm.tsx": 462
+      }
+    },
+    {
+      "checkpoint_number": 5,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 2,
+      "agent_lines_removed": 1
+    },
+    {
+      "checkpoint_number": 6,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 2,
+      "agent_lines_removed": 1
+    }
+  ]
+}
