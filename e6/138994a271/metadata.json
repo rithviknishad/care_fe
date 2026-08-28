@@ -1,0 +1,27 @@
+{
+  "cli_version": "0.9.0",
+  "checkpoint_id": "e6138994a271",
+  "strategy": "manual-commit",
+  "branch": "ENG-887-fix-internal-delivery-batch-failing",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "src/pages/Facility/services/inventory/externalSupply/deliveryOrder/AddSupplyDeliveryForm.tsx",
+    "src/pages/Facility/services/pharmacy/components/AddMedicationReturnItemForm.tsx"
+  ],
+  "sessions": [
+    {
+      "metadata": "/e6/138994a271/0/metadata.json",
+      "transcript": "/e6/138994a271/0/full.jsonl",
+      "compact_transcript": "/e6/138994a271/0/transcript.jsonl",
+      "content_hash": "/e6/138994a271/0/content_hash.txt",
+      "prompt": "/e6/138994a271/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 0,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 0,
+    "output_tokens": 0,
+    "api_call_count": 0
+  }
+}
