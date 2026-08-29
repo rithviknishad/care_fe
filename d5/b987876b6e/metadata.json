@@ -1,0 +1,29 @@
+{
+  "cli_version": "0.9.0",
+  "checkpoint_id": "d5b987876b6e",
+  "strategy": "manual-commit",
+  "branch": "chore/graphify",
+  "checkpoints_count": 3,
+  "files_touched": [
+    ".gitattributes",
+    ".gitignore",
+    ".husky/post-checkout",
+    ".husky/post-commit"
+  ],
+  "sessions": [
+    {
+      "metadata": "/d5/b987876b6e/0/metadata.json",
+      "transcript": "/d5/b987876b6e/0/full.jsonl",
+      "compact_transcript": "/d5/b987876b6e/0/transcript.jsonl",
+      "content_hash": "/d5/b987876b6e/0/content_hash.txt",
+      "prompt": "/d5/b987876b6e/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 28,
+    "cache_creation_tokens": 43101,
+    "cache_read_tokens": 938416,
+    "output_tokens": 11165,
+    "api_call_count": 15
+  }
+}

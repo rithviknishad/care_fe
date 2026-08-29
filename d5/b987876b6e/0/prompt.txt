@@ -1,0 +1,13 @@
+checkout the diff. i have done graphify hook install. question - will anyone new contributing to care_fe (this proj) face issues if they don't have graphify setup on their machine?
+
+---
+
+/login
+
+---
+
+is it better to use /usr/bin/env python instead?
+
+---
+
+do it
