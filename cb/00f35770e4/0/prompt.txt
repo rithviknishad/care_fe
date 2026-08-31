@@ -1,0 +1,41 @@
+When a user fill questionnaire in ios chrome, if the answer is to be choosen from a pop up then the after selection the form is getting scrolled to top. Why?
+
+---
+
+In the repo /Users/navaspavil/Projects/ohc/care_fe (React + Radix/shadcn), I need to diagnose a bug: on iOS Chrome (WebKit), when a user fills a questionnaire and picks an answer from a popup (Popover/Select/Command/Drawer/Dialog based value-set or option selectors), after selection the form scrolls back to the top.
+
+Please do a THOROUGH read-only investigation and report:
+
+1. Which components render the questionnaire form and its answer inputs. Look at src/components/Questionnaire/** (QuestionnaireForm.tsx, QuestionTypes/*, ValueSetSelect, etc.) and note which ones use Popover, Dialog, Drawer, Sheet, Select, Command, or `useBreakpoints` to swap to a Drawer on mobile.
+
+2. Report the exact contents of src/components/ui/popover.tsx, src/components/ui/select.tsx, src/components/ui/drawer.tsx, src/components/ui/dialog.tsx, src/components/ui/command.tsx and src/components/ui/sheet.tsx — specifically any usage of `modal`, `onCloseAutoFocus`, `onOpenAutoFocus`, `forceMount`, or scroll-lock related props.
+
+3. Look for any code in the questionnaire form that re-renders / remounts the whole form on answer change (e.g. state lifted to QuestionnaireForm, `key` props that change, useEffect that scrolls, `scrollIntoView`, `window.scrollTo`, `scrollTo`, `focus()` calls, `autoFocus`).
+
+4. Search the whole src/ for `scrollIntoView`, `window.scrollTo`, `scrollTop =`, `preventScroll`, `react-remove-scroll`, `body.style.overflow`, `position: fixed` on body, and any iOS/Safari specific workarounds already present.
+
+5. Check package.json for versions of radix-ui packages, vaul (drawer), cmdk, and react-remove-scroll.
+
+6. Note whether the questionnaire form container is a scrollable div (overflow-y-auto) or whether the page/body scrolls. Report the DOM/layout structure of the questionnaire page wrapper.
+
+Report file paths with line numbers and relevant code excerpts. Do NOT write or modify any code — research only.
+
+---
+
+Yeah
+
+---
+
+didn't work
+
+---
+
+Works, but can't we implement it with minor changes?
+
+---
+
+Fix background scrolls to top while opening drawer in ios.
+
+---
+
+It didn't fix, I can still reproduce it in questionnair
