@@ -1,0 +1,13 @@
+A `for` loop over every entry, containing a `switch` with exactly one `case`, that rebuilds the whole object each iteration and then ignores the loop variable anyway. This is three constructs doing the job of one `if`. Just destructure `product_expiration_date` out and be done with it.
+
+---
+
+A `for` loop over every entry, containing a `switch` with exactly one `case`, that rebuilds the whole object each iteration and then ignores the loop variable anyway. This is three constructs doing the job of one `if`. Just destructure `product_expiration_date` out and be done with it.
+
+---
+
+parseISO on an unvalidated URL query param. Feed it ?product_expiration_date_after=lol and you get an Invalid Date that silently propagates into the filter badge and isSameDay. A quick isValid() guard costs one line and saves a bug report.
+
+---
+
+parseISO on an unvalidated URL query param. Feed it ?product_expiration_date_after=lol and you get an Invalid Date that silently propagates into the filter badge and isSameDay. A quick isValid() guard costs one line and saves a bug report.
