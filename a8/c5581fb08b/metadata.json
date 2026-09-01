@@ -1,0 +1,24 @@
+{
+  "cli_version": "0.9.0",
+  "checkpoint_id": "a8c5581fb08b",
+  "strategy": "manual-commit",
+  "branch": "claude/observation-plot-sheet-77acfc",
+  "checkpoints_count": 2,
+  "files_touched": null,
+  "sessions": [
+    {
+      "metadata": "/a8/c5581fb08b/0/metadata.json",
+      "transcript": "/a8/c5581fb08b/0/full.jsonl",
+      "compact_transcript": "/a8/c5581fb08b/0/transcript.jsonl",
+      "content_hash": "/a8/c5581fb08b/0/content_hash.txt",
+      "prompt": "/a8/c5581fb08b/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 20,
+    "cache_creation_tokens": 16892,
+    "cache_read_tokens": 2976169,
+    "output_tokens": 8815,
+    "api_call_count": 10
+  }
+}

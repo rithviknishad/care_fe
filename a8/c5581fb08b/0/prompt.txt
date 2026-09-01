@@ -1,0 +1,48 @@
+<task-notification>
+<task-id>a4ec59f043d191670</task-id>
+<tool-use-id>REDACTED</tool-use-id>
+<output-file>/private/tmp/claude-501/-Users-bodhishthomas-code-care-fe--claude-worktrees-observation-plot-sheet-77acfc/1404f691-7e63-462e-a09f-1219ef8488b2/tasks/a4ec59f043d191670.output</output-file>
+<status>completed</status>
+<summary>Agent "Review Task 3 (spec + quality)" finished</summary>
+<note>A task-notification fires each time this agent stops with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>
+<result>### Spec Compliance
+✅ Spec compliant, with one pre-authorized deviation (verified below) and two accessibility gaps inherited verbatim from the brief.
+
+- File created at the exact specified path: `src/components/Common/Charts/observation-plot-sheet/ObservationFlowsheetTable.tsx`.
+- Props interface matches spec exactly: `{ columns, rows, hasNextPage, isFetchingNextPage, onLoadMore }`.
+- All 8 specified i18n keys added with verbatim English values; no extra keys added.
+- No reference ranges, no abnormal/normal shading, no color-coding by value, no directional arrows, no "Abnormal only" filter anywhere in the diff — confirmed absent by reading the full file body in the diff.
+- `data-cy="observation-flowsheet-scroll"` present, correctly spelled, on the scroll container (`ObservationFlowsheetTable.tsx:91` per the new file's own line numbering).
+
+**Checked risk 1 — en.json integrity.** Grepped the live file: each of the 8 new keys (`include_previous`, `n_recordings_one`, `n_recordings_other`, `newer`, `no_readings_recorded`, `observation_trend`, `showing_all_readings`, `this_encounter`) appears exactly once. Each of the 6 keys that must be reused, not re-added (`component`, `today`, `loading`, `no_data_available`, `latest`, `older`) also appears exactly once. `JSON.parse` succeeds; a Python `object_pairs_hook=list` scan confirms zero duplicate keys and that the full key list is alphabetically sorted. No finding.
+
+**Checked risk 2 — consumed types.** Read `src/components/Common/Charts/observation-plot-sheet/observationPivot.ts`: `PlotColumn.cells: Record&lt;string, ObservationListRead&gt;` and `PlotRow.key` is documented as `code.code` — "the key used to look a reading up in a column's cells." `pivotObservations` populates `column.cells[codeKey]` using `observation.main_code?.code`, the same key space as `row.key`. `column.cells[row.key]` (`ObservationFlowsheetTable.tsx:126`) is the correct access pattern. No finding.
+
+**Checked risk 3 — `formatValue` null handling.** Read `src/components/Facility/ConsultationDetails/QuestionnaireResponsesList.tsx:60-64`: `formatValue`'s first line is `if (!value) return "";`, which treats `null` and `undefined` identically (both falsy). `cell.value.value` is typed `string | null | undefined` (`src/types/emr/observation/observation.ts:31`, via `QuestionnaireSubmitResultValue`), while `formatValue`'s param type (`ResponseValue["value"]`) has no `null` in its union. The `?? undefined` coercion at `ObservationFlowsheetTable.tsx:140` is genuinely behavior-preserving — confirmed, not a finding.
+
+### Strengths
+- Exact-match implementation of the brief's Step 3 code, with only the pre-authorized, verified-safe null-coercion deviation.
+- Sticky first column correctly implemented in both `&lt;thead&gt;` (`sticky left-0 z-10 bg-gray-50`, line 96) and `&lt;tbody&gt;` (`sticky left-0 z-10 bg-white`, line 114) with explicit opaque backgrounds so scrolled content doesn't show through.
+- Pager buttons use the shadcn `Button` in its default (non-`asChild`) form, so they render as native `&lt;button&gt;` elements — keyboard-reachable by default — and both carry `aria-label` via reused `t("newer")`/`t("older")` keys (lines 71, 79).
+- No `dark:` Tailwind variants anywhere in the new file, but this matches the existing convention in the sibling table component `QuestionnaireResponsesList.tsx` (also zero `dark:` usage) — not a deviation from local practice.
+- Scroll-edge detection correctly no-ops when there is no overflow (browsers only fire `scroll` events when content is actually scrollable), so a narrower-than-container table cannot spuriously call `onLoadMore`.
+- Code style clean: no `any`, `interface` for props, named export, one component per file, PascalCase filename, double quotes/2-space/semicolons throughout.
+
+### Issues
+
+#### Critical (Must Fix)
+None.
+
+#### Important (Should Fix)
+1. **Missing `scope="col"` on header cells — plan-mandated.** `ObservationFlowsheetTable.tsx:96-105`: the corner `&lt;th&gt;{t("component")}&lt;/th&gt;` and every per-column `&lt;th&gt;{column.label}&lt;/th&gt;` in `&lt;thead&gt;` have no `scope` attribute, while the row headers correctly use `scope="row"` (line 113). This is a real gap for check (d): explicit `scope="col"`/`scope="row"` is the standard technique (WCAG H63) for reliably associating a data cell with both its row and column across screen readers, and this is a clinical flowsheet where a value-to-analyte misassociation is exactly the patient-safety-relevant class of bug the review calls out. This omission is present verbatim in the brief's own Step 3 code, so it is plan-mandated, not an implementer error — but it should still be fixed (add `scope="col"` to both header `&lt;th&gt;`s).
+
+2. **Scroll-driven pagination has a narrow re-fire race — plan-mandated, impact unverifiable from this diff.** `handleScroll` (`ObservationFlowsheetTable.tsx:42-51`) reads `isFetchingNextPage` from its render closure before calling `onLoadMore()`. During a fast/momentum scroll, several native `scroll` events can fire before React commits a re-render with an updated `isFetchingNextPage=true`, so `onLoadMore` could fire more than once for a single scroll gesture. This is exactly the brief's given code (the implementer flagged it themselves in the report rather than introducing it). Whether this matters depends on Task 5's wiring: if `onLoadMore` is backed directly by TanStack Query's `fetchNextPage`, that call already no-ops while a fetch is in flight, closing the gap at the query layer. Since Task 5 isn't in this diff, flag this for confirmation when Task 5 is reviewed.
+
+#### Minor (Nice to Have)
+1. **Pager buttons are never disabled**, even when there's nothing further to scroll in that direction (`ObservationFlowsheetTable.tsx:68-83`). Combined with the no-overflow case, a dataset small enough to fit entirely within the container width has no way to trigger `onLoadMore` at all — neither the scroll listener nor `scrollBy` (a no-op with nothing to scroll) can reach the edge. Whether this is reachable in practice depends on default page size vs. typical container width, which is set in Task 5 (not in this diff) — worth a QA check in Task 8 with a facility/encounter that has few readings.
+
+### Assessment
+**Task quality:** Approved
+**Reasoning:** The component is a faithful, verified implementation of the brief with a correctly-judged, behavior-preserving type-fix deviation; en.json integrity, type consumption, and the null-coercion were all independently confirmed against the actual source. The two Important findings are both present verbatim in the brief's own code rather than implementer errors, but are real and worth fixing — the missing `scope="col"` in particular is a one-line, low-risk fix worth making before this ships given the patient-safety framing of this table.</result>
+<usage><subagent_tokens>90066</subagent_tokens><tool_uses>9</tool_uses><duration_ms>202888</duration_ms></usage>
+</task-notification>
