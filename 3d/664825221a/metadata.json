@@ -3,7 +3,7 @@
   "checkpoint_id": "3d664825221a",
   "strategy": "manual-commit",
   "branch": "ENG-887-fix-internal-delivery-batch-failing",
-  "checkpoints_count": 11,
+  "checkpoints_count": 12,
   "files_touched": [
     "public/locale/en.json",
     "src/CAREUI/display/Callout.tsx",
@@ -22,6 +22,13 @@
       "compact_transcript": "/3d/664825221a/0/transcript.jsonl",
       "content_hash": "/3d/664825221a/0/content_hash.txt",
       "prompt": "/3d/664825221a/0/prompt.txt"
+    },
+    {
+      "metadata": "/3d/664825221a/1/metadata.json",
+      "transcript": "/3d/664825221a/1/full.jsonl",
+      "compact_transcript": "/3d/664825221a/1/transcript.jsonl",
+      "content_hash": "/3d/664825221a/1/content_hash.txt",
+      "prompt": ""
     }
   ],
   "token_usage": {
