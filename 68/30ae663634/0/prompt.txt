@@ -1,0 +1,62 @@
+<copilot_tauri_workspace>
+project_session_id: 4e9962c8-7816-469f-bd65-9cdb75b49cb3
+project_id: 7eb35961-8a74-4799-ac34-fa1a12b0ae45
+project_name: care_fe
+project_github_repo: ohcnetwork/care_fe
+project_default_branch: develop
+workspace_type: worktree
+workspace_name: New session
+workspace_branch: rithviknishad/refactored-memory
+workspace_path: /Users/rithviknishad/ohc.network/copilot-worktrees/ohcnetwork_care_fe/rithviknishad-refactored-memory
+repo_root: /Users/rithviknishad/ohc.network/copilot-worktrees/ohcnetwork_care_fe/rithviknishad-refactored-memory
+default_branch: develop
+base_branch: cursor/d69c5a49
+original_generated_branch: rithviknishad/refactored-memory
+current_branch: rithviknishad/refactored-memory
+</copilot_tauri_workspace>
+
+<copilot_working_context>
+container_kind: repository
+current_working_directory: /Users/rithviknishad/ohc.network/copilot-worktrees/ohcnetwork_care_fe/rithviknishad-refactored-memory
+current_working_directory_is_git_repo: true
+checkout_strategy: worktree
+member_repositories:
+- repo_name: care_fe
+  repo_full_name: ohcnetwork/care_fe
+  main_checkout_path: /Users/rithviknishad/ohc.network/ohcnetwork_care_fe
+  main_checkout_branch: develop
+  current_checkout_kind: worktree
+  current_checkout_path: /Users/rithviknishad/ohc.network/copilot-worktrees/ohcnetwork_care_fe/rithviknishad-refactored-memory
+  current_checkout_branch: rithviknishad/refactored-memory
+</copilot_working_context>
+
+<copilot_artifacts>
+artifacts_dir: /Users/rithviknishad/.copilot/session-state/4701ad7f-db81-4158-a3ad-163a446f689a/files
+Write scratch artifacts (plans, task lists, notes) in this folder instead of the repo.
+</copilot_artifacts>
+
+<branch_rename_request>
+Before creating or editing any files, call the rename_branch tool with a kebab-case version of the session name you chose.
+</branch_rename_request>
+
+Before working on this, understand what this does. https://github.com/ohcnetwork/care_fe/pull/16736 Analyze the changes. I want to make follow up changes.
+
+1. In LocationForm:223-226, 
+
+Every request in this bulk-create batch gets the same referenceId. It was equally broken before, sure, but you were right here retyping the line — reference ids exist so you can map a failed sub-request back to the bed that caused it. With N identical ids, the error toasts (and any future result mapping) are useless. Use bed.name or the index, like LocationImport already does.
+
+
+2. InvoiceChargeItemTitle:101-104
+
+Each query created here uses the default non-silent error handling, so every failed dispense is sent to the global QueryCache handler (src/Utils/request/queryClient.ts:26-28). This hook then emits failed_to_load_medication_details as well; with multiple failed dispenses, users receive one global toast per request plus the aggregate toast. Suppress the per-query global toast (or remove the aggregate notification) so the error is reported only once.
+
+I’d say, let’s switch back to what it was before. let’s keep using useQuery with batch request itself. i don’t want to change something that already works. actually this pr changes it to useQueries right. but out of scope of this pr. see what has changes and let’s revert it back, but just update to use new batch request.
+
+<github_references>
+#16736 - [ENG-895] Migrate batch API callers to the useBatchRequest hook [pr] [OPEN] (https://github.com/ohcnetwork/care_fe/pull/16736)
+ Labels: Changes Required, Type Changes, needs peer review
+</github_references>
+
+<system_notification>
+Reminder: This session currently has an auto-generated or placeholder name. Before replying to the user, call the `rename_session` tool to give it a short, descriptive title based on the user's intent.
+</system_notification>

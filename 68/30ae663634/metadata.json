@@ -1,0 +1,28 @@
+{
+  "cli_version": "0.9.0",
+  "checkpoint_id": "6830ae663634",
+  "strategy": "manual-commit",
+  "branch": "rithviknishad/batch-request-hook-followups",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "src/Utils/request/batch.ts",
+    "src/pages/Facility/billing/invoice/components/InvoiceChargeItemTitle.tsx",
+    "src/pages/Facility/settings/locations/LocationForm.tsx"
+  ],
+  "sessions": [
+    {
+      "metadata": "/68/30ae663634/0/metadata.json",
+      "transcript": "/68/30ae663634/0/full.jsonl",
+      "compact_transcript": "/68/30ae663634/0/transcript.jsonl",
+      "content_hash": "/68/30ae663634/0/content_hash.txt",
+      "prompt": "/68/30ae663634/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 0,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 0,
+    "output_tokens": 11283,
+    "api_call_count": 21
+  }
+}
