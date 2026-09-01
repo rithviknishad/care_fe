@@ -1,0 +1,14 @@
+make this as a reusable component @sym:UpsertLimitCallout  as the messag should be pass as a children prop and only this message is needed max_datapoints_per_upsert_limit for the selected place add new translation that "Select at most {{count}} deliveries at a time."
+
+---
+
+re-review this pr
+
+---
+
+2) this one is intentional
+3) - **`Polish`** — the schedule sheets pass redundant icon colors (`text-purple-500`, `text-warning-700`) that now duplicate the variant's `text-current`. [UpsertLimitCallout](vscode-file://vscode-app/Applications/Visual%20Studio%20Code.app/Contents/Resources/app/out/vs/code/electron-browser/workbench/workbench.html) correctly omits them; the schedule badges could too. fix this
+
+---
+
+re-review it
