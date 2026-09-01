@@ -1,0 +1,140 @@
+{
+  "cli_version": "0.9.0",
+  "checkpoint_id": "07cc6f1e3dd6",
+  "session_id": "9e89dc7e-bbc0-432c-ad13-d47f0ca1064b",
+  "strategy": "manual-commit",
+  "created_at": "2026-09-01T06:44:44.053852Z",
+  "branch": "issues/#14770/Enhancement-Patientcard-in-Queue-board",
+  "checkpoints_count": 11,
+  "save_step_count": 12,
+  "files_touched": [
+    "public/locale/en.json",
+    "src/pages/Facility/queues/CancelTokenDialog.tsx",
+    "src/pages/Facility/queues/OngoingQueueTokenCard.tsx",
+    "src/pages/Facility/queues/ServicePointSelector.tsx",
+    "src/pages/Facility/queues/utils.ts"
+  ],
+  "agent": "Copilot CLI",
+  "model": "",
+  "turn_id": "74571e393cd3",
+  "compact_transcript_start": 0,
+  "token_usage": {
+    "input_tokens": 0,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 0,
+    "output_tokens": 0,
+    "api_call_count": 0
+  },
+  "session_metrics": {
+    "turn_count": 104
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-09-01T06:44:43.931605Z",
+    "agent_lines": 713,
+    "agent_removed": 240,
+    "human_added": 0,
+    "human_modified": 17,
+    "human_removed": 6,
+    "total_committed": 730,
+    "total_lines_changed": 976,
+    "agent_percentage": 97.64344262295081,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 2,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0
+    },
+    {
+      "checkpoint_number": 3,
+      "user_lines_added": 3,
+      "user_lines_removed": 2,
+      "agent_lines_added": 20,
+      "agent_lines_removed": 10,
+      "user_added_per_file": {
+        "src/pages/Facility/queues/OngoingQueueTokenCard.tsx": 3
+      },
+      "user_removed_per_file": {
+        "src/pages/Facility/queues/OngoingQueueTokenCard.tsx": 2
+      }
+    },
+    {
+      "checkpoint_number": 4,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 23,
+      "agent_lines_removed": 10
+    },
+    {
+      "checkpoint_number": 5,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 23,
+      "agent_lines_removed": 10
+    },
+    {
+      "checkpoint_number": 6,
+      "user_lines_added": 6,
+      "user_lines_removed": 13,
+      "agent_lines_added": 81,
+      "agent_lines_removed": 106,
+      "user_added_per_file": {
+        "src/pages/Facility/queues/OngoingQueueTokenCard.tsx": 6
+      },
+      "user_removed_per_file": {
+        "src/pages/Facility/queues/OngoingQueueTokenCard.tsx": 13
+      }
+    },
+    {
+      "checkpoint_number": 7,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 68,
+      "agent_lines_removed": 100
+    },
+    {
+      "checkpoint_number": 8,
+      "user_lines_added": 8,
+      "user_lines_removed": 8,
+      "agent_lines_added": 76,
+      "agent_lines_removed": 108,
+      "user_added_per_file": {
+        "src/pages/Facility/queues/ServicePointSelector.tsx": 8
+      },
+      "user_removed_per_file": {
+        "src/pages/Facility/queues/ServicePointSelector.tsx": 8
+      }
+    },
+    {
+      "checkpoint_number": 9,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 68,
+      "agent_lines_removed": 100
+    },
+    {
+      "checkpoint_number": 10,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 69,
+      "agent_lines_removed": 101
+    },
+    {
+      "checkpoint_number": 11,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 68,
+      "agent_lines_removed": 100
+    },
+    {
+      "checkpoint_number": 12,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 78,
+      "agent_lines_removed": 108
+    }
+  ]
+}
