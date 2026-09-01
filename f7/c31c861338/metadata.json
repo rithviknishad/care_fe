@@ -1,0 +1,28 @@
+{
+  "cli_version": "0.9.0",
+  "checkpoint_id": "f7c31c861338",
+  "strategy": "manual-commit",
+  "branch": "claude/observation-plot-sheet-77acfc",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "package.json",
+    "src/components/Common/Charts/observation-plot-sheet/observationPivot.test.ts",
+    "src/components/Common/Charts/observation-plot-sheet/observationPivot.ts"
+  ],
+  "sessions": [
+    {
+      "metadata": "/f7/c31c861338/0/metadata.json",
+      "transcript": "/f7/c31c861338/0/full.jsonl",
+      "compact_transcript": "/f7/c31c861338/0/transcript.jsonl",
+      "content_hash": "/f7/c31c861338/0/content_hash.txt",
+      "prompt": "/f7/c31c861338/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 14,
+    "cache_creation_tokens": 200149,
+    "cache_read_tokens": 1406686,
+    "output_tokens": 10279,
+    "api_call_count": 7
+  }
+}
