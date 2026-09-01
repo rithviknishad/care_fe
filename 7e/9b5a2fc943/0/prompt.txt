@@ -1,0 +1,1803 @@
+`validateEncounterQuestion` now requires `hospitalization.discharge_disposition` for *all*
+ discharged encounters. For encounter classes where hospitalization 
+details are intentionally cleared/hidden (e.g. amb/vr/hh), this will 
+still raise a validation error and can block questionnaire submission.
+
+This issue also appears on line 205 of the same file
+
+is this valid?
+
+---
+
+[chromium] › tests/facility/patient/encounter/encounter.spec.ts:47:7 › Create an Encounter › through patient home 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('combobox', { name: 'Status' })
+    Expected: visible
+    Timeout: 10000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" with timeout 10000ms
+      - waiting for getByRole('combobox', { name: 'Status' })
+
+
+      74 |     // Encounter class is immutable after creation and no longer editable here,
+      75 |     // so verify the update form loaded via its Status combobox instead.
+    > 76 |     await expect(page.getByRole("combobox", { name: "Status" })).toBeVisible();
+         |                                                                  ^
+      77 |   });
+      78 |
+      79 |   test("through phone number + year", async ({ page }) => {
+        at /home/runner/work/care_fe/care_fe/tests/facility/patient/encounter/encounter.spec.ts:76:66
+
+    Error Context: test-results/facility-patient-encounter-ce0ec-ounter-through-patient-home-chromium/error-context.md
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('combobox', { name: 'Status' })
+    Expected: visible
+    Timeout: 10000ms
+    Error: element(s) not found
+
+    Locator: getByText('Test note P4TB0Pgkb1')
+    Expected: visible
+    Timeout: 10000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" with timeout 10000ms
+      - waiting for getByText('Test note P4TB0Pgkb1')
+
+
+      186 |
+      187 |     // Verify note is visible
+    > 188 |     await expect(page.getByText(noteText)).toBeVisible();
+          |                                            ^
+      189 |   });
+      190 |
+      191 |   test("create consent without note → See Details → no note section", async ({
+        at /home/runner/work/care_fe/care_fe/tests/facility/patient/encounter/consent/consentCreation.spec.ts:188:44
+
+    Error Context: test-results/facility-patient-encounter-b8c7f--See-Details-→-note-visible-chromium/error-context.md
+
+  1 failed
+    [chromium] › tests/facility/patient/encounter/encounter.spec.ts:47:7 › Create an Encounter › through patient home 
+  3 flaky
+    [chromium] › tests/admin/valueset/valuesetEdit.spec.ts:59:7 › ValueSet Edit › should edit all fields in valueset and verify changes 
+    [chromium] › tests/facility/billing/accountTransfer.spec.ts:371:7 › Account Transfer Payment › should show error when transfer amount exceeds total paid 
+    [chromium] › tests/facility/patient/encounter/consent/consentCreation.spec.ts:170:7 › Consent Creation › create consent with note → See Details → note visible 
+  116 passed (4.0m)
+
+
+this test is breaking fix it
+
+---
+
+update this chagne
+
+---
+
+[chromium] › tests/facility/patient/encounter/encounter.spec.ts:47:7 › Create an Encounter › through patient home 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('combobox', { name: 'Status' })
+    Expected: visible
+    Timeout: 10000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" with timeout 10000ms
+      - waiting for getByRole('combobox', { name: 'Status' })
+
+
+      74 |     // Encounter class is immutable after creation and no longer editable here,
+      75 |     // so verify the update form loaded via its Status combobox instead.
+    > 76 |     await expect(page.getByRole("combobox", { name: "Status" })).toBeVisible();
+         |                                                                  ^
+      77 |   });
+      78 |
+      79 |   test("through phone number + year", async ({ page }) => {
+        at /home/runner/work/care_fe/care_fe/tests/facility/patient/encounter/encounter.spec.ts:76:66
+
+    Error Context: test-results/facility-patient-encounter-ce0ec-ounter-through-patient-home-chromium/error-context.md
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('combobox', { name: 'Status' })
+    Expected: visible
+    Timeout: 10000ms
+    Error: element(s) not found
+
+    Locator: getByText('Test note P4TB0Pgkb1')
+    Expected: visible
+    Timeout: 10000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" with timeout 10000ms
+      - waiting for getByText('Test note P4TB0Pgkb1')
+
+
+      186 |
+      187 |     // Verify note is visible
+    > 188 |     await expect(page.getByText(noteText)).toBeVisible();
+          |                                            ^
+      189 |   });
+      190 |
+      191 |   test("create consent without note → See Details → no note section", async ({
+        at /home/runner/work/care_fe/care_fe/tests/facility/patient/encounter/consent/consentCreation.spec.ts:188:44
+
+    Error Context: test-results/facility-patient-encounter-b8c7f--See-Details-→-note-visible-chromium/error-context.md
+
+  1 failed
+    [chromium] › tests/facility/patient/encounter/encounter.spec.ts:47:7 › Create an Encounter › through patient home 
+  3 flaky
+    [chromium] › tests/admin/valueset/valuesetEdit.spec.ts:59:7 › ValueSet Edit › should edit all fields in valueset and verify changes 
+    [chromium] › tests/facility/billing/accountTransfer.spec.ts:371:7 › Account Transfer Payment › should show error when transfer amount exceeds total paid 
+    [chromium] › tests/facility/patient/encounter/consent/consentCreation.spec.ts:170:7 › Consent Creation › create consent with note → See Details → note visible 
+  116 passed (4.0m)
+
+
+this test is breaking fix it
+
+---
+
+`validateEncounterQuestion` now requires `hospitalization.discharge_disposition` for *all*
+ discharged encounters. For encounter classes where hospitalization 
+details are intentionally cleared/hidden (e.g. amb/vr/hh), this will 
+still raise a validation error and can block questionnaire submission.
+
+This issue also appears on line 205 of the same file.
+
+verify this if this valid fix it
+
+---
+
+["imp", "obsenc", "emer"] - hese set of classes are repeated. can we consider making it a const? `HOSPITALIZATION_ENCOUNTER_CLASSES`
+
+---
+
+newEncounter.hospitalization
+ can become null when merging EncounterRead into state 
+(EncounterRead.hospitalization is typed as Hospitalization | null). 
+Spreading a null value (`...newEncounter.hospitalization`) will throw at runtime (including in the else branch below). Use null-safe spreads in both places.
+
+is this vaid?
+
+---
+
+`andleUpdateEncounter` is called from a `useEffect` keyed on `encounterData`, and it now closes over `encounterData?.encounter_class`. On the very first render `encounterData`
+ is undefined, so every branch here silently no-ops and hospitalization 
+is neither cleared nor defaulted. Reading the class from a value that 
+may not have arrived yet, inside a handler that runs the moment it does 
+arrive, is a stale-closure trap waiting to bite. Pass the class in 
+explicitly or bail out until the query resolves.
+
+is this valid?
+
+---
+
+`encounterData` is async. On the first renders it is undefined, so `encounterClass` is undefined, every branch above falls through to the `else if` on line 228, and hospitalization gets rewritten with a disposition from... also-undefined `encounterData`.
+ The old code at least read a value that existed synchronously in state.
+ Either gate this whole handler on loaded data or keep the class on the 
+edit model.
+
+what about this
+
+---
+
+`validateEncounterQuestion` now requires `hospitalization.discharge_disposition` for *all*
+ discharged encounters. For encounter classes where hospitalization 
+details are intentionally cleared/hidden (e.g. amb/vr/hh), this will 
+still raise a validation error and can block questionnaire submission.
+
+This issue also appears on line 205 of the same file.
+
+is this bug really happen in fe
+
+---
+
+**The `if`/`else if` restructure changed behaviour**, and the new trailing branch stomps `discharge_disposition` back to the server value on every edit
+
+is this valid?
+
+---
+
+[Terminal ac00d212-b61b-4288-aec4-46628c2d3584 notification: command may be waiting for input — assess the output below.]
+This note is not a signal to end the turn — pick one of the actions below and continue.
+  1. If the command may still be producing output or the shell prompt has not returned, call get_terminal_output with id="ac00d212-b61b-4288-aec4-46628c2d3584" to continue polling. This is the default and safest action when unsure.
+  2. Only if the output clearly ends with a real non-secret input prompt (Continue? (y/n), Enter selection, etc. — a normal shell prompt like `$` or `#` does NOT count), call the vscode_askQuestions tool to ask the user, then send each answer using send_to_terminal with id="ac00d212-b61b-4288-aec4-46628c2d3584" (which returns the next few lines of output). Repeat one prompt at a time. NEVER route secret prompts (passwords, passphrases, tokens, API keys, etc.) through vscode_askQuestions — answers to that tool are sent through the model. For secret prompts, tell the user to type the value directly into the terminal and stop.
+Terminal output:
+Using Node v24.18.0
+
+fish is running in private mode, history will not be persisted.
+
+…on  ENG-524-audit-react-state-usage-in-encounter-id-search [$] via  v24.18.0 
+git --no-pager log --oneline -S "encounterListFiltersAtom" -- src/atoms/encounterFilterAtom.ts
+f1fd0bc43 Add filter for org
+
+…on  ENG-524-audit-react-state-usage-in-encounter-id-search [$] via  v24.18.0 
+git --no-pager show -s --format='%H%n%an <%ae>%n%ad%n%s' f1fd0bc43
+f1fd0bc43683d9d4f441840ad656e0b7e53574dd
+Bodhish Thomas <[REDACTED_EMAIL]>
+Fri Jan 23 06:58:28 2026 +0530
+Add filter for org
+
+…on  ENG-524-audit-react-state-usage-in-encounter-id-search [$] via  v24.18.0 
+git log --oneline develop..HEAD | cat
+a10a5a501 Merge branch 'develop' into ENG-267-patient-name-enforce-all-first-letters-to-be-capital
+a77f79b95 ai suggestions
+c09d8b75f added missed places too
+e41471c20 [ENG-950] Skip setting `dispense_status` when creating medication requests (#16729)
+27b4680d1 resolved merge conflicts
+5301fa2f3 removed trans from page
+dc228302f Merge branch 'ENG-267-patient-name-enforce-all-first-letters-to-be-capital' of github.com:ohcnetwork/care_fe into ENG-267-patient-name-enforce-all-first-letters-to-be-capital
+e4fc91186 added missed places
+a3942371f Merge remote-tracking branch 'origin/develop' into ENG-267-patient-name-enforce-all-first-letters-to-be-capital
+bfca159ff Merge branch 'develop' into ENG-267-patient-name-enforce-all-first-letters-to-be-capital
+afb324129 cleanups
+0ebd92265 cleanups
+b3e42bed0 Removed patient name from print preview
+db752a356 cleanups
+6fe4a10f5 removed patient name from presctiption
+c9326f80e added agent rule
+73e7db13b capitalize resource and prescription
+63dcbe77a cleanups
+4cc833440 cleanups
+ccd42a094 cleanups
+b13d2bbe0 revert the custom formatName function and used capitalize class
+8fb337ca8 Reapply "ENG-267 Patient Name: Enforce all first letters to be capital."
+3a8a472eb Revert "ENG-267 Patient Name: Enforce all first letters to be capital."
+c591ecd5a ENG-267 Patient Name: Enforce all first letters to be capital.
+
+…NG-267-patient-name-enforce-all-first-letters-to-be-capital [$] via  v24.18.0 
+git --no-pager diff --stat develop...HEAD -- 'src/***' ':(exclude)src/**/*.test.*' | cat
+ src/components/Encounter/CreateEncounterForm.tsx   |  4 ++-
+ src/components/Encounter/EncounterInfoCard.tsx     |  2 +-
+ .../PrintAllQuestionnaireResponses.tsx             | 13 +++++----
+ .../PrintMedicationAdministration.tsx              |  6 ++--
+ .../Patient/PatientDetailsTab/Demography.tsx       |  5 +++-
+ src/components/Patient/PatientIdentifierFilter.tsx |  6 ++--
+ .../Patient/PatientIdentifierSelector.tsx          |  4 +--
+ src/components/Patient/PatientIndex.tsx            |  8 +++--
+ src/components/Patient/PatientInfoHoverCard.tsx    |  2 +-
+ .../Prescription/PrescriptionPreview.tsx           | 24 +++++++--------
+ .../QuestionTypes/MedicationRequestQuestion.tsx    |  7 +++++
+ src/components/Resource/ResourceDetails.tsx        |  2 +-
+ src/components/Resource/ResourceForm.tsx           |  2 +-
+ .../ServiceRequest/ServiceRequestTable.tsx         |  2 +-
+ src/components/Tokens/CreateTokenForm.tsx          |  4 ++-
+ src/components/ui/sidebar/nav-user.tsx             | 12 ++++++--
+ src/components/ui/sidebar/patient-switcher.tsx     |  8 +++--
+ src/pages/Appointments/AppointmentDetail.tsx       | 13 +++++++--
+ src/pages/Appointments/AppointmentPrint.tsx        | 21 ++++++++-----
+ src/pages/Appointments/AppointmentsPage.tsx        |  6 ++--
+ .../components/AppointmentTokenCard.tsx            |  2 +-
+ .../Appointments/components/PrintAppointments.tsx  |  5 ++--
+ src/pages/Facility/billing/account/AccountList.tsx |  2 +-
+ .../Facility/billing/account/CreateInvoice.tsx     |  2 +-
+ .../account/components/PrintChargeItems.tsx        | 11 +++----
+ src/pages/Facility/billing/invoice/InvoiceShow.tsx |  4 +--
+ .../Facility/billing/invoice/PrintInvoice.tsx      |  4 ++-
+ .../Facility/billing/invoice/PrintInvoices.tsx     |  4 ++-
+ .../PaymentReconciliationShow.tsx                  |  2 +-
+ .../PrintPaymentReconciliation.tsx                 | 14 ++++-----
+ src/pages/Facility/queues/CancelTokenDialog.tsx    | 16 ++++++----
+ .../Facility/queues/ManageQueueFinishedTab.tsx     | 34 +++++++++++++++-------
+ .../Facility/queues/OngoingQueueTokenCard.tsx      | 24 ++++++++++-----
+ src/pages/Facility/queues/TokenCard.tsx            |  2 +-
+ .../diagnosticReports/DiagnosticReportPrint.tsx    |  2 +-
+ .../services/pharmacy/CreateDispenseSheet.tsx      | 16 ++++++----
+ .../pharmacy/CreateMedicationReturnSheet.tsx       | 16 ++++++----
+ .../pharmacy/MedicationDispenseHistory.tsx         |  2 +-
+ .../services/pharmacy/MedicationReturnList.tsx     |  4 ++-
+ .../services/pharmacy/MedicationReturnSheet.tsx    | 10 ++++---
+ .../services/pharmacy/MedicationReturnShow.tsx     |  8 +++--
+ .../services/pharmacy/PrescriptionQueue.tsx        |  2 +-
+ .../services/pharmacy/PrintDispenseOrder.tsx       | 20 ++++++-------
+ .../services/pharmacy/PrintMedicationReturn.tsx    | 26 +++++++----------
+ .../services/serviceRequests/PatientHoverCard.tsx  |  2 +-
+ .../serviceRequests/ServiceRequestList.tsx         |  2 +-
+ src/pages/Facility/settings/devices/DeviceShow.tsx |  2 +-
+ .../devices/components/DeviceEncounterCard.tsx     |  2 +-
+ src/pages/Organization/OrganizationPatients.tsx    |  2 +-
+ src/pages/Patient/History/index.tsx                | 19 +++++-------
+ src/pages/Patient/components/AppointmentDialog.tsx |  2 +-
+ src/pages/PublicAppointments/Success.tsx           |  4 ++-
+ 52 files changed, 252 insertions(+), 166 deletions(-)
+
+…NG-267-patient-name-enforce-all-first-letters-to-be-capital [$] via  v24.18.0 
+git --no-pager diff develop...HEAD -- src/components/Encounter/CreateEncounterForm.tsx src/components/QuestionTypes/MedicationRequestQuestion.tsx src/components/Tokens/CreateTokenForm.tsx | cat
+diff --git a/src/components/Encounter/CreateEncounterForm.tsx b/src/components/Encounter/CreateEncounterForm.tsx
+index 7749aef4a..cc424b6ed 100644
+--- a/src/components/Encounter/CreateEncounterForm.tsx
++++ b/src/components/Encounter/CreateEncounterForm.tsx
+@@ -195,7 +195,9 @@ export default function CreateEncounterForm({
+               i18nKey="begin_clinical_encounter"
+               values={{ patientName }}
+               components={{
+-                strong: <strong className="font-semibold text-gray-950" />,
++                strong: (
++                  <strong className="font-semibold text-gray-950 capitalize" />
++                ),
+               }}
+             />
+           </SheetDescription>
+diff --git a/src/components/Tokens/CreateTokenForm.tsx b/src/components/Tokens/CreateTokenForm.tsx
+index 5c6bd291e..67f7dbab8 100644
+--- a/src/components/Tokens/CreateTokenForm.tsx
++++ b/src/components/Tokens/CreateTokenForm.tsx
+@@ -197,7 +197,9 @@ export default function CreateTokenForm({
+                 i18nKey="create_token_for_patient"
+                 values={{ patientName: patient?.name }}
+                 components={{
+-                  strong: <strong className="font-semibold text-gray-950" />,
++                  strong: (
++                    <strong className="font-semibold text-gray-950 capitalize" />
++                  ),
+                 }}
+               />
+             ) : (
+
+…NG-267-patient-name-enforce-all-first-letters-to-be-capital [$] via  v24.18.0 
+node -e "JSON.parse(require('fs').readFileSync('public/locale/en.json','utf8')); console.log('valid JSON')"
+valid JSON
+
+…NG-964-remove-the-usage-of-encounter-class-history-from-fe [$!] via  v24.18.0 
+node -e "JSON.parse(require('fs').readFileSync('public/locale/en.json','utf8')); console.log('valid JSON')"
+valid JSON
+
+…NG-964-remove-the-usage-of-encounter-class-history-from-fe [$!] via  v24.18.0 
+git --no-pager log --oneline -8 -- src/components/Questionnaire/QuestionTypes/EncounterQuestion.tsx
+030b69191 (HEAD -> ENG-964-remove-the-usage-of-encounter-class-history-from-fe, origin/ENG-964-remove-the-usage-of-encounter-class-history-from-fe) cleanups
+462239bb2 cleanups
+1a91029ce ai suggestions
+3d806b272 type changes and test fix
+e69e7e7ab removed encounter class update option too
+47abd7fa0 [ENG-746] Hide "completed" from encounter status (#16570)
+1c8e86a9c Render QuestionLabel inline inside the Structured Question (#15086)
+1edad3ce1 refactor: Discharge flow (#15538)
+
+…ENG-964-remove-the-usage-of-encounter-class-history-from-fe [$] via  v24.18.0
+
+---
+
+[Terminal 0fb33e3d-4c5c-4ca7-868f-b5839422cb0a notification: command may be waiting for input — assess the output below.]
+This note is not a signal to end the turn — pick one of the actions below and continue.
+  1. If the command may still be producing output or the shell prompt has not returned, call get_terminal_output with id="0fb33e3d-4c5c-4ca7-868f-b5839422cb0a" to continue polling. This is the default and safest action when unsure.
+  2. Only if the output clearly ends with a real non-secret input prompt (Continue? (y/n), Enter selection, etc. — a normal shell prompt like `$` or `#` does NOT count), call the vscode_askQuestions tool to ask the user, then send each answer using send_to_terminal with id="0fb33e3d-4c5c-4ca7-868f-b5839422cb0a" (which returns the next few lines of output). Repeat one prompt at a time. NEVER route secret prompts (passwords, passphrases, tokens, API keys, etc.) through vscode_askQuestions — answers to that tool are sent through the model. For secret prompts, tell the user to type the value directly into the terminal and stop.
+Terminal output:
+Using Node v24.18.0
+
+fish is running in private mode, history will not be persisted.
+
+…on  ENG-524-audit-react-state-usage-in-encounter-id-search [$] via  v24.18.0 
+git --no-pager log --oneline -S "encounterListFiltersAtom" -- src/atoms/encounterFilterAtom.ts
+f1fd0bc43 Add filter for org
+
+…on  ENG-524-audit-react-state-usage-in-encounter-id-search [$] via  v24.18.0 
+git --no-pager show -s --format='%H%n%an <%ae>%n%ad%n%s' f1fd0bc43
+f1fd0bc43683d9d4f441840ad656e0b7e53574dd
+Bodhish Thomas <[REDACTED_EMAIL]>
+Fri Jan 23 06:58:28 2026 +0530
+Add filter for org
+
+…on  ENG-524-audit-react-state-usage-in-encounter-id-search [$] via  v24.18.0 
+git log --oneline develop..HEAD | cat
+a10a5a501 Merge branch 'develop' into ENG-267-patient-name-enforce-all-first-letters-to-be-capital
+a77f79b95 ai suggestions
+c09d8b75f added missed places too
+e41471c20 [ENG-950] Skip setting `dispense_status` when creating medication requests (#16729)
+27b4680d1 resolved merge conflicts
+5301fa2f3 removed trans from page
+dc228302f Merge branch 'ENG-267-patient-name-enforce-all-first-letters-to-be-capital' of github.com:ohcnetwork/care_fe into ENG-267-patient-name-enforce-all-first-letters-to-be-capital
+e4fc91186 added missed places
+a3942371f Merge remote-tracking branch 'origin/develop' into ENG-267-patient-name-enforce-all-first-letters-to-be-capital
+bfca159ff Merge branch 'develop' into ENG-267-patient-name-enforce-all-first-letters-to-be-capital
+afb324129 cleanups
+0ebd92265 cleanups
+b3e42bed0 Removed patient name from print preview
+db752a356 cleanups
+6fe4a10f5 removed patient name from presctiption
+c9326f80e added agent rule
+73e7db13b capitalize resource and prescription
+63dcbe77a cleanups
+4cc833440 cleanups
+ccd42a094 cleanups
+b13d2bbe0 revert the custom formatName function and used capitalize class
+8fb337ca8 Reapply "ENG-267 Patient Name: Enforce all first letters to be capital."
+3a8a472eb Revert "ENG-267 Patient Name: Enforce all first letters to be capital."
+c591ecd5a ENG-267 Patient Name: Enforce all first letters to be capital.
+
+…NG-267-patient-name-enforce-all-first-letters-to-be-capital [$] via  v24.18.0 
+git --no-pager diff --stat develop...HEAD -- 'src/***' ':(exclude)src/**/*.test.*' | cat
+ src/components/Encounter/CreateEncounterForm.tsx   |  4 ++-
+ src/components/Encounter/EncounterInfoCard.tsx     |  2 +-
+ .../PrintAllQuestionnaireResponses.tsx             | 13 +++++----
+ .../PrintMedicationAdministration.tsx              |  6 ++--
+ .../Patient/PatientDetailsTab/Demography.tsx       |  5 +++-
+ src/components/Patient/PatientIdentifierFilter.tsx |  6 ++--
+ .../Patient/PatientIdentifierSelector.tsx          |  4 +--
+ src/components/Patient/PatientIndex.tsx            |  8 +++--
+ src/components/Patient/PatientInfoHoverCard.tsx    |  2 +-
+ .../Prescription/PrescriptionPreview.tsx           | 24 +++++++--------
+ .../QuestionTypes/MedicationRequestQuestion.tsx    |  7 +++++
+ src/components/Resource/ResourceDetails.tsx        |  2 +-
+ src/components/Resource/ResourceForm.tsx           |  2 +-
+ .../ServiceRequest/ServiceRequestTable.tsx         |  2 +-
+ src/components/Tokens/CreateTokenForm.tsx          |  4 ++-
+ src/components/ui/sidebar/nav-user.tsx             | 12 ++++++--
+ src/components/ui/sidebar/patient-switcher.tsx     |  8 +++--
+ src/pages/Appointments/AppointmentDetail.tsx       | 13 +++++++--
+ src/pages/Appointments/AppointmentPrint.tsx        | 21 ++++++++-----
+ src/pages/Appointments/AppointmentsPage.tsx        |  6 ++--
+ .../components/AppointmentTokenCard.tsx            |  2 +-
+ .../Appointments/components/PrintAppointments.tsx  |  5 ++--
+ src/pages/Facility/billing/account/AccountList.tsx |  2 +-
+ .../Facility/billing/account/CreateInvoice.tsx     |  2 +-
+ .../account/components/PrintChargeItems.tsx        | 11 +++----
+ src/pages/Facility/billing/invoice/InvoiceShow.tsx |  4 +--
+ .../Facility/billing/invoice/PrintInvoice.tsx      |  4 ++-
+ .../Facility/billing/invoice/PrintInvoices.tsx     |  4 ++-
+ .../PaymentReconciliationShow.tsx                  |  2 +-
+ .../PrintPaymentReconciliation.tsx                 | 14 ++++-----
+ src/pages/Facility/queues/CancelTokenDialog.tsx    | 16 ++++++----
+ .../Facility/queues/ManageQueueFinishedTab.tsx     | 34 +++++++++++++++-------
+ .../Facility/queues/OngoingQueueTokenCard.tsx      | 24 ++++++++++-----
+ src/pages/Facility/queues/TokenCard.tsx            |  2 +-
+ .../diagnosticReports/DiagnosticReportPrint.tsx    |  2 +-
+ .../services/pharmacy/CreateDispenseSheet.tsx      | 16 ++++++----
+ .../pharmacy/CreateMedicationReturnSheet.tsx       | 16 ++++++----
+ .../pharmacy/MedicationDispenseHistory.tsx         |  2 +-
+ .../services/pharmacy/MedicationReturnList.tsx     |  4 ++-
+ .../services/pharmacy/MedicationReturnSheet.tsx    | 10 ++++---
+ .../services/pharmacy/MedicationReturnShow.tsx     |  8 +++--
+ .../services/pharmacy/PrescriptionQueue.tsx        |  2 +-
+ .../services/pharmacy/PrintDispenseOrder.tsx       | 20 ++++++-------
+ .../services/pharmacy/PrintMedicationReturn.tsx    | 26 +++++++----------
+ .../services/serviceRequests/PatientHoverCard.tsx  |  2 +-
+ .../serviceRequests/ServiceRequestList.tsx         |  2 +-
+ src/pages/Facility/settings/devices/DeviceShow.tsx |  2 +-
+ .../devices/components/DeviceEncounterCard.tsx     |  2 +-
+ src/pages/Organization/OrganizationPatients.tsx    |  2 +-
+ src/pages/Patient/History/index.tsx                | 19 +++++-------
+ src/pages/Patient/components/AppointmentDialog.tsx |  2 +-
+ src/pages/PublicAppointments/Success.tsx           |  4 ++-
+ 52 files changed, 252 insertions(+), 166 deletions(-)
+
+…NG-267-patient-name-enforce-all-first-letters-to-be-capital [$] via  v24.18.0 
+git --no-pager diff develop...HEAD -- src/components/Encounter/CreateEncounterForm.tsx src/components/QuestionTypes/MedicationRequestQuestion.tsx src/components/Tokens/CreateTokenForm.tsx | cat
+diff --git a/src/components/Encounter/CreateEncounterForm.tsx b/src/components/Encounter/CreateEncounterForm.tsx
+index 7749aef4a..cc424b6ed 100644
+--- a/src/components/Encounter/CreateEncounterForm.tsx
++++ b/src/components/Encounter/CreateEncounterForm.tsx
+@@ -195,7 +195,9 @@ export default function CreateEncounterForm({
+               i18nKey="begin_clinical_encounter"
+               values={{ patientName }}
+               components={{
+-                strong: <strong className="font-semibold text-gray-950" />,
++                strong: (
++                  <strong className="font-semibold text-gray-950 capitalize" />
++                ),
+               }}
+             />
+           </SheetDescription>
+diff --git a/src/components/Tokens/CreateTokenForm.tsx b/src/components/Tokens/CreateTokenForm.tsx
+index 5c6bd291e..67f7dbab8 100644
+--- a/src/components/Tokens/CreateTokenForm.tsx
++++ b/src/components/Tokens/CreateTokenForm.tsx
+@@ -197,7 +197,9 @@ export default function CreateTokenForm({
+                 i18nKey="create_token_for_patient"
+                 values={{ patientName: patient?.name }}
+                 components={{
+-                  strong: <strong className="font-semibold text-gray-950" />,
++                  strong: (
++                    <strong className="font-semibold text-gray-950 capitalize" />
++                  ),
+                 }}
+               />
+             ) : (
+
+…NG-267-patient-name-enforce-all-first-letters-to-be-capital [$] via  v24.18.0 
+node -e "JSON.parse(require('fs').readFileSync('public/locale/en.json','utf8')); console.log('valid JSON')"
+valid JSON
+
+…NG-964-remove-the-usage-of-encounter-class-history-from-fe [$!] via  v24.18.0 
+node -e "JSON.parse(require('fs').readFileSync('public/locale/en.json','utf8')); console.log('valid JSON')"
+valid JSON
+
+…NG-964-remove-the-usage-of-encounter-class-history-from-fe [$!] via  v24.18.0 
+git --no-pager log --oneline -8 -- src/components/Questionnaire/QuestionTypes/EncounterQuestion.tsx
+030b69191 (HEAD -> ENG-964-remove-the-usage-of-encounter-class-history-from-fe, origin/ENG-964-remove-the-usage-of-encounter-class-history-from-fe) cleanups
+462239bb2 cleanups
+1a91029ce ai suggestions
+3d806b272 type changes and test fix
+e69e7e7ab removed encounter class update option too
+47abd7fa0 [ENG-746] Hide "completed" from encounter status (#16570)
+1c8e86a9c Render QuestionLabel inline inside the Structured Question (#15086)
+1edad3ce1 refactor: Discharge flow (#15538)
+
+…ENG-964-remove-the-usage-of-encounter-class-history-from-fe [$] via  v24.18.0 
+git --no-pager show 47abd7fa0:src/components/Questionnaire/QuestionTypes/EncounterQuestion.tsx | sed -n '150,230p'
+    ) {
+      if (!encounter.period.end) {
+        handleUpdateEncounter({
+          period: {
+            ...encounter.period,
+            end: new Date().toISOString(),
+          },
+        });
+      }
+    } else {
+      handleUpdateEncounter({
+        period: {
+          ...encounter.period,
+          end: undefined,
+        },
+      });
+    }
+  }, [encounter.status]);
+
+  // Transform EncounterRead to EncounterEdit format
+  const transformEncounterForUpdate = (
+    read: EncounterRead,
+  ): Partial<EncounterEdit> => {
+    return {
+      status: read.status,
+      encounter_class: read.encounter_class,
+      period: read.period,
+      priority: read.priority,
+      hospitalization: read.hospitalization,
+      external_identifier: read.external_identifier,
+      discharge_summary_advice: read.discharge_summary_advice,
+    };
+  };
+
+  // Update encounter state when data is loaded
+  useEffect(() => {
+    if (encounterData) {
+      const updates = transformEncounterForUpdate(encounterData);
+      if (toDischarge === "true") {
+        updates.status = EncounterStatus.DISCHARGED;
+      }
+      handleUpdateEncounter(updates);
+    }
+  }, [encounterData]);
+
+  useEffect(() => {
+    const formStateValue = (
+      questionnaireResponse.values[0]?.value as EncounterEdit[]
+    )?.[0];
+    if (formStateValue) {
+      setEncounter(() => ({
+        ...formStateValue,
+      }));
+    }
+  }, [questionnaireResponse]);
+
+  const handleUpdateEncounter = (updates: Partial<EncounterEdit>) => {
+    clearError();
+    const newEncounter = { ...encounter, ...updates };
+    if (["amb", "vr", "hh"].includes(newEncounter.encounter_class)) {
+      newEncounter.hospitalization = {};
+    }
+
+    if (
+      ["imp", "obsenc", "emer"].includes(encounter.encounter_class) &&
+      newEncounter.status === EncounterStatus.DISCHARGED
+    ) {
+      newEncounter.hospitalization = {
+        ...newEncounter.hospitalization,
+        discharge_disposition:
+          newEncounter.hospitalization?.discharge_disposition ??
+          careConfig.defaultDischargeDisposition,
+      };
+    } else if ("hospitalization" in newEncounter) {
+      newEncounter.hospitalization = {
+        ...newEncounter.hospitalization,
+        discharge_disposition:
+          encounterData?.hospitalization?.discharge_disposition,
+      };
+    }
+
+
+…ENG-964-remove-the-usage-of-encounter-class-history-from-fe [$] via  v24.18.0
+
+---
+
+encounter class will always be there when encounter data is there. why this then?
+
+i'd consider moving this to a loading state instead. we don't need to show the question unless the encounter is loaded, right? that way this check as a whole against encounterData null can be removed right?
+
+---
+
+why this change is need? again... what does this do? 🤔 what is it testing exactly?
+
+---
+
+`if (!A) {...} else if (A && B)` — the `A &&` is dead weight; the `else` already guarantees it. Redundant conditions make readers hunt for the case they cover. Drop it.
+
+---
+
+You removed `EncounterClassHistory` but left `History` and `StatusHistory` — fine — yet `encounter_class` is now duplicated verbatim in both `EncounterListRead` and `EncounterCreate`.
+ Two copies of the same field will drift. If it belongs on reads and 
+creates but not edits, name that intent with a shared type instead of 
+copy-paste.
+
+---
+
+This may break if there are existing encounters of non hospitalization classes which are marked as discharged (incorrectly)
+
+is this valid?
+
+---
+
+yes
+
+---
+
+In `handleUpdateEncounter`, the `hospitalization.discharge_disposition` update logic can misbehave: (1) the discharged branch spreads `newEncounter.hospitalization` without guarding against `null`, which can throw if the API returns `hospitalization: null`; and (2) the subsequent non-discharged branch resets `discharge_disposition` back to `encounterData` on every update, making the discharge disposition `<Select>` effectively non-editable.
+
+check this it is valid or not?
+
+---
+
+api donot return null it return empty object always
+
+---
+
+api donot return null it return empty object always for default
+
+---
+
+api donot return null it return empty object always for default
+
+this is the be code :
+hospitalization: HospitalizationSpec | None = {}
+
+then that review comment is valid?
+
+---
+
+1. **In practice it's never null.** [hospitalization: HospitalizationSpec | None = {}](vscode-file://vscode-app/Applications/Visual%20Studio%20Code.app/Contents/Resources/app/out/vs/code/electron-browser/workbench/workbench.html) means the serializer defaults to an empty object `{}`, so reads come back with `{}`, not `null`. The "API returns [hospitalization: null](vscode-file://vscode-app/Applications/Visual%20Studio%20Code.app/Contents/Resources/app/out/vs/code/electron-browser/workbench/workbench.html)" premise doesn't happen for the default case.
+2. **Even if it were null, the spread wouldn't throw.** `{ ...null }` and `{ ...undefined }` both evaluate to `{}` in JS — object spread silently ignores nullish operands. Only *iterable/array* spread (`[...null]`) throws. So the discharged branch is safe regardless.
+
+give me simple reply in 2 sentacne]
+
+---
+
+in claim 2 ->non-discharged branch resets `discharge_disposition` back to `encounterData` on every update, making the discharge disposition `<Select>` effectively non-editable. - how this is possiblw?
+
+---
+
+This **overwrites** `"home"` with the original server value. The user's pick is discarded right here. ❌
+
+what you meant by server value?
+
+---
+
+user can select any disposition only after update the encounter.status into discharge
+
+---
+
+that is impoissible
+
+---
+
+give me simply reply for clain 2 in 1 sentcne
+
+---
+
+that is the backend giving you empty object on encounter read. why here treat it as null?
+
+---
+
+hospitalization: HospitalizationSpec | None = {} this means be can return null/{} why don't you correct me previously?
+
+---
+
+`hospitalization.discharge_disposition`aIn `handleUpdateEncounter`, the `hospitalization.discharge_disposition` update logic can misbehave: (1) the discharged branch spreads `newEncounter.hospitalization` without guarding against `null`, which can throw if the API returns `hospitalization: nul` then. is the comment valid?
+
+---
+
+EncounterQuestion allows can mark for discharge for `imp`, `obsenc`, `emer` where as useEncounterProgressController, command dialog, summary actions just allows for `imp`  so observation/emergency can still Mark for discharge on the questionnaire, but Complete encounter in the header marks them completed with no discharge flow, is this expected ?
+
+is this valid question?
+
+---
+
+`   "load_from_order_with_items_one": "Load from order ({{count}} item)",``   "load_from_order_with_items_other": "Load from order ({{count}} items)",`
+
+---
+
+`   "load_from_order_with_items_one": "Load from order ({{count}} item)",``   "load_from_order_with_items_other": "Load from order ({{count}} items)",`
+
+With `count` interpolation, this string will render grammatically incorrect text like "1 items". The repo already uses i18next plural keys (e.g. *_one/*_other), so this should follow the same pattern.
+
+---
+
+revet into load from order donot include count
+
+---
+
+the key should be load_from_order
+
+---
+
+`badge` is now typed as `ReactNode`, but it’s always wrapped in a `<span>`. If a caller passes a block element (valid `ReactNode`), this will create invalid HTML. Prefer a `<div>` wrapper (or render `badge` without an inline-only wrapper).
+
+---
+
+revert that load from order to back 
+{t("load_from_order")} ({medicationDispenses.length}{" "}
+                      {t("items")})
+                      like this in @sym:AddSupplyDeliveryForm  @sym:AddMedicationReturnItemForm
+
+---
+
+**The form's own callout is nearly unreachable.** Because the parent unmounts on `supplyDeliveriesCount >= max`, the child's callout (`AddSupplyDeliveryForm.tsx:912`) can only ever fire via the `+ fields.length` overshoot. Two components own the same warning with two different formulas; only one of them should.
+
+is this valid?
+
+---
+
+`queryKey: ["diagnosticReport", report.id, patientId]` is inconsistent with the rest of the app’s diagnostic report queries (typically keyed by report id only), which can lead to duplicated caches and missed invalidations.
+
+is this valid?
+
+---
+
+yes
+
+---
+
+**Question / efficiency** — these two queries lost their `enabled` gate.
+
+Previously `retrieveDiagnosticReport` and `fileApi.list` were gated (`enabled: !!latestReport?.id`) and only one report existed. Now `DiagnosticReportReviewItem` is rendered per report and both queries fire eagerly on mount for *every* report, even though the card starts collapsed (`isExpanded = false`). With N reports that's 2N requests on page load, and the sibling `DiagnosticReportItem` in `DiagnosticReportForm.tsx` gates the equivalent queries on `enabled: !!report.id && isExpanded`.
+
+I think this is deliberate — `isReportNotReviewable` and the `last_updated` line in the collapsed header both need `fullReport`/`files`. If so, no change needed; could you confirm? If only the header needs it, the file list at least could stay gated on `isExpanded`.
+
+is this valid?
+
+---
+
+**`Polish`** — conclusion-only saves succeed silently.
+
+The success toast is gated on a `upsert-observations` result being present, but the rest of `onSuccess` (invalidate, collapse the card, `onReportSaved`) runs unconditionally. Saving a report that has only a conclusion (or only files) therefore collapses the card with no confirmation, which reads as "did that save?" to the user. A `toast.success` on every successful batch — or a conclusion-specific message in the `else` branch — would make the outcome legible.
+
+is this valid./
+
+---
+
+yes
+
+---
+
+**`Broken` (legibility)** — this encodes two values into one string as an undocumented protocol between two components.
+
+`onReportSaved` is typed `(reportId: string) => void`, but what is actually passed is `id + ":" + timestamp`. The consumer in `DiagnosticReportReview.tsx` has to decode it:
+
+```
+if (expandedReportId?.split(":")[0] === report.id) { setIsExpanded(true); }
+```
+
+    
+      
+    
+
+    
+  
+
+A reader coming to either file cold cannot tell why the `:`-split exists, and the parameter name (`reportId`) actively says the wrong thing. The timestamp is only there as a nonce so the effect re-fires when the *same* report is saved twice.
+
+Minimal fix — make the shape explicit so no decoding is needed:
+
+```
+onReportSaved: (report: { id: string; savedAt: number }) => void;
+// ...
+onReportSaved({ id: report.id, savedAt: Date.now() });
+```
+
+    
+      
+    
+
+    
+  
+
+and in the review item:
+
+```
+useEffect(() => {
+  if (expandedReport?.id === report.id) setIsExpanded(true);
+}, [expandedReport, report.id]);
+```
+
+    
+      
+    
+
+    
+  
+
+Same behaviour, but the nonce is visible as a nonce and the id stays an id.
+
+is this vALID?
+
+---
+
+YES
+
+---
+
+review this pr and fix any bugs, code error, logic error etch
+
+---
+
+[Terminal 60fd122a-b97e-42de-a1dc-88cfdfa2d06b notification: command may be waiting for input — assess the output below.]
+This note is not a signal to end the turn — pick one of the actions below and continue.
+  1. If the command may still be producing output or the shell prompt has not returned, call get_terminal_output with id="60fd122a-b97e-42de-a1dc-88cfdfa2d06b" to continue polling. This is the default and safest action when unsure.
+  2. Only if the output clearly ends with a real non-secret input prompt (Continue? (y/n), Enter selection, etc. — a normal shell prompt like `$` or `#` does NOT count), call the vscode_askQuestions tool to ask the user, then send each answer using send_to_terminal with id="60fd122a-b97e-42de-a1dc-88cfdfa2d06b" (which returns the next few lines of output). Repeat one prompt at a time. NEVER route secret prompts (passwords, passphrases, tokens, API keys, etc.) through vscode_askQuestions — answers to that tool are sent through the model. For secret prompts, tell the user to type the value directly into the terminal and stop.
+Terminal output:
+Using Node v24.18.0
+
+fish is running in private mode, history will not be persisted.
+
+…on  ENG-524-audit-react-state-usage-in-encounter-id-search [$] via  v24.18.0 
+git --no-pager log --oneline -S "encounterListFiltersAtom" -- src/atoms/encounterFilterAtom.ts
+f1fd0bc43 Add filter for org
+
+…on  ENG-524-audit-react-state-usage-in-encounter-id-search [$] via  v24.18.0 
+git --no-pager show -s --format='%H%n%an <%ae>%n%ad%n%s' f1fd0bc43
+f1fd0bc43683d9d4f441840ad656e0b7e53574dd
+Bodhish Thomas <[REDACTED_EMAIL]>
+Fri Jan 23 06:58:28 2026 +0530
+Add filter for org
+
+…on  ENG-524-audit-react-state-usage-in-encounter-id-search [$] via  v24.18.0 
+git log --oneline develop..HEAD | cat
+a10a5a501 Merge branch 'develop' into ENG-267-patient-name-enforce-all-first-letters-to-be-capital
+a77f79b95 ai suggestions
+c09d8b75f added missed places too
+e41471c20 [ENG-950] Skip setting `dispense_status` when creating medication requests (#16729)
+27b4680d1 resolved merge conflicts
+5301fa2f3 removed trans from page
+dc228302f Merge branch 'ENG-267-patient-name-enforce-all-first-letters-to-be-capital' of github.com:ohcnetwork/care_fe into ENG-267-patient-name-enforce-all-first-letters-to-be-capital
+e4fc91186 added missed places
+a3942371f Merge remote-tracking branch 'origin/develop' into ENG-267-patient-name-enforce-all-first-letters-to-be-capital
+bfca159ff Merge branch 'develop' into ENG-267-patient-name-enforce-all-first-letters-to-be-capital
+afb324129 cleanups
+0ebd92265 cleanups
+b3e42bed0 Removed patient name from print preview
+db752a356 cleanups
+6fe4a10f5 removed patient name from presctiption
+c9326f80e added agent rule
+73e7db13b capitalize resource and prescription
+63dcbe77a cleanups
+4cc833440 cleanups
+ccd42a094 cleanups
+b13d2bbe0 revert the custom formatName function and used capitalize class
+8fb337ca8 Reapply "ENG-267 Patient Name: Enforce all first letters to be capital."
+3a8a472eb Revert "ENG-267 Patient Name: Enforce all first letters to be capital."
+c591ecd5a ENG-267 Patient Name: Enforce all first letters to be capital.
+
+…NG-267-patient-name-enforce-all-first-letters-to-be-capital [$] via  v24.18.0 
+git --no-pager diff --stat develop...HEAD -- 'src/***' ':(exclude)src/**/*.test.*' | cat
+ src/components/Encounter/CreateEncounterForm.tsx   |  4 ++-
+ src/components/Encounter/EncounterInfoCard.tsx     |  2 +-
+ .../PrintAllQuestionnaireResponses.tsx             | 13 +++++----
+ .../PrintMedicationAdministration.tsx              |  6 ++--
+ .../Patient/PatientDetailsTab/Demography.tsx       |  5 +++-
+ src/components/Patient/PatientIdentifierFilter.tsx |  6 ++--
+ .../Patient/PatientIdentifierSelector.tsx          |  4 +--
+ src/components/Patient/PatientIndex.tsx            |  8 +++--
+ src/components/Patient/PatientInfoHoverCard.tsx    |  2 +-
+ .../Prescription/PrescriptionPreview.tsx           | 24 +++++++--------
+ .../QuestionTypes/MedicationRequestQuestion.tsx    |  7 +++++
+ src/components/Resource/ResourceDetails.tsx        |  2 +-
+ src/components/Resource/ResourceForm.tsx           |  2 +-
+ .../ServiceRequest/ServiceRequestTable.tsx         |  2 +-
+ src/components/Tokens/CreateTokenForm.tsx          |  4 ++-
+ src/components/ui/sidebar/nav-user.tsx             | 12 ++++++--
+ src/components/ui/sidebar/patient-switcher.tsx     |  8 +++--
+ src/pages/Appointments/AppointmentDetail.tsx       | 13 +++++++--
+ src/pages/Appointments/AppointmentPrint.tsx        | 21 ++++++++-----
+ src/pages/Appointments/AppointmentsPage.tsx        |  6 ++--
+ .../components/AppointmentTokenCard.tsx            |  2 +-
+ .../Appointments/components/PrintAppointments.tsx  |  5 ++--
+ src/pages/Facility/billing/account/AccountList.tsx |  2 +-
+ .../Facility/billing/account/CreateInvoice.tsx     |  2 +-
+ .../account/components/PrintChargeItems.tsx        | 11 +++----
+ src/pages/Facility/billing/invoice/InvoiceShow.tsx |  4 +--
+ .../Facility/billing/invoice/PrintInvoice.tsx      |  4 ++-
+ .../Facility/billing/invoice/PrintInvoices.tsx     |  4 ++-
+ .../PaymentReconciliationShow.tsx                  |  2 +-
+ .../PrintPaymentReconciliation.tsx                 | 14 ++++-----
+ src/pages/Facility/queues/CancelTokenDialog.tsx    | 16 ++++++----
+ .../Facility/queues/ManageQueueFinishedTab.tsx     | 34 +++++++++++++++-------
+ .../Facility/queues/OngoingQueueTokenCard.tsx      | 24 ++++++++++-----
+ src/pages/Facility/queues/TokenCard.tsx            |  2 +-
+ .../diagnosticReports/DiagnosticReportPrint.tsx    |  2 +-
+ .../services/pharmacy/CreateDispenseSheet.tsx      | 16 ++++++----
+ .../pharmacy/CreateMedicationReturnSheet.tsx       | 16 ++++++----
+ .../pharmacy/MedicationDispenseHistory.tsx         |  2 +-
+ .../services/pharmacy/MedicationReturnList.tsx     |  4 ++-
+ .../services/pharmacy/MedicationReturnSheet.tsx    | 10 ++++---
+ .../services/pharmacy/MedicationReturnShow.tsx     |  8 +++--
+ .../services/pharmacy/PrescriptionQueue.tsx        |  2 +-
+ .../services/pharmacy/PrintDispenseOrder.tsx       | 20 ++++++-------
+ .../services/pharmacy/PrintMedicationReturn.tsx    | 26 +++++++----------
+ .../services/serviceRequests/PatientHoverCard.tsx  |  2 +-
+ .../serviceRequests/ServiceRequestList.tsx         |  2 +-
+ src/pages/Facility/settings/devices/DeviceShow.tsx |  2 +-
+ .../devices/components/DeviceEncounterCard.tsx     |  2 +-
+ src/pages/Organization/OrganizationPatients.tsx    |  2 +-
+ src/pages/Patient/History/index.tsx                | 19 +++++-------
+ src/pages/Patient/components/AppointmentDialog.tsx |  2 +-
+ src/pages/PublicAppointments/Success.tsx           |  4 ++-
+ 52 files changed, 252 insertions(+), 166 deletions(-)
+
+…NG-267-patient-name-enforce-all-first-letters-to-be-capital [$] via  v24.18.0 
+git --no-pager diff develop...HEAD -- src/components/Encounter/CreateEncounterForm.tsx src/components/QuestionTypes/MedicationRequestQuestion.tsx src/components/Tokens/CreateTokenForm.tsx | cat
+diff --git a/src/components/Encounter/CreateEncounterForm.tsx b/src/components/Encounter/CreateEncounterForm.tsx
+index 7749aef4a..cc424b6ed 100644
+--- a/src/components/Encounter/CreateEncounterForm.tsx
++++ b/src/components/Encounter/CreateEncounterForm.tsx
+@@ -195,7 +195,9 @@ export default function CreateEncounterForm({
+               i18nKey="begin_clinical_encounter"
+               values={{ patientName }}
+               components={{
+-                strong: <strong className="font-semibold text-gray-950" />,
++                strong: (
++                  <strong className="font-semibold text-gray-950 capitalize" />
++                ),
+               }}
+             />
+           </SheetDescription>
+diff --git a/src/components/Tokens/CreateTokenForm.tsx b/src/components/Tokens/CreateTokenForm.tsx
+index 5c6bd291e..67f7dbab8 100644
+--- a/src/components/Tokens/CreateTokenForm.tsx
++++ b/src/components/Tokens/CreateTokenForm.tsx
+@@ -197,7 +197,9 @@ export default function CreateTokenForm({
+                 i18nKey="create_token_for_patient"
+                 values={{ patientName: patient?.name }}
+                 components={{
+-                  strong: <strong className="font-semibold text-gray-950" />,
++                  strong: (
++                    <strong className="font-semibold text-gray-950 capitalize" />
++                  ),
+                 }}
+               />
+             ) : (
+
+…NG-267-patient-name-enforce-all-first-letters-to-be-capital [$] via  v24.18.0 
+node -e "JSON.parse(require('fs').readFileSync('public/locale/en.json','utf8')); console.log('valid JSON')"
+valid JSON
+
+…NG-964-remove-the-usage-of-encounter-class-history-from-fe [$!] via  v24.18.0 
+node -e "JSON.parse(require('fs').readFileSync('public/locale/en.json','utf8')); console.log('valid JSON')"
+valid JSON
+
+…NG-964-remove-the-usage-of-encounter-class-history-from-fe [$!] via  v24.18.0 
+git --no-pager log --oneline -8 -- src/components/Questionnaire/QuestionTypes/EncounterQuestion.tsx
+030b69191 (HEAD -> ENG-964-remove-the-usage-of-encounter-class-history-from-fe, origin/ENG-964-remove-the-usage-of-encounter-class-history-from-fe) cleanups
+462239bb2 cleanups
+1a91029ce ai suggestions
+3d806b272 type changes and test fix
+e69e7e7ab removed encounter class update option too
+47abd7fa0 [ENG-746] Hide "completed" from encounter status (#16570)
+1c8e86a9c Render QuestionLabel inline inside the Structured Question (#15086)
+1edad3ce1 refactor: Discharge flow (#15538)
+
+…ENG-964-remove-the-usage-of-encounter-class-history-from-fe [$] via  v24.18.0 
+git --no-pager show 47abd7fa0:src/components/Questionnaire/QuestionTypes/EncounterQuestion.tsx | sed -n '150,230p'
+    ) {
+      if (!encounter.period.end) {
+        handleUpdateEncounter({
+          period: {
+            ...encounter.period,
+            end: new Date().toISOString(),
+          },
+        });
+      }
+    } else {
+      handleUpdateEncounter({
+        period: {
+          ...encounter.period,
+          end: undefined,
+        },
+      });
+    }
+  }, [encounter.status]);
+
+  // Transform EncounterRead to EncounterEdit format
+  const transformEncounterForUpdate = (
+    read: EncounterRead,
+  ): Partial<EncounterEdit> => {
+    return {
+      status: read.status,
+      encounter_class: read.encounter_class,
+      period: read.period,
+      priority: read.priority,
+      hospitalization: read.hospitalization,
+      external_identifier: read.external_identifier,
+      discharge_summary_advice: read.discharge_summary_advice,
+    };
+  };
+
+  // Update encounter state when data is loaded
+  useEffect(() => {
+    if (encounterData) {
+      const updates = transformEncounterForUpdate(encounterData);
+      if (toDischarge === "true") {
+        updates.status = EncounterStatus.DISCHARGED;
+      }
+      handleUpdateEncounter(updates);
+    }
+  }, [encounterData]);
+
+  useEffect(() => {
+    const formStateValue = (
+      questionnaireResponse.values[0]?.value as EncounterEdit[]
+    )?.[0];
+    if (formStateValue) {
+      setEncounter(() => ({
+        ...formStateValue,
+      }));
+    }
+  }, [questionnaireResponse]);
+
+  const handleUpdateEncounter = (updates: Partial<EncounterEdit>) => {
+    clearError();
+    const newEncounter = { ...encounter, ...updates };
+    if (["amb", "vr", "hh"].includes(newEncounter.encounter_class)) {
+      newEncounter.hospitalization = {};
+    }
+
+    if (
+      ["imp", "obsenc", "emer"].includes(encounter.encounter_class) &&
+      newEncounter.status === EncounterStatus.DISCHARGED
+    ) {
+      newEncounter.hospitalization = {
+        ...newEncounter.hospitalization,
+        discharge_disposition:
+          newEncounter.hospitalization?.discharge_disposition ??
+          careConfig.defaultDischargeDisposition,
+      };
+    } else if ("hospitalization" in newEncounter) {
+      newEncounter.hospitalization = {
+        ...newEncounter.hospitalization,
+        discharge_disposition:
+          encounterData?.hospitalization?.discharge_disposition,
+      };
+    }
+
+
+…ENG-964-remove-the-usage-of-encounter-class-history-from-fe [$] via  v24.18.0 
+git --no-pager log --oneline -3 -- tests/facility/patient/encounter/encounter.spec.ts; echo "---DIFF---"; git --no-pager diff 47abd7fa0 HEAD -- tests/facility/patient/encounter/encounter.spec.ts | head -80
+462239bb2 cleanups
+7ba8c54d6 test bug fix
+8c4956782 test bug fix
+---DIFF---
+diff --git a/tests/facility/patient/encounter/encounter.spec.ts b/tests/facility/patient/encounter/encounter.spec.ts
+index fe74c0286..3c87425c9 100644
+--- a/tests/facility/patient/encounter/encounter.spec.ts
++++ b/tests/facility/patient/encounter/encounter.spec.ts
+@@ -71,9 +71,10 @@ test.describe("Create an Encounter", () => {
+     await page.getByRole("tab", { name: "Details" }).click();
+     await page.getByRole("link", { name: "Update Encounter" }).click();
+ 
+-    // Verify encounter status, class, and priority are displayed correctly
++    // Encounter class is immutable after creation and no longer editable here,
++    // so verify the update form loaded via its Encounter Status field instead.
+     await expect(
+-      page.getByRole("combobox").filter({ hasText: randomEncounterClass }),
++      page.getByText("Encounter Status", { exact: true }),
+     ).toBeVisible();
+   });
+ 
+@@ -149,13 +150,10 @@ test.describe("Create an Encounter", () => {
+     await page.getByRole("tab", { name: "Details" }).click();
+     await page.getByRole("link", { name: "Update Encounter" }).click();
+ 
+-    // Verify encounter status, class, and priority are displayed correctly
++    // Verify encounter status and priority are displayed correctly. Encounter
+     await expect(
+       page.getByRole("combobox").filter({ hasText: randomEncounterStatus }),
+     ).toBeVisible();
+-    await expect(
+-      page.getByRole("combobox").filter({ hasText: randomEncounterClass }),
+-    ).toBeVisible();
+     await expect(
+       page.getByRole("combobox").filter({ hasText: randomEncounterPriority }),
+     ).toBeVisible();
+
+…NG-964-remove-the-usage-of-encounter-class-history-from-fe [$!] via  v24.18.0 
+tail -n 3 public/locale/en.json
+  "zoom_out": "Zoom Out",
+  "℞": "℞"
+}
+
+…-creating-multiple-diagnostic-reports-in-a-service-request [$!] via  v24.18.0 
+git --no-pager log --oneline -10 && echo "---BRANCH---" && git rev-parse --abbrev-ref HEAD
+c5b56acc6 (HEAD -> ENG-887-fix-internal-delivery-batch-failing, origin/ENG-887-fix-internal-delivery-batch-failing) ai suggestions
+6c2def10e ai suggestions
+37d967996 Merge branch 'develop' into ENG-887-fix-internal-delivery-batch-failing
+a578b5a4c (origin/develop, origin/HEAD) [ENG-964] Removed encounter class update option and encounter_class_history usage (#16741)
+6aa9ca0ba Consolidate agentic PR reviewers and auto-retry transient 429 failures (#16743)
+29d7e38c0 Merge branch 'develop' into ENG-887-fix-internal-delivery-batch-failing
+839436bcb set the env as positiveNumberString
+b5a8babe6 greptile suggestions
+989ae99ee fix callout
+20e5d852c minor cleanups
+---BRANCH---
+ENG-887-fix-internal-delivery-batch-failing
+
+…ork/care_fe on  ENG-887-fix-internal-delivery-batch-failing [$] via  v26.8.1
+
+---
+
+[Terminal 04daffa8-058e-4606-b3bc-3ce048f204ad notification: command may be waiting for input — assess the output below.]
+This note is not a signal to end the turn — pick one of the actions below and continue.
+  1. If the command may still be producing output or the shell prompt has not returned, call get_terminal_output with id="04daffa8-058e-4606-b3bc-3ce048f204ad" to continue polling. This is the default and safest action when unsure.
+  2. Only if the output clearly ends with a real non-secret input prompt (Continue? (y/n), Enter selection, etc. — a normal shell prompt like `$` or `#` does NOT count), call the vscode_askQuestions tool to ask the user, then send each answer using send_to_terminal with id="04daffa8-058e-4606-b3bc-3ce048f204ad" (which returns the next few lines of output). Repeat one prompt at a time. NEVER route secret prompts (passwords, passphrases, tokens, API keys, etc.) through vscode_askQuestions — answers to that tool are sent through the model. For secret prompts, tell the user to type the value directly into the terminal and stop.
+Terminal output:
+Using Node v24.18.0
+
+fish is running in private mode, history will not be persisted.
+
+…on  ENG-524-audit-react-state-usage-in-encounter-id-search [$] via  v24.18.0 
+git --no-pager log --oneline -S "encounterListFiltersAtom" -- src/atoms/encounterFilterAtom.ts
+f1fd0bc43 Add filter for org
+
+…on  ENG-524-audit-react-state-usage-in-encounter-id-search [$] via  v24.18.0 
+git --no-pager show -s --format='%H%n%an <%ae>%n%ad%n%s' f1fd0bc43
+f1fd0bc43683d9d4f441840ad656e0b7e53574dd
+Bodhish Thomas <[REDACTED_EMAIL]>
+Fri Jan 23 06:58:28 2026 +0530
+Add filter for org
+
+…on  ENG-524-audit-react-state-usage-in-encounter-id-search [$] via  v24.18.0 
+git log --oneline develop..HEAD | cat
+a10a5a501 Merge branch 'develop' into ENG-267-patient-name-enforce-all-first-letters-to-be-capital
+a77f79b95 ai suggestions
+c09d8b75f added missed places too
+e41471c20 [ENG-950] Skip setting `dispense_status` when creating medication requests (#16729)
+27b4680d1 resolved merge conflicts
+5301fa2f3 removed trans from page
+dc228302f Merge branch 'ENG-267-patient-name-enforce-all-first-letters-to-be-capital' of github.com:ohcnetwork/care_fe into ENG-267-patient-name-enforce-all-first-letters-to-be-capital
+e4fc91186 added missed places
+a3942371f Merge remote-tracking branch 'origin/develop' into ENG-267-patient-name-enforce-all-first-letters-to-be-capital
+bfca159ff Merge branch 'develop' into ENG-267-patient-name-enforce-all-first-letters-to-be-capital
+afb324129 cleanups
+0ebd92265 cleanups
+b3e42bed0 Removed patient name from print preview
+db752a356 cleanups
+6fe4a10f5 removed patient name from presctiption
+c9326f80e added agent rule
+73e7db13b capitalize resource and prescription
+63dcbe77a cleanups
+4cc833440 cleanups
+ccd42a094 cleanups
+b13d2bbe0 revert the custom formatName function and used capitalize class
+8fb337ca8 Reapply "ENG-267 Patient Name: Enforce all first letters to be capital."
+3a8a472eb Revert "ENG-267 Patient Name: Enforce all first letters to be capital."
+c591ecd5a ENG-267 Patient Name: Enforce all first letters to be capital.
+
+…NG-267-patient-name-enforce-all-first-letters-to-be-capital [$] via  v24.18.0 
+git --no-pager diff --stat develop...HEAD -- 'src/***' ':(exclude)src/**/*.test.*' | cat
+ src/components/Encounter/CreateEncounterForm.tsx   |  4 ++-
+ src/components/Encounter/EncounterInfoCard.tsx     |  2 +-
+ .../PrintAllQuestionnaireResponses.tsx             | 13 +++++----
+ .../PrintMedicationAdministration.tsx              |  6 ++--
+ .../Patient/PatientDetailsTab/Demography.tsx       |  5 +++-
+ src/components/Patient/PatientIdentifierFilter.tsx |  6 ++--
+ .../Patient/PatientIdentifierSelector.tsx          |  4 +--
+ src/components/Patient/PatientIndex.tsx            |  8 +++--
+ src/components/Patient/PatientInfoHoverCard.tsx    |  2 +-
+ .../Prescription/PrescriptionPreview.tsx           | 24 +++++++--------
+ .../QuestionTypes/MedicationRequestQuestion.tsx    |  7 +++++
+ src/components/Resource/ResourceDetails.tsx        |  2 +-
+ src/components/Resource/ResourceForm.tsx           |  2 +-
+ .../ServiceRequest/ServiceRequestTable.tsx         |  2 +-
+ src/components/Tokens/CreateTokenForm.tsx          |  4 ++-
+ src/components/ui/sidebar/nav-user.tsx             | 12 ++++++--
+ src/components/ui/sidebar/patient-switcher.tsx     |  8 +++--
+ src/pages/Appointments/AppointmentDetail.tsx       | 13 +++++++--
+ src/pages/Appointments/AppointmentPrint.tsx        | 21 ++++++++-----
+ src/pages/Appointments/AppointmentsPage.tsx        |  6 ++--
+ .../components/AppointmentTokenCard.tsx            |  2 +-
+ .../Appointments/components/PrintAppointments.tsx  |  5 ++--
+ src/pages/Facility/billing/account/AccountList.tsx |  2 +-
+ .../Facility/billing/account/CreateInvoice.tsx     |  2 +-
+ .../account/components/PrintChargeItems.tsx        | 11 +++----
+ src/pages/Facility/billing/invoice/InvoiceShow.tsx |  4 +--
+ .../Facility/billing/invoice/PrintInvoice.tsx      |  4 ++-
+ .../Facility/billing/invoice/PrintInvoices.tsx     |  4 ++-
+ .../PaymentReconciliationShow.tsx                  |  2 +-
+ .../PrintPaymentReconciliation.tsx                 | 14 ++++-----
+ src/pages/Facility/queues/CancelTokenDialog.tsx    | 16 ++++++----
+ .../Facility/queues/ManageQueueFinishedTab.tsx     | 34 +++++++++++++++-------
+ .../Facility/queues/OngoingQueueTokenCard.tsx      | 24 ++++++++++-----
+ src/pages/Facility/queues/TokenCard.tsx            |  2 +-
+ .../diagnosticReports/DiagnosticReportPrint.tsx    |  2 +-
+ .../services/pharmacy/CreateDispenseSheet.tsx      | 16 ++++++----
+ .../pharmacy/CreateMedicationReturnSheet.tsx       | 16 ++++++----
+ .../pharmacy/MedicationDispenseHistory.tsx         |  2 +-
+ .../services/pharmacy/MedicationReturnList.tsx     |  4 ++-
+ .../services/pharmacy/MedicationReturnSheet.tsx    | 10 ++++---
+ .../services/pharmacy/MedicationReturnShow.tsx     |  8 +++--
+ .../services/pharmacy/PrescriptionQueue.tsx        |  2 +-
+ .../services/pharmacy/PrintDispenseOrder.tsx       | 20 ++++++-------
+ .../services/pharmacy/PrintMedicationReturn.tsx    | 26 +++++++----------
+ .../services/serviceRequests/PatientHoverCard.tsx  |  2 +-
+ .../serviceRequests/ServiceRequestList.tsx         |  2 +-
+ src/pages/Facility/settings/devices/DeviceShow.tsx |  2 +-
+ .../devices/components/DeviceEncounterCard.tsx     |  2 +-
+ src/pages/Organization/OrganizationPatients.tsx    |  2 +-
+ src/pages/Patient/History/index.tsx                | 19 +++++-------
+ src/pages/Patient/components/AppointmentDialog.tsx |  2 +-
+ src/pages/PublicAppointments/Success.tsx           |  4 ++-
+ 52 files changed, 252 insertions(+), 166 deletions(-)
+
+…NG-267-patient-name-enforce-all-first-letters-to-be-capital [$] via  v24.18.0 
+git --no-pager diff develop...HEAD -- src/components/Encounter/CreateEncounterForm.tsx src/components/QuestionTypes/MedicationRequestQuestion.tsx src/components/Tokens/CreateTokenForm.tsx | cat
+diff --git a/src/components/Encounter/CreateEncounterForm.tsx b/src/components/Encounter/CreateEncounterForm.tsx
+index 7749aef4a..cc424b6ed 100644
+--- a/src/components/Encounter/CreateEncounterForm.tsx
++++ b/src/components/Encounter/CreateEncounterForm.tsx
+@@ -195,7 +195,9 @@ export default function CreateEncounterForm({
+               i18nKey="begin_clinical_encounter"
+               values={{ patientName }}
+               components={{
+-                strong: <strong className="font-semibold text-gray-950" />,
++                strong: (
++                  <strong className="font-semibold text-gray-950 capitalize" />
++                ),
+               }}
+             />
+           </SheetDescription>
+diff --git a/src/components/Tokens/CreateTokenForm.tsx b/src/components/Tokens/CreateTokenForm.tsx
+index 5c6bd291e..67f7dbab8 100644
+--- a/src/components/Tokens/CreateTokenForm.tsx
++++ b/src/components/Tokens/CreateTokenForm.tsx
+@@ -197,7 +197,9 @@ export default function CreateTokenForm({
+                 i18nKey="create_token_for_patient"
+                 values={{ patientName: patient?.name }}
+                 components={{
+-                  strong: <strong className="font-semibold text-gray-950" />,
++                  strong: (
++                    <strong className="font-semibold text-gray-950 capitalize" />
++                  ),
+                 }}
+               />
+             ) : (
+
+…NG-267-patient-name-enforce-all-first-letters-to-be-capital [$] via  v24.18.0 
+node -e "JSON.parse(require('fs').readFileSync('public/locale/en.json','utf8')); console.log('valid JSON')"
+valid JSON
+
+…NG-964-remove-the-usage-of-encounter-class-history-from-fe [$!] via  v24.18.0 
+node -e "JSON.parse(require('fs').readFileSync('public/locale/en.json','utf8')); console.log('valid JSON')"
+valid JSON
+
+…NG-964-remove-the-usage-of-encounter-class-history-from-fe [$!] via  v24.18.0 
+git --no-pager log --oneline -8 -- src/components/Questionnaire/QuestionTypes/EncounterQuestion.tsx
+030b69191 (HEAD -> ENG-964-remove-the-usage-of-encounter-class-history-from-fe, origin/ENG-964-remove-the-usage-of-encounter-class-history-from-fe) cleanups
+462239bb2 cleanups
+1a91029ce ai suggestions
+3d806b272 type changes and test fix
+e69e7e7ab removed encounter class update option too
+47abd7fa0 [ENG-746] Hide "completed" from encounter status (#16570)
+1c8e86a9c Render QuestionLabel inline inside the Structured Question (#15086)
+1edad3ce1 refactor: Discharge flow (#15538)
+
+…ENG-964-remove-the-usage-of-encounter-class-history-from-fe [$] via  v24.18.0 
+git --no-pager show 47abd7fa0:src/components/Questionnaire/QuestionTypes/EncounterQuestion.tsx | sed -n '150,230p'
+    ) {
+      if (!encounter.period.end) {
+        handleUpdateEncounter({
+          period: {
+            ...encounter.period,
+            end: new Date().toISOString(),
+          },
+        });
+      }
+    } else {
+      handleUpdateEncounter({
+        period: {
+          ...encounter.period,
+          end: undefined,
+        },
+      });
+    }
+  }, [encounter.status]);
+
+  // Transform EncounterRead to EncounterEdit format
+  const transformEncounterForUpdate = (
+    read: EncounterRead,
+  ): Partial<EncounterEdit> => {
+    return {
+      status: read.status,
+      encounter_class: read.encounter_class,
+      period: read.period,
+      priority: read.priority,
+      hospitalization: read.hospitalization,
+      external_identifier: read.external_identifier,
+      discharge_summary_advice: read.discharge_summary_advice,
+    };
+  };
+
+  // Update encounter state when data is loaded
+  useEffect(() => {
+    if (encounterData) {
+      const updates = transformEncounterForUpdate(encounterData);
+      if (toDischarge === "true") {
+        updates.status = EncounterStatus.DISCHARGED;
+      }
+      handleUpdateEncounter(updates);
+    }
+  }, [encounterData]);
+
+  useEffect(() => {
+    const formStateValue = (
+      questionnaireResponse.values[0]?.value as EncounterEdit[]
+    )?.[0];
+    if (formStateValue) {
+      setEncounter(() => ({
+        ...formStateValue,
+      }));
+    }
+  }, [questionnaireResponse]);
+
+  const handleUpdateEncounter = (updates: Partial<EncounterEdit>) => {
+    clearError();
+    const newEncounter = { ...encounter, ...updates };
+    if (["amb", "vr", "hh"].includes(newEncounter.encounter_class)) {
+      newEncounter.hospitalization = {};
+    }
+
+    if (
+      ["imp", "obsenc", "emer"].includes(encounter.encounter_class) &&
+      newEncounter.status === EncounterStatus.DISCHARGED
+    ) {
+      newEncounter.hospitalization = {
+        ...newEncounter.hospitalization,
+        discharge_disposition:
+          newEncounter.hospitalization?.discharge_disposition ??
+          careConfig.defaultDischargeDisposition,
+      };
+    } else if ("hospitalization" in newEncounter) {
+      newEncounter.hospitalization = {
+        ...newEncounter.hospitalization,
+        discharge_disposition:
+          encounterData?.hospitalization?.discharge_disposition,
+      };
+    }
+
+
+…ENG-964-remove-the-usage-of-encounter-class-history-from-fe [$] via  v24.18.0 
+git --no-pager log --oneline -3 -- tests/facility/patient/encounter/encounter.spec.ts; echo "---DIFF---"; git --no-pager diff 47abd7fa0 HEAD -- tests/facility/patient/encounter/encounter.spec.ts | head -80
+462239bb2 cleanups
+7ba8c54d6 test bug fix
+8c4956782 test bug fix
+---DIFF---
+diff --git a/tests/facility/patient/encounter/encounter.spec.ts b/tests/facility/patient/encounter/encounter.spec.ts
+index fe74c0286..3c87425c9 100644
+--- a/tests/facility/patient/encounter/encounter.spec.ts
++++ b/tests/facility/patient/encounter/encounter.spec.ts
+@@ -71,9 +71,10 @@ test.describe("Create an Encounter", () => {
+     await page.getByRole("tab", { name: "Details" }).click();
+     await page.getByRole("link", { name: "Update Encounter" }).click();
+ 
+-    // Verify encounter status, class, and priority are displayed correctly
++    // Encounter class is immutable after creation and no longer editable here,
++    // so verify the update form loaded via its Encounter Status field instead.
+     await expect(
+-      page.getByRole("combobox").filter({ hasText: randomEncounterClass }),
++      page.getByText("Encounter Status", { exact: true }),
+     ).toBeVisible();
+   });
+ 
+@@ -149,13 +150,10 @@ test.describe("Create an Encounter", () => {
+     await page.getByRole("tab", { name: "Details" }).click();
+     await page.getByRole("link", { name: "Update Encounter" }).click();
+ 
+-    // Verify encounter status, class, and priority are displayed correctly
++    // Verify encounter status and priority are displayed correctly. Encounter
+     await expect(
+       page.getByRole("combobox").filter({ hasText: randomEncounterStatus }),
+     ).toBeVisible();
+-    await expect(
+-      page.getByRole("combobox").filter({ hasText: randomEncounterClass }),
+-    ).toBeVisible();
+     await expect(
+       page.getByRole("combobox").filter({ hasText: randomEncounterPriority }),
+     ).toBeVisible();
+
+…NG-964-remove-the-usage-of-encounter-class-history-from-fe [$!] via  v24.18.0 
+tail -n 3 public/locale/en.json
+  "zoom_out": "Zoom Out",
+  "℞": "℞"
+}
+
+…-creating-multiple-diagnostic-reports-in-a-service-request [$!] via  v24.18.0 
+git --no-pager log --oneline -10 && echo "---BRANCH---" && git rev-parse --abbrev-ref HEAD
+c5b56acc6 (HEAD -> ENG-887-fix-internal-delivery-batch-failing, origin/ENG-887-fix-internal-delivery-batch-failing) ai suggestions
+6c2def10e ai suggestions
+37d967996 Merge branch 'develop' into ENG-887-fix-internal-delivery-batch-failing
+a578b5a4c (origin/develop, origin/HEAD) [ENG-964] Removed encounter class update option and encounter_class_history usage (#16741)
+6aa9ca0ba Consolidate agentic PR reviewers and auto-retry transient 429 failures (#16743)
+29d7e38c0 Merge branch 'develop' into ENG-887-fix-internal-delivery-batch-failing
+839436bcb set the env as positiveNumberString
+b5a8babe6 greptile suggestions
+989ae99ee fix callout
+20e5d852c minor cleanups
+---BRANCH---
+ENG-887-fix-internal-delivery-batch-failing
+
+…ork/care_fe on  ENG-887-fix-internal-delivery-batch-failing [$] via  v26.8.1 
+git --no-pager diff --stat origin/develop...HEAD | cat
+ .example.env                                       |  4 +
+ care.config.ts                                     |  8 ++
+ public/locale/en.json                              |  1 +
+ scripts/validate-env.ts                            |  1 +
+ src/CAREUI/display/Callout.tsx                     | 23 +----
+ .../deliveryOrder/AddSupplyDeliveryForm.tsx        | 80 +++++++++++++-----
+ .../deliveryOrder/DeliveryOrderShow.tsx            | 97 ++++++++++++++++++----
+ .../externalSupply/requestOrder/AddItemsForm.tsx   | 49 +++++++++--
+ .../requestOrder/RequestOrderShow.tsx              |  3 +
+ .../components/CreateScheduleTemplateSheet.tsx     |  6 +-
+ .../components/EditScheduleTemplateSheet.tsx       | 14 +++-
+ src/vite-env.d.ts                                  |  1 +
+ .../locations/inventory/toDispatch.spec.ts         | 14 +++-
+ 13 files changed, 228 insertions(+), 73 deletions(-)
+
+…ork/care_fe on  ENG-887-fix-internal-delivery-batch-failing [$] via  v26.8.1
+
+---
+
+[Terminal 1fa87990-58fe-4ec4-bd0e-574582379b28 notification: command may be waiting for input — assess the output below.]
+This note is not a signal to end the turn — pick one of the actions below and continue.
+  1. If the command may still be producing output or the shell prompt has not returned, call get_terminal_output with id="1fa87990-58fe-4ec4-bd0e-574582379b28" to continue polling. This is the default and safest action when unsure.
+  2. Only if the output clearly ends with a real non-secret input prompt (Continue? (y/n), Enter selection, etc. — a normal shell prompt like `$` or `#` does NOT count), call the vscode_askQuestions tool to ask the user, then send each answer using send_to_terminal with id="1fa87990-58fe-4ec4-bd0e-574582379b28" (which returns the next few lines of output). Repeat one prompt at a time. NEVER route secret prompts (passwords, passphrases, tokens, API keys, etc.) through vscode_askQuestions — answers to that tool are sent through the model. For secret prompts, tell the user to type the value directly into the terminal and stop.
+Terminal output:
+Using Node v24.18.0
+
+fish is running in private mode, history will not be persisted.
+
+…on  ENG-524-audit-react-state-usage-in-encounter-id-search [$] via  v24.18.0 
+git --no-pager log --oneline -S "encounterListFiltersAtom" -- src/atoms/encounterFilterAtom.ts
+f1fd0bc43 Add filter for org
+
+…on  ENG-524-audit-react-state-usage-in-encounter-id-search [$] via  v24.18.0 
+git --no-pager show -s --format='%H%n%an <%ae>%n%ad%n%s' f1fd0bc43
+f1fd0bc43683d9d4f441840ad656e0b7e53574dd
+Bodhish Thomas <[REDACTED_EMAIL]>
+Fri Jan 23 06:58:28 2026 +0530
+Add filter for org
+
+…on  ENG-524-audit-react-state-usage-in-encounter-id-search [$] via  v24.18.0 
+git log --oneline develop..HEAD | cat
+a10a5a501 Merge branch 'develop' into ENG-267-patient-name-enforce-all-first-letters-to-be-capital
+a77f79b95 ai suggestions
+c09d8b75f added missed places too
+e41471c20 [ENG-950] Skip setting `dispense_status` when creating medication requests (#16729)
+27b4680d1 resolved merge conflicts
+5301fa2f3 removed trans from page
+dc228302f Merge branch 'ENG-267-patient-name-enforce-all-first-letters-to-be-capital' of github.com:ohcnetwork/care_fe into ENG-267-patient-name-enforce-all-first-letters-to-be-capital
+e4fc91186 added missed places
+a3942371f Merge remote-tracking branch 'origin/develop' into ENG-267-patient-name-enforce-all-first-letters-to-be-capital
+bfca159ff Merge branch 'develop' into ENG-267-patient-name-enforce-all-first-letters-to-be-capital
+afb324129 cleanups
+0ebd92265 cleanups
+b3e42bed0 Removed patient name from print preview
+db752a356 cleanups
+6fe4a10f5 removed patient name from presctiption
+c9326f80e added agent rule
+73e7db13b capitalize resource and prescription
+63dcbe77a cleanups
+4cc833440 cleanups
+ccd42a094 cleanups
+b13d2bbe0 revert the custom formatName function and used capitalize class
+8fb337ca8 Reapply "ENG-267 Patient Name: Enforce all first letters to be capital."
+3a8a472eb Revert "ENG-267 Patient Name: Enforce all first letters to be capital."
+c591ecd5a ENG-267 Patient Name: Enforce all first letters to be capital.
+
+…NG-267-patient-name-enforce-all-first-letters-to-be-capital [$] via  v24.18.0 
+git --no-pager diff --stat develop...HEAD -- 'src/***' ':(exclude)src/**/*.test.*' | cat
+ src/components/Encounter/CreateEncounterForm.tsx   |  4 ++-
+ src/components/Encounter/EncounterInfoCard.tsx     |  2 +-
+ .../PrintAllQuestionnaireResponses.tsx             | 13 +++++----
+ .../PrintMedicationAdministration.tsx              |  6 ++--
+ .../Patient/PatientDetailsTab/Demography.tsx       |  5 +++-
+ src/components/Patient/PatientIdentifierFilter.tsx |  6 ++--
+ .../Patient/PatientIdentifierSelector.tsx          |  4 +--
+ src/components/Patient/PatientIndex.tsx            |  8 +++--
+ src/components/Patient/PatientInfoHoverCard.tsx    |  2 +-
+ .../Prescription/PrescriptionPreview.tsx           | 24 +++++++--------
+ .../QuestionTypes/MedicationRequestQuestion.tsx    |  7 +++++
+ src/components/Resource/ResourceDetails.tsx        |  2 +-
+ src/components/Resource/ResourceForm.tsx           |  2 +-
+ .../ServiceRequest/ServiceRequestTable.tsx         |  2 +-
+ src/components/Tokens/CreateTokenForm.tsx          |  4 ++-
+ src/components/ui/sidebar/nav-user.tsx             | 12 ++++++--
+ src/components/ui/sidebar/patient-switcher.tsx     |  8 +++--
+ src/pages/Appointments/AppointmentDetail.tsx       | 13 +++++++--
+ src/pages/Appointments/AppointmentPrint.tsx        | 21 ++++++++-----
+ src/pages/Appointments/AppointmentsPage.tsx        |  6 ++--
+ .../components/AppointmentTokenCard.tsx            |  2 +-
+ .../Appointments/components/PrintAppointments.tsx  |  5 ++--
+ src/pages/Facility/billing/account/AccountList.tsx |  2 +-
+ .../Facility/billing/account/CreateInvoice.tsx     |  2 +-
+ .../account/components/PrintChargeItems.tsx        | 11 +++----
+ src/pages/Facility/billing/invoice/InvoiceShow.tsx |  4 +--
+ .../Facility/billing/invoice/PrintInvoice.tsx      |  4 ++-
+ .../Facility/billing/invoice/PrintInvoices.tsx     |  4 ++-
+ .../PaymentReconciliationShow.tsx                  |  2 +-
+ .../PrintPaymentReconciliation.tsx                 | 14 ++++-----
+ src/pages/Facility/queues/CancelTokenDialog.tsx    | 16 ++++++----
+ .../Facility/queues/ManageQueueFinishedTab.tsx     | 34 +++++++++++++++-------
+ .../Facility/queues/OngoingQueueTokenCard.tsx      | 24 ++++++++++-----
+ src/pages/Facility/queues/TokenCard.tsx            |  2 +-
+ .../diagnosticReports/DiagnosticReportPrint.tsx    |  2 +-
+ .../services/pharmacy/CreateDispenseSheet.tsx      | 16 ++++++----
+ .../pharmacy/CreateMedicationReturnSheet.tsx       | 16 ++++++----
+ .../pharmacy/MedicationDispenseHistory.tsx         |  2 +-
+ .../services/pharmacy/MedicationReturnList.tsx     |  4 ++-
+ .../services/pharmacy/MedicationReturnSheet.tsx    | 10 ++++---
+ .../services/pharmacy/MedicationReturnShow.tsx     |  8 +++--
+ .../services/pharmacy/PrescriptionQueue.tsx        |  2 +-
+ .../services/pharmacy/PrintDispenseOrder.tsx       | 20 ++++++-------
+ .../services/pharmacy/PrintMedicationReturn.tsx    | 26 +++++++----------
+ .../services/serviceRequests/PatientHoverCard.tsx  |  2 +-
+ .../serviceRequests/ServiceRequestList.tsx         |  2 +-
+ src/pages/Facility/settings/devices/DeviceShow.tsx |  2 +-
+ .../devices/components/DeviceEncounterCard.tsx     |  2 +-
+ src/pages/Organization/OrganizationPatients.tsx    |  2 +-
+ src/pages/Patient/History/index.tsx                | 19 +++++-------
+ src/pages/Patient/components/AppointmentDialog.tsx |  2 +-
+ src/pages/PublicAppointments/Success.tsx           |  4 ++-
+ 52 files changed, 252 insertions(+), 166 deletions(-)
+
+…NG-267-patient-name-enforce-all-first-letters-to-be-capital [$] via  v24.18.0 
+git --no-pager diff develop...HEAD -- src/components/Encounter/CreateEncounterForm.tsx src/components/QuestionTypes/MedicationRequestQuestion.tsx src/components/Tokens/CreateTokenForm.tsx | cat
+diff --git a/src/components/Encounter/CreateEncounterForm.tsx b/src/components/Encounter/CreateEncounterForm.tsx
+index 7749aef4a..cc424b6ed 100644
+--- a/src/components/Encounter/CreateEncounterForm.tsx
++++ b/src/components/Encounter/CreateEncounterForm.tsx
+@@ -195,7 +195,9 @@ export default function CreateEncounterForm({
+               i18nKey="begin_clinical_encounter"
+               values={{ patientName }}
+               components={{
+-                strong: <strong className="font-semibold text-gray-950" />,
++                strong: (
++                  <strong className="font-semibold text-gray-950 capitalize" />
++                ),
+               }}
+             />
+           </SheetDescription>
+diff --git a/src/components/Tokens/CreateTokenForm.tsx b/src/components/Tokens/CreateTokenForm.tsx
+index 5c6bd291e..67f7dbab8 100644
+--- a/src/components/Tokens/CreateTokenForm.tsx
++++ b/src/components/Tokens/CreateTokenForm.tsx
+@@ -197,7 +197,9 @@ export default function CreateTokenForm({
+                 i18nKey="create_token_for_patient"
+                 values={{ patientName: patient?.name }}
+                 components={{
+-                  strong: <strong className="font-semibold text-gray-950" />,
++                  strong: (
++                    <strong className="font-semibold text-gray-950 capitalize" />
++                  ),
+                 }}
+               />
+             ) : (
+
+…NG-267-patient-name-enforce-all-first-letters-to-be-capital [$] via  v24.18.0 
+node -e "JSON.parse(require('fs').readFileSync('public/locale/en.json','utf8')); console.log('valid JSON')"
+valid JSON
+
+…NG-964-remove-the-usage-of-encounter-class-history-from-fe [$!] via  v24.18.0 
+node -e "JSON.parse(require('fs').readFileSync('public/locale/en.json','utf8')); console.log('valid JSON')"
+valid JSON
+
+…NG-964-remove-the-usage-of-encounter-class-history-from-fe [$!] via  v24.18.0 
+git --no-pager log --oneline -8 -- src/components/Questionnaire/QuestionTypes/EncounterQuestion.tsx
+030b69191 (HEAD -> ENG-964-remove-the-usage-of-encounter-class-history-from-fe, origin/ENG-964-remove-the-usage-of-encounter-class-history-from-fe) cleanups
+462239bb2 cleanups
+1a91029ce ai suggestions
+3d806b272 type changes and test fix
+e69e7e7ab removed encounter class update option too
+47abd7fa0 [ENG-746] Hide "completed" from encounter status (#16570)
+1c8e86a9c Render QuestionLabel inline inside the Structured Question (#15086)
+1edad3ce1 refactor: Discharge flow (#15538)
+
+…ENG-964-remove-the-usage-of-encounter-class-history-from-fe [$] via  v24.18.0 
+git --no-pager show 47abd7fa0:src/components/Questionnaire/QuestionTypes/EncounterQuestion.tsx | sed -n '150,230p'
+    ) {
+      if (!encounter.period.end) {
+        handleUpdateEncounter({
+          period: {
+            ...encounter.period,
+            end: new Date().toISOString(),
+          },
+        });
+      }
+    } else {
+      handleUpdateEncounter({
+        period: {
+          ...encounter.period,
+          end: undefined,
+        },
+      });
+    }
+  }, [encounter.status]);
+
+  // Transform EncounterRead to EncounterEdit format
+  const transformEncounterForUpdate = (
+    read: EncounterRead,
+  ): Partial<EncounterEdit> => {
+    return {
+      status: read.status,
+      encounter_class: read.encounter_class,
+      period: read.period,
+      priority: read.priority,
+      hospitalization: read.hospitalization,
+      external_identifier: read.external_identifier,
+      discharge_summary_advice: read.discharge_summary_advice,
+    };
+  };
+
+  // Update encounter state when data is loaded
+  useEffect(() => {
+    if (encounterData) {
+      const updates = transformEncounterForUpdate(encounterData);
+      if (toDischarge === "true") {
+        updates.status = EncounterStatus.DISCHARGED;
+      }
+      handleUpdateEncounter(updates);
+    }
+  }, [encounterData]);
+
+  useEffect(() => {
+    const formStateValue = (
+      questionnaireResponse.values[0]?.value as EncounterEdit[]
+    )?.[0];
+    if (formStateValue) {
+      setEncounter(() => ({
+        ...formStateValue,
+      }));
+    }
+  }, [questionnaireResponse]);
+
+  const handleUpdateEncounter = (updates: Partial<EncounterEdit>) => {
+    clearError();
+    const newEncounter = { ...encounter, ...updates };
+    if (["amb", "vr", "hh"].includes(newEncounter.encounter_class)) {
+      newEncounter.hospitalization = {};
+    }
+
+    if (
+      ["imp", "obsenc", "emer"].includes(encounter.encounter_class) &&
+      newEncounter.status === EncounterStatus.DISCHARGED
+    ) {
+      newEncounter.hospitalization = {
+        ...newEncounter.hospitalization,
+        discharge_disposition:
+          newEncounter.hospitalization?.discharge_disposition ??
+          careConfig.defaultDischargeDisposition,
+      };
+    } else if ("hospitalization" in newEncounter) {
+      newEncounter.hospitalization = {
+        ...newEncounter.hospitalization,
+        discharge_disposition:
+          encounterData?.hospitalization?.discharge_disposition,
+      };
+    }
+
+
+…ENG-964-remove-the-usage-of-encounter-class-history-from-fe [$] via  v24.18.0 
+git --no-pager log --oneline -3 -- tests/facility/patient/encounter/encounter.spec.ts; echo "---DIFF---"; git --no-pager diff 47abd7fa0 HEAD -- tests/facility/patient/encounter/encounter.spec.ts | head -80
+462239bb2 cleanups
+7ba8c54d6 test bug fix
+8c4956782 test bug fix
+---DIFF---
+diff --git a/tests/facility/patient/encounter/encounter.spec.ts b/tests/facility/patient/encounter/encounter.spec.ts
+index fe74c0286..3c87425c9 100644
+--- a/tests/facility/patient/encounter/encounter.spec.ts
++++ b/tests/facility/patient/encounter/encounter.spec.ts
+@@ -71,9 +71,10 @@ test.describe("Create an Encounter", () => {
+     await page.getByRole("tab", { name: "Details" }).click();
+     await page.getByRole("link", { name: "Update Encounter" }).click();
+ 
+-    // Verify encounter status, class, and priority are displayed correctly
++    // Encounter class is immutable after creation and no longer editable here,
++    // so verify the update form loaded via its Encounter Status field instead.
+     await expect(
+-      page.getByRole("combobox").filter({ hasText: randomEncounterClass }),
++      page.getByText("Encounter Status", { exact: true }),
+     ).toBeVisible();
+   });
+ 
+@@ -149,13 +150,10 @@ test.describe("Create an Encounter", () => {
+     await page.getByRole("tab", { name: "Details" }).click();
+     await page.getByRole("link", { name: "Update Encounter" }).click();
+ 
+-    // Verify encounter status, class, and priority are displayed correctly
++    // Verify encounter status and priority are displayed correctly. Encounter
+     await expect(
+       page.getByRole("combobox").filter({ hasText: randomEncounterStatus }),
+     ).toBeVisible();
+-    await expect(
+-      page.getByRole("combobox").filter({ hasText: randomEncounterClass }),
+-    ).toBeVisible();
+     await expect(
+       page.getByRole("combobox").filter({ hasText: randomEncounterPriority }),
+     ).toBeVisible();
+
+…NG-964-remove-the-usage-of-encounter-class-history-from-fe [$!] via  v24.18.0 
+tail -n 3 public/locale/en.json
+  "zoom_out": "Zoom Out",
+  "℞": "℞"
+}
+
+…-creating-multiple-diagnostic-reports-in-a-service-request [$!] via  v24.18.0 
+git --no-pager log --oneline -10 && echo "---BRANCH---" && git rev-parse --abbrev-ref HEAD
+c5b56acc6 (HEAD -> ENG-887-fix-internal-delivery-batch-failing, origin/ENG-887-fix-internal-delivery-batch-failing) ai suggestions
+6c2def10e ai suggestions
+37d967996 Merge branch 'develop' into ENG-887-fix-internal-delivery-batch-failing
+a578b5a4c (origin/develop, origin/HEAD) [ENG-964] Removed encounter class update option and encounter_class_history usage (#16741)
+6aa9ca0ba Consolidate agentic PR reviewers and auto-retry transient 429 failures (#16743)
+29d7e38c0 Merge branch 'develop' into ENG-887-fix-internal-delivery-batch-failing
+839436bcb set the env as positiveNumberString
+b5a8babe6 greptile suggestions
+989ae99ee fix callout
+20e5d852c minor cleanups
+---BRANCH---
+ENG-887-fix-internal-delivery-batch-failing
+
+…ork/care_fe on  ENG-887-fix-internal-delivery-batch-failing [$] via  v26.8.1 
+git --no-pager diff --stat origin/develop...HEAD | cat
+ .example.env                                       |  4 +
+ care.config.ts                                     |  8 ++
+ public/locale/en.json                              |  1 +
+ scripts/validate-env.ts                            |  1 +
+ src/CAREUI/display/Callout.tsx                     | 23 +----
+ .../deliveryOrder/AddSupplyDeliveryForm.tsx        | 80 +++++++++++++-----
+ .../deliveryOrder/DeliveryOrderShow.tsx            | 97 ++++++++++++++++++----
+ .../externalSupply/requestOrder/AddItemsForm.tsx   | 49 +++++++++--
+ .../requestOrder/RequestOrderShow.tsx              |  3 +
+ .../components/CreateScheduleTemplateSheet.tsx     |  6 +-
+ .../components/EditScheduleTemplateSheet.tsx       | 14 +++-
+ src/vite-env.d.ts                                  |  1 +
+ .../locations/inventory/toDispatch.spec.ts         | 14 +++-
+ 13 files changed, 228 insertions(+), 73 deletions(-)
+
+…ork/care_fe on  ENG-887-fix-internal-delivery-batch-failing [$] via  v26.8.1 
+git --no-pager diff origin/develop...HEAD > /tmp/eng887.diff 2>&1; wc -l /tmp/eng887.diff
+     690 /tmp/eng887.diff
+
+…ork/care_fe on  ENG-887-fix-internal-delivery-batch-failing [$] via  v26.8.1
+
+---
+
+yes
+
+---
+
+re-review this
+
+---
+
+thread [isFetching](vscode-file://vscode-app/Applications/Visual%20Studio%20Code.app/Contents/Resources/app/out/vs/code/electron-browser/workbench/workbench.html) into it for parity
+
+---
+
+re-review this pr
