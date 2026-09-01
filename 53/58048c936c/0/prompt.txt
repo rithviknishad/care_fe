@@ -1,0 +1,26 @@
+apply sr-only classname for all the callout's icon in this pr
+
+---
+
+re-review this pr
+
+---
+
+**`Polish`** — the switch from the parent's `results.length` to the authoritative `count` is the right fix, but it now costs a second request for a number the parent already has.
+
+`RequestOrderShow` still runs the full `query.paginated(["supplyRequests", requestOrderId])`, whose response already carries `count`. Passing `supplyRequests?.count` (and `isFetching`) down would give the same correctness win with one fewer round-trip and one fewer cache entry to keep in sync — closer to the prop shape you just removed, minus the `results.length` bug.
+
+Two smaller things about this query as written:
+
+- No `enabled` guard. The parent gates its own supplyRequests query on `currentTab === "requested-items"`; this one is unconditional. Harmless if the inactive `TabsContent` is unmounted (Radix default), but the two queries no longer agree on when they should run, which is the kind of drift that is hard to notice later.
+- `queryParams: { limit: 1 }` type-checks only because `listSupplyRequest` declares no `TQueryParams`. It works, but there's nothing stopping a future typo here.
+
+Not blocking — the behaviour is correct either way.
+
+**Question** — dropping `pageSize: careConfig.maxDatapointsPerUpsert` here undoes the round-trip reduction `@rithviknishad` asked for, and this hunk also drops `enabled: !!deliveryOrderId` from the base version.
+
+Those were two separate asks and I think both can be satisfied: `pageSize` is a *transport* concern for `query.paginated` (how many rows per page while it loops to fetch everything), which is orthogonal to the upsert cap — my earlier note was only that it shouldn't be read as a cap, not that it shouldn't be set. With it removed, this walks the default page size again, so a full delivery order costs several sequential requests instead of one.
+
+If setting it back is fine, I'd keep the `enabled` guard too rather than losing it as a side effect of the edit.
+
+verify this care-review comments from github verfiy these comments too
