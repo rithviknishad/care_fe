@@ -1,0 +1,26 @@
+{
+  "cli_version": "0.9.0",
+  "checkpoint_id": "1cd1e477be01",
+  "strategy": "manual-commit",
+  "branch": "claude/observation-plot-sheet-77acfc",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "docs/superpowers/specs/2026-09-01-observation-plot-sheet-design.md"
+  ],
+  "sessions": [
+    {
+      "metadata": "/1c/d1e477be01/0/metadata.json",
+      "transcript": "/1c/d1e477be01/0/full.jsonl",
+      "compact_transcript": "/1c/d1e477be01/0/transcript.jsonl",
+      "content_hash": "/1c/d1e477be01/0/content_hash.txt",
+      "prompt": "/1c/d1e477be01/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 68,
+    "cache_creation_tokens": 112577,
+    "cache_read_tokens": 3899266,
+    "output_tokens": 32418,
+    "api_call_count": 34
+  }
+}

@@ -1,0 +1,6 @@
+Can we build a observation plot sheet ?
+On licking on an observation we should render the past history like shown in the ui
+
+---
+
+yes lets build it
