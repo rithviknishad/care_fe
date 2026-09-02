@@ -1,0 +1,7 @@
+Patient Identifier in facility level needs a configuration UI and Display UI. BE support is there for this, needs a FE UI. 
+
+Display UI can be prioritised first. Patient identifier (Facility Level) need to be shown in all places where the current instance level patient identifier is shown. Eg.. (Patient Profile..)
+
+---
+
+dont use any skilll yu can easily do it
