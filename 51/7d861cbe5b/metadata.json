@@ -1,0 +1,29 @@
+{
+  "cli_version": "0.9.0",
+  "checkpoint_id": "517d861cbe5b",
+  "strategy": "manual-commit",
+  "branch": "claude/observation-plot-sheet-77acfc",
+  "checkpoints_count": 3,
+  "files_touched": [
+    "src/components/Common/Charts/observation-plot-sheet/ObservationFlowsheetTable.tsx",
+    "src/components/Common/Charts/observation-plot-sheet/ObservationPlotSheet.tsx",
+    "src/components/Common/Charts/observation-plot-sheet/observationPivot.test.ts",
+    "src/components/Common/Charts/observation-plot-sheet/observationPivot.ts"
+  ],
+  "sessions": [
+    {
+      "metadata": "/51/7d861cbe5b/0/metadata.json",
+      "transcript": "/51/7d861cbe5b/0/full.jsonl",
+      "compact_transcript": "/51/7d861cbe5b/0/transcript.jsonl",
+      "content_hash": "/51/7d861cbe5b/0/content_hash.txt",
+      "prompt": "/51/7d861cbe5b/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 376,
+    "cache_creation_tokens": 1514761,
+    "cache_read_tokens": 46217472,
+    "output_tokens": 183668,
+    "api_call_count": 188
+  }
+}
