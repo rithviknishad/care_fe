@@ -49,7 +49,3 @@ The request id "/Users/bodhishthomas/code/care_fe/node_modules/@fontsource/figtr
 
 Refer to docs https://vite.dev/config/server-options.html#server-fs-allow for configurations and more details.
 The request id "/Users/bodhishthomas/code/care_fe/node_modules/@fontsource/figtree/files/figtree-latin-400-normal.woff" is outside of Vite serving allow list. The request id "/Users/bodhishthomas/code/care_fe/node_modules/@fontsource/figtree/files/figtree-latin-400-normal.woff2" is outside of Vite serving allow list. The request id "/Users/bodhishthomas/code/care_fe/node_modules/@fontsource/figtree/files/figtree-latin-400-normal.woff" is outside of Vite serving allow list. The request id "/Users/bodhishthomas/code/care_fe/node_modules/@fontsource/figtree/files/figtree-latin-400-normal.woff2" is outside of Vite serving allow list. The request id "/Users/bodhishthomas/code/care_fe/node_modules/@fontsource/figtree/files/figtree-latin-400-normal.woff" is outside of Vite serving allow list.
-
----
-
-if main code has components we should also render the components right?
