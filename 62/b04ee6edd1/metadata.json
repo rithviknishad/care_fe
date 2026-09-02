@@ -1,0 +1,26 @@
+{
+  "cli_version": "0.9.0",
+  "checkpoint_id": "62b04ee6edd1",
+  "strategy": "manual-commit",
+  "branch": "claude/facility-patient-identifiers",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "package.json"
+  ],
+  "sessions": [
+    {
+      "metadata": "/62/b04ee6edd1/0/metadata.json",
+      "transcript": "/62/b04ee6edd1/0/full.jsonl",
+      "compact_transcript": "/62/b04ee6edd1/0/transcript.jsonl",
+      "content_hash": "/62/b04ee6edd1/0/content_hash.txt",
+      "prompt": "/62/b04ee6edd1/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 378,
+    "cache_creation_tokens": 1516274,
+    "cache_read_tokens": 46620918,
+    "output_tokens": 184345,
+    "api_call_count": 189
+  }
+}
