@@ -1,0 +1,26 @@
+{
+  "cli_version": "0.9.0",
+  "checkpoint_id": "f51c37604b89",
+  "strategy": "manual-commit",
+  "branch": "bodhi/facility-patient-identifiers",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "tests/facility/patient/patientDetails/facilityIdentifierDisplay.spec.ts"
+  ],
+  "sessions": [
+    {
+      "metadata": "/f5/1c37604b89/0/metadata.json",
+      "transcript": "/f5/1c37604b89/0/full.jsonl",
+      "compact_transcript": "/f5/1c37604b89/0/transcript.jsonl",
+      "content_hash": "/f5/1c37604b89/0/content_hash.txt",
+      "prompt": "/f5/1c37604b89/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 172,
+    "cache_creation_tokens": 4170,
+    "cache_read_tokens": 1392640,
+    "output_tokens": 3298,
+    "api_call_count": 4
+  }
+}
