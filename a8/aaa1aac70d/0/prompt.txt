@@ -1,0 +1,45 @@
+<task-notification>
+<task-id>a72b7ec68ff0f95c5</task-id>
+<tool-use-id>REDACTED</tool-use-id>
+<output-file>/private/tmp/claude-501/-Users-bodhishthomas-code-care-fe--claude-worktrees-observation-plot-sheet-77acfc/1404f691-7e63-462e-a09f-1219ef8488b2/tasks/a72b7ec68ff0f95c5.output</output-file>
+<status>completed</status>
+<summary>Agent "Review Task 5 (spec + quality)" finished</summary>
+<note>A task-notification fires each time this agent stops with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>
+<result>I now have enough evidence to produce the review.
+
+### Spec Compliance
+✅ Spec compliant. All brief requirements are met, both pre-authorised deviations are present and functionally sound, and the four carried-forward/named risks all check out clean.
+
+### Strengths
+- **API boundary respected** (`ObservationPlotSheet.tsx:1-23`): the import list contains no `observationApi` and no `analyse` reference. All data flows through `useObservationPlotData` (line 39, 51-69). The hook remains the feature's sole API-aware module — confirmed by reading `useObservationPlotData.ts`, which is the only file in this directory importing `observationApi`.
+- **`enabled` correctly driven by open state**: `enabled: open` is passed straight through (`ObservationPlotSheet.tsx:68`) into `useObservationPlotData`, which further gates on `enabled &amp;&amp; codes.length &gt; 0` (`useObservationPlotData.ts:74`). Nothing fetches before first open.
+- **Scope changes the query key** (verified in the already-merged hook): `queryKey: ["observation-plot", patientId, encounterId, codeKey, scope]` (`useObservationPlotData.ts:54`) — each scope caches/refetches independently, as required.
+- **Date range ends are correct**: `observationPivot.ts` sorts `columns` with `(a, b) =&gt; b.time - a.time` (descending / newest-first), confirmed by reading the pivot source directly. `columns[0]` = newest, `columns[columns.length-1]` = oldest (`ObservationPlotSheet.tsx:76-77`) — the displayed range is genuinely oldest → newest, not reversed.
+- **i18next plural resolution verified, not assumed**: `src/i18n.ts` uses the stock `i18next` v26 init with no `pluralSeparator`/`compatibilityJSON` override, and the `_one`/`_other` suffix convention is already used pervasively elsewhere in `public/locale/en.json` (e.g. `age_days_one`/`age_days_other`, `add_allergy_one`/`add_allergy_other`) with call sites like `AllergyQuestion.tsx:673` using the same `t(key, { count })` pattern. `n_recordings_one`/`n_recordings_other` (en.json:3631-3632) will resolve correctly for English; no raw key will render.
+- **No new locale keys**: diff stat confirms only the one new `.tsx` file — `public/locale/en.json` is untouched. All four keys used (`this_encounter`, `include_previous`, `n_recordings`, `observations`) pre-exist in en.json.
+- **`activeCode` is identity-safe**: `codes.find((c) =&gt; c.code === activeCodeKey) ?? codes[0]` (`ObservationPlotSheet.tsx:38`) matches by the `.code` string, not array reference, so a fresh `codes` array literal at each call-site render does not reset or desync the selection. When `codes` changes to a set that no longer contains `activeCodeKey`, `activeCode` gracefully falls back to `codes[0]`, and the pill highlight (`code.code === activeCode?.code`) stays consistent with what's actually rendered in the chart/table — no desync path found.
+- **Single-code case fully omits the pill row**: `{codes.length &gt; 1 &amp;&amp; (...)}` (line ~113 in rendered JSX) renders nothing at all (not even an empty node) when there's one code — an improvement over the brief's literal `&lt;span /&gt;` placeholder.
+- **`ml-auto` deviation is correct CSS**: verified `cn()` uses `twMerge(clsx(...))` (`src/lib/utils.ts`), and `SheetContent`'s base classes (`sheetVariants`) are applied before the passed `className`, so `sm:max-w-4xl` correctly overrides the base `sm:max-w-sm`, `gap-6` overrides `gap-4`, and `h-full` (unconflicting) is retained from the base — giving the sheet a bounded height for `overflow-y-auto` to scroll within, and `flex flex-col` with `ml-auto` on the scope-toggle div correctly right-aligns it in all cases (0, 1, or many code pills) rather than only the case the original `justify-between` placeholder covered.
+- **Accessibility additions are sound, not just decorative**: `aria-pressed` is a standard attribute on `React.ComponentProps&lt;"button"&gt;` (verified in `src/components/ui/button.tsx`, which spreads `...props` onto a native `&lt;button&gt;`), so it's fully typed with no `any`. Both groups (code pills, scope toggle) now convey selection state to assistive tech, not just via background colour — verified no `jsx-a11y` ESLint plugin exists in `eslint.config.mjs`/`package.json`, so this genuinely wasn't mechanically enforced and was a manual, correct addition.
+- **No loading flash**: `isLoading` gates the skeleton vs. content branch (`ObservationPlotSheet.tsx:159` per brief numbering); TanStack Query v5's `useInfiniteQuery` computes `isLoading` optimistically during the same render in which `enabled` flips true (via `QueryObserver.getOptimisticResult`), so there is no intermediate render where stale/empty `columns`/`rows` would flash the "no readings" table before the skeleton takes over.
+- **Sheet sizing matches design**: `sm:max-w-4xl` and `overflow-y-auto` present on `SheetContent` (`ObservationPlotSheet.tsx:88`).
+- Prop contracts to `ObservationFlowsheetTable` and `ObservationTrendChart` match exactly (verified against both components' own interfaces) — `useObservationPlotData`'s return shape is destructured and forwarded without adding or renaming fields.
+- Style: double quotes, 2-space indent, semicolons, `interface` for props, no `any`, named export, one component per file, PascalCase filename — all confirmed by direct read.
+
+### Issues
+
+#### Critical (Must Fix)
+None.
+
+#### Important (Should Fix)
+None.
+
+#### Minor (Nice to Have)
+- `ObservationPlotSheet.tsx:71` — `title || activeCode?.display || t("observations")` uses `||` rather than `??`; a falsy-but-valid empty-string `title` would fall through to the next option. Almost certainly intentional (empty string isn't a meaningful title) and matches the brief's literal code verbatim — flagging only for completeness, not a real defect.
+- No explicit handling for a query-error state distinct from `isLoading` (e.g., a failed fetch resolves `isLoading` to `false` with empty `columns`/`rows`, so the table would render an empty state rather than an error indicator). This is consistent with the codebase's global-toast error-handling convention (per `AGENTS.md`/`CLAUDE.md`: "400/406 show toast notifications") and was not part of this task's brief or named risks, so it is not a defect in this diff — noting only as a boundary condition for the controller's awareness, not something to block on.
+
+### Assessment
+**Task quality:** Approved
+**Reasoning:** The diff fulfills the exact prop contract, respects every global constraint (no API import, no `analyse`, no reference-range logic, no encounter-membership marking, `enabled` on open state, no new locale keys), and both pre-authorised deviations are implemented correctly and for good reason. All four named risks were independently verified against source (hook/pivot/i18n-config/Button component) rather than taken on faith, and none surfaced a defect.</result>
+<usage><subagent_tokens>96053</subagent_tokens><tool_uses>20</tool_uses><duration_ms>162981</duration_ms></usage>
+</task-notification>
