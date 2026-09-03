@@ -1,0 +1,17 @@
+we should add support for actions, you can refer https://github.com/ohcnetwork/care/tree/ENG-737 branch for relavent context, i am going to sleep, you build out the ux for actions inside the questionnaire. choose the best decisions, i want it build
+
+---
+
+Can we add more fields and action instructions in the backend?
+
+---
+
+retry?
+
+---
+
+push backend barnach
+
+---
+
+can we create a backend branch with just the set of changes required, the current has fixtures and all that backend don't want to merge now

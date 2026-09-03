@@ -1,0 +1,62 @@
+{
+  "cli_version": "0.9.0",
+  "checkpoint_id": "553629a21021",
+  "strategy": "manual-commit",
+  "branch": "bodhi/questionnaire-actions",
+  "checkpoints_count": 4,
+  "files_touched": [
+    "public/locale/en.json",
+    "src/components/QuestionnaireV2/README.md",
+    "src/components/QuestionnaireV2/builder/actionValidation.test.ts",
+    "src/components/QuestionnaireV2/builder/actionValidation.ts",
+    "src/components/QuestionnaireV2/builder/actionVariables.test.ts",
+    "src/components/QuestionnaireV2/builder/actionVariables.ts",
+    "src/components/QuestionnaireV2/builder/actions/ActionConditionEditor.tsx",
+    "src/components/QuestionnaireV2/builder/actions/InstructionEditor.tsx",
+    "src/components/QuestionnaireV2/builder/actions/ParamValueInput.tsx",
+    "src/components/QuestionnaireV2/builder/actions/labels.ts",
+    "src/components/QuestionnaireV2/builder/builderReducer.test.ts",
+    "src/components/QuestionnaireV2/builder/builderReducer.ts",
+    "src/components/QuestionnaireV2/fill/FillPageBody.tsx",
+    "src/components/QuestionnaireV2/fill/submit/actionOutcomes.test.ts",
+    "src/components/QuestionnaireV2/fill/submit/actionOutcomes.ts",
+    "src/components/QuestionnaireV2/fill/submit/useSubmitFillSession.ts",
+    "src/components/QuestionnaireV2/fill/submit/validateActionReferences.ts",
+    "src/components/QuestionnaireV2/manage/CloneQuestionnaireDialog.tsx",
+    "src/components/QuestionnaireV2/manage/QuestionnaireCreatePage.tsx",
+    "src/components/QuestionnaireV2/queryKeys.ts",
+    "src/components/QuestionnaireV2/shared/CollapsibleSettingsCard.tsx",
+    "src/components/QuestionnaireV2/shared/actionExpression.test.ts",
+    "src/components/QuestionnaireV2/shared/actionExpression.ts",
+    "src/components/QuestionnaireV2/shared/buildUpdateBody.ts",
+    "src/components/QuestionnaireV2/shared/instructionLabels.ts",
+    "src/components/QuestionnaireV2/shared/questionTree.ts",
+    "src/components/QuestionnaireV2/studio/ActionsPanel.tsx",
+    "src/components/QuestionnaireV2/studio/QuestionnaireStudioPage.tsx",
+    "src/components/QuestionnaireV2/studio/StudioOutline.tsx",
+    "src/components/QuestionnaireV2/studio/StudioTopBar.tsx",
+    "src/components/QuestionnaireV2/studio/actionSummary.ts",
+    "src/components/QuestionnaireV2/studio/useActionRegistry.ts",
+    "src/types/questionnaire/actionApi.ts",
+    "src/types/questionnaire/actions.ts",
+    "src/types/questionnaire/questionnaire.ts",
+    "tests/facility/patient/encounter/fill/fillActions.spec.ts",
+    "tests/facility/settings/questionnaires/questionnaireActions.spec.ts"
+  ],
+  "sessions": [
+    {
+      "metadata": "/55/3629a21021/0/metadata.json",
+      "transcript": "/55/3629a21021/0/full.jsonl",
+      "compact_transcript": "/55/3629a21021/0/transcript.jsonl",
+      "content_hash": "/55/3629a21021/0/content_hash.txt",
+      "prompt": "/55/3629a21021/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 46882,
+    "cache_creation_tokens": 2412219,
+    "cache_read_tokens": 77445521,
+    "output_tokens": 346195,
+    "api_call_count": 145
+  }
+}
