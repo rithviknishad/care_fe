@@ -1,0 +1,5 @@
+In @attachment:DispenseOrderView.tsx we have sticky footer right. can we refactor it to be a component? DispenseOrderViewFooter
+
+---
+
+In @attachment:DispenseOrderView.tsx we have sticky footer right. can we refactor it to be a component? DispenseOrderViewFooter
