@@ -1,0 +1,5 @@
+Should we mention th type of origin or destination, like Supplier, Patient and Origin, here? At least if it is patient? If yes implement it in minimal changes
+
+---
+
+When the origin is patient, we decided not to display the patient's name, Insead we can display something generic to understand that it is returned by a patient

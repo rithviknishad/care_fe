@@ -1,0 +1,56 @@
+{
+  "cli_version": "0.9.0",
+  "checkpoint_id": "562de669feba",
+  "session_id": "dacdeb66-4f85-4942-93ee-e1df3a3a8e5b",
+  "strategy": "manual-commit",
+  "created_at": "2026-09-03T07:24:58.400358Z",
+  "branch": "ENG-111-clicking-on-an-inventory-item-should-display-all-supply-deliveries",
+  "checkpoints_count": 2,
+  "save_step_count": 2,
+  "files_touched": [
+    "public/locale/en.json",
+    "src/pages/Facility/services/inventory/SupplyDeliveryTable.tsx"
+  ],
+  "agent": "Copilot CLI",
+  "model": "",
+  "turn_id": "79f5f8e03b44",
+  "compact_transcript_start": 0,
+  "token_usage": {
+    "input_tokens": 0,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 0,
+    "output_tokens": 0,
+    "api_call_count": 0
+  },
+  "session_metrics": {
+    "turn_count": 2
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-09-03T07:24:58.39513Z",
+    "agent_lines": 1,
+    "agent_removed": 2,
+    "human_added": 0,
+    "human_modified": 2,
+    "human_removed": 0,
+    "total_committed": 3,
+    "total_lines_changed": 5,
+    "agent_percentage": 60,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0
+    },
+    {
+      "checkpoint_number": 2,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0
+    }
+  ]
+}
