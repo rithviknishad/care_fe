@@ -1,0 +1,14 @@
+You will need to build the valueset editor, the backend has done a good design in https://github.com/ohcnetwork/care/tree/ENG-737
+we need to add support for it in the frontend, valuesets that was in instance level now comes to facility level also, users will also get to choose
+
+---
+
+lets review and push
+
+---
+
+use opus for the remaining agents?
+
+---
+
+change it for the verify
