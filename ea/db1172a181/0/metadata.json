@@ -1,0 +1,41 @@
+{
+  "cli_version": "0.9.0",
+  "checkpoint_id": "eadb1172a181",
+  "session_id": "31e30cd8-7105-442b-bd89-44b7e8ba8274",
+  "strategy": "manual-commit",
+  "created_at": "2026-09-04T07:46:56.735677Z",
+  "branch": "bodhi/questionnaire-actions",
+  "checkpoints_count": 1,
+  "save_step_count": 1,
+  "files_touched": [
+    "src/components/Questionnaire/SelectOrCreateValueset.tsx",
+    "src/components/Questionnaire/ValueSetSearchContent.tsx",
+    "src/pages/Facility/settings/layout.tsx"
+  ],
+  "agent": "Claude Code",
+  "model": "claude-fable-5-1",
+  "turn_id": "4b7715955712",
+  "compact_transcript_start": 0,
+  "token_usage": {
+    "input_tokens": 58365,
+    "cache_creation_tokens": 5471412,
+    "cache_read_tokens": 145083131,
+    "output_tokens": 486014,
+    "api_call_count": 238
+  },
+  "session_metrics": {
+    "turn_count": 16
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-09-04T07:46:56.463884Z",
+    "agent_lines": 96,
+    "agent_removed": 70,
+    "human_added": 1684,
+    "human_modified": 16,
+    "human_removed": 0,
+    "total_committed": 1796,
+    "total_lines_changed": 2064,
+    "agent_percentage": 8.04263565891473,
+    "metric_version": 2
+  }
+}
