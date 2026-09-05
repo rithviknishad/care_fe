@@ -1,0 +1,72 @@
+{
+  "cli_version": "0.9.0",
+  "checkpoint_id": "23d4dfa6237a",
+  "session_id": "01a06b63-2ea6-7123-92dc-fb0ab55386ba",
+  "strategy": "manual-commit",
+  "created_at": "2026-09-05T10:47:05.350507Z",
+  "branch": "bodhi/questionnaire-actions",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "src/components/ValueSet/ValueSetEditor.tsx",
+    "src/components/ValueSet/ValueSetForm.tsx",
+    "src/components/ValueSet/ValueSetList.tsx",
+    "tests/admin/valueset/valuesetSystemEdit.spec.ts"
+  ],
+  "agent": "Codex",
+  "model": "gpt-6-astra",
+  "turn_id": "487dcb618065",
+  "checkpoint_transcript_start": 2736,
+  "transcript_lines_at_start": 2736,
+  "compact_transcript_start": 367,
+  "token_usage": {
+    "input_tokens": 50228,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 4830080,
+    "output_tokens": 7084,
+    "api_call_count": 28
+  },
+  "session_metrics": {
+    "turn_count": 6
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-09-05T10:47:04.929485Z",
+    "agent_lines": 0,
+    "agent_removed": 0,
+    "human_added": 0,
+    "human_modified": 0,
+    "human_removed": 8,
+    "total_committed": 0,
+    "total_lines_changed": 8,
+    "agent_percentage": 0,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 6692,
+      "user_lines_removed": 8,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        ".context/retros/2026-03-15-1.json": 36,
+        ".gstack/browse-console.log": 244,
+        ".gstack/browse-network.log": 6221,
+        ".gstack/browse.json": 8,
+        ".husky/commit-msg": 1,
+        ".husky/post-commit": 1,
+        ".husky/post-rewrite": 1,
+        ".husky/pre-push": 1,
+        ".husky/prepare-commit-msg": 1,
+        "src/components/ValueSet/ValueSetEditor.tsx": 1,
+        "src/components/ValueSet/ValueSetForm.tsx": 8,
+        "src/components/ValueSet/ValueSetList.tsx": 1,
+        "tests/admin/valueset/valuesetSystemEdit.spec.ts": 168
+      },
+      "user_removed_per_file": {
+        "src/components/ValueSet/ValueSetEditor.tsx": 1,
+        "src/components/ValueSet/ValueSetForm.tsx": 6,
+        "src/components/ValueSet/ValueSetList.tsx": 1
+      }
+    }
+  ]
+}
