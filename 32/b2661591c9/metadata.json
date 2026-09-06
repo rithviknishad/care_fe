@@ -3,7 +3,7 @@
   "checkpoint_id": "32b2661591c9",
   "strategy": "manual-commit",
   "branch": "bodhi/questionnaire-actions",
-  "checkpoints_count": 4,
+  "checkpoints_count": 9,
   "files_touched": [
     "public/locale/en.json",
     "src/components/Questionnaire/QuestionTypes/AllergyQuestion.tsx",
@@ -68,13 +68,20 @@
       "compact_transcript": "/32/b2661591c9/1/transcript.jsonl",
       "content_hash": "/32/b2661591c9/1/content_hash.txt",
       "prompt": "/32/b2661591c9/1/prompt.txt"
+    },
+    {
+      "metadata": "/32/b2661591c9/2/metadata.json",
+      "transcript": "/32/b2661591c9/2/full.jsonl",
+      "compact_transcript": "/32/b2661591c9/2/transcript.jsonl",
+      "content_hash": "/32/b2661591c9/2/content_hash.txt",
+      "prompt": "/32/b2661591c9/2/prompt.txt"
     }
   ],
   "token_usage": {
-    "input_tokens": 307121,
-    "cache_creation_tokens": 5471412,
-    "cache_read_tokens": 163100539,
-    "output_tokens": 522489,
-    "api_call_count": 409
+    "input_tokens": 308173,
+    "cache_creation_tokens": 5856198,
+    "cache_read_tokens": 175826081,
+    "output_tokens": 630723,
+    "api_call_count": 451
   }
 }

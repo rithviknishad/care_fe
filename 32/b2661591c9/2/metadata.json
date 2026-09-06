@@ -1,0 +1,309 @@
+{
+  "cli_version": "0.9.0",
+  "checkpoint_id": "32b2661591c9",
+  "session_id": "91122784-ff0f-4795-9eaf-e753562a7364",
+  "strategy": "manual-commit",
+  "created_at": "2026-09-06T05:01:56.187734Z",
+  "branch": "bodhi/questionnaire-actions",
+  "checkpoints_count": 5,
+  "save_step_count": 5,
+  "files_touched": [
+    "public/locale/en.json",
+    "src/components/Questionnaire/QuestionTypes/AllergyQuestion.tsx",
+    "src/components/Questionnaire/QuestionTypes/AppointmentQuestion.tsx",
+    "src/components/Questionnaire/QuestionTypes/ChargeItemQuestion.tsx",
+    "src/components/Questionnaire/QuestionTypes/DiagnosisQuestion.tsx",
+    "src/components/Questionnaire/QuestionTypes/EncounterQuestion.tsx",
+    "src/components/Questionnaire/QuestionTypes/FileQuestion.tsx",
+    "src/components/Questionnaire/QuestionTypes/MedicationRequestQuestion.tsx",
+    "src/components/Questionnaire/QuestionTypes/MedicationStatementQuestion.tsx",
+    "src/components/Questionnaire/QuestionTypes/ServiceRequestQuestion.tsx",
+    "src/components/Questionnaire/QuestionTypes/SymptomQuestion.tsx",
+    "src/components/QuestionnaireV2/README.md",
+    "src/components/QuestionnaireV2/fill/FillCanvas.tsx",
+    "src/components/QuestionnaireV2/fill/FillPageBody.tsx",
+    "src/components/QuestionnaireV2/fill/QuestionnaireFillPage.tsx",
+    "src/components/QuestionnaireV2/fill/draft/draftMerge.ts",
+    "src/components/QuestionnaireV2/fill/draft/fillDraftCache.ts",
+    "src/components/QuestionnaireV2/fill/draft/fillDraftCore.ts",
+    "src/components/QuestionnaireV2/fill/draft/fillDraftStore.ts",
+    "src/components/QuestionnaireV2/fill/draft/useFillAutosave.ts",
+    "src/components/QuestionnaireV2/fill/draft/useSaveServerDraft.ts",
+    "src/components/QuestionnaireV2/fill/useFillActions.ts",
+    "src/components/QuestionnaireV2/form/StructuredSlot.tsx",
+    "src/components/QuestionnaireV2/structured/definitions/adapt.ts",
+    "src/components/QuestionnaireV2/structured/definitions/allergyIntolerance.tsx",
+    "src/components/QuestionnaireV2/structured/definitions/appointment.tsx",
+    "src/components/QuestionnaireV2/structured/definitions/chargeItem.tsx",
+    "src/components/QuestionnaireV2/structured/definitions/diagnosis.tsx",
+    "src/components/QuestionnaireV2/structured/definitions/encounter.tsx",
+    "src/components/QuestionnaireV2/structured/definitions/medicationRequest.tsx",
+    "src/components/QuestionnaireV2/structured/definitions/medicationStatement.tsx",
+    "src/components/QuestionnaireV2/structured/definitions/serviceRequest.tsx",
+    "src/components/QuestionnaireV2/structured/definitions/symptom.tsx",
+    "src/components/QuestionnaireV2/structured/definitions/timeOfDeath.tsx",
+    "src/components/QuestionnaireV2/structured/types.ts",
+    "src/pages/Encounters/tabs/overview.tsx",
+    "src/pages/Encounters/tabs/overview/FormSubmissionDrafts.tsx",
+    "src/types/questionnaire/form.ts",
+    "tests/facility/patient/encounter/fill/fillAutosave.spec.ts",
+    "tests/facility/patient/encounter/fill/fillServerDraft.spec.ts"
+  ],
+  "agent": "Claude Code",
+  "model": "claude-fable-5-1",
+  "turn_id": "0485a0b9ca13",
+  "compact_transcript_start": 0,
+  "token_usage": {
+    "input_tokens": 1052,
+    "cache_creation_tokens": 384786,
+    "cache_read_tokens": 12725542,
+    "output_tokens": 108234,
+    "api_call_count": 42
+  },
+  "skill_events_version": 1,
+  "skill_events": [
+    {
+      "id": "claude-skill-toolu_019KCp6rb5VrEGMD8ddjq4pD",
+      "event_type": "tool_invocation",
+      "skill": {
+        "name": "review"
+      },
+      "source": {
+        "agent": "claude-code",
+        "signal": "skill_tool_use",
+        "confidence": "explicit"
+      },
+      "turn_id": "0485a0b9ca13",
+      "transcript_anchor": {
+        "unit": "line",
+        "start": 31,
+        "end": 32,
+        "entry_ids": [
+          "beda7bd5-e423-40de-8543-e33651765924"
+        ],
+        "tool_use_id": "toolu_019KCp6rb5VrEGMD8ddjq4pD"
+      },
+      "native": {
+        "tool_name": "Skill",
+        "tool_use_id": "toolu_019KCp6rb5VrEGMD8ddjq4pD"
+      },
+      "collapse": {
+        "target": "tool_pair",
+        "label": "Skill: review",
+        "default_collapsed": true
+      }
+    },
+    {
+      "id": "claude-skill-toolu_01SDcAzGSju9b713YHrwWwjd",
+      "event_type": "tool_invocation",
+      "skill": {
+        "name": "code-review"
+      },
+      "source": {
+        "agent": "claude-code",
+        "signal": "skill_tool_use",
+        "confidence": "explicit"
+      },
+      "turn_id": "0485a0b9ca13",
+      "transcript_anchor": {
+        "unit": "line",
+        "start": 49,
+        "end": 50,
+        "entry_ids": [
+          "e6befbaa-df3f-487b-8c2c-bb9bc075ef9d"
+        ],
+        "tool_use_id": "toolu_01SDcAzGSju9b713YHrwWwjd"
+      },
+      "native": {
+        "tool_name": "Skill",
+        "tool_use_id": "toolu_01SDcAzGSju9b713YHrwWwjd"
+      },
+      "collapse": {
+        "target": "tool_pair",
+        "label": "Skill: code-review",
+        "default_collapsed": true
+      }
+    }
+  ],
+  "session_metrics": {
+    "turn_count": 5
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-09-06T05:01:56.103466Z",
+    "agent_lines": 0,
+    "agent_removed": 0,
+    "human_added": 0,
+    "human_modified": 0,
+    "human_removed": 595,
+    "total_committed": 0,
+    "total_lines_changed": 595,
+    "agent_percentage": 0,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 9265,
+      "user_lines_removed": 595,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        ".context/retros/2026-03-15-1.json": 36,
+        ".gstack/browse-console.log": 244,
+        ".gstack/browse-network.log": 6221,
+        ".gstack/browse.json": 8,
+        ".husky/commit-msg": 1,
+        ".husky/post-commit": 1,
+        ".husky/post-rewrite": 1,
+        ".husky/pre-push": 1,
+        ".husky/prepare-commit-msg": 1,
+        "public/locale/en.json": 7,
+        "src/components/Questionnaire/QuestionTypes/AllergyQuestion.tsx": 8,
+        "src/components/Questionnaire/QuestionTypes/AppointmentQuestion.tsx": 95,
+        "src/components/Questionnaire/QuestionTypes/ChargeItemQuestion.tsx": 56,
+        "src/components/Questionnaire/QuestionTypes/DiagnosisQuestion.tsx": 9,
+        "src/components/Questionnaire/QuestionTypes/EncounterQuestion.tsx": 49,
+        "src/components/Questionnaire/QuestionTypes/FileQuestion.tsx": 23,
+        "src/components/Questionnaire/QuestionTypes/MedicationRequestQuestion.tsx": 9,
+        "src/components/Questionnaire/QuestionTypes/MedicationStatementQuestion.tsx": 8,
+        "src/components/Questionnaire/QuestionTypes/ServiceRequestQuestion.tsx": 23,
+        "src/components/Questionnaire/QuestionTypes/SymptomQuestion.tsx": 8,
+        "src/components/QuestionnaireV2/README.md": 12,
+        "src/components/QuestionnaireV2/fill/FillCanvas.tsx": 8,
+        "src/components/QuestionnaireV2/fill/FillPageBody.tsx": 23,
+        "src/components/QuestionnaireV2/fill/QuestionnaireFillPage.tsx": 14,
+        "src/components/QuestionnaireV2/fill/draft/draftMerge.ts": 5,
+        "src/components/QuestionnaireV2/fill/draft/fillDraftCache.ts": 100,
+        "src/components/QuestionnaireV2/fill/draft/fillDraftCore.ts": 17,
+        "src/components/QuestionnaireV2/fill/draft/fillDraftList.test.ts": 306,
+        "src/components/QuestionnaireV2/fill/draft/fillDraftList.ts": 141,
+        "src/components/QuestionnaireV2/fill/draft/fillDraftStore.ts": 77,
+        "src/components/QuestionnaireV2/fill/draft/structuredDraft.test.ts": 246,
+        "src/components/QuestionnaireV2/fill/draft/structuredDraft.ts": 139,
+        "src/components/QuestionnaireV2/fill/draft/useFillAutosave.ts": 26,
+        "src/components/QuestionnaireV2/fill/draft/useLocalFillDrafts.ts": 37,
+        "src/components/QuestionnaireV2/fill/draft/useSaveServerDraft.ts": 16,
+        "src/components/QuestionnaireV2/fill/useFillActions.test.ts": 130,
+        "src/components/QuestionnaireV2/fill/useFillActions.ts": 11,
+        "src/components/QuestionnaireV2/form/StructuredSlot.tsx": 14,
+        "src/components/QuestionnaireV2/structured/definitions/adapt.ts": 1,
+        "src/components/QuestionnaireV2/structured/definitions/allergyIntolerance.tsx": 2,
+        "src/components/QuestionnaireV2/structured/definitions/appointment.tsx": 2,
+        "src/components/QuestionnaireV2/structured/definitions/chargeItem.tsx": 13,
+        "src/components/QuestionnaireV2/structured/definitions/diagnosis.tsx": 2,
+        "src/components/QuestionnaireV2/structured/definitions/encounter.tsx": 2,
+        "src/components/QuestionnaireV2/structured/definitions/medicationRequest.tsx": 2,
+        "src/components/QuestionnaireV2/structured/definitions/medicationStatement.tsx": 2,
+        "src/components/QuestionnaireV2/structured/definitions/serviceRequest.tsx": 1,
+        "src/components/QuestionnaireV2/structured/definitions/symptom.tsx": 2,
+        "src/components/QuestionnaireV2/structured/definitions/timeOfDeath.tsx": 1,
+        "src/components/QuestionnaireV2/structured/types.ts": 7,
+        "src/pages/Encounters/tabs/overview.tsx": 1,
+        "src/pages/Encounters/tabs/overview/FormSubmissionDrafts.tsx": 164,
+        "src/types/questionnaire/form.ts": 3,
+        "tests/facility/patient/encounter/fill/fillAutosave.spec.ts": 63,
+        "tests/facility/patient/encounter/fill/fillDraftOverview.spec.ts": 366,
+        "tests/facility/patient/encounter/fill/fillServerDraft.spec.ts": 189,
+        "tests/facility/patient/encounter/fill/fillStructuredState.spec.ts": 311
+      },
+      "user_removed_per_file": {
+        "public/locale/en.json": 1,
+        "src/components/Questionnaire/QuestionTypes/AllergyQuestion.tsx": 2,
+        "src/components/Questionnaire/QuestionTypes/AppointmentQuestion.tsx": 36,
+        "src/components/Questionnaire/QuestionTypes/ChargeItemQuestion.tsx": 88,
+        "src/components/Questionnaire/QuestionTypes/DiagnosisQuestion.tsx": 8,
+        "src/components/Questionnaire/QuestionTypes/EncounterQuestion.tsx": 49,
+        "src/components/Questionnaire/QuestionTypes/FileQuestion.tsx": 11,
+        "src/components/Questionnaire/QuestionTypes/MedicationRequestQuestion.tsx": 2,
+        "src/components/Questionnaire/QuestionTypes/MedicationStatementQuestion.tsx": 2,
+        "src/components/Questionnaire/QuestionTypes/ServiceRequestQuestion.tsx": 29,
+        "src/components/Questionnaire/QuestionTypes/SymptomQuestion.tsx": 2,
+        "src/components/QuestionnaireV2/README.md": 5,
+        "src/components/QuestionnaireV2/fill/FillCanvas.tsx": 3,
+        "src/components/QuestionnaireV2/fill/FillPageBody.tsx": 31,
+        "src/components/QuestionnaireV2/fill/QuestionnaireFillPage.tsx": 8,
+        "src/components/QuestionnaireV2/fill/draft/fillDraftCache.ts": 18,
+        "src/components/QuestionnaireV2/fill/draft/fillDraftStore.ts": 91,
+        "src/components/QuestionnaireV2/fill/draft/useFillAutosave.ts": 23,
+        "src/components/QuestionnaireV2/fill/draft/useSaveServerDraft.ts": 3,
+        "src/components/QuestionnaireV2/fill/useFillActions.ts": 2,
+        "src/components/QuestionnaireV2/form/StructuredSlot.tsx": 1,
+        "src/components/QuestionnaireV2/structured/definitions/adapt.ts": 2,
+        "src/components/QuestionnaireV2/structured/definitions/allergyIntolerance.tsx": 1,
+        "src/components/QuestionnaireV2/structured/definitions/appointment.tsx": 1,
+        "src/components/QuestionnaireV2/structured/definitions/chargeItem.tsx": 2,
+        "src/components/QuestionnaireV2/structured/definitions/diagnosis.tsx": 1,
+        "src/components/QuestionnaireV2/structured/definitions/encounter.tsx": 1,
+        "src/components/QuestionnaireV2/structured/definitions/medicationRequest.tsx": 1,
+        "src/components/QuestionnaireV2/structured/definitions/medicationStatement.tsx": 1,
+        "src/components/QuestionnaireV2/structured/definitions/serviceRequest.tsx": 1,
+        "src/components/QuestionnaireV2/structured/definitions/symptom.tsx": 1,
+        "src/components/QuestionnaireV2/structured/definitions/timeOfDeath.tsx": 1,
+        "src/components/QuestionnaireV2/structured/types.ts": 8,
+        "src/pages/Encounters/tabs/overview.tsx": 1,
+        "src/pages/Encounters/tabs/overview/FormSubmissionDrafts.tsx": 123,
+        "tests/facility/patient/encounter/fill/fillServerDraft.spec.ts": 35
+      }
+    },
+    {
+      "checkpoint_number": 2,
+      "user_lines_added": 41,
+      "user_lines_removed": 0,
+      "agent_lines_added": 9224,
+      "agent_lines_removed": 595,
+      "user_added_per_file": {
+        ".context/retros/2026-03-15-1.json": 36,
+        ".husky/commit-msg": 1,
+        ".husky/post-commit": 1,
+        ".husky/post-rewrite": 1,
+        ".husky/pre-push": 1,
+        ".husky/prepare-commit-msg": 1
+      }
+    },
+    {
+      "checkpoint_number": 3,
+      "user_lines_added": 41,
+      "user_lines_removed": 0,
+      "agent_lines_added": 9224,
+      "agent_lines_removed": 595,
+      "user_added_per_file": {
+        ".context/retros/2026-03-15-1.json": 36,
+        ".husky/commit-msg": 1,
+        ".husky/post-commit": 1,
+        ".husky/post-rewrite": 1,
+        ".husky/pre-push": 1,
+        ".husky/prepare-commit-msg": 1
+      }
+    },
+    {
+      "checkpoint_number": 4,
+      "user_lines_added": 41,
+      "user_lines_removed": 0,
+      "agent_lines_added": 9236,
+      "agent_lines_removed": 595,
+      "user_added_per_file": {
+        ".context/retros/2026-03-15-1.json": 36,
+        ".husky/commit-msg": 1,
+        ".husky/post-commit": 1,
+        ".husky/post-rewrite": 1,
+        ".husky/pre-push": 1,
+        ".husky/prepare-commit-msg": 1
+      }
+    },
+    {
+      "checkpoint_number": 5,
+      "user_lines_added": 41,
+      "user_lines_removed": 0,
+      "agent_lines_added": 9224,
+      "agent_lines_removed": 595,
+      "user_added_per_file": {
+        ".context/retros/2026-03-15-1.json": 36,
+        ".husky/commit-msg": 1,
+        ".husky/post-commit": 1,
+        ".husky/post-rewrite": 1,
+        ".husky/pre-push": 1,
+        ".husky/prepare-commit-msg": 1
+      }
+    }
+  ]
+}
