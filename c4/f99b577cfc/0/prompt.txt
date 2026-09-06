@@ -1,6 +1,1 @@
-1. we should not clear questionnaire on update&#x20;
-2. the width should be limited for all structured questions else it won't looks good. only for medication we can take the full space.
-
----
-
 on the width don't you think both structured and non structured should look the same? it feels odd to have 2 different width, lets keep the medication request also the same width now;
