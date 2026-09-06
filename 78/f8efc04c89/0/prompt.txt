@@ -1,2 +1,10 @@
+when I do resume it should actually open the form with the right responses right? it does't do that now for local drafts
+
+---
+
+does software update clear my local cache?>
+
+---
+
 1. we should not clear questionnaire on update&#x20;
 2. the width should be limited for all structured questions else it won't looks good. only for medication we can take the full space.
