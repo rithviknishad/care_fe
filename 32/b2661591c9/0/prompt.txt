@@ -1,0 +1,9 @@
+We have doen a lot of changes to the questionnaire filling experience in this branch, most of it created bugs and non consitent ui when using structured questions, the local draft feature is not working, can
+
+---
+
+we should show local draft and server drafts in the encounter page, lets also make sure we are showing it as a 1 line each for each
+
+---
+
+Instead of server draft, can we call it Shared?
