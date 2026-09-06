@@ -1,0 +1,30 @@
+{
+  "cli_version": "0.9.0",
+  "checkpoint_id": "c4f99b577cfc",
+  "strategy": "manual-commit",
+  "branch": "bodhi/questionnaire-actions",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "src/components/Questionnaire/QuestionTypes/MedicationRequestQuestion.tsx",
+    "src/components/Questionnaire/QuestionTypes/MedicationStatementQuestion.tsx",
+    "src/components/QuestionnaireV2/README.md",
+    "src/components/QuestionnaireV2/fill/FillCanvas.tsx",
+    "tests/facility/patient/encounter/fill/fillStructuredLayout.spec.ts"
+  ],
+  "sessions": [
+    {
+      "metadata": "/c4/f99b577cfc/0/metadata.json",
+      "transcript": "/c4/f99b577cfc/0/full.jsonl",
+      "compact_transcript": "/c4/f99b577cfc/0/transcript.jsonl",
+      "content_hash": "/c4/f99b577cfc/0/content_hash.txt",
+      "prompt": "/c4/f99b577cfc/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 40772,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 3264000,
+    "output_tokens": 6887,
+    "api_call_count": 21
+  }
+}
