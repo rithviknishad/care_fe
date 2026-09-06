@@ -1,0 +1,47 @@
+{
+  "cli_version": "0.9.0",
+  "checkpoint_id": "f00952bed95e",
+  "session_id": "31e30cd8-7105-442b-bd89-44b7e8ba8274",
+  "strategy": "manual-commit",
+  "created_at": "2026-09-06T19:22:23.401014Z",
+  "branch": "bodhi/questionnaire-actions",
+  "checkpoints_count": 1,
+  "save_step_count": 1,
+  "files_touched": [
+    "src/components/Common/ScrollToTop.tsx",
+    "src/components/Common/UserSelector.tsx",
+    "src/components/Questionnaire/QuestionnaireSearch.tsx",
+    "src/pages/Facility/locations/LocationLayout.tsx",
+    "src/pages/Facility/settings/billing/layout.tsx",
+    "src/pages/Facility/settings/devices/DeviceShow.tsx",
+    "src/pages/Facility/settings/devices/components/DeviceServiceHistory.tsx",
+    "src/pages/Facility/settings/general/general.tsx",
+    "src/pages/Facility/settings/locations/LocationView.tsx"
+  ],
+  "agent": "Claude Code",
+  "model": "claude-fable-5-1",
+  "turn_id": "4b7715955712",
+  "compact_transcript_start": 0,
+  "token_usage": {
+    "input_tokens": 58365,
+    "cache_creation_tokens": 5471412,
+    "cache_read_tokens": 145083131,
+    "output_tokens": 486014,
+    "api_call_count": 238
+  },
+  "session_metrics": {
+    "turn_count": 16
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-09-06T19:22:23.150622Z",
+    "agent_lines": 0,
+    "agent_removed": 0,
+    "human_added": 6134,
+    "human_modified": 661,
+    "human_removed": 0,
+    "total_committed": 6134,
+    "total_lines_changed": 7300,
+    "agent_percentage": 0,
+    "metric_version": 2
+  }
+}

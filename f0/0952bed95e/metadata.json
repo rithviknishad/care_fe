@@ -3,7 +3,7 @@
   "checkpoint_id": "f00952bed95e",
   "strategy": "manual-commit",
   "branch": "bodhi/questionnaire-actions",
-  "checkpoints_count": 4,
+  "checkpoints_count": 5,
   "files_touched": [
     "public/locale/en.json",
     "src/Routers/AppRouter.tsx",
@@ -40,6 +40,7 @@
     "src/pages/Facility/locations/components/LocationPageHeader.tsx",
     "src/pages/Facility/settings/FacilityResponses.tsx",
     "src/pages/Facility/settings/FacilitySettingsPageHeader.tsx",
+    "src/pages/Facility/settings/billing/layout.tsx",
     "src/pages/Facility/settings/devices/DevicePageHeader.tsx",
     "src/pages/Facility/settings/devices/DeviceShow.tsx",
     "src/pages/Facility/settings/devices/components/DeviceServiceHistory.tsx",
@@ -65,13 +66,20 @@
       "compact_transcript": "/f0/0952bed95e/0/transcript.jsonl",
       "content_hash": "/f0/0952bed95e/0/content_hash.txt",
       "prompt": "/f0/0952bed95e/0/prompt.txt"
+    },
+    {
+      "metadata": "/f0/0952bed95e/1/metadata.json",
+      "transcript": "/f0/0952bed95e/1/full.jsonl",
+      "compact_transcript": "/f0/0952bed95e/1/transcript.jsonl",
+      "content_hash": "/f0/0952bed95e/1/content_hash.txt",
+      "prompt": "/f0/0952bed95e/1/prompt.txt"
     }
   ],
   "token_usage": {
-    "input_tokens": 1901463,
-    "cache_creation_tokens": 0,
-    "cache_read_tokens": 119269632,
-    "output_tokens": 208837,
-    "api_call_count": 1076
+    "input_tokens": 1959828,
+    "cache_creation_tokens": 5471412,
+    "cache_read_tokens": 264352763,
+    "output_tokens": 694851,
+    "api_call_count": 1314
   }
 }
