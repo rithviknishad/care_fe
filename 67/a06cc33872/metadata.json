@@ -1,0 +1,28 @@
+{
+  "cli_version": "0.9.0",
+  "checkpoint_id": "67a06cc33872",
+  "strategy": "manual-commit",
+  "branch": "ENG-1000-update-loading-animation-with-pixel-art-to-svg-heart-beat-animation",
+  "checkpoints_count": 3,
+  "files_touched": [
+    "index.html",
+    "src/components/Common/Loading.tsx",
+    "src/style/index.css"
+  ],
+  "sessions": [
+    {
+      "metadata": "/67/a06cc33872/0/metadata.json",
+      "transcript": "/67/a06cc33872/0/full.jsonl",
+      "compact_transcript": "/67/a06cc33872/0/transcript.jsonl",
+      "content_hash": "/67/a06cc33872/0/content_hash.txt",
+      "prompt": "/67/a06cc33872/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 0,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 0,
+    "output_tokens": 0,
+    "api_call_count": 0
+  }
+}

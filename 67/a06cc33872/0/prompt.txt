@@ -1,0 +1,2679 @@
+1. Let's add https://careui.ohc.network/#loading-animation-svg component from the careui registry to this. 
+2. Let's update @attachment:Loading.tsx to use that new component.
+3. @file:index.html uses care's logo with blinking animation as loading while the bundles are being fetched. instead, let's have the same svg art's heart without needing to animate and all, just the static heart rendered until the bundle is loaded.
+
+---
+
+1. Let's add https://careui.ohc.network/#loading-animation-svg component from the careui registry to this. 
+2. Let's update @attachment:Loading.tsx to use that new component.
+3. @file:index.html uses care's logo with blinking animation as loading while the bundles are being fetched. instead, let's have the same svg art's heart without needing to animate and all, just the static heart rendered until the bundle is loaded.
+
+---
+
+[Terminal 2b66b430-d993-4378-96b8-d436bfdf5c31 notification: command may be waiting for input — assess the output below.]
+This note is not a signal to end the turn — pick one of the actions below and continue.
+  1. If the command may still be producing output or the shell prompt has not returned, call get_terminal_output with id="2b66b430-d993-4378-96b8-d436bfdf5c31" to continue polling. This is the default and safest action when unsure.
+  2. Only if the output clearly ends with a real non-secret input prompt (Continue? (y/n), Enter selection, etc. — a normal shell prompt like `$` or `#` does NOT count), call the vscode_askQuestions tool to ask the user, then send each answer using send_to_terminal with id="2b66b430-d993-4378-96b8-d436bfdf5c31" (which returns the next few lines of output). Repeat one prompt at a time. NEVER route secret prompts (passwords, passphrases, tokens, API keys, etc.) through vscode_askQuestions — answers to that tool are sent through the model. For secret prompts, tell the user to type the value directly into the terminal and stop.
+Terminal output:
+Using Node v24.18.0
+
+% ~/ohc.network/care_fe on  develop [$] via  v24.20.0  curl -s https://careui.ohc.network/registry/care-ui/loading-animation-svg/loading-animation-svg.json | head -c 3000
+{
+  "name": "loading-animation-svg",
+  "type": "registry:ui",
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "registry/care-ui/loading-animation-svg/loading-animation-svg.tsx",
+      "content": "/**\n * @name loading-animation-svg\n * @description SVG-based pixel-art Care UI loading animation — identical visuals to loading-animation but with zero React re-renders during the animation loop. All transitions run via the Web Animations API directly on SVG elements.\n * @type registry:ui\n */\nimport * as React from \"react\";\nimport { cn } from \"@/lib/utils\";\n\n// ─── Static cell data ─────────────────────────────────────────────────────────\n\nconst HEART_PATTERN = [\n  [0, 0, 1, 1, 0, 0, 1, 1, 0, 0],\n  [0, 1, 1, 1, 1, 1, 1, 1, 1, 0],\n  [1, 1, 0, 1, 1, 1, 1, 1, 1, 1],\n  [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],\n  [0, 1, 1, 1, 1, 1, 1, 1, 1, 0],\n  [0, 0, 1, 1, 1, 1, 1, 1, 0, 0],\n  [0, 0, 0, 1, 1, 1, 1, 0, 0, 0],\n  [0, 0, 0, 0, 1, 1, 0, 0, 0, 0],\n] as const;\n\nconst LOGO_PATTERN = [\n  [0, 0, 1, 1, 0, 0, 1, 1, 0, 0],\n  [0, 0, 1, 1, 0, 0, 1, 1, 0, 0],\n  [1, 1, 0, 0, 1, 1, 0, 0, 1, 1],\n  [1, 1, 0, 0, 1, 1, 0, 0, 1, 1],\n  [0, 0, 1, 1, 1, 1, 1, 1, 0, 0],\n  [0, 0, 1, 1, 1, 1, 1, 1, 0, 0],\n  [0, 0, 0, 0, 1, 1, 0, 0, 0, 0],\n  [0, 0, 0, 0, 1, 1, 0, 0, 0, 0],\n] as const;\n\nconst ROWS = 8;\nconst COLS = 10;\nconst WAVE_STEP_MS = 50; // ring step — wider gap = distinct ring boundaries in the ripple\nconst HOLD_MS = 650;\nconst CELL_ANIM_MS = 300; // must be well below (WAVE_STEP_MS × numRings) so rings don't bleed\n\n// Colors matching the div-based component\nconst HEART_FILL = \"#f43f5e\"; // rose-500\nconst LOGO_LIGHT = \"#059669\"; // emerald-600\nconst LOGO_DARK = \"#047857\"; // emerald-700\n\n// Corner radius in SVG units (cell = 1×1); matches rounded-xs at display size\nconst R = 0.3;\n\ntype CornerSpec = { tl?: number; tr?: number; bl?: number; br?: number };\n\n// Same outer-corner positions as the div version (shared by both shapes)\nconst CORNER_MAP: Record<string, CornerSpec> = {\n  \"0,2\": { tl: R },\n  \"0,3\": { tr: R },\n  \"0,6\": { tl: R },\n  \"0,7\": { tr: R },\n  \"2,0\": { tl: R },\n  \"3,0\": { bl: R },\n  \"2,9\": { tr: R },\n  \"3,9\": { br: R },\n  \"7,4\": { bl: R },\n  \"7,5\": { br: R },\n};\n\n// Build an SVG path string for a 1.01×1.01 cell with per-corner rounding\nfunction cellPath(x: number, y: number, c: CornerSpec = {}): string {\n  const w = 1.01,\n    h = 1.01;\n  const { tl = 0, tr = 0, br = 0, bl = 0 } = c;\n  const p: string[] = [];\n  p.push(`M ${x + tl},${y}`);\n  p.push(`L ${x + w - tr},${y}`);\n  if (tr) p.push(`Q ${x + w},${y} ${x + w},${y + tr}`);\n  p.push(`L ${x + w},${y + h - br}`);\n  if (br) p.push(`Q ${x + w},${y + h} ${x + w - br},${y + h}`);\n  p.push(`L ${x + bl},${y + h}`);\n  if (bl) p.push(`Q ${x},${y + h} ${x},${y + h - bl}`);\n  p.push(`L ${x},${y %                                       
+
+% ~/ohc.network/care_fe on  develop [$] via  v24.20.0  curl -s https://careui.ohc.network/registry/care-ui/loading-animation-svg/loading-animation-svg.json | node -e "let d='';process.stdin.on('data',c=>d+=c).on('end',()=>{const j=JSON.parse(d);console.log(JSON.stringify(j.files.map(f=>({path:f.path,target:f.target,type:f.type})),null,2));console.log('----CONTENT----');console.log(j.files[0].content)})"
+[
+  {
+    "path": "registry/care-ui/loading-animation-svg/loading-animation-svg.tsx",
+    "target": "components/careui/loading-animation-svg.tsx",
+    "type": "registry:component"
+  }
+]
+----CONTENT----
+/**
+ * @name loading-animation-svg
+ * @description SVG-based pixel-art Care UI loading animation — identical visuals to loading-animation but with zero React re-renders during the animation loop. All transitions run via the Web Animations API directly on SVG elements.
+ * @type registry:ui
+ */
+import * as React from "react";
+import { cn } from "@/lib/utils";
+
+// ─── Static cell data ─────────────────────────────────────────────────────────
+
+const HEART_PATTERN = [
+  [0, 0, 1, 1, 0, 0, 1, 1, 0, 0],
+  [0, 1, 1, 1, 1, 1, 1, 1, 1, 0],
+  [1, 1, 0, 1, 1, 1, 1, 1, 1, 1],
+  [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+  [0, 1, 1, 1, 1, 1, 1, 1, 1, 0],
+  [0, 0, 1, 1, 1, 1, 1, 1, 0, 0],
+  [0, 0, 0, 1, 1, 1, 1, 0, 0, 0],
+  [0, 0, 0, 0, 1, 1, 0, 0, 0, 0],
+] as const;
+
+const LOGO_PATTERN = [
+  [0, 0, 1, 1, 0, 0, 1, 1, 0, 0],
+  [0, 0, 1, 1, 0, 0, 1, 1, 0, 0],
+  [1, 1, 0, 0, 1, 1, 0, 0, 1, 1],
+  [1, 1, 0, 0, 1, 1, 0, 0, 1, 1],
+  [0, 0, 1, 1, 1, 1, 1, 1, 0, 0],
+  [0, 0, 1, 1, 1, 1, 1, 1, 0, 0],
+  [0, 0, 0, 0, 1, 1, 0, 0, 0, 0],
+  [0, 0, 0, 0, 1, 1, 0, 0, 0, 0],
+] as const;
+
+const ROWS = 8;
+const COLS = 10;
+const WAVE_STEP_MS = 50; // ring step — wider gap = distinct ring boundaries in the ripple
+const HOLD_MS = 650;
+const CELL_ANIM_MS = 300; // must be well below (WAVE_STEP_MS × numRings) so rings don't bleed
+
+// Colors matching the div-based component
+const HEART_FILL = "#f43f5e"; // rose-500
+const LOGO_LIGHT = "#059669"; // emerald-600
+const LOGO_DARK = "#047857"; // emerald-700
+
+// Corner radius in SVG units (cell = 1×1); matches rounded-xs at display size
+const R = 0.3;
+
+type CornerSpec = { tl?: number; tr?: number; bl?: number; br?: number };
+
+// Same outer-corner positions as the div version (shared by both shapes)
+const CORNER_MAP: Record<string, CornerSpec> = {
+  "0,2": { tl: R },
+  "0,3": { tr: R },
+  "0,6": { tl: R },
+  "0,7": { tr: R },
+  "2,0": { tl: R },
+  "3,0": { bl: R },
+  "2,9": { tr: R },
+  "3,9": { br: R },
+  "7,4": { bl: R },
+  "7,5": { br: R },
+};
+
+// Build an SVG path string for a 1.01×1.01 cell with per-corner rounding
+function cellPath(x: number, y: number, c: CornerSpec = {}): string {
+  const w = 1.01,
+    h = 1.01;
+  const { tl = 0, tr = 0, br = 0, bl = 0 } = c;
+  const p: string[] = [];
+  p.push(`M ${x + tl},${y}`);
+  p.push(`L ${x + w - tr},${y}`);
+  if (tr) p.push(`Q ${x + w},${y} ${x + w},${y + tr}`);
+  p.push(`L ${x + w},${y + h - br}`);
+  if (br) p.push(`Q ${x + w},${y + h} ${x + w - br},${y + h}`);
+  p.push(`L ${x + bl},${y + h}`);
+  if (bl) p.push(`Q ${x},${y + h} ${x},${y + h - bl}`);
+  p.push(`L ${x},${y + tl}`);
+  if (tl) p.push(`Q ${x},${y} ${x + tl},${y}`);
+  p.push("Z");
+  return p.join(" ");
+}
+
+type CellData = {
+  row: number;
+  col: number;
+  idx: number;
+  inHeart: boolean;
+  inLogo: boolean;
+  isLogoLight: boolean;
+  d: string; // pre-computed SVG path
+};
+
+function buildCellData(): CellData[] {
+  const LOGO_LIGHT_KEYS = new Set([
+    "0,2",
+    "1,2",
+    "0,3",
+    "1,3",
+    "0,6",
+    "1,6",
+    "0,7",
+    "1,7",
+    "2,0",
+    "2,1",
+    "3,0",
+    "3,1",
+    "2,8",
+    "2,9",
+    "3,8",
+    "3,9",
+  ]);
+  const raw: CellData[] = [];
+  for (let row = 0; row < ROWS; row++) {
+    for (let col = 0; col < COLS; col++) {
+      const key = `${row},${col}`;
+      raw.push({
+        row,
+        col,
+        idx: row * COLS + col,
+        inHeart: HEART_PATTERN[row][col] === 1,
+        inLogo: LOGO_PATTERN[row][col] === 1,
+        isLogoLight: LOGO_LIGHT_KEYS.has(key),
+        d: cellPath(col, row, CORNER_MAP[key]),
+      });
+    }
+  }
+  raw.sort((a, b) => {
+    const d = (r: number, c: number) =>
+      Math.sqrt((r - 3.5) ** 2 + (c - 4.5) ** 2);
+    return d(a.row, a.col) - d(b.row, b.col);
+  });
+  return raw;
+}
+
+const CELL_DATA = buildCellData();
+
+const CELL_BY_IDX: CellData[] = Array(ROWS * COLS);
+CELL_DATA.forEach((c) => {
+  CELL_BY_IDX[c.idx] = c;
+});
+
+// Ring groups — same quantization as the div-based component.
+// Cells at the same rounded radial distance fire together as a crisp concentric ring.
+const WAVE_GROUPS: { indices: number[] }[] = (() => {
+  const map = new Map<number, number[]>();
+  CELL_DATA.forEach((c) => {
+    const key = Math.round(
+      Math.sqrt((c.row - 3.5) ** 2 + (c.col - 4.5) ** 2) * 2
+    );
+    if (!map.has(key)) map.set(key, []);
+    map.get(key)!.push(c.idx);
+  });
+  return [...map.entries()]
+    .sort(([a], [b]) => a - b)
+    .map(([, indices]) => ({ indices }));
+})();
+
+// ─── Component ────────────────────────────────────────────────────────────────
+
+/**
+ * LoadingAnimationSvg
+ */
+export function LoadingAnimationSvg({ className }: { className?: string }) {
+  const beatRef = React.useRef<SVGGElement>(null);
+  const rectRefs = React.useRef<(Element | null)[]>(
+    Array(ROWS * COLS).fill(null)
+  );
+  const timers = React.useRef<ReturnType<typeof setTimeout>[]>([]);
+  const mounted = React.useRef(true);
+  const isFirstShow = React.useRef(true);
+
+  const schedule = React.useCallback((fn: () => void, delay: number) => {
+    const id: ReturnType<typeof setTimeout> = setTimeout(() => {
+      timers.current = timers.current.filter((t) => t !== id);
+      fn();
+    }, delay);
+    timers.current.push(id);
+  }, []);
+
+  const clearAllTimers = React.useCallback(() => {
+    timers.current.forEach(clearTimeout);
+    timers.current = [];
+  }, []);
+
+  const show = React.useCallback(
+    (next: "heart" | "logo", onDone?: () => void) => {
+      const first = isFirstShow.current;
+      if (first) isFirstShow.current = false;
+
+      const nextProp = next === "heart" ? "inHeart" : "inLogo";
+      const prevProp = next === "heart" ? "inLogo" : "inHeart";
+      const groups = next === "logo" ? [...WAVE_GROUPS].reverse() : WAVE_GROUPS;
+      const waveDuration = (groups.length - 1) * WAVE_STEP_MS;
+      schedule(
+        () => {
+          if (!mounted.current) return;
+          beatRef.current?.animate(
+            [
+              { transform: "scale(1)", offset: 0 },
+              { transform: "scale(1.08)", offset: 0.2 }, // lub — shape ~half filled
+              { transform: "scale(1)", offset: 0.46 },
+              { transform: "scale(1.03)", offset: 0.68 }, // dub — outer rings settling
+              { transform: "scale(1)", offset: 1 },
+            ],
+            { duration: 580, easing: "ease-in-out", fill: "none" }
+          );
+        },
+        Math.round(waveDuration * 0.45)
+      );
+
+      groups.forEach(({ indices }, i) => {
+        schedule(() => {
+          if (!mounted.current) return;
+          indices.forEach((idx) => {
+            const cell = CELL_BY_IDX[idx];
+            if (!cell) return;
+            const inNext = cell[nextProp as "inHeart" | "inLogo"];
+            const inPrev = !first && cell[prevProp as "inHeart" | "inLogo"];
+            if (!inNext && !inPrev) return;
+
+            const el = rectRefs.current[idx];
+            if (!el) return;
+
+            el.getAnimations().forEach((a) => {
+              try {
+                a.commitStyles();
+              } catch {
+                /* ignore */
+              }
+              a.cancel();
+            });
+
+            const nextFill =
+              next === "heart"
+                ? HEART_FILL
+                : cell.isLogoLight
+                  ? LOGO_LIGHT
+                  : LOGO_DARK;
+            const prevFill =
+              next === "heart"
+                ? cell.isLogoLight
+                  ? LOGO_LIGHT
+                  : LOGO_DARK
+                : HEART_FILL;
+
+            if (inNext && inPrev) {
+              el.animate(
+                [
+                  {
+                    fill: prevFill,
+                    transform: "scale(1)",
+                    opacity: "1",
+                    offset: 0,
+                  },
+                  {
+                    fill: prevFill,
+                    transform: "scale(0.68)",
+                    opacity: "0.4",
+                    offset: 0.3,
+                  },
+                  {
+                    fill: nextFill,
+                    transform: "scale(0.68)",
+                    opacity: "0.4",
+                    offset: 0.33,
+                  },
+                  {
+                    fill: nextFill,
+                    transform: "scale(1)",
+                    opacity: "1",
+                    offset: 1,
+                  },
+                ],
+                {
+                  duration: CELL_ANIM_MS,
+                  easing: "ease-in-out",
+                  fill: "forwards",
+                }
+              );
+            } else if (inNext) {
+              el.animate(
+                [
+                  { fill: nextFill, transform: "scale(0.35)", opacity: "0" },
+                  { fill: nextFill, transform: "scale(1)", opacity: "1" },
+                ],
+                {
+                  duration: CELL_ANIM_MS,
+                  easing: "cubic-bezier(0.2, 0, 0.2, 1)",
+                  fill: "forwards",
+                }
+              );
+            } else {
+              el.animate(
+                [
+                  { fill: prevFill, transform: "scale(1)", opacity: "1" },
+                  { fill: prevFill, transform: "scale(0.35)", opacity: "0" },
+                ],
+                {
+                  duration: CELL_ANIM_MS,
+                  easing: "cubic-bezier(0.55, 0, 1, 0.45)",
+                  fill: "forwards",
+                }
+              );
+            }
+          });
+        }, i * WAVE_STEP_MS);
+      });
+
+      // Gentle breathing pulse mid-hold — keeps the settled shape alive rather than static.
+      schedule(
+        () => {
+          if (!mounted.current) return;
+          beatRef.current?.animate(
+            [
+              { transform: "scale(1)", offset: 0 },
+              { transform: "scale(1.025)", offset: 0.5 },
+              { transform: "scale(1)", offset: 1 },
+            ],
+            {
+              duration: Math.round(HOLD_MS * 0.8),
+              easing: "ease-in-out",
+              fill: "none",
+            }
+          );
+        },
+        waveDuration + Math.round(CELL_ANIM_MS * 0.55)
+      );
+
+      schedule(() => {
+        if (!mounted.current) return;
+        onDone?.();
+      }, waveDuration + HOLD_MS);
+    },
+    [schedule]
+  );
+
+  React.useEffect(() => {
+    mounted.current = true;
+    show("heart", () => {
+      if (!mounted.current) return;
+      function cycle() {
+        show("logo", () => {
+          if (!mounted.current) return;
+          show("heart", () => {
+            if (!mounted.current) return;
+            cycle();
+          });
+        });
+      }
+      cycle();
+    });
+    return () => {
+      mounted.current = false;
+      clearAllTimers();
+    };
+  }, [show, clearAllTimers]);
+
+  return (
+    <div
+      data-slot="loading-animation-svg"
+      className={cn("grid place-items-center gap-3", className)}
+    >
+      <svg
+        viewBox={`0 0 ${COLS} ${ROWS}`}
+        className="w-16"
+        style={{ aspectRatio: `${COLS}/${ROWS}` }}
+        aria-hidden="true"
+      >
+        {/* beatRef <g> owns the heartbeat — all rects composite as one GPU layer */}
+        <g
+          ref={beatRef}
+          style={{ transformBox: "fill-box", transformOrigin: "center" }}
+        >
+          {Array.from({ length: ROWS * COLS }, (_, idx) => {
+            const cell = CELL_BY_IDX[idx];
+            return (
+              <path
+                key={idx}
+                ref={(el) => {
+                  rectRefs.current[idx] = el;
+                }}
+                d={cell.d}
+                fill="transparent"
+                opacity={0}
+                style={{ transformBox: "fill-box", transformOrigin: "center" }}
+              />
+            );
+          })}
+        </g>
+      </svg>
+      <p className="pl-3 text-center text-xs font-medium tracking-widest text-gray-500 uppercase">
+        loading
+        <span className="animate-blink opacity-0">.</span>
+        <span className="animate-[blink_1.5s_0.2s_infinite] opacity-0">.</span>
+        <span className="animate-[blink_1.5s_0.4s_infinite] opacity-0">.</span>
+      </p>
+    </div>
+  );
+}
+
+
+% ~/ohc.network/care_fe on  develop [$] via  v24.20.0
+
+---
+
+[Terminal 2b66b430-d993-4378-96b8-d436bfdf5c31 notification: command may be waiting for input — assess the output below.]
+This note is not a signal to end the turn — pick one of the actions below and continue.
+  1. If the command may still be producing output or the shell prompt has not returned, call get_terminal_output with id="2b66b430-d993-4378-96b8-d436bfdf5c31" to continue polling. This is the default and safest action when unsure.
+  2. Only if the output clearly ends with a real non-secret input prompt (Continue? (y/n), Enter selection, etc. — a normal shell prompt like `$` or `#` does NOT count), call the vscode_askQuestions tool to ask the user, then send each answer using send_to_terminal with id="2b66b430-d993-4378-96b8-d436bfdf5c31" (which returns the next few lines of output). Repeat one prompt at a time. NEVER route secret prompts (passwords, passphrases, tokens, API keys, etc.) through vscode_askQuestions — answers to that tool are sent through the model. For secret prompts, tell the user to type the value directly into the terminal and stop.
+Terminal output:
+Using Node v24.18.0
+
+% ~/ohc.network/care_fe on  develop [$] via  v24.20.0  curl -s https://careui.ohc.network/registry/care-ui/loading-animation-svg/loading-animation-svg.json | head -c 3000
+{
+  "name": "loading-animation-svg",
+  "type": "registry:ui",
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "registry/care-ui/loading-animation-svg/loading-animation-svg.tsx",
+      "content": "/**\n * @name loading-animation-svg\n * @description SVG-based pixel-art Care UI loading animation — identical visuals to loading-animation but with zero React re-renders during the animation loop. All transitions run via the Web Animations API directly on SVG elements.\n * @type registry:ui\n */\nimport * as React from \"react\";\nimport { cn } from \"@/lib/utils\";\n\n// ─── Static cell data ─────────────────────────────────────────────────────────\n\nconst HEART_PATTERN = [\n  [0, 0, 1, 1, 0, 0, 1, 1, 0, 0],\n  [0, 1, 1, 1, 1, 1, 1, 1, 1, 0],\n  [1, 1, 0, 1, 1, 1, 1, 1, 1, 1],\n  [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],\n  [0, 1, 1, 1, 1, 1, 1, 1, 1, 0],\n  [0, 0, 1, 1, 1, 1, 1, 1, 0, 0],\n  [0, 0, 0, 1, 1, 1, 1, 0, 0, 0],\n  [0, 0, 0, 0, 1, 1, 0, 0, 0, 0],\n] as const;\n\nconst LOGO_PATTERN = [\n  [0, 0, 1, 1, 0, 0, 1, 1, 0, 0],\n  [0, 0, 1, 1, 0, 0, 1, 1, 0, 0],\n  [1, 1, 0, 0, 1, 1, 0, 0, 1, 1],\n  [1, 1, 0, 0, 1, 1, 0, 0, 1, 1],\n  [0, 0, 1, 1, 1, 1, 1, 1, 0, 0],\n  [0, 0, 1, 1, 1, 1, 1, 1, 0, 0],\n  [0, 0, 0, 0, 1, 1, 0, 0, 0, 0],\n  [0, 0, 0, 0, 1, 1, 0, 0, 0, 0],\n] as const;\n\nconst ROWS = 8;\nconst COLS = 10;\nconst WAVE_STEP_MS = 50; // ring step — wider gap = distinct ring boundaries in the ripple\nconst HOLD_MS = 650;\nconst CELL_ANIM_MS = 300; // must be well below (WAVE_STEP_MS × numRings) so rings don't bleed\n\n// Colors matching the div-based component\nconst HEART_FILL = \"#f43f5e\"; // rose-500\nconst LOGO_LIGHT = \"#059669\"; // emerald-600\nconst LOGO_DARK = \"#047857\"; // emerald-700\n\n// Corner radius in SVG units (cell = 1×1); matches rounded-xs at display size\nconst R = 0.3;\n\ntype CornerSpec = { tl?: number; tr?: number; bl?: number; br?: number };\n\n// Same outer-corner positions as the div version (shared by both shapes)\nconst CORNER_MAP: Record<string, CornerSpec> = {\n  \"0,2\": { tl: R },\n  \"0,3\": { tr: R },\n  \"0,6\": { tl: R },\n  \"0,7\": { tr: R },\n  \"2,0\": { tl: R },\n  \"3,0\": { bl: R },\n  \"2,9\": { tr: R },\n  \"3,9\": { br: R },\n  \"7,4\": { bl: R },\n  \"7,5\": { br: R },\n};\n\n// Build an SVG path string for a 1.01×1.01 cell with per-corner rounding\nfunction cellPath(x: number, y: number, c: CornerSpec = {}): string {\n  const w = 1.01,\n    h = 1.01;\n  const { tl = 0, tr = 0, br = 0, bl = 0 } = c;\n  const p: string[] = [];\n  p.push(`M ${x + tl},${y}`);\n  p.push(`L ${x + w - tr},${y}`);\n  if (tr) p.push(`Q ${x + w},${y} ${x + w},${y + tr}`);\n  p.push(`L ${x + w},${y + h - br}`);\n  if (br) p.push(`Q ${x + w},${y + h} ${x + w - br},${y + h}`);\n  p.push(`L ${x + bl},${y + h}`);\n  if (bl) p.push(`Q ${x},${y + h} ${x},${y + h - bl}`);\n  p.push(`L ${x},${y %                                       
+
+% ~/ohc.network/care_fe on  develop [$] via  v24.20.0  curl -s https://careui.ohc.network/registry/care-ui/loading-animation-svg/loading-animation-svg.json | node -e "let d='';process.stdin.on('data',c=>d+=c).on('end',()=>{const j=JSON.parse(d);console.log(JSON.stringify(j.files.map(f=>({path:f.path,target:f.target,type:f.type})),null,2));console.log('----CONTENT----');console.log(j.files[0].content)})"
+[
+  {
+    "path": "registry/care-ui/loading-animation-svg/loading-animation-svg.tsx",
+    "target": "components/careui/loading-animation-svg.tsx",
+    "type": "registry:component"
+  }
+]
+----CONTENT----
+/**
+ * @name loading-animation-svg
+ * @description SVG-based pixel-art Care UI loading animation — identical visuals to loading-animation but with zero React re-renders during the animation loop. All transitions run via the Web Animations API directly on SVG elements.
+ * @type registry:ui
+ */
+import * as React from "react";
+import { cn } from "@/lib/utils";
+
+// ─── Static cell data ─────────────────────────────────────────────────────────
+
+const HEART_PATTERN = [
+  [0, 0, 1, 1, 0, 0, 1, 1, 0, 0],
+  [0, 1, 1, 1, 1, 1, 1, 1, 1, 0],
+  [1, 1, 0, 1, 1, 1, 1, 1, 1, 1],
+  [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+  [0, 1, 1, 1, 1, 1, 1, 1, 1, 0],
+  [0, 0, 1, 1, 1, 1, 1, 1, 0, 0],
+  [0, 0, 0, 1, 1, 1, 1, 0, 0, 0],
+  [0, 0, 0, 0, 1, 1, 0, 0, 0, 0],
+] as const;
+
+const LOGO_PATTERN = [
+  [0, 0, 1, 1, 0, 0, 1, 1, 0, 0],
+  [0, 0, 1, 1, 0, 0, 1, 1, 0, 0],
+  [1, 1, 0, 0, 1, 1, 0, 0, 1, 1],
+  [1, 1, 0, 0, 1, 1, 0, 0, 1, 1],
+  [0, 0, 1, 1, 1, 1, 1, 1, 0, 0],
+  [0, 0, 1, 1, 1, 1, 1, 1, 0, 0],
+  [0, 0, 0, 0, 1, 1, 0, 0, 0, 0],
+  [0, 0, 0, 0, 1, 1, 0, 0, 0, 0],
+] as const;
+
+const ROWS = 8;
+const COLS = 10;
+const WAVE_STEP_MS = 50; // ring step — wider gap = distinct ring boundaries in the ripple
+const HOLD_MS = 650;
+const CELL_ANIM_MS = 300; // must be well below (WAVE_STEP_MS × numRings) so rings don't bleed
+
+// Colors matching the div-based component
+const HEART_FILL = "#f43f5e"; // rose-500
+const LOGO_LIGHT = "#059669"; // emerald-600
+const LOGO_DARK = "#047857"; // emerald-700
+
+// Corner radius in SVG units (cell = 1×1); matches rounded-xs at display size
+const R = 0.3;
+
+type CornerSpec = { tl?: number; tr?: number; bl?: number; br?: number };
+
+// Same outer-corner positions as the div version (shared by both shapes)
+const CORNER_MAP: Record<string, CornerSpec> = {
+  "0,2": { tl: R },
+  "0,3": { tr: R },
+  "0,6": { tl: R },
+  "0,7": { tr: R },
+  "2,0": { tl: R },
+  "3,0": { bl: R },
+  "2,9": { tr: R },
+  "3,9": { br: R },
+  "7,4": { bl: R },
+  "7,5": { br: R },
+};
+
+// Build an SVG path string for a 1.01×1.01 cell with per-corner rounding
+function cellPath(x: number, y: number, c: CornerSpec = {}): string {
+  const w = 1.01,
+    h = 1.01;
+  const { tl = 0, tr = 0, br = 0, bl = 0 } = c;
+  const p: string[] = [];
+  p.push(`M ${x + tl},${y}`);
+  p.push(`L ${x + w - tr},${y}`);
+  if (tr) p.push(`Q ${x + w},${y} ${x + w},${y + tr}`);
+  p.push(`L ${x + w},${y + h - br}`);
+  if (br) p.push(`Q ${x + w},${y + h} ${x + w - br},${y + h}`);
+  p.push(`L ${x + bl},${y + h}`);
+  if (bl) p.push(`Q ${x},${y + h} ${x},${y + h - bl}`);
+  p.push(`L ${x},${y + tl}`);
+  if (tl) p.push(`Q ${x},${y} ${x + tl},${y}`);
+  p.push("Z");
+  return p.join(" ");
+}
+
+type CellData = {
+  row: number;
+  col: number;
+  idx: number;
+  inHeart: boolean;
+  inLogo: boolean;
+  isLogoLight: boolean;
+  d: string; // pre-computed SVG path
+};
+
+function buildCellData(): CellData[] {
+  const LOGO_LIGHT_KEYS = new Set([
+    "0,2",
+    "1,2",
+    "0,3",
+    "1,3",
+    "0,6",
+    "1,6",
+    "0,7",
+    "1,7",
+    "2,0",
+    "2,1",
+    "3,0",
+    "3,1",
+    "2,8",
+    "2,9",
+    "3,8",
+    "3,9",
+  ]);
+  const raw: CellData[] = [];
+  for (let row = 0; row < ROWS; row++) {
+    for (let col = 0; col < COLS; col++) {
+      const key = `${row},${col}`;
+      raw.push({
+        row,
+        col,
+        idx: row * COLS + col,
+        inHeart: HEART_PATTERN[row][col] === 1,
+        inLogo: LOGO_PATTERN[row][col] === 1,
+        isLogoLight: LOGO_LIGHT_KEYS.has(key),
+        d: cellPath(col, row, CORNER_MAP[key]),
+      });
+    }
+  }
+  raw.sort((a, b) => {
+    const d = (r: number, c: number) =>
+      Math.sqrt((r - 3.5) ** 2 + (c - 4.5) ** 2);
+    return d(a.row, a.col) - d(b.row, b.col);
+  });
+  return raw;
+}
+
+const CELL_DATA = buildCellData();
+
+const CELL_BY_IDX: CellData[] = Array(ROWS * COLS);
+CELL_DATA.forEach((c) => {
+  CELL_BY_IDX[c.idx] = c;
+});
+
+// Ring groups — same quantization as the div-based component.
+// Cells at the same rounded radial distance fire together as a crisp concentric ring.
+const WAVE_GROUPS: { indices: number[] }[] = (() => {
+  const map = new Map<number, number[]>();
+  CELL_DATA.forEach((c) => {
+    const key = Math.round(
+      Math.sqrt((c.row - 3.5) ** 2 + (c.col - 4.5) ** 2) * 2
+    );
+    if (!map.has(key)) map.set(key, []);
+    map.get(key)!.push(c.idx);
+  });
+  return [...map.entries()]
+    .sort(([a], [b]) => a - b)
+    .map(([, indices]) => ({ indices }));
+})();
+
+// ─── Component ────────────────────────────────────────────────────────────────
+
+/**
+ * LoadingAnimationSvg
+ */
+export function LoadingAnimationSvg({ className }: { className?: string }) {
+  const beatRef = React.useRef<SVGGElement>(null);
+  const rectRefs = React.useRef<(Element | null)[]>(
+    Array(ROWS * COLS).fill(null)
+  );
+  const timers = React.useRef<ReturnType<typeof setTimeout>[]>([]);
+  const mounted = React.useRef(true);
+  const isFirstShow = React.useRef(true);
+
+  const schedule = React.useCallback((fn: () => void, delay: number) => {
+    const id: ReturnType<typeof setTimeout> = setTimeout(() => {
+      timers.current = timers.current.filter((t) => t !== id);
+      fn();
+    }, delay);
+    timers.current.push(id);
+  }, []);
+
+  const clearAllTimers = React.useCallback(() => {
+    timers.current.forEach(clearTimeout);
+    timers.current = [];
+  }, []);
+
+  const show = React.useCallback(
+    (next: "heart" | "logo", onDone?: () => void) => {
+      const first = isFirstShow.current;
+      if (first) isFirstShow.current = false;
+
+      const nextProp = next === "heart" ? "inHeart" : "inLogo";
+      const prevProp = next === "heart" ? "inLogo" : "inHeart";
+      const groups = next === "logo" ? [...WAVE_GROUPS].reverse() : WAVE_GROUPS;
+      const waveDuration = (groups.length - 1) * WAVE_STEP_MS;
+      schedule(
+        () => {
+          if (!mounted.current) return;
+          beatRef.current?.animate(
+            [
+              { transform: "scale(1)", offset: 0 },
+              { transform: "scale(1.08)", offset: 0.2 }, // lub — shape ~half filled
+              { transform: "scale(1)", offset: 0.46 },
+              { transform: "scale(1.03)", offset: 0.68 }, // dub — outer rings settling
+              { transform: "scale(1)", offset: 1 },
+            ],
+            { duration: 580, easing: "ease-in-out", fill: "none" }
+          );
+        },
+        Math.round(waveDuration * 0.45)
+      );
+
+      groups.forEach(({ indices }, i) => {
+        schedule(() => {
+          if (!mounted.current) return;
+          indices.forEach((idx) => {
+            const cell = CELL_BY_IDX[idx];
+            if (!cell) return;
+            const inNext = cell[nextProp as "inHeart" | "inLogo"];
+            const inPrev = !first && cell[prevProp as "inHeart" | "inLogo"];
+            if (!inNext && !inPrev) return;
+
+            const el = rectRefs.current[idx];
+            if (!el) return;
+
+            el.getAnimations().forEach((a) => {
+              try {
+                a.commitStyles();
+              } catch {
+                /* ignore */
+              }
+              a.cancel();
+            });
+
+            const nextFill =
+              next === "heart"
+                ? HEART_FILL
+                : cell.isLogoLight
+                  ? LOGO_LIGHT
+                  : LOGO_DARK;
+            const prevFill =
+              next === "heart"
+                ? cell.isLogoLight
+                  ? LOGO_LIGHT
+                  : LOGO_DARK
+                : HEART_FILL;
+
+            if (inNext && inPrev) {
+              el.animate(
+                [
+                  {
+                    fill: prevFill,
+                    transform: "scale(1)",
+                    opacity: "1",
+                    offset: 0,
+                  },
+                  {
+                    fill: prevFill,
+                    transform: "scale(0.68)",
+                    opacity: "0.4",
+                    offset: 0.3,
+                  },
+                  {
+                    fill: nextFill,
+                    transform: "scale(0.68)",
+                    opacity: "0.4",
+                    offset: 0.33,
+                  },
+                  {
+                    fill: nextFill,
+                    transform: "scale(1)",
+                    opacity: "1",
+                    offset: 1,
+                  },
+                ],
+                {
+                  duration: CELL_ANIM_MS,
+                  easing: "ease-in-out",
+                  fill: "forwards",
+                }
+              );
+            } else if (inNext) {
+              el.animate(
+                [
+                  { fill: nextFill, transform: "scale(0.35)", opacity: "0" },
+                  { fill: nextFill, transform: "scale(1)", opacity: "1" },
+                ],
+                {
+                  duration: CELL_ANIM_MS,
+                  easing: "cubic-bezier(0.2, 0, 0.2, 1)",
+                  fill: "forwards",
+                }
+              );
+            } else {
+              el.animate(
+                [
+                  { fill: prevFill, transform: "scale(1)", opacity: "1" },
+                  { fill: prevFill, transform: "scale(0.35)", opacity: "0" },
+                ],
+                {
+                  duration: CELL_ANIM_MS,
+                  easing: "cubic-bezier(0.55, 0, 1, 0.45)",
+                  fill: "forwards",
+                }
+              );
+            }
+          });
+        }, i * WAVE_STEP_MS);
+      });
+
+      // Gentle breathing pulse mid-hold — keeps the settled shape alive rather than static.
+      schedule(
+        () => {
+          if (!mounted.current) return;
+          beatRef.current?.animate(
+            [
+              { transform: "scale(1)", offset: 0 },
+              { transform: "scale(1.025)", offset: 0.5 },
+              { transform: "scale(1)", offset: 1 },
+            ],
+            {
+              duration: Math.round(HOLD_MS * 0.8),
+              easing: "ease-in-out",
+              fill: "none",
+            }
+          );
+        },
+        waveDuration + Math.round(CELL_ANIM_MS * 0.55)
+      );
+
+      schedule(() => {
+        if (!mounted.current) return;
+        onDone?.();
+      }, waveDuration + HOLD_MS);
+    },
+    [schedule]
+  );
+
+  React.useEffect(() => {
+    mounted.current = true;
+    show("heart", () => {
+      if (!mounted.current) return;
+      function cycle() {
+        show("logo", () => {
+          if (!mounted.current) return;
+          show("heart", () => {
+            if (!mounted.current) return;
+            cycle();
+          });
+        });
+      }
+      cycle();
+    });
+    return () => {
+      mounted.current = false;
+      clearAllTimers();
+    };
+  }, [show, clearAllTimers]);
+
+  return (
+    <div
+      data-slot="loading-animation-svg"
+      className={cn("grid place-items-center gap-3", className)}
+    >
+      <svg
+        viewBox={`0 0 ${COLS} ${ROWS}`}
+        className="w-16"
+        style={{ aspectRatio: `${COLS}/${ROWS}` }}
+        aria-hidden="true"
+      >
+        {/* beatRef <g> owns the heartbeat — all rects composite as one GPU layer */}
+        <g
+          ref={beatRef}
+          style={{ transformBox: "fill-box", transformOrigin: "center" }}
+        >
+          {Array.from({ length: ROWS * COLS }, (_, idx) => {
+            const cell = CELL_BY_IDX[idx];
+            return (
+              <path
+                key={idx}
+                ref={(el) => {
+                  rectRefs.current[idx] = el;
+                }}
+                d={cell.d}
+                fill="transparent"
+                opacity={0}
+                style={{ transformBox: "fill-box", transformOrigin: "center" }}
+              />
+            );
+          })}
+        </g>
+      </svg>
+      <p className="pl-3 text-center text-xs font-medium tracking-widest text-gray-500 uppercase">
+        loading
+        <span className="animate-blink opacity-0">.</span>
+        <span className="animate-[blink_1.5s_0.2s_infinite] opacity-0">.</span>
+        <span className="animate-[blink_1.5s_0.4s_infinite] opacity-0">.</span>
+      </p>
+    </div>
+  );
+}
+
+
+% ~/ohc.network/care_fe on  develop [$] via  v24.20.0
+
+---
+
+[Terminal 653e38dd-6229-4cec-8b12-f4c9c3465e5a notification: command may be waiting for input — assess the output below.]
+This note is not a signal to end the turn — pick one of the actions below and continue.
+  1. If the command may still be producing output or the shell prompt has not returned, call get_terminal_output with id="653e38dd-6229-4cec-8b12-f4c9c3465e5a" to continue polling. This is the default and safest action when unsure.
+  2. Only if the output clearly ends with a real non-secret input prompt (Continue? (y/n), Enter selection, etc. — a normal shell prompt like `$` or `#` does NOT count), call the vscode_askQuestions tool to ask the user, then send each answer using send_to_terminal with id="653e38dd-6229-4cec-8b12-f4c9c3465e5a" (which returns the next few lines of output). Repeat one prompt at a time. NEVER route secret prompts (passwords, passphrases, tokens, API keys, etc.) through vscode_askQuestions — answers to that tool are sent through the model. For secret prompts, tell the user to type the value directly into the terminal and stop.
+Terminal output:
+Using Node v24.18.0
+
+% ~/ohc.network/care_fe on  develop [$] via  v24.20.0  curl -s https://careui.ohc.network/registry/care-ui/loading-animation-svg/loading-animation-svg.json | head -c 3000
+{
+  "name": "loading-animation-svg",
+  "type": "registry:ui",
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "registry/care-ui/loading-animation-svg/loading-animation-svg.tsx",
+      "content": "/**\n * @name loading-animation-svg\n * @description SVG-based pixel-art Care UI loading animation — identical visuals to loading-animation but with zero React re-renders during the animation loop. All transitions run via the Web Animations API directly on SVG elements.\n * @type registry:ui\n */\nimport * as React from \"react\";\nimport { cn } from \"@/lib/utils\";\n\n// ─── Static cell data ─────────────────────────────────────────────────────────\n\nconst HEART_PATTERN = [\n  [0, 0, 1, 1, 0, 0, 1, 1, 0, 0],\n  [0, 1, 1, 1, 1, 1, 1, 1, 1, 0],\n  [1, 1, 0, 1, 1, 1, 1, 1, 1, 1],\n  [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],\n  [0, 1, 1, 1, 1, 1, 1, 1, 1, 0],\n  [0, 0, 1, 1, 1, 1, 1, 1, 0, 0],\n  [0, 0, 0, 1, 1, 1, 1, 0, 0, 0],\n  [0, 0, 0, 0, 1, 1, 0, 0, 0, 0],\n] as const;\n\nconst LOGO_PATTERN = [\n  [0, 0, 1, 1, 0, 0, 1, 1, 0, 0],\n  [0, 0, 1, 1, 0, 0, 1, 1, 0, 0],\n  [1, 1, 0, 0, 1, 1, 0, 0, 1, 1],\n  [1, 1, 0, 0, 1, 1, 0, 0, 1, 1],\n  [0, 0, 1, 1, 1, 1, 1, 1, 0, 0],\n  [0, 0, 1, 1, 1, 1, 1, 1, 0, 0],\n  [0, 0, 0, 0, 1, 1, 0, 0, 0, 0],\n  [0, 0, 0, 0, 1, 1, 0, 0, 0, 0],\n] as const;\n\nconst ROWS = 8;\nconst COLS = 10;\nconst WAVE_STEP_MS = 50; // ring step — wider gap = distinct ring boundaries in the ripple\nconst HOLD_MS = 650;\nconst CELL_ANIM_MS = 300; // must be well below (WAVE_STEP_MS × numRings) so rings don't bleed\n\n// Colors matching the div-based component\nconst HEART_FILL = \"#f43f5e\"; // rose-500\nconst LOGO_LIGHT = \"#059669\"; // emerald-600\nconst LOGO_DARK = \"#047857\"; // emerald-700\n\n// Corner radius in SVG units (cell = 1×1); matches rounded-xs at display size\nconst R = 0.3;\n\ntype CornerSpec = { tl?: number; tr?: number; bl?: number; br?: number };\n\n// Same outer-corner positions as the div version (shared by both shapes)\nconst CORNER_MAP: Record<string, CornerSpec> = {\n  \"0,2\": { tl: R },\n  \"0,3\": { tr: R },\n  \"0,6\": { tl: R },\n  \"0,7\": { tr: R },\n  \"2,0\": { tl: R },\n  \"3,0\": { bl: R },\n  \"2,9\": { tr: R },\n  \"3,9\": { br: R },\n  \"7,4\": { bl: R },\n  \"7,5\": { br: R },\n};\n\n// Build an SVG path string for a 1.01×1.01 cell with per-corner rounding\nfunction cellPath(x: number, y: number, c: CornerSpec = {}): string {\n  const w = 1.01,\n    h = 1.01;\n  const { tl = 0, tr = 0, br = 0, bl = 0 } = c;\n  const p: string[] = [];\n  p.push(`M ${x + tl},${y}`);\n  p.push(`L ${x + w - tr},${y}`);\n  if (tr) p.push(`Q ${x + w},${y} ${x + w},${y + tr}`);\n  p.push(`L ${x + w},${y + h - br}`);\n  if (br) p.push(`Q ${x + w},${y + h} ${x + w - br},${y + h}`);\n  p.push(`L ${x + bl},${y + h}`);\n  if (bl) p.push(`Q ${x},${y + h} ${x},${y + h - bl}`);\n  p.push(`L ${x},${y %                                       
+
+% ~/ohc.network/care_fe on  develop [$] via  v24.20.0  curl -s https://careui.ohc.network/registry/care-ui/loading-animation-svg/loading-animation-svg.json | node -e "let d='';process.stdin.on('data',c=>d+=c).on('end',()=>{const j=JSON.parse(d);console.log(JSON.stringify(j.files.map(f=>({path:f.path,target:f.target,type:f.type})),null,2));console.log('----CONTENT----');console.log(j.files[0].content)})"
+[
+  {
+    "path": "registry/care-ui/loading-animation-svg/loading-animation-svg.tsx",
+    "target": "components/careui/loading-animation-svg.tsx",
+    "type": "registry:component"
+  }
+]
+----CONTENT----
+/**
+ * @name loading-animation-svg
+ * @description SVG-based pixel-art Care UI loading animation — identical visuals to loading-animation but with zero React re-renders during the animation loop. All transitions run via the Web Animations API directly on SVG elements.
+ * @type registry:ui
+ */
+import * as React from "react";
+import { cn } from "@/lib/utils";
+
+// ─── Static cell data ─────────────────────────────────────────────────────────
+
+const HEART_PATTERN = [
+  [0, 0, 1, 1, 0, 0, 1, 1, 0, 0],
+  [0, 1, 1, 1, 1, 1, 1, 1, 1, 0],
+  [1, 1, 0, 1, 1, 1, 1, 1, 1, 1],
+  [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+  [0, 1, 1, 1, 1, 1, 1, 1, 1, 0],
+  [0, 0, 1, 1, 1, 1, 1, 1, 0, 0],
+  [0, 0, 0, 1, 1, 1, 1, 0, 0, 0],
+  [0, 0, 0, 0, 1, 1, 0, 0, 0, 0],
+] as const;
+
+const LOGO_PATTERN = [
+  [0, 0, 1, 1, 0, 0, 1, 1, 0, 0],
+  [0, 0, 1, 1, 0, 0, 1, 1, 0, 0],
+  [1, 1, 0, 0, 1, 1, 0, 0, 1, 1],
+  [1, 1, 0, 0, 1, 1, 0, 0, 1, 1],
+  [0, 0, 1, 1, 1, 1, 1, 1, 0, 0],
+  [0, 0, 1, 1, 1, 1, 1, 1, 0, 0],
+  [0, 0, 0, 0, 1, 1, 0, 0, 0, 0],
+  [0, 0, 0, 0, 1, 1, 0, 0, 0, 0],
+] as const;
+
+const ROWS = 8;
+const COLS = 10;
+const WAVE_STEP_MS = 50; // ring step — wider gap = distinct ring boundaries in the ripple
+const HOLD_MS = 650;
+const CELL_ANIM_MS = 300; // must be well below (WAVE_STEP_MS × numRings) so rings don't bleed
+
+// Colors matching the div-based component
+const HEART_FILL = "#f43f5e"; // rose-500
+const LOGO_LIGHT = "#059669"; // emerald-600
+const LOGO_DARK = "#047857"; // emerald-700
+
+// Corner radius in SVG units (cell = 1×1); matches rounded-xs at display size
+const R = 0.3;
+
+type CornerSpec = { tl?: number; tr?: number; bl?: number; br?: number };
+
+// Same outer-corner positions as the div version (shared by both shapes)
+const CORNER_MAP: Record<string, CornerSpec> = {
+  "0,2": { tl: R },
+  "0,3": { tr: R },
+  "0,6": { tl: R },
+  "0,7": { tr: R },
+  "2,0": { tl: R },
+  "3,0": { bl: R },
+  "2,9": { tr: R },
+  "3,9": { br: R },
+  "7,4": { bl: R },
+  "7,5": { br: R },
+};
+
+// Build an SVG path string for a 1.01×1.01 cell with per-corner rounding
+function cellPath(x: number, y: number, c: CornerSpec = {}): string {
+  const w = 1.01,
+    h = 1.01;
+  const { tl = 0, tr = 0, br = 0, bl = 0 } = c;
+  const p: string[] = [];
+  p.push(`M ${x + tl},${y}`);
+  p.push(`L ${x + w - tr},${y}`);
+  if (tr) p.push(`Q ${x + w},${y} ${x + w},${y + tr}`);
+  p.push(`L ${x + w},${y + h - br}`);
+  if (br) p.push(`Q ${x + w},${y + h} ${x + w - br},${y + h}`);
+  p.push(`L ${x + bl},${y + h}`);
+  if (bl) p.push(`Q ${x},${y + h} ${x},${y + h - bl}`);
+  p.push(`L ${x},${y + tl}`);
+  if (tl) p.push(`Q ${x},${y} ${x + tl},${y}`);
+  p.push("Z");
+  return p.join(" ");
+}
+
+type CellData = {
+  row: number;
+  col: number;
+  idx: number;
+  inHeart: boolean;
+  inLogo: boolean;
+  isLogoLight: boolean;
+  d: string; // pre-computed SVG path
+};
+
+function buildCellData(): CellData[] {
+  const LOGO_LIGHT_KEYS = new Set([
+    "0,2",
+    "1,2",
+    "0,3",
+    "1,3",
+    "0,6",
+    "1,6",
+    "0,7",
+    "1,7",
+    "2,0",
+    "2,1",
+    "3,0",
+    "3,1",
+    "2,8",
+    "2,9",
+    "3,8",
+    "3,9",
+  ]);
+  const raw: CellData[] = [];
+  for (let row = 0; row < ROWS; row++) {
+    for (let col = 0; col < COLS; col++) {
+      const key = `${row},${col}`;
+      raw.push({
+        row,
+        col,
+        idx: row * COLS + col,
+        inHeart: HEART_PATTERN[row][col] === 1,
+        inLogo: LOGO_PATTERN[row][col] === 1,
+        isLogoLight: LOGO_LIGHT_KEYS.has(key),
+        d: cellPath(col, row, CORNER_MAP[key]),
+      });
+    }
+  }
+  raw.sort((a, b) => {
+    const d = (r: number, c: number) =>
+      Math.sqrt((r - 3.5) ** 2 + (c - 4.5) ** 2);
+    return d(a.row, a.col) - d(b.row, b.col);
+  });
+  return raw;
+}
+
+const CELL_DATA = buildCellData();
+
+const CELL_BY_IDX: CellData[] = Array(ROWS * COLS);
+CELL_DATA.forEach((c) => {
+  CELL_BY_IDX[c.idx] = c;
+});
+
+// Ring groups — same quantization as the div-based component.
+// Cells at the same rounded radial distance fire together as a crisp concentric ring.
+const WAVE_GROUPS: { indices: number[] }[] = (() => {
+  const map = new Map<number, number[]>();
+  CELL_DATA.forEach((c) => {
+    const key = Math.round(
+      Math.sqrt((c.row - 3.5) ** 2 + (c.col - 4.5) ** 2) * 2
+    );
+    if (!map.has(key)) map.set(key, []);
+    map.get(key)!.push(c.idx);
+  });
+  return [...map.entries()]
+    .sort(([a], [b]) => a - b)
+    .map(([, indices]) => ({ indices }));
+})();
+
+// ─── Component ────────────────────────────────────────────────────────────────
+
+/**
+ * LoadingAnimationSvg
+ */
+export function LoadingAnimationSvg({ className }: { className?: string }) {
+  const beatRef = React.useRef<SVGGElement>(null);
+  const rectRefs = React.useRef<(Element | null)[]>(
+    Array(ROWS * COLS).fill(null)
+  );
+  const timers = React.useRef<ReturnType<typeof setTimeout>[]>([]);
+  const mounted = React.useRef(true);
+  const isFirstShow = React.useRef(true);
+
+  const schedule = React.useCallback((fn: () => void, delay: number) => {
+    const id: ReturnType<typeof setTimeout> = setTimeout(() => {
+      timers.current = timers.current.filter((t) => t !== id);
+      fn();
+    }, delay);
+    timers.current.push(id);
+  }, []);
+
+  const clearAllTimers = React.useCallback(() => {
+    timers.current.forEach(clearTimeout);
+    timers.current = [];
+  }, []);
+
+  const show = React.useCallback(
+    (next: "heart" | "logo", onDone?: () => void) => {
+      const first = isFirstShow.current;
+      if (first) isFirstShow.current = false;
+
+      const nextProp = next === "heart" ? "inHeart" : "inLogo";
+      const prevProp = next === "heart" ? "inLogo" : "inHeart";
+      const groups = next === "logo" ? [...WAVE_GROUPS].reverse() : WAVE_GROUPS;
+      const waveDuration = (groups.length - 1) * WAVE_STEP_MS;
+      schedule(
+        () => {
+          if (!mounted.current) return;
+          beatRef.current?.animate(
+            [
+              { transform: "scale(1)", offset: 0 },
+              { transform: "scale(1.08)", offset: 0.2 }, // lub — shape ~half filled
+              { transform: "scale(1)", offset: 0.46 },
+              { transform: "scale(1.03)", offset: 0.68 }, // dub — outer rings settling
+              { transform: "scale(1)", offset: 1 },
+            ],
+            { duration: 580, easing: "ease-in-out", fill: "none" }
+          );
+        },
+        Math.round(waveDuration * 0.45)
+      );
+
+      groups.forEach(({ indices }, i) => {
+        schedule(() => {
+          if (!mounted.current) return;
+          indices.forEach((idx) => {
+            const cell = CELL_BY_IDX[idx];
+            if (!cell) return;
+            const inNext = cell[nextProp as "inHeart" | "inLogo"];
+            const inPrev = !first && cell[prevProp as "inHeart" | "inLogo"];
+            if (!inNext && !inPrev) return;
+
+            const el = rectRefs.current[idx];
+            if (!el) return;
+
+            el.getAnimations().forEach((a) => {
+              try {
+                a.commitStyles();
+              } catch {
+                /* ignore */
+              }
+              a.cancel();
+            });
+
+            const nextFill =
+              next === "heart"
+                ? HEART_FILL
+                : cell.isLogoLight
+                  ? LOGO_LIGHT
+                  : LOGO_DARK;
+            const prevFill =
+              next === "heart"
+                ? cell.isLogoLight
+                  ? LOGO_LIGHT
+                  : LOGO_DARK
+                : HEART_FILL;
+
+            if (inNext && inPrev) {
+              el.animate(
+                [
+                  {
+                    fill: prevFill,
+                    transform: "scale(1)",
+                    opacity: "1",
+                    offset: 0,
+                  },
+                  {
+                    fill: prevFill,
+                    transform: "scale(0.68)",
+                    opacity: "0.4",
+                    offset: 0.3,
+                  },
+                  {
+                    fill: nextFill,
+                    transform: "scale(0.68)",
+                    opacity: "0.4",
+                    offset: 0.33,
+                  },
+                  {
+                    fill: nextFill,
+                    transform: "scale(1)",
+                    opacity: "1",
+                    offset: 1,
+                  },
+                ],
+                {
+                  duration: CELL_ANIM_MS,
+                  easing: "ease-in-out",
+                  fill: "forwards",
+                }
+              );
+            } else if (inNext) {
+              el.animate(
+                [
+                  { fill: nextFill, transform: "scale(0.35)", opacity: "0" },
+                  { fill: nextFill, transform: "scale(1)", opacity: "1" },
+                ],
+                {
+                  duration: CELL_ANIM_MS,
+                  easing: "cubic-bezier(0.2, 0, 0.2, 1)",
+                  fill: "forwards",
+                }
+              );
+            } else {
+              el.animate(
+                [
+                  { fill: prevFill, transform: "scale(1)", opacity: "1" },
+                  { fill: prevFill, transform: "scale(0.35)", opacity: "0" },
+                ],
+                {
+                  duration: CELL_ANIM_MS,
+                  easing: "cubic-bezier(0.55, 0, 1, 0.45)",
+                  fill: "forwards",
+                }
+              );
+            }
+          });
+        }, i * WAVE_STEP_MS);
+      });
+
+      // Gentle breathing pulse mid-hold — keeps the settled shape alive rather than static.
+      schedule(
+        () => {
+          if (!mounted.current) return;
+          beatRef.current?.animate(
+            [
+              { transform: "scale(1)", offset: 0 },
+              { transform: "scale(1.025)", offset: 0.5 },
+              { transform: "scale(1)", offset: 1 },
+            ],
+            {
+              duration: Math.round(HOLD_MS * 0.8),
+              easing: "ease-in-out",
+              fill: "none",
+            }
+          );
+        },
+        waveDuration + Math.round(CELL_ANIM_MS * 0.55)
+      );
+
+      schedule(() => {
+        if (!mounted.current) return;
+        onDone?.();
+      }, waveDuration + HOLD_MS);
+    },
+    [schedule]
+  );
+
+  React.useEffect(() => {
+    mounted.current = true;
+    show("heart", () => {
+      if (!mounted.current) return;
+      function cycle() {
+        show("logo", () => {
+          if (!mounted.current) return;
+          show("heart", () => {
+            if (!mounted.current) return;
+            cycle();
+          });
+        });
+      }
+      cycle();
+    });
+    return () => {
+      mounted.current = false;
+      clearAllTimers();
+    };
+  }, [show, clearAllTimers]);
+
+  return (
+    <div
+      data-slot="loading-animation-svg"
+      className={cn("grid place-items-center gap-3", className)}
+    >
+      <svg
+        viewBox={`0 0 ${COLS} ${ROWS}`}
+        className="w-16"
+        style={{ aspectRatio: `${COLS}/${ROWS}` }}
+        aria-hidden="true"
+      >
+        {/* beatRef <g> owns the heartbeat — all rects composite as one GPU layer */}
+        <g
+          ref={beatRef}
+          style={{ transformBox: "fill-box", transformOrigin: "center" }}
+        >
+          {Array.from({ length: ROWS * COLS }, (_, idx) => {
+            const cell = CELL_BY_IDX[idx];
+            return (
+              <path
+                key={idx}
+                ref={(el) => {
+                  rectRefs.current[idx] = el;
+                }}
+                d={cell.d}
+                fill="transparent"
+                opacity={0}
+                style={{ transformBox: "fill-box", transformOrigin: "center" }}
+              />
+            );
+          })}
+        </g>
+      </svg>
+      <p className="pl-3 text-center text-xs font-medium tracking-widest text-gray-500 uppercase">
+        loading
+        <span className="animate-blink opacity-0">.</span>
+        <span className="animate-[blink_1.5s_0.2s_infinite] opacity-0">.</span>
+        <span className="animate-[blink_1.5s_0.4s_infinite] opacity-0">.</span>
+      </p>
+    </div>
+  );
+}
+
+
+% ~/ohc.network/care_fe on  develop [$] via  v24.20.0  curl -s https://careui.ohc.network/registry/care-ui/loading-animation-svg/loading-animation-svg.json | node -e "let d='';process.stdin.on('data',c=>d+=c).on('end',()=>{const j=JSON.parse(d);const {files,...rest}=j;console.log(JSON.stringify(rest,null,2))})"
+{
+  "name": "loading-animation-svg",
+  "type": "registry:ui",
+  "registryDependencies": []
+}
+
+% ~/ohc.network/care_fe on  develop [$] via  v24.20.0
+
+---
+
+[Terminal 653e38dd-6229-4cec-8b12-f4c9c3465e5a notification: command may be waiting for input — assess the output below.]
+This note is not a signal to end the turn — pick one of the actions below and continue.
+  1. If the command may still be producing output or the shell prompt has not returned, call get_terminal_output with id="653e38dd-6229-4cec-8b12-f4c9c3465e5a" to continue polling. This is the default and safest action when unsure.
+  2. Only if the output clearly ends with a real non-secret input prompt (Continue? (y/n), Enter selection, etc. — a normal shell prompt like `$` or `#` does NOT count), call the vscode_askQuestions tool to ask the user, then send each answer using send_to_terminal with id="653e38dd-6229-4cec-8b12-f4c9c3465e5a" (which returns the next few lines of output). Repeat one prompt at a time. NEVER route secret prompts (passwords, passphrases, tokens, API keys, etc.) through vscode_askQuestions — answers to that tool are sent through the model. For secret prompts, tell the user to type the value directly into the terminal and stop.
+Terminal output:
+Using Node v24.18.0
+
+% ~/ohc.network/care_fe on  develop [$] via  v24.20.0  curl -s https://careui.ohc.network/registry/care-ui/loading-animation-svg/loading-animation-svg.json | head -c 3000
+{
+  "name": "loading-animation-svg",
+  "type": "registry:ui",
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "registry/care-ui/loading-animation-svg/loading-animation-svg.tsx",
+      "content": "/**\n * @name loading-animation-svg\n * @description SVG-based pixel-art Care UI loading animation — identical visuals to loading-animation but with zero React re-renders during the animation loop. All transitions run via the Web Animations API directly on SVG elements.\n * @type registry:ui\n */\nimport * as React from \"react\";\nimport { cn } from \"@/lib/utils\";\n\n// ─── Static cell data ─────────────────────────────────────────────────────────\n\nconst HEART_PATTERN = [\n  [0, 0, 1, 1, 0, 0, 1, 1, 0, 0],\n  [0, 1, 1, 1, 1, 1, 1, 1, 1, 0],\n  [1, 1, 0, 1, 1, 1, 1, 1, 1, 1],\n  [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],\n  [0, 1, 1, 1, 1, 1, 1, 1, 1, 0],\n  [0, 0, 1, 1, 1, 1, 1, 1, 0, 0],\n  [0, 0, 0, 1, 1, 1, 1, 0, 0, 0],\n  [0, 0, 0, 0, 1, 1, 0, 0, 0, 0],\n] as const;\n\nconst LOGO_PATTERN = [\n  [0, 0, 1, 1, 0, 0, 1, 1, 0, 0],\n  [0, 0, 1, 1, 0, 0, 1, 1, 0, 0],\n  [1, 1, 0, 0, 1, 1, 0, 0, 1, 1],\n  [1, 1, 0, 0, 1, 1, 0, 0, 1, 1],\n  [0, 0, 1, 1, 1, 1, 1, 1, 0, 0],\n  [0, 0, 1, 1, 1, 1, 1, 1, 0, 0],\n  [0, 0, 0, 0, 1, 1, 0, 0, 0, 0],\n  [0, 0, 0, 0, 1, 1, 0, 0, 0, 0],\n] as const;\n\nconst ROWS = 8;\nconst COLS = 10;\nconst WAVE_STEP_MS = 50; // ring step — wider gap = distinct ring boundaries in the ripple\nconst HOLD_MS = 650;\nconst CELL_ANIM_MS = 300; // must be well below (WAVE_STEP_MS × numRings) so rings don't bleed\n\n// Colors matching the div-based component\nconst HEART_FILL = \"#f43f5e\"; // rose-500\nconst LOGO_LIGHT = \"#059669\"; // emerald-600\nconst LOGO_DARK = \"#047857\"; // emerald-700\n\n// Corner radius in SVG units (cell = 1×1); matches rounded-xs at display size\nconst R = 0.3;\n\ntype CornerSpec = { tl?: number; tr?: number; bl?: number; br?: number };\n\n// Same outer-corner positions as the div version (shared by both shapes)\nconst CORNER_MAP: Record<string, CornerSpec> = {\n  \"0,2\": { tl: R },\n  \"0,3\": { tr: R },\n  \"0,6\": { tl: R },\n  \"0,7\": { tr: R },\n  \"2,0\": { tl: R },\n  \"3,0\": { bl: R },\n  \"2,9\": { tr: R },\n  \"3,9\": { br: R },\n  \"7,4\": { bl: R },\n  \"7,5\": { br: R },\n};\n\n// Build an SVG path string for a 1.01×1.01 cell with per-corner rounding\nfunction cellPath(x: number, y: number, c: CornerSpec = {}): string {\n  const w = 1.01,\n    h = 1.01;\n  const { tl = 0, tr = 0, br = 0, bl = 0 } = c;\n  const p: string[] = [];\n  p.push(`M ${x + tl},${y}`);\n  p.push(`L ${x + w - tr},${y}`);\n  if (tr) p.push(`Q ${x + w},${y} ${x + w},${y + tr}`);\n  p.push(`L ${x + w},${y + h - br}`);\n  if (br) p.push(`Q ${x + w},${y + h} ${x + w - br},${y + h}`);\n  p.push(`L ${x + bl},${y + h}`);\n  if (bl) p.push(`Q ${x},${y + h} ${x},${y + h - bl}`);\n  p.push(`L ${x},${y %                                       
+
+% ~/ohc.network/care_fe on  develop [$] via  v24.20.0  curl -s https://careui.ohc.network/registry/care-ui/loading-animation-svg/loading-animation-svg.json | node -e "let d='';process.stdin.on('data',c=>d+=c).on('end',()=>{const j=JSON.parse(d);console.log(JSON.stringify(j.files.map(f=>({path:f.path,target:f.target,type:f.type})),null,2));console.log('----CONTENT----');console.log(j.files[0].content)})"
+[
+  {
+    "path": "registry/care-ui/loading-animation-svg/loading-animation-svg.tsx",
+    "target": "components/careui/loading-animation-svg.tsx",
+    "type": "registry:component"
+  }
+]
+----CONTENT----
+/**
+ * @name loading-animation-svg
+ * @description SVG-based pixel-art Care UI loading animation — identical visuals to loading-animation but with zero React re-renders during the animation loop. All transitions run via the Web Animations API directly on SVG elements.
+ * @type registry:ui
+ */
+import * as React from "react";
+import { cn } from "@/lib/utils";
+
+// ─── Static cell data ─────────────────────────────────────────────────────────
+
+const HEART_PATTERN = [
+  [0, 0, 1, 1, 0, 0, 1, 1, 0, 0],
+  [0, 1, 1, 1, 1, 1, 1, 1, 1, 0],
+  [1, 1, 0, 1, 1, 1, 1, 1, 1, 1],
+  [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+  [0, 1, 1, 1, 1, 1, 1, 1, 1, 0],
+  [0, 0, 1, 1, 1, 1, 1, 1, 0, 0],
+  [0, 0, 0, 1, 1, 1, 1, 0, 0, 0],
+  [0, 0, 0, 0, 1, 1, 0, 0, 0, 0],
+] as const;
+
+const LOGO_PATTERN = [
+  [0, 0, 1, 1, 0, 0, 1, 1, 0, 0],
+  [0, 0, 1, 1, 0, 0, 1, 1, 0, 0],
+  [1, 1, 0, 0, 1, 1, 0, 0, 1, 1],
+  [1, 1, 0, 0, 1, 1, 0, 0, 1, 1],
+  [0, 0, 1, 1, 1, 1, 1, 1, 0, 0],
+  [0, 0, 1, 1, 1, 1, 1, 1, 0, 0],
+  [0, 0, 0, 0, 1, 1, 0, 0, 0, 0],
+  [0, 0, 0, 0, 1, 1, 0, 0, 0, 0],
+] as const;
+
+const ROWS = 8;
+const COLS = 10;
+const WAVE_STEP_MS = 50; // ring step — wider gap = distinct ring boundaries in the ripple
+const HOLD_MS = 650;
+const CELL_ANIM_MS = 300; // must be well below (WAVE_STEP_MS × numRings) so rings don't bleed
+
+// Colors matching the div-based component
+const HEART_FILL = "#f43f5e"; // rose-500
+const LOGO_LIGHT = "#059669"; // emerald-600
+const LOGO_DARK = "#047857"; // emerald-700
+
+// Corner radius in SVG units (cell = 1×1); matches rounded-xs at display size
+const R = 0.3;
+
+type CornerSpec = { tl?: number; tr?: number; bl?: number; br?: number };
+
+// Same outer-corner positions as the div version (shared by both shapes)
+const CORNER_MAP: Record<string, CornerSpec> = {
+  "0,2": { tl: R },
+  "0,3": { tr: R },
+  "0,6": { tl: R },
+  "0,7": { tr: R },
+  "2,0": { tl: R },
+  "3,0": { bl: R },
+  "2,9": { tr: R },
+  "3,9": { br: R },
+  "7,4": { bl: R },
+  "7,5": { br: R },
+};
+
+// Build an SVG path string for a 1.01×1.01 cell with per-corner rounding
+function cellPath(x: number, y: number, c: CornerSpec = {}): string {
+  const w = 1.01,
+    h = 1.01;
+  const { tl = 0, tr = 0, br = 0, bl = 0 } = c;
+  const p: string[] = [];
+  p.push(`M ${x + tl},${y}`);
+  p.push(`L ${x + w - tr},${y}`);
+  if (tr) p.push(`Q ${x + w},${y} ${x + w},${y + tr}`);
+  p.push(`L ${x + w},${y + h - br}`);
+  if (br) p.push(`Q ${x + w},${y + h} ${x + w - br},${y + h}`);
+  p.push(`L ${x + bl},${y + h}`);
+  if (bl) p.push(`Q ${x},${y + h} ${x},${y + h - bl}`);
+  p.push(`L ${x},${y + tl}`);
+  if (tl) p.push(`Q ${x},${y} ${x + tl},${y}`);
+  p.push("Z");
+  return p.join(" ");
+}
+
+type CellData = {
+  row: number;
+  col: number;
+  idx: number;
+  inHeart: boolean;
+  inLogo: boolean;
+  isLogoLight: boolean;
+  d: string; // pre-computed SVG path
+};
+
+function buildCellData(): CellData[] {
+  const LOGO_LIGHT_KEYS = new Set([
+    "0,2",
+    "1,2",
+    "0,3",
+    "1,3",
+    "0,6",
+    "1,6",
+    "0,7",
+    "1,7",
+    "2,0",
+    "2,1",
+    "3,0",
+    "3,1",
+    "2,8",
+    "2,9",
+    "3,8",
+    "3,9",
+  ]);
+  const raw: CellData[] = [];
+  for (let row = 0; row < ROWS; row++) {
+    for (let col = 0; col < COLS; col++) {
+      const key = `${row},${col}`;
+      raw.push({
+        row,
+        col,
+        idx: row * COLS + col,
+        inHeart: HEART_PATTERN[row][col] === 1,
+        inLogo: LOGO_PATTERN[row][col] === 1,
+        isLogoLight: LOGO_LIGHT_KEYS.has(key),
+        d: cellPath(col, row, CORNER_MAP[key]),
+      });
+    }
+  }
+  raw.sort((a, b) => {
+    const d = (r: number, c: number) =>
+      Math.sqrt((r - 3.5) ** 2 + (c - 4.5) ** 2);
+    return d(a.row, a.col) - d(b.row, b.col);
+  });
+  return raw;
+}
+
+const CELL_DATA = buildCellData();
+
+const CELL_BY_IDX: CellData[] = Array(ROWS * COLS);
+CELL_DATA.forEach((c) => {
+  CELL_BY_IDX[c.idx] = c;
+});
+
+// Ring groups — same quantization as the div-based component.
+// Cells at the same rounded radial distance fire together as a crisp concentric ring.
+const WAVE_GROUPS: { indices: number[] }[] = (() => {
+  const map = new Map<number, number[]>();
+  CELL_DATA.forEach((c) => {
+    const key = Math.round(
+      Math.sqrt((c.row - 3.5) ** 2 + (c.col - 4.5) ** 2) * 2
+    );
+    if (!map.has(key)) map.set(key, []);
+    map.get(key)!.push(c.idx);
+  });
+  return [...map.entries()]
+    .sort(([a], [b]) => a - b)
+    .map(([, indices]) => ({ indices }));
+})();
+
+// ─── Component ────────────────────────────────────────────────────────────────
+
+/**
+ * LoadingAnimationSvg
+ */
+export function LoadingAnimationSvg({ className }: { className?: string }) {
+  const beatRef = React.useRef<SVGGElement>(null);
+  const rectRefs = React.useRef<(Element | null)[]>(
+    Array(ROWS * COLS).fill(null)
+  );
+  const timers = React.useRef<ReturnType<typeof setTimeout>[]>([]);
+  const mounted = React.useRef(true);
+  const isFirstShow = React.useRef(true);
+
+  const schedule = React.useCallback((fn: () => void, delay: number) => {
+    const id: ReturnType<typeof setTimeout> = setTimeout(() => {
+      timers.current = timers.current.filter((t) => t !== id);
+      fn();
+    }, delay);
+    timers.current.push(id);
+  }, []);
+
+  const clearAllTimers = React.useCallback(() => {
+    timers.current.forEach(clearTimeout);
+    timers.current = [];
+  }, []);
+
+  const show = React.useCallback(
+    (next: "heart" | "logo", onDone?: () => void) => {
+      const first = isFirstShow.current;
+      if (first) isFirstShow.current = false;
+
+      const nextProp = next === "heart" ? "inHeart" : "inLogo";
+      const prevProp = next === "heart" ? "inLogo" : "inHeart";
+      const groups = next === "logo" ? [...WAVE_GROUPS].reverse() : WAVE_GROUPS;
+      const waveDuration = (groups.length - 1) * WAVE_STEP_MS;
+      schedule(
+        () => {
+          if (!mounted.current) return;
+          beatRef.current?.animate(
+            [
+              { transform: "scale(1)", offset: 0 },
+              { transform: "scale(1.08)", offset: 0.2 }, // lub — shape ~half filled
+              { transform: "scale(1)", offset: 0.46 },
+              { transform: "scale(1.03)", offset: 0.68 }, // dub — outer rings settling
+              { transform: "scale(1)", offset: 1 },
+            ],
+            { duration: 580, easing: "ease-in-out", fill: "none" }
+          );
+        },
+        Math.round(waveDuration * 0.45)
+      );
+
+      groups.forEach(({ indices }, i) => {
+        schedule(() => {
+          if (!mounted.current) return;
+          indices.forEach((idx) => {
+            const cell = CELL_BY_IDX[idx];
+            if (!cell) return;
+            const inNext = cell[nextProp as "inHeart" | "inLogo"];
+            const inPrev = !first && cell[prevProp as "inHeart" | "inLogo"];
+            if (!inNext && !inPrev) return;
+
+            const el = rectRefs.current[idx];
+            if (!el) return;
+
+            el.getAnimations().forEach((a) => {
+              try {
+                a.commitStyles();
+              } catch {
+                /* ignore */
+              }
+              a.cancel();
+            });
+
+            const nextFill =
+              next === "heart"
+                ? HEART_FILL
+                : cell.isLogoLight
+                  ? LOGO_LIGHT
+                  : LOGO_DARK;
+            const prevFill =
+              next === "heart"
+                ? cell.isLogoLight
+                  ? LOGO_LIGHT
+                  : LOGO_DARK
+                : HEART_FILL;
+
+            if (inNext && inPrev) {
+              el.animate(
+                [
+                  {
+                    fill: prevFill,
+                    transform: "scale(1)",
+                    opacity: "1",
+                    offset: 0,
+                  },
+                  {
+                    fill: prevFill,
+                    transform: "scale(0.68)",
+                    opacity: "0.4",
+                    offset: 0.3,
+                  },
+                  {
+                    fill: nextFill,
+                    transform: "scale(0.68)",
+                    opacity: "0.4",
+                    offset: 0.33,
+                  },
+                  {
+                    fill: nextFill,
+                    transform: "scale(1)",
+                    opacity: "1",
+                    offset: 1,
+                  },
+                ],
+                {
+                  duration: CELL_ANIM_MS,
+                  easing: "ease-in-out",
+                  fill: "forwards",
+                }
+              );
+            } else if (inNext) {
+              el.animate(
+                [
+                  { fill: nextFill, transform: "scale(0.35)", opacity: "0" },
+                  { fill: nextFill, transform: "scale(1)", opacity: "1" },
+                ],
+                {
+                  duration: CELL_ANIM_MS,
+                  easing: "cubic-bezier(0.2, 0, 0.2, 1)",
+                  fill: "forwards",
+                }
+              );
+            } else {
+              el.animate(
+                [
+                  { fill: prevFill, transform: "scale(1)", opacity: "1" },
+                  { fill: prevFill, transform: "scale(0.35)", opacity: "0" },
+                ],
+                {
+                  duration: CELL_ANIM_MS,
+                  easing: "cubic-bezier(0.55, 0, 1, 0.45)",
+                  fill: "forwards",
+                }
+              );
+            }
+          });
+        }, i * WAVE_STEP_MS);
+      });
+
+      // Gentle breathing pulse mid-hold — keeps the settled shape alive rather than static.
+      schedule(
+        () => {
+          if (!mounted.current) return;
+          beatRef.current?.animate(
+            [
+              { transform: "scale(1)", offset: 0 },
+              { transform: "scale(1.025)", offset: 0.5 },
+              { transform: "scale(1)", offset: 1 },
+            ],
+            {
+              duration: Math.round(HOLD_MS * 0.8),
+              easing: "ease-in-out",
+              fill: "none",
+            }
+          );
+        },
+        waveDuration + Math.round(CELL_ANIM_MS * 0.55)
+      );
+
+      schedule(() => {
+        if (!mounted.current) return;
+        onDone?.();
+      }, waveDuration + HOLD_MS);
+    },
+    [schedule]
+  );
+
+  React.useEffect(() => {
+    mounted.current = true;
+    show("heart", () => {
+      if (!mounted.current) return;
+      function cycle() {
+        show("logo", () => {
+          if (!mounted.current) return;
+          show("heart", () => {
+            if (!mounted.current) return;
+            cycle();
+          });
+        });
+      }
+      cycle();
+    });
+    return () => {
+      mounted.current = false;
+      clearAllTimers();
+    };
+  }, [show, clearAllTimers]);
+
+  return (
+    <div
+      data-slot="loading-animation-svg"
+      className={cn("grid place-items-center gap-3", className)}
+    >
+      <svg
+        viewBox={`0 0 ${COLS} ${ROWS}`}
+        className="w-16"
+        style={{ aspectRatio: `${COLS}/${ROWS}` }}
+        aria-hidden="true"
+      >
+        {/* beatRef <g> owns the heartbeat — all rects composite as one GPU layer */}
+        <g
+          ref={beatRef}
+          style={{ transformBox: "fill-box", transformOrigin: "center" }}
+        >
+          {Array.from({ length: ROWS * COLS }, (_, idx) => {
+            const cell = CELL_BY_IDX[idx];
+            return (
+              <path
+                key={idx}
+                ref={(el) => {
+                  rectRefs.current[idx] = el;
+                }}
+                d={cell.d}
+                fill="transparent"
+                opacity={0}
+                style={{ transformBox: "fill-box", transformOrigin: "center" }}
+              />
+            );
+          })}
+        </g>
+      </svg>
+      <p className="pl-3 text-center text-xs font-medium tracking-widest text-gray-500 uppercase">
+        loading
+        <span className="animate-blink opacity-0">.</span>
+        <span className="animate-[blink_1.5s_0.2s_infinite] opacity-0">.</span>
+        <span className="animate-[blink_1.5s_0.4s_infinite] opacity-0">.</span>
+      </p>
+    </div>
+  );
+}
+
+
+% ~/ohc.network/care_fe on  develop [$] via  v24.20.0  curl -s https://careui.ohc.network/registry/care-ui/loading-animation-svg/loading-animation-svg.json | node -e "let d='';process.stdin.on('data',c=>d+=c).on('end',()=>{const j=JSON.parse(d);const {files,...rest}=j;console.log(JSON.stringify(rest,null,2))})"
+{
+  "name": "loading-animation-svg",
+  "type": "registry:ui",
+  "registryDependencies": []
+}
+
+% ~/ohc.network/care_fe on  develop [$] via  v24.20.0
+
+---
+
+[Terminal 43864895-76e3-4ffe-86ac-15585b7026e3 notification: command may be waiting for input — assess the output below.]
+This note is not a signal to end the turn — pick one of the actions below and continue.
+  1. If the command may still be producing output or the shell prompt has not returned, call get_terminal_output with id="43864895-76e3-4ffe-86ac-15585b7026e3" to continue polling. This is the default and safest action when unsure.
+  2. Only if the output clearly ends with a real non-secret input prompt (Continue? (y/n), Enter selection, etc. — a normal shell prompt like `$` or `#` does NOT count), call the vscode_askQuestions tool to ask the user, then send each answer using send_to_terminal with id="43864895-76e3-4ffe-86ac-15585b7026e3" (which returns the next few lines of output). Repeat one prompt at a time. NEVER route secret prompts (passwords, passphrases, tokens, API keys, etc.) through vscode_askQuestions — answers to that tool are sent through the model. For secret prompts, tell the user to type the value directly into the terminal and stop.
+Terminal output:
+Using Node v24.18.0
+
+% ~/ohc.network/care_fe on  develop [$] via  v24.20.0  curl -s https://careui.ohc.network/registry/care-ui/loading-animation-svg/loading-animation-svg.json | head -c 3000
+{
+  "name": "loading-animation-svg",
+  "type": "registry:ui",
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "registry/care-ui/loading-animation-svg/loading-animation-svg.tsx",
+      "content": "/**\n * @name loading-animation-svg\n * @description SVG-based pixel-art Care UI loading animation — identical visuals to loading-animation but with zero React re-renders during the animation loop. All transitions run via the Web Animations API directly on SVG elements.\n * @type registry:ui\n */\nimport * as React from \"react\";\nimport { cn } from \"@/lib/utils\";\n\n// ─── Static cell data ─────────────────────────────────────────────────────────\n\nconst HEART_PATTERN = [\n  [0, 0, 1, 1, 0, 0, 1, 1, 0, 0],\n  [0, 1, 1, 1, 1, 1, 1, 1, 1, 0],\n  [1, 1, 0, 1, 1, 1, 1, 1, 1, 1],\n  [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],\n  [0, 1, 1, 1, 1, 1, 1, 1, 1, 0],\n  [0, 0, 1, 1, 1, 1, 1, 1, 0, 0],\n  [0, 0, 0, 1, 1, 1, 1, 0, 0, 0],\n  [0, 0, 0, 0, 1, 1, 0, 0, 0, 0],\n] as const;\n\nconst LOGO_PATTERN = [\n  [0, 0, 1, 1, 0, 0, 1, 1, 0, 0],\n  [0, 0, 1, 1, 0, 0, 1, 1, 0, 0],\n  [1, 1, 0, 0, 1, 1, 0, 0, 1, 1],\n  [1, 1, 0, 0, 1, 1, 0, 0, 1, 1],\n  [0, 0, 1, 1, 1, 1, 1, 1, 0, 0],\n  [0, 0, 1, 1, 1, 1, 1, 1, 0, 0],\n  [0, 0, 0, 0, 1, 1, 0, 0, 0, 0],\n  [0, 0, 0, 0, 1, 1, 0, 0, 0, 0],\n] as const;\n\nconst ROWS = 8;\nconst COLS = 10;\nconst WAVE_STEP_MS = 50; // ring step — wider gap = distinct ring boundaries in the ripple\nconst HOLD_MS = 650;\nconst CELL_ANIM_MS = 300; // must be well below (WAVE_STEP_MS × numRings) so rings don't bleed\n\n// Colors matching the div-based component\nconst HEART_FILL = \"#f43f5e\"; // rose-500\nconst LOGO_LIGHT = \"#059669\"; // emerald-600\nconst LOGO_DARK = \"#047857\"; // emerald-700\n\n// Corner radius in SVG units (cell = 1×1); matches rounded-xs at display size\nconst R = 0.3;\n\ntype CornerSpec = { tl?: number; tr?: number; bl?: number; br?: number };\n\n// Same outer-corner positions as the div version (shared by both shapes)\nconst CORNER_MAP: Record<string, CornerSpec> = {\n  \"0,2\": { tl: R },\n  \"0,3\": { tr: R },\n  \"0,6\": { tl: R },\n  \"0,7\": { tr: R },\n  \"2,0\": { tl: R },\n  \"3,0\": { bl: R },\n  \"2,9\": { tr: R },\n  \"3,9\": { br: R },\n  \"7,4\": { bl: R },\n  \"7,5\": { br: R },\n};\n\n// Build an SVG path string for a 1.01×1.01 cell with per-corner rounding\nfunction cellPath(x: number, y: number, c: CornerSpec = {}): string {\n  const w = 1.01,\n    h = 1.01;\n  const { tl = 0, tr = 0, br = 0, bl = 0 } = c;\n  const p: string[] = [];\n  p.push(`M ${x + tl},${y}`);\n  p.push(`L ${x + w - tr},${y}`);\n  if (tr) p.push(`Q ${x + w},${y} ${x + w},${y + tr}`);\n  p.push(`L ${x + w},${y + h - br}`);\n  if (br) p.push(`Q ${x + w},${y + h} ${x + w - br},${y + h}`);\n  p.push(`L ${x + bl},${y + h}`);\n  if (bl) p.push(`Q ${x},${y + h} ${x},${y + h - bl}`);\n  p.push(`L ${x},${y %                                       
+
+% ~/ohc.network/care_fe on  develop [$] via  v24.20.0  curl -s https://careui.ohc.network/registry/care-ui/loading-animation-svg/loading-animation-svg.json | node -e "let d='';process.stdin.on('data',c=>d+=c).on('end',()=>{const j=JSON.parse(d);console.log(JSON.stringify(j.files.map(f=>({path:f.path,target:f.target,type:f.type})),null,2));console.log('----CONTENT----');console.log(j.files[0].content)})"
+[
+  {
+    "path": "registry/care-ui/loading-animation-svg/loading-animation-svg.tsx",
+    "target": "components/careui/loading-animation-svg.tsx",
+    "type": "registry:component"
+  }
+]
+----CONTENT----
+/**
+ * @name loading-animation-svg
+ * @description SVG-based pixel-art Care UI loading animation — identical visuals to loading-animation but with zero React re-renders during the animation loop. All transitions run via the Web Animations API directly on SVG elements.
+ * @type registry:ui
+ */
+import * as React from "react";
+import { cn } from "@/lib/utils";
+
+// ─── Static cell data ─────────────────────────────────────────────────────────
+
+const HEART_PATTERN = [
+  [0, 0, 1, 1, 0, 0, 1, 1, 0, 0],
+  [0, 1, 1, 1, 1, 1, 1, 1, 1, 0],
+  [1, 1, 0, 1, 1, 1, 1, 1, 1, 1],
+  [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+  [0, 1, 1, 1, 1, 1, 1, 1, 1, 0],
+  [0, 0, 1, 1, 1, 1, 1, 1, 0, 0],
+  [0, 0, 0, 1, 1, 1, 1, 0, 0, 0],
+  [0, 0, 0, 0, 1, 1, 0, 0, 0, 0],
+] as const;
+
+const LOGO_PATTERN = [
+  [0, 0, 1, 1, 0, 0, 1, 1, 0, 0],
+  [0, 0, 1, 1, 0, 0, 1, 1, 0, 0],
+  [1, 1, 0, 0, 1, 1, 0, 0, 1, 1],
+  [1, 1, 0, 0, 1, 1, 0, 0, 1, 1],
+  [0, 0, 1, 1, 1, 1, 1, 1, 0, 0],
+  [0, 0, 1, 1, 1, 1, 1, 1, 0, 0],
+  [0, 0, 0, 0, 1, 1, 0, 0, 0, 0],
+  [0, 0, 0, 0, 1, 1, 0, 0, 0, 0],
+] as const;
+
+const ROWS = 8;
+const COLS = 10;
+const WAVE_STEP_MS = 50; // ring step — wider gap = distinct ring boundaries in the ripple
+const HOLD_MS = 650;
+const CELL_ANIM_MS = 300; // must be well below (WAVE_STEP_MS × numRings) so rings don't bleed
+
+// Colors matching the div-based component
+const HEART_FILL = "#f43f5e"; // rose-500
+const LOGO_LIGHT = "#059669"; // emerald-600
+const LOGO_DARK = "#047857"; // emerald-700
+
+// Corner radius in SVG units (cell = 1×1); matches rounded-xs at display size
+const R = 0.3;
+
+type CornerSpec = { tl?: number; tr?: number; bl?: number; br?: number };
+
+// Same outer-corner positions as the div version (shared by both shapes)
+const CORNER_MAP: Record<string, CornerSpec> = {
+  "0,2": { tl: R },
+  "0,3": { tr: R },
+  "0,6": { tl: R },
+  "0,7": { tr: R },
+  "2,0": { tl: R },
+  "3,0": { bl: R },
+  "2,9": { tr: R },
+  "3,9": { br: R },
+  "7,4": { bl: R },
+  "7,5": { br: R },
+};
+
+// Build an SVG path string for a 1.01×1.01 cell with per-corner rounding
+function cellPath(x: number, y: number, c: CornerSpec = {}): string {
+  const w = 1.01,
+    h = 1.01;
+  const { tl = 0, tr = 0, br = 0, bl = 0 } = c;
+  const p: string[] = [];
+  p.push(`M ${x + tl},${y}`);
+  p.push(`L ${x + w - tr},${y}`);
+  if (tr) p.push(`Q ${x + w},${y} ${x + w},${y + tr}`);
+  p.push(`L ${x + w},${y + h - br}`);
+  if (br) p.push(`Q ${x + w},${y + h} ${x + w - br},${y + h}`);
+  p.push(`L ${x + bl},${y + h}`);
+  if (bl) p.push(`Q ${x},${y + h} ${x},${y + h - bl}`);
+  p.push(`L ${x},${y + tl}`);
+  if (tl) p.push(`Q ${x},${y} ${x + tl},${y}`);
+  p.push("Z");
+  return p.join(" ");
+}
+
+type CellData = {
+  row: number;
+  col: number;
+  idx: number;
+  inHeart: boolean;
+  inLogo: boolean;
+  isLogoLight: boolean;
+  d: string; // pre-computed SVG path
+};
+
+function buildCellData(): CellData[] {
+  const LOGO_LIGHT_KEYS = new Set([
+    "0,2",
+    "1,2",
+    "0,3",
+    "1,3",
+    "0,6",
+    "1,6",
+    "0,7",
+    "1,7",
+    "2,0",
+    "2,1",
+    "3,0",
+    "3,1",
+    "2,8",
+    "2,9",
+    "3,8",
+    "3,9",
+  ]);
+  const raw: CellData[] = [];
+  for (let row = 0; row < ROWS; row++) {
+    for (let col = 0; col < COLS; col++) {
+      const key = `${row},${col}`;
+      raw.push({
+        row,
+        col,
+        idx: row * COLS + col,
+        inHeart: HEART_PATTERN[row][col] === 1,
+        inLogo: LOGO_PATTERN[row][col] === 1,
+        isLogoLight: LOGO_LIGHT_KEYS.has(key),
+        d: cellPath(col, row, CORNER_MAP[key]),
+      });
+    }
+  }
+  raw.sort((a, b) => {
+    const d = (r: number, c: number) =>
+      Math.sqrt((r - 3.5) ** 2 + (c - 4.5) ** 2);
+    return d(a.row, a.col) - d(b.row, b.col);
+  });
+  return raw;
+}
+
+const CELL_DATA = buildCellData();
+
+const CELL_BY_IDX: CellData[] = Array(ROWS * COLS);
+CELL_DATA.forEach((c) => {
+  CELL_BY_IDX[c.idx] = c;
+});
+
+// Ring groups — same quantization as the div-based component.
+// Cells at the same rounded radial distance fire together as a crisp concentric ring.
+const WAVE_GROUPS: { indices: number[] }[] = (() => {
+  const map = new Map<number, number[]>();
+  CELL_DATA.forEach((c) => {
+    const key = Math.round(
+      Math.sqrt((c.row - 3.5) ** 2 + (c.col - 4.5) ** 2) * 2
+    );
+    if (!map.has(key)) map.set(key, []);
+    map.get(key)!.push(c.idx);
+  });
+  return [...map.entries()]
+    .sort(([a], [b]) => a - b)
+    .map(([, indices]) => ({ indices }));
+})();
+
+// ─── Component ────────────────────────────────────────────────────────────────
+
+/**
+ * LoadingAnimationSvg
+ */
+export function LoadingAnimationSvg({ className }: { className?: string }) {
+  const beatRef = React.useRef<SVGGElement>(null);
+  const rectRefs = React.useRef<(Element | null)[]>(
+    Array(ROWS * COLS).fill(null)
+  );
+  const timers = React.useRef<ReturnType<typeof setTimeout>[]>([]);
+  const mounted = React.useRef(true);
+  const isFirstShow = React.useRef(true);
+
+  const schedule = React.useCallback((fn: () => void, delay: number) => {
+    const id: ReturnType<typeof setTimeout> = setTimeout(() => {
+      timers.current = timers.current.filter((t) => t !== id);
+      fn();
+    }, delay);
+    timers.current.push(id);
+  }, []);
+
+  const clearAllTimers = React.useCallback(() => {
+    timers.current.forEach(clearTimeout);
+    timers.current = [];
+  }, []);
+
+  const show = React.useCallback(
+    (next: "heart" | "logo", onDone?: () => void) => {
+      const first = isFirstShow.current;
+      if (first) isFirstShow.current = false;
+
+      const nextProp = next === "heart" ? "inHeart" : "inLogo";
+      const prevProp = next === "heart" ? "inLogo" : "inHeart";
+      const groups = next === "logo" ? [...WAVE_GROUPS].reverse() : WAVE_GROUPS;
+      const waveDuration = (groups.length - 1) * WAVE_STEP_MS;
+      schedule(
+        () => {
+          if (!mounted.current) return;
+          beatRef.current?.animate(
+            [
+              { transform: "scale(1)", offset: 0 },
+              { transform: "scale(1.08)", offset: 0.2 }, // lub — shape ~half filled
+              { transform: "scale(1)", offset: 0.46 },
+              { transform: "scale(1.03)", offset: 0.68 }, // dub — outer rings settling
+              { transform: "scale(1)", offset: 1 },
+            ],
+            { duration: 580, easing: "ease-in-out", fill: "none" }
+          );
+        },
+        Math.round(waveDuration * 0.45)
+      );
+
+      groups.forEach(({ indices }, i) => {
+        schedule(() => {
+          if (!mounted.current) return;
+          indices.forEach((idx) => {
+            const cell = CELL_BY_IDX[idx];
+            if (!cell) return;
+            const inNext = cell[nextProp as "inHeart" | "inLogo"];
+            const inPrev = !first && cell[prevProp as "inHeart" | "inLogo"];
+            if (!inNext && !inPrev) return;
+
+            const el = rectRefs.current[idx];
+            if (!el) return;
+
+            el.getAnimations().forEach((a) => {
+              try {
+                a.commitStyles();
+              } catch {
+                /* ignore */
+              }
+              a.cancel();
+            });
+
+            const nextFill =
+              next === "heart"
+                ? HEART_FILL
+                : cell.isLogoLight
+                  ? LOGO_LIGHT
+                  : LOGO_DARK;
+            const prevFill =
+              next === "heart"
+                ? cell.isLogoLight
+                  ? LOGO_LIGHT
+                  : LOGO_DARK
+                : HEART_FILL;
+
+            if (inNext && inPrev) {
+              el.animate(
+                [
+                  {
+                    fill: prevFill,
+                    transform: "scale(1)",
+                    opacity: "1",
+                    offset: 0,
+                  },
+                  {
+                    fill: prevFill,
+                    transform: "scale(0.68)",
+                    opacity: "0.4",
+                    offset: 0.3,
+                  },
+                  {
+                    fill: nextFill,
+                    transform: "scale(0.68)",
+                    opacity: "0.4",
+                    offset: 0.33,
+                  },
+                  {
+                    fill: nextFill,
+                    transform: "scale(1)",
+                    opacity: "1",
+                    offset: 1,
+                  },
+                ],
+                {
+                  duration: CELL_ANIM_MS,
+                  easing: "ease-in-out",
+                  fill: "forwards",
+                }
+              );
+            } else if (inNext) {
+              el.animate(
+                [
+                  { fill: nextFill, transform: "scale(0.35)", opacity: "0" },
+                  { fill: nextFill, transform: "scale(1)", opacity: "1" },
+                ],
+                {
+                  duration: CELL_ANIM_MS,
+                  easing: "cubic-bezier(0.2, 0, 0.2, 1)",
+                  fill: "forwards",
+                }
+              );
+            } else {
+              el.animate(
+                [
+                  { fill: prevFill, transform: "scale(1)", opacity: "1" },
+                  { fill: prevFill, transform: "scale(0.35)", opacity: "0" },
+                ],
+                {
+                  duration: CELL_ANIM_MS,
+                  easing: "cubic-bezier(0.55, 0, 1, 0.45)",
+                  fill: "forwards",
+                }
+              );
+            }
+          });
+        }, i * WAVE_STEP_MS);
+      });
+
+      // Gentle breathing pulse mid-hold — keeps the settled shape alive rather than static.
+      schedule(
+        () => {
+          if (!mounted.current) return;
+          beatRef.current?.animate(
+            [
+              { transform: "scale(1)", offset: 0 },
+              { transform: "scale(1.025)", offset: 0.5 },
+              { transform: "scale(1)", offset: 1 },
+            ],
+            {
+              duration: Math.round(HOLD_MS * 0.8),
+              easing: "ease-in-out",
+              fill: "none",
+            }
+          );
+        },
+        waveDuration + Math.round(CELL_ANIM_MS * 0.55)
+      );
+
+      schedule(() => {
+        if (!mounted.current) return;
+        onDone?.();
+      }, waveDuration + HOLD_MS);
+    },
+    [schedule]
+  );
+
+  React.useEffect(() => {
+    mounted.current = true;
+    show("heart", () => {
+      if (!mounted.current) return;
+      function cycle() {
+        show("logo", () => {
+          if (!mounted.current) return;
+          show("heart", () => {
+            if (!mounted.current) return;
+            cycle();
+          });
+        });
+      }
+      cycle();
+    });
+    return () => {
+      mounted.current = false;
+      clearAllTimers();
+    };
+  }, [show, clearAllTimers]);
+
+  return (
+    <div
+      data-slot="loading-animation-svg"
+      className={cn("grid place-items-center gap-3", className)}
+    >
+      <svg
+        viewBox={`0 0 ${COLS} ${ROWS}`}
+        className="w-16"
+        style={{ aspectRatio: `${COLS}/${ROWS}` }}
+        aria-hidden="true"
+      >
+        {/* beatRef <g> owns the heartbeat — all rects composite as one GPU layer */}
+        <g
+          ref={beatRef}
+          style={{ transformBox: "fill-box", transformOrigin: "center" }}
+        >
+          {Array.from({ length: ROWS * COLS }, (_, idx) => {
+            const cell = CELL_BY_IDX[idx];
+            return (
+              <path
+                key={idx}
+                ref={(el) => {
+                  rectRefs.current[idx] = el;
+                }}
+                d={cell.d}
+                fill="transparent"
+                opacity={0}
+                style={{ transformBox: "fill-box", transformOrigin: "center" }}
+              />
+            );
+          })}
+        </g>
+      </svg>
+      <p className="pl-3 text-center text-xs font-medium tracking-widest text-gray-500 uppercase">
+        loading
+        <span className="animate-blink opacity-0">.</span>
+        <span className="animate-[blink_1.5s_0.2s_infinite] opacity-0">.</span>
+        <span className="animate-[blink_1.5s_0.4s_infinite] opacity-0">.</span>
+      </p>
+    </div>
+  );
+}
+
+
+% ~/ohc.network/care_fe on  develop [$] via  v24.20.0  curl -s https://careui.ohc.network/registry/care-ui/loading-animation-svg/loading-animation-svg.json | node -e "let d='';process.stdin.on('data',c=>d+=c).on('end',()=>{const j=JSON.parse(d);const {files,...rest}=j;console.log(JSON.stringify(rest,null,2))})"
+{
+  "name": "loading-animation-svg",
+  "type": "registry:ui",
+  "registryDependencies": []
+}
+
+% ~/ohc.network/care_fe on  develop [$] via  v24.20.0 >....                   
+const CORNER_MAP = {
+  "0,2": { tl: R }, "0,3": { tr: R }, "0,6": { tl: R }, "0,7": { tr: R },
+  "2,0": { tl: R }, "3,0": { bl: R }, "2,9": { tr: R }, "3,9": { br: R },
+  "7,4": { bl: R }, "7,5": { br: R },
+};
+function cellPath(x, y, c = {}) {
+  const w = 1.01, h = 1.01;
+  const { tl = 0, tr = 0, br = 0, bl = 0 } = c;
+  const p = [];
+  p.push(`M ${x + tl},${y}`);
+  p.push(`L ${x + w - tr},${y}`);
+  if (tr) p.push(`Q ${x + w},${y} ${x + w},${y + tr}`);
+  p.push(`L ${x + w},${y + h - br}`);
+  if (br) p.push(`Q ${x + w},${y + h} ${x + w - br},${y + h}`);
+  p.push(`L ${x + bl},${y + h}`);
+  if (bl) p.push(`Q ${x},${y + h} ${x},${y + h - bl}`);
+  p.push(`L ${x},${y + tl}`);
+  if (tl) p.push(`Q ${x},${y} ${x + tl},${y}`);
+  p.push("Z");
+  return p.join(" ");
+}
+const parts = [];
+for (let row = 0; row < 8; row++)
+  for (let col = 0; col < 10; col++)
+    if (HEART_PATTERN[row][col]) parts.push(cellPath(col, row, CORNER_MAP[`${row},${col}`]));
+console.log(parts.join(" "));
+EOF
+node /tmp/genheart.mjs
+M 2.3,0 L 3.01,0 L 3.01,1.01 L 2,1.01 L 2,0.3 Q 2,0 2.3,0 Z M 3,0 L 3.71,0 Q 4.01,0 4.01,0.3 L 4.01,1.01 L 3,1.01 L 3,0 Z M 6.3,0 L 7.01,0 L 7.01,1.01 L 6,1.01 L 6,0.3 Q 6,0 6.3,0 Z M 7,0 L 7.71,0 Q 8.01,0 8.01,0.3 L 8.01,1.01 L 7,1.01 L 7,0 Z M 1,1 L 2.01,1 L 2.01,2.01 L 1,2.01 L 1,1 Z M 2,1 L 3.01,1 L 3.01,2.01 L 2,2.01 L 2,1 Z M 3,1 L 4.01,1 L 4.01,2.01 L 3,2.01 L 3,1 Z M 4,1 L 5.01,1 L 5.01,2.01 L 4,2.01 L 4,1 Z M 5,1 L 6.01,1 L 6.01,2.01 L 5,2.01 L 5,1 Z M 6,1 L 7.01,1 L 7.01,2.01 L 6,2.01 L 6,1 Z M 7,1 L 8.01,1 L 8.01,2.01 L 7,2.01 L 7,1 Z M 8,1 L 9.01,1 L 9.01,2.01 L 8,2.01 L 8,1 Z M 0.3,2 L 1.01,2 L 1.01,3.01 L 0,3.01 L 0,2.3 Q 0,2 0.3,2 Z M 1,2 L 2.01,2 L 2.01,3.01 L 1,3.01 L 1,2 Z M 3,2 L 4.01,2 L 4.01,3.01 L 3,3.01 L 3,2 Z M 4,2 L 5.01,2 L 5.01,3.01 L 4,3.01 L 4,2 Z M 5,2 L 6.01,2 L 6.01,3.01 L 5,3.01 L 5,2 Z M 6,2 L 7.01,2 L 7.01,3.01 L 6,3.01 L 6,2 Z M 7,2 L 8.01,2 L 8.01,3.01 L 7,3.01 L 7,2 Z M 8,2 L 9.01,2 L 9.01,3.01 L 8,3.01 L 8,2 Z M 9,2 L 9.709999999999999,2 Q 10.01,2 10.01,2.3 L 10.01,3.01 L 9,3.01 L 9,2 Z M 0,3 L 1.01,3 L 1.01,4.01 L 0.3,4.01 Q 0,4.01 0,3.71 L 0,3 Z M 1,3 L 2.01,3 L 2.01,4.01 L 1,4.01 L 1,3 Z M 2,3 L 3.01,3 L 3.01,4.01 L 2,4.01 L 2,3 Z M 3,3 L 4.01,3 L 4.01,4.01 L 3,4.01 L 3,3 Z M 4,3 L 5.01,3 L 5.01,4.01 L 4,4.01 L 4,3 Z M 5,3 L 6.01,3 L 6.01,4.01 L 5,4.01 L 5,3 Z M 6,3 L 7.01,3 L 7.01,4.01 L 6,4.01 L 6,3 Z M 7,3 L 8.01,3 L 8.01,4.01 L 7,4.01 L 7,3 Z M 8,3 L 9.01,3 L 9.01,4.01 L 8,4.01 L 8,3 Z M 9,3 L 10.01,3 L 10.01,3.71 Q 10.01,4.01 9.709999999999999,4.01 L 9,4.01 L 9,3 Z M 1,4 L 2.01,4 L 2.01,5.01 L 1,5.01 L 1,4 Z M 2,4 L 3.01,4 L 3.01,5.01 L 2,5.01 L 2,4 Z M 3,4 L 4.01,4 L 4.01,5.01 L 3,5.01 L 3,4 Z M 4,4 L 5.01,4 L 5.01,5.01 L 4,5.01 L 4,4 Z M 5,4 L 6.01,4 L 6.01,5.01 L 5,5.01 L 5,4 Z M 6,4 L 7.01,4 L 7.01,5.01 L 6,5.01 L 6,4 Z M 7,4 L 8.01,4 L 8.01,5.01 L 7,5.01 L 7,4 Z M 8,4 L 9.01,4 L 9.01,5.01 L 8,5.01 L 8,4 Z M 2,5 L 3.01,5 L 3.01,6.01 L 2,6.01 L 2,5 Z M 3,5 L 4.01,5 L 4.01,6.01 L 3,6.01 L 3,5 Z M 4,5 L 5.01,5 L 5.01,6.01 L 4,6.01 L 4,5 Z M 5,5 L 6.01,5 L 6.01,6.01 L 5,6.01 L 5,5 Z M 6,5 L 7.01,5 L 7.01,6.01 L 6,6.01 L 6,5 Z M 7,5 L 8.01,5 L 8.01,6.01 L 7,6.01 L 7,5 Z M 3,6 L 4.01,6 L 4.01,7.01 L 3,7.01 L 3,6 Z M 4,6 L 5.01,6 L 5.01,7.01 L 4,7.01 L 4,6 Z M 5,6 L 6.01,6 L 6.01,7.01 L 5,7.01 L 5,6 Z M 6,6 L 7.01,6 L 7.01,7.01 L 6,7.01 L 6,6 Z M 4,7 L 5.01,7 L 5.01,8.01 L 4.3,8.01 Q 4,8.01 4,7.71 L 4,7 Z M 5,7 L 6.01,7 L 6.01,7.71 Q 6.01,8.01 5.71,8.01 L 5,8.01 L 5,7 Z
+
+% ~/ohc.network/care_fe on  develop [$] via  v24.20.0
+
+---
+
+[Terminal 43864895-76e3-4ffe-86ac-15585b7026e3 notification: command may be waiting for input — assess the output below.]
+This note is not a signal to end the turn — pick one of the actions below and continue.
+  1. If the command may still be producing output or the shell prompt has not returned, call get_terminal_output with id="43864895-76e3-4ffe-86ac-15585b7026e3" to continue polling. This is the default and safest action when unsure.
+  2. Only if the output clearly ends with a real non-secret input prompt (Continue? (y/n), Enter selection, etc. — a normal shell prompt like `$` or `#` does NOT count), call the vscode_askQuestions tool to ask the user, then send each answer using send_to_terminal with id="43864895-76e3-4ffe-86ac-15585b7026e3" (which returns the next few lines of output). Repeat one prompt at a time. NEVER route secret prompts (passwords, passphrases, tokens, API keys, etc.) through vscode_askQuestions — answers to that tool are sent through the model. For secret prompts, tell the user to type the value directly into the terminal and stop.
+Terminal output:
+Using Node v24.18.0
+
+% ~/ohc.network/care_fe on  develop [$] via  v24.20.0  curl -s https://careui.ohc.network/registry/care-ui/loading-animation-svg/loading-animation-svg.json | head -c 3000
+{
+  "name": "loading-animation-svg",
+  "type": "registry:ui",
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "registry/care-ui/loading-animation-svg/loading-animation-svg.tsx",
+      "content": "/**\n * @name loading-animation-svg\n * @description SVG-based pixel-art Care UI loading animation — identical visuals to loading-animation but with zero React re-renders during the animation loop. All transitions run via the Web Animations API directly on SVG elements.\n * @type registry:ui\n */\nimport * as React from \"react\";\nimport { cn } from \"@/lib/utils\";\n\n// ─── Static cell data ─────────────────────────────────────────────────────────\n\nconst HEART_PATTERN = [\n  [0, 0, 1, 1, 0, 0, 1, 1, 0, 0],\n  [0, 1, 1, 1, 1, 1, 1, 1, 1, 0],\n  [1, 1, 0, 1, 1, 1, 1, 1, 1, 1],\n  [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],\n  [0, 1, 1, 1, 1, 1, 1, 1, 1, 0],\n  [0, 0, 1, 1, 1, 1, 1, 1, 0, 0],\n  [0, 0, 0, 1, 1, 1, 1, 0, 0, 0],\n  [0, 0, 0, 0, 1, 1, 0, 0, 0, 0],\n] as const;\n\nconst LOGO_PATTERN = [\n  [0, 0, 1, 1, 0, 0, 1, 1, 0, 0],\n  [0, 0, 1, 1, 0, 0, 1, 1, 0, 0],\n  [1, 1, 0, 0, 1, 1, 0, 0, 1, 1],\n  [1, 1, 0, 0, 1, 1, 0, 0, 1, 1],\n  [0, 0, 1, 1, 1, 1, 1, 1, 0, 0],\n  [0, 0, 1, 1, 1, 1, 1, 1, 0, 0],\n  [0, 0, 0, 0, 1, 1, 0, 0, 0, 0],\n  [0, 0, 0, 0, 1, 1, 0, 0, 0, 0],\n] as const;\n\nconst ROWS = 8;\nconst COLS = 10;\nconst WAVE_STEP_MS = 50; // ring step — wider gap = distinct ring boundaries in the ripple\nconst HOLD_MS = 650;\nconst CELL_ANIM_MS = 300; // must be well below (WAVE_STEP_MS × numRings) so rings don't bleed\n\n// Colors matching the div-based component\nconst HEART_FILL = \"#f43f5e\"; // rose-500\nconst LOGO_LIGHT = \"#059669\"; // emerald-600\nconst LOGO_DARK = \"#047857\"; // emerald-700\n\n// Corner radius in SVG units (cell = 1×1); matches rounded-xs at display size\nconst R = 0.3;\n\ntype CornerSpec = { tl?: number; tr?: number; bl?: number; br?: number };\n\n// Same outer-corner positions as the div version (shared by both shapes)\nconst CORNER_MAP: Record<string, CornerSpec> = {\n  \"0,2\": { tl: R },\n  \"0,3\": { tr: R },\n  \"0,6\": { tl: R },\n  \"0,7\": { tr: R },\n  \"2,0\": { tl: R },\n  \"3,0\": { bl: R },\n  \"2,9\": { tr: R },\n  \"3,9\": { br: R },\n  \"7,4\": { bl: R },\n  \"7,5\": { br: R },\n};\n\n// Build an SVG path string for a 1.01×1.01 cell with per-corner rounding\nfunction cellPath(x: number, y: number, c: CornerSpec = {}): string {\n  const w = 1.01,\n    h = 1.01;\n  const { tl = 0, tr = 0, br = 0, bl = 0 } = c;\n  const p: string[] = [];\n  p.push(`M ${x + tl},${y}`);\n  p.push(`L ${x + w - tr},${y}`);\n  if (tr) p.push(`Q ${x + w},${y} ${x + w},${y + tr}`);\n  p.push(`L ${x + w},${y + h - br}`);\n  if (br) p.push(`Q ${x + w},${y + h} ${x + w - br},${y + h}`);\n  p.push(`L ${x + bl},${y + h}`);\n  if (bl) p.push(`Q ${x},${y + h} ${x},${y + h - bl}`);\n  p.push(`L ${x},${y %                                       
+
+% ~/ohc.network/care_fe on  develop [$] via  v24.20.0  curl -s https://careui.ohc.network/registry/care-ui/loading-animation-svg/loading-animation-svg.json | node -e "let d='';process.stdin.on('data',c=>d+=c).on('end',()=>{const j=JSON.parse(d);console.log(JSON.stringify(j.files.map(f=>({path:f.path,target:f.target,type:f.type})),null,2));console.log('----CONTENT----');console.log(j.files[0].content)})"
+[
+  {
+    "path": "registry/care-ui/loading-animation-svg/loading-animation-svg.tsx",
+    "target": "components/careui/loading-animation-svg.tsx",
+    "type": "registry:component"
+  }
+]
+----CONTENT----
+/**
+ * @name loading-animation-svg
+ * @description SVG-based pixel-art Care UI loading animation — identical visuals to loading-animation but with zero React re-renders during the animation loop. All transitions run via the Web Animations API directly on SVG elements.
+ * @type registry:ui
+ */
+import * as React from "react";
+import { cn } from "@/lib/utils";
+
+// ─── Static cell data ─────────────────────────────────────────────────────────
+
+const HEART_PATTERN = [
+  [0, 0, 1, 1, 0, 0, 1, 1, 0, 0],
+  [0, 1, 1, 1, 1, 1, 1, 1, 1, 0],
+  [1, 1, 0, 1, 1, 1, 1, 1, 1, 1],
+  [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+  [0, 1, 1, 1, 1, 1, 1, 1, 1, 0],
+  [0, 0, 1, 1, 1, 1, 1, 1, 0, 0],
+  [0, 0, 0, 1, 1, 1, 1, 0, 0, 0],
+  [0, 0, 0, 0, 1, 1, 0, 0, 0, 0],
+] as const;
+
+const LOGO_PATTERN = [
+  [0, 0, 1, 1, 0, 0, 1, 1, 0, 0],
+  [0, 0, 1, 1, 0, 0, 1, 1, 0, 0],
+  [1, 1, 0, 0, 1, 1, 0, 0, 1, 1],
+  [1, 1, 0, 0, 1, 1, 0, 0, 1, 1],
+  [0, 0, 1, 1, 1, 1, 1, 1, 0, 0],
+  [0, 0, 1, 1, 1, 1, 1, 1, 0, 0],
+  [0, 0, 0, 0, 1, 1, 0, 0, 0, 0],
+  [0, 0, 0, 0, 1, 1, 0, 0, 0, 0],
+] as const;
+
+const ROWS = 8;
+const COLS = 10;
+const WAVE_STEP_MS = 50; // ring step — wider gap = distinct ring boundaries in the ripple
+const HOLD_MS = 650;
+const CELL_ANIM_MS = 300; // must be well below (WAVE_STEP_MS × numRings) so rings don't bleed
+
+// Colors matching the div-based component
+const HEART_FILL = "#f43f5e"; // rose-500
+const LOGO_LIGHT = "#059669"; // emerald-600
+const LOGO_DARK = "#047857"; // emerald-700
+
+// Corner radius in SVG units (cell = 1×1); matches rounded-xs at display size
+const R = 0.3;
+
+type CornerSpec = { tl?: number; tr?: number; bl?: number; br?: number };
+
+// Same outer-corner positions as the div version (shared by both shapes)
+const CORNER_MAP: Record<string, CornerSpec> = {
+  "0,2": { tl: R },
+  "0,3": { tr: R },
+  "0,6": { tl: R },
+  "0,7": { tr: R },
+  "2,0": { tl: R },
+  "3,0": { bl: R },
+  "2,9": { tr: R },
+  "3,9": { br: R },
+  "7,4": { bl: R },
+  "7,5": { br: R },
+};
+
+// Build an SVG path string for a 1.01×1.01 cell with per-corner rounding
+function cellPath(x: number, y: number, c: CornerSpec = {}): string {
+  const w = 1.01,
+    h = 1.01;
+  const { tl = 0, tr = 0, br = 0, bl = 0 } = c;
+  const p: string[] = [];
+  p.push(`M ${x + tl},${y}`);
+  p.push(`L ${x + w - tr},${y}`);
+  if (tr) p.push(`Q ${x + w},${y} ${x + w},${y + tr}`);
+  p.push(`L ${x + w},${y + h - br}`);
+  if (br) p.push(`Q ${x + w},${y + h} ${x + w - br},${y + h}`);
+  p.push(`L ${x + bl},${y + h}`);
+  if (bl) p.push(`Q ${x},${y + h} ${x},${y + h - bl}`);
+  p.push(`L ${x},${y + tl}`);
+  if (tl) p.push(`Q ${x},${y} ${x + tl},${y}`);
+  p.push("Z");
+  return p.join(" ");
+}
+
+type CellData = {
+  row: number;
+  col: number;
+  idx: number;
+  inHeart: boolean;
+  inLogo: boolean;
+  isLogoLight: boolean;
+  d: string; // pre-computed SVG path
+};
+
+function buildCellData(): CellData[] {
+  const LOGO_LIGHT_KEYS = new Set([
+    "0,2",
+    "1,2",
+    "0,3",
+    "1,3",
+    "0,6",
+    "1,6",
+    "0,7",
+    "1,7",
+    "2,0",
+    "2,1",
+    "3,0",
+    "3,1",
+    "2,8",
+    "2,9",
+    "3,8",
+    "3,9",
+  ]);
+  const raw: CellData[] = [];
+  for (let row = 0; row < ROWS; row++) {
+    for (let col = 0; col < COLS; col++) {
+      const key = `${row},${col}`;
+      raw.push({
+        row,
+        col,
+        idx: row * COLS + col,
+        inHeart: HEART_PATTERN[row][col] === 1,
+        inLogo: LOGO_PATTERN[row][col] === 1,
+        isLogoLight: LOGO_LIGHT_KEYS.has(key),
+        d: cellPath(col, row, CORNER_MAP[key]),
+      });
+    }
+  }
+  raw.sort((a, b) => {
+    const d = (r: number, c: number) =>
+      Math.sqrt((r - 3.5) ** 2 + (c - 4.5) ** 2);
+    return d(a.row, a.col) - d(b.row, b.col);
+  });
+  return raw;
+}
+
+const CELL_DATA = buildCellData();
+
+const CELL_BY_IDX: CellData[] = Array(ROWS * COLS);
+CELL_DATA.forEach((c) => {
+  CELL_BY_IDX[c.idx] = c;
+});
+
+// Ring groups — same quantization as the div-based component.
+// Cells at the same rounded radial distance fire together as a crisp concentric ring.
+const WAVE_GROUPS: { indices: number[] }[] = (() => {
+  const map = new Map<number, number[]>();
+  CELL_DATA.forEach((c) => {
+    const key = Math.round(
+      Math.sqrt((c.row - 3.5) ** 2 + (c.col - 4.5) ** 2) * 2
+    );
+    if (!map.has(key)) map.set(key, []);
+    map.get(key)!.push(c.idx);
+  });
+  return [...map.entries()]
+    .sort(([a], [b]) => a - b)
+    .map(([, indices]) => ({ indices }));
+})();
+
+// ─── Component ────────────────────────────────────────────────────────────────
+
+/**
+ * LoadingAnimationSvg
+ */
+export function LoadingAnimationSvg({ className }: { className?: string }) {
+  const beatRef = React.useRef<SVGGElement>(null);
+  const rectRefs = React.useRef<(Element | null)[]>(
+    Array(ROWS * COLS).fill(null)
+  );
+  const timers = React.useRef<ReturnType<typeof setTimeout>[]>([]);
+  const mounted = React.useRef(true);
+  const isFirstShow = React.useRef(true);
+
+  const schedule = React.useCallback((fn: () => void, delay: number) => {
+    const id: ReturnType<typeof setTimeout> = setTimeout(() => {
+      timers.current = timers.current.filter((t) => t !== id);
+      fn();
+    }, delay);
+    timers.current.push(id);
+  }, []);
+
+  const clearAllTimers = React.useCallback(() => {
+    timers.current.forEach(clearTimeout);
+    timers.current = [];
+  }, []);
+
+  const show = React.useCallback(
+    (next: "heart" | "logo", onDone?: () => void) => {
+      const first = isFirstShow.current;
+      if (first) isFirstShow.current = false;
+
+      const nextProp = next === "heart" ? "inHeart" : "inLogo";
+      const prevProp = next === "heart" ? "inLogo" : "inHeart";
+      const groups = next === "logo" ? [...WAVE_GROUPS].reverse() : WAVE_GROUPS;
+      const waveDuration = (groups.length - 1) * WAVE_STEP_MS;
+      schedule(
+        () => {
+          if (!mounted.current) return;
+          beatRef.current?.animate(
+            [
+              { transform: "scale(1)", offset: 0 },
+              { transform: "scale(1.08)", offset: 0.2 }, // lub — shape ~half filled
+              { transform: "scale(1)", offset: 0.46 },
+              { transform: "scale(1.03)", offset: 0.68 }, // dub — outer rings settling
+              { transform: "scale(1)", offset: 1 },
+            ],
+            { duration: 580, easing: "ease-in-out", fill: "none" }
+          );
+        },
+        Math.round(waveDuration * 0.45)
+      );
+
+      groups.forEach(({ indices }, i) => {
+        schedule(() => {
+          if (!mounted.current) return;
+          indices.forEach((idx) => {
+            const cell = CELL_BY_IDX[idx];
+            if (!cell) return;
+            const inNext = cell[nextProp as "inHeart" | "inLogo"];
+            const inPrev = !first && cell[prevProp as "inHeart" | "inLogo"];
+            if (!inNext && !inPrev) return;
+
+            const el = rectRefs.current[idx];
+            if (!el) return;
+
+            el.getAnimations().forEach((a) => {
+              try {
+                a.commitStyles();
+              } catch {
+                /* ignore */
+              }
+              a.cancel();
+            });
+
+            const nextFill =
+              next === "heart"
+                ? HEART_FILL
+                : cell.isLogoLight
+                  ? LOGO_LIGHT
+                  : LOGO_DARK;
+            const prevFill =
+              next === "heart"
+                ? cell.isLogoLight
+                  ? LOGO_LIGHT
+                  : LOGO_DARK
+                : HEART_FILL;
+
+            if (inNext && inPrev) {
+              el.animate(
+                [
+                  {
+                    fill: prevFill,
+                    transform: "scale(1)",
+                    opacity: "1",
+                    offset: 0,
+                  },
+                  {
+                    fill: prevFill,
+                    transform: "scale(0.68)",
+                    opacity: "0.4",
+                    offset: 0.3,
+                  },
+                  {
+                    fill: nextFill,
+                    transform: "scale(0.68)",
+                    opacity: "0.4",
+                    offset: 0.33,
+                  },
+                  {
+                    fill: nextFill,
+                    transform: "scale(1)",
+                    opacity: "1",
+                    offset: 1,
+                  },
+                ],
+                {
+                  duration: CELL_ANIM_MS,
+                  easing: "ease-in-out",
+                  fill: "forwards",
+                }
+              );
+            } else if (inNext) {
+              el.animate(
+                [
+                  { fill: nextFill, transform: "scale(0.35)", opacity: "0" },
+                  { fill: nextFill, transform: "scale(1)", opacity: "1" },
+                ],
+                {
+                  duration: CELL_ANIM_MS,
+                  easing: "cubic-bezier(0.2, 0, 0.2, 1)",
+                  fill: "forwards",
+                }
+              );
+            } else {
+              el.animate(
+                [
+                  { fill: prevFill, transform: "scale(1)", opacity: "1" },
+                  { fill: prevFill, transform: "scale(0.35)", opacity: "0" },
+                ],
+                {
+                  duration: CELL_ANIM_MS,
+                  easing: "cubic-bezier(0.55, 0, 1, 0.45)",
+                  fill: "forwards",
+                }
+              );
+            }
+          });
+        }, i * WAVE_STEP_MS);
+      });
+
+      // Gentle breathing pulse mid-hold — keeps the settled shape alive rather than static.
+      schedule(
+        () => {
+          if (!mounted.current) return;
+          beatRef.current?.animate(
+            [
+              { transform: "scale(1)", offset: 0 },
+              { transform: "scale(1.025)", offset: 0.5 },
+              { transform: "scale(1)", offset: 1 },
+            ],
+            {
+              duration: Math.round(HOLD_MS * 0.8),
+              easing: "ease-in-out",
+              fill: "none",
+            }
+          );
+        },
+        waveDuration + Math.round(CELL_ANIM_MS * 0.55)
+      );
+
+      schedule(() => {
+        if (!mounted.current) return;
+        onDone?.();
+      }, waveDuration + HOLD_MS);
+    },
+    [schedule]
+  );
+
+  React.useEffect(() => {
+    mounted.current = true;
+    show("heart", () => {
+      if (!mounted.current) return;
+      function cycle() {
+        show("logo", () => {
+          if (!mounted.current) return;
+          show("heart", () => {
+            if (!mounted.current) return;
+            cycle();
+          });
+        });
+      }
+      cycle();
+    });
+    return () => {
+      mounted.current = false;
+      clearAllTimers();
+    };
+  }, [show, clearAllTimers]);
+
+  return (
+    <div
+      data-slot="loading-animation-svg"
+      className={cn("grid place-items-center gap-3", className)}
+    >
+      <svg
+        viewBox={`0 0 ${COLS} ${ROWS}`}
+        className="w-16"
+        style={{ aspectRatio: `${COLS}/${ROWS}` }}
+        aria-hidden="true"
+      >
+        {/* beatRef <g> owns the heartbeat — all rects composite as one GPU layer */}
+        <g
+          ref={beatRef}
+          style={{ transformBox: "fill-box", transformOrigin: "center" }}
+        >
+          {Array.from({ length: ROWS * COLS }, (_, idx) => {
+            const cell = CELL_BY_IDX[idx];
+            return (
+              <path
+                key={idx}
+                ref={(el) => {
+                  rectRefs.current[idx] = el;
+                }}
+                d={cell.d}
+                fill="transparent"
+                opacity={0}
+                style={{ transformBox: "fill-box", transformOrigin: "center" }}
+              />
+            );
+          })}
+        </g>
+      </svg>
+      <p className="pl-3 text-center text-xs font-medium tracking-widest text-gray-500 uppercase">
+        loading
+        <span className="animate-blink opacity-0">.</span>
+        <span className="animate-[blink_1.5s_0.2s_infinite] opacity-0">.</span>
+        <span className="animate-[blink_1.5s_0.4s_infinite] opacity-0">.</span>
+      </p>
+    </div>
+  );
+}
+
+
+% ~/ohc.network/care_fe on  develop [$] via  v24.20.0  curl -s https://careui.ohc.network/registry/care-ui/loading-animation-svg/loading-animation-svg.json | node -e "let d='';process.stdin.on('data',c=>d+=c).on('end',()=>{const j=JSON.parse(d);const {files,...rest}=j;console.log(JSON.stringify(rest,null,2))})"
+{
+  "name": "loading-animation-svg",
+  "type": "registry:ui",
+  "registryDependencies": []
+}
+
+% ~/ohc.network/care_fe on  develop [$] via  v24.20.0 >....                   
+const CORNER_MAP = {
+  "0,2": { tl: R }, "0,3": { tr: R }, "0,6": { tl: R }, "0,7": { tr: R },
+  "2,0": { tl: R }, "3,0": { bl: R }, "2,9": { tr: R }, "3,9": { br: R },
+  "7,4": { bl: R }, "7,5": { br: R },
+};
+function cellPath(x, y, c = {}) {
+  const w = 1.01, h = 1.01;
+  const { tl = 0, tr = 0, br = 0, bl = 0 } = c;
+  const p = [];
+  p.push(`M ${x + tl},${y}`);
+  p.push(`L ${x + w - tr},${y}`);
+  if (tr) p.push(`Q ${x + w},${y} ${x + w},${y + tr}`);
+  p.push(`L ${x + w},${y + h - br}`);
+  if (br) p.push(`Q ${x + w},${y + h} ${x + w - br},${y + h}`);
+  p.push(`L ${x + bl},${y + h}`);
+  if (bl) p.push(`Q ${x},${y + h} ${x},${y + h - bl}`);
+  p.push(`L ${x},${y + tl}`);
+  if (tl) p.push(`Q ${x},${y} ${x + tl},${y}`);
+  p.push("Z");
+  return p.join(" ");
+}
+const parts = [];
+for (let row = 0; row < 8; row++)
+  for (let col = 0; col < 10; col++)
+    if (HEART_PATTERN[row][col]) parts.push(cellPath(col, row, CORNER_MAP[`${row},${col}`]));
+console.log(parts.join(" "));
+EOF
+node /tmp/genheart.mjs
+M 2.3,0 L 3.01,0 L 3.01,1.01 L 2,1.01 L 2,0.3 Q 2,0 2.3,0 Z M 3,0 L 3.71,0 Q 4.01,0 4.01,0.3 L 4.01,1.01 L 3,1.01 L 3,0 Z M 6.3,0 L 7.01,0 L 7.01,1.01 L 6,1.01 L 6,0.3 Q 6,0 6.3,0 Z M 7,0 L 7.71,0 Q 8.01,0 8.01,0.3 L 8.01,1.01 L 7,1.01 L 7,0 Z M 1,1 L 2.01,1 L 2.01,2.01 L 1,2.01 L 1,1 Z M 2,1 L 3.01,1 L 3.01,2.01 L 2,2.01 L 2,1 Z M 3,1 L 4.01,1 L 4.01,2.01 L 3,2.01 L 3,1 Z M 4,1 L 5.01,1 L 5.01,2.01 L 4,2.01 L 4,1 Z M 5,1 L 6.01,1 L 6.01,2.01 L 5,2.01 L 5,1 Z M 6,1 L 7.01,1 L 7.01,2.01 L 6,2.01 L 6,1 Z M 7,1 L 8.01,1 L 8.01,2.01 L 7,2.01 L 7,1 Z M 8,1 L 9.01,1 L 9.01,2.01 L 8,2.01 L 8,1 Z M 0.3,2 L 1.01,2 L 1.01,3.01 L 0,3.01 L 0,2.3 Q 0,2 0.3,2 Z M 1,2 L 2.01,2 L 2.01,3.01 L 1,3.01 L 1,2 Z M 3,2 L 4.01,2 L 4.01,3.01 L 3,3.01 L 3,2 Z M 4,2 L 5.01,2 L 5.01,3.01 L 4,3.01 L 4,2 Z M 5,2 L 6.01,2 L 6.01,3.01 L 5,3.01 L 5,2 Z M 6,2 L 7.01,2 L 7.01,3.01 L 6,3.01 L 6,2 Z M 7,2 L 8.01,2 L 8.01,3.01 L 7,3.01 L 7,2 Z M 8,2 L 9.01,2 L 9.01,3.01 L 8,3.01 L 8,2 Z M 9,2 L 9.709999999999999,2 Q 10.01,2 10.01,2.3 L 10.01,3.01 L 9,3.01 L 9,2 Z M 0,3 L 1.01,3 L 1.01,4.01 L 0.3,4.01 Q 0,4.01 0,3.71 L 0,3 Z M 1,3 L 2.01,3 L 2.01,4.01 L 1,4.01 L 1,3 Z M 2,3 L 3.01,3 L 3.01,4.01 L 2,4.01 L 2,3 Z M 3,3 L 4.01,3 L 4.01,4.01 L 3,4.01 L 3,3 Z M 4,3 L 5.01,3 L 5.01,4.01 L 4,4.01 L 4,3 Z M 5,3 L 6.01,3 L 6.01,4.01 L 5,4.01 L 5,3 Z M 6,3 L 7.01,3 L 7.01,4.01 L 6,4.01 L 6,3 Z M 7,3 L 8.01,3 L 8.01,4.01 L 7,4.01 L 7,3 Z M 8,3 L 9.01,3 L 9.01,4.01 L 8,4.01 L 8,3 Z M 9,3 L 10.01,3 L 10.01,3.71 Q 10.01,4.01 9.709999999999999,4.01 L 9,4.01 L 9,3 Z M 1,4 L 2.01,4 L 2.01,5.01 L 1,5.01 L 1,4 Z M 2,4 L 3.01,4 L 3.01,5.01 L 2,5.01 L 2,4 Z M 3,4 L 4.01,4 L 4.01,5.01 L 3,5.01 L 3,4 Z M 4,4 L 5.01,4 L 5.01,5.01 L 4,5.01 L 4,4 Z M 5,4 L 6.01,4 L 6.01,5.01 L 5,5.01 L 5,4 Z M 6,4 L 7.01,4 L 7.01,5.01 L 6,5.01 L 6,4 Z M 7,4 L 8.01,4 L 8.01,5.01 L 7,5.01 L 7,4 Z M 8,4 L 9.01,4 L 9.01,5.01 L 8,5.01 L 8,4 Z M 2,5 L 3.01,5 L 3.01,6.01 L 2,6.01 L 2,5 Z M 3,5 L 4.01,5 L 4.01,6.01 L 3,6.01 L 3,5 Z M 4,5 L 5.01,5 L 5.01,6.01 L 4,6.01 L 4,5 Z M 5,5 L 6.01,5 L 6.01,6.01 L 5,6.01 L 5,5 Z M 6,5 L 7.01,5 L 7.01,6.01 L 6,6.01 L 6,5 Z M 7,5 L 8.01,5 L 8.01,6.01 L 7,6.01 L 7,5 Z M 3,6 L 4.01,6 L 4.01,7.01 L 3,7.01 L 3,6 Z M 4,6 L 5.01,6 L 5.01,7.01 L 4,7.01 L 4,6 Z M 5,6 L 6.01,6 L 6.01,7.01 L 5,7.01 L 5,6 Z M 6,6 L 7.01,6 L 7.01,7.01 L 6,7.01 L 6,6 Z M 4,7 L 5.01,7 L 5.01,8.01 L 4.3,8.01 Q 4,8.01 4,7.71 L 4,7 Z M 5,7 L 6.01,7 L 6.01,7.71 Q 6.01,8.01 5.71,8.01 L 5,8.01 L 5,7 Z
+
+% ~/ohc.network/care_fe on  develop [$] via  v24.20.0
