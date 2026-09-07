@@ -1,0 +1,54 @@
+{
+  "cli_version": "0.9.0",
+  "checkpoint_id": "59d0928119c9",
+  "strategy": "manual-commit",
+  "branch": "bodhi/questionnaire-actions",
+  "checkpoints_count": 6,
+  "files_touched": [
+    "public/locale/en.json",
+    "src/Routers/AppRouter.tsx",
+    "src/Routers/PatientRouter.tsx",
+    "src/components/Common/InnerPageHeader.tsx",
+    "src/components/ui/sidebar/admin-nav.tsx",
+    "src/components/ui/sidebar/app-sidebar-provider.tsx",
+    "src/components/ui/sidebar/app-sidebar.tsx",
+    "src/components/ui/sidebar/facility/facility-nav.tsx",
+    "src/components/ui/sidebar/facility/facility-switcher.tsx",
+    "src/components/ui/sidebar/facility/location/location-nav.tsx",
+    "src/components/ui/sidebar/facility/location/location-switcher.tsx",
+    "src/components/ui/sidebar/facility/service/service-nav.tsx",
+    "src/components/ui/sidebar/facility/service/service-switcher.tsx",
+    "src/components/ui/sidebar/facility/settings/facility-settings-nav.tsx",
+    "src/components/ui/sidebar/nav-main.tsx",
+    "src/components/ui/sidebar/nav-user.tsx",
+    "src/components/ui/sidebar/org-nav.tsx",
+    "src/components/ui/sidebar/organization-switcher.tsx",
+    "src/components/ui/sidebar/patient-nav.tsx",
+    "src/components/ui/sidebar/patient-switcher.tsx",
+    "src/components/ui/sidebar/responsibility-switcher.tsx",
+    "src/components/ui/sidebar/sidebar-toggle.tsx",
+    "src/components/ui/sidebar/sidebar-user-avatar.tsx",
+    "src/components/ui/sidebar/workspace-header.tsx",
+    "src/hooks/useSidebarAutoCollapse.tsx",
+    "src/hooks/useSidebarState.ts",
+    "src/pages/Facility/overview.tsx",
+    "tests/facility/settingsNavigation.spec.ts",
+    "tests/navigation/sidebarNavigation.spec.ts"
+  ],
+  "sessions": [
+    {
+      "metadata": "/59/d0928119c9/0/metadata.json",
+      "transcript": "/59/d0928119c9/0/full.jsonl",
+      "compact_transcript": "/59/d0928119c9/0/transcript.jsonl",
+      "content_hash": "/59/d0928119c9/0/content_hash.txt",
+      "prompt": "/59/d0928119c9/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 290435,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 20014592,
+    "output_tokens": 40805,
+    "api_call_count": 200
+  }
+}
