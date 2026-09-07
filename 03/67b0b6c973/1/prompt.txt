@@ -1,0 +1,5 @@
+I want to add dental as a plugin for quetionnaire, it can be a fe only plugin,  here is an example of another fe plugin https://github.com/ohcnetwork/care_filly_fe
+
+plugins should be able to introduce new ui, the dental plugin should show the teeth that users should be able to select
+
+build the best ux, lets not have a backend change for this
