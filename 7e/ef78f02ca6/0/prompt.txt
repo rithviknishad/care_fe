@@ -1,0 +1,3 @@
+1. Need structured questions support in `useFillActions.ts`&#x20;
+2. We need the code check for duplicate diagnosis, symptoms getting filled. i mean these are validation we have how can that be reused in usefillaction, don't complicate it tho.&#x20;
+3. Can you also recheck to check the time, date and datetime thing ( I doubt if you have mixed up a bit here)
