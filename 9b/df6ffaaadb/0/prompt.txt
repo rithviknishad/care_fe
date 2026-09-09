@@ -1,0 +1,359 @@
+specify about leveraging portless in AGENTS.md
+so that AI agents will use portless when working on things on worktrees to spin up things.
+
+---
+
+specify about leveraging portless in AGENTS.md
+so that AI agents will use portless when working on things on worktrees to spin up things.
+
+---
+
+[Terminal 692144c9-2fbf-4316-a97c-780844b831cd notification: command may be waiting for input — assess the output below.]
+This note is not a signal to end the turn — pick one of the actions below and continue.
+  1. If the command may still be producing output or the shell prompt has not returned, call get_terminal_output with id="692144c9-2fbf-4316-a97c-780844b831cd" to continue polling. This is the default and safest action when unsure.
+  2. Only if the output clearly ends with a real non-secret input prompt (Continue? (y/n), Enter selection, etc. — a normal shell prompt like `$` or `#` does NOT count), call the vscode_askQuestions tool to ask the user, then send each answer using send_to_terminal with id="692144c9-2fbf-4316-a97c-780844b831cd" (which returns the next few lines of output). Repeat one prompt at a time. NEVER route secret prompts (passwords, passphrases, tokens, API keys, etc.) through vscode_askQuestions — answers to that tool are sent through the model. For secret prompts, tell the user to type the value directly into the terminal and stop.
+Terminal output:
+Using Node v24.18.0
+
+% ~/ohc.network/care_fe on  portless [$] via  v24.21.0  cd ~/ohc.network/care_fe && git --no-pager diff develop...HEAD --stat && git --no-pager diff develop...HEAD
+ package.json    | 4 ++++
+ vite.config.mts | 6 ++++--
+ 2 files changed, 8 insertions(+), 2 deletions(-)
+diff --git a/package.json b/package.json
+index e2fa09b9a..9c9fd837c 100644
+--- a/package.json
++++ b/package.json
+@@ -26,6 +26,10 @@
+   ],
+   "author": "Open Healthcare Network Contributors",
+   "license": "MIT",
++  "portless": {
++    "name": "care",
++    "script": "dev"
++  },
+   "scripts": {
+     "dev": "npm run build:meta && npm run supported-browsers && vite",
+     "local": "npm run supported-browsers && vite --mode docker",
+diff --git a/vite.config.mts b/vite.config.mts
+index 2ba0f3648..0070d0aa0 100644
+--- a/vite.config.mts
++++ b/vite.config.mts
+@@ -532,7 +532,8 @@ export default defineConfig(async ({ mode }): Promise<UserConfig> => {
+       target: "es2022",
+     },
+     server: {
+-      port: 4000,
++      port: Number(process.env.PORT) || 4000,
++      strictPort: !!process.env.PORT,
+       host: "0.0.0.0",
+       allowedHosts: true,
+       watch: {
+@@ -554,7 +555,8 @@ export default defineConfig(async ({ mode }): Promise<UserConfig> => {
+           img-src 'self' https://cdn.ohc.network ${cdnUrls};\
+           object-src 'self' ${cdnUrls};`,
+       },
+-      port: 4000,
++      port: Number(process.env.PORT) || 4000,
++      strictPort: !!process.env.PORT,
+     },
+   };
+ });
+
+% ~/ohc.network/care_fe on  portless [$] via  v24.21.0
+
+---
+
+[Terminal 692144c9-2fbf-4316-a97c-780844b831cd notification: command may be waiting for input — assess the output below.]
+This note is not a signal to end the turn — pick one of the actions below and continue.
+  1. If the command may still be producing output or the shell prompt has not returned, call get_terminal_output with id="692144c9-2fbf-4316-a97c-780844b831cd" to continue polling. This is the default and safest action when unsure.
+  2. Only if the output clearly ends with a real non-secret input prompt (Continue? (y/n), Enter selection, etc. — a normal shell prompt like `$` or `#` does NOT count), call the vscode_askQuestions tool to ask the user, then send each answer using send_to_terminal with id="692144c9-2fbf-4316-a97c-780844b831cd" (which returns the next few lines of output). Repeat one prompt at a time. NEVER route secret prompts (passwords, passphrases, tokens, API keys, etc.) through vscode_askQuestions — answers to that tool are sent through the model. For secret prompts, tell the user to type the value directly into the terminal and stop.
+Terminal output:
+Using Node v24.18.0
+
+% ~/ohc.network/care_fe on  portless [$] via  v24.21.0  cd ~/ohc.network/care_fe && git --no-pager diff develop...HEAD --stat && git --no-pager diff develop...HEAD
+ package.json    | 4 ++++
+ vite.config.mts | 6 ++++--
+ 2 files changed, 8 insertions(+), 2 deletions(-)
+diff --git a/package.json b/package.json
+index e2fa09b9a..9c9fd837c 100644
+--- a/package.json
++++ b/package.json
+@@ -26,6 +26,10 @@
+   ],
+   "author": "Open Healthcare Network Contributors",
+   "license": "MIT",
++  "portless": {
++    "name": "care",
++    "script": "dev"
++  },
+   "scripts": {
+     "dev": "npm run build:meta && npm run supported-browsers && vite",
+     "local": "npm run supported-browsers && vite --mode docker",
+diff --git a/vite.config.mts b/vite.config.mts
+index 2ba0f3648..0070d0aa0 100644
+--- a/vite.config.mts
++++ b/vite.config.mts
+@@ -532,7 +532,8 @@ export default defineConfig(async ({ mode }): Promise<UserConfig> => {
+       target: "es2022",
+     },
+     server: {
+-      port: 4000,
++      port: Number(process.env.PORT) || 4000,
++      strictPort: !!process.env.PORT,
+       host: "0.0.0.0",
+       allowedHosts: true,
+       watch: {
+@@ -554,7 +555,8 @@ export default defineConfig(async ({ mode }): Promise<UserConfig> => {
+           img-src 'self' https://cdn.ohc.network ${cdnUrls};\
+           object-src 'self' ${cdnUrls};`,
+       },
+-      port: 4000,
++      port: Number(process.env.PORT) || 4000,
++      strictPort: !!process.env.PORT,
+     },
+   };
+ });
+
+% ~/ohc.network/care_fe on  portless [$] via  v24.21.0
+
+---
+
+[Terminal ef15e5c6-3446-49a7-8e05-b32e04b91803 notification: command may be waiting for input — assess the output below.]
+This note is not a signal to end the turn — pick one of the actions below and continue.
+  1. If the command may still be producing output or the shell prompt has not returned, call get_terminal_output with id="ef15e5c6-3446-49a7-8e05-b32e04b91803" to continue polling. This is the default and safest action when unsure.
+  2. Only if the output clearly ends with a real non-secret input prompt (Continue? (y/n), Enter selection, etc. — a normal shell prompt like `$` or `#` does NOT count), call the vscode_askQuestions tool to ask the user, then send each answer using send_to_terminal with id="ef15e5c6-3446-49a7-8e05-b32e04b91803" (which returns the next few lines of output). Repeat one prompt at a time. NEVER route secret prompts (passwords, passphrases, tokens, API keys, etc.) through vscode_askQuestions — answers to that tool are sent through the model. For secret prompts, tell the user to type the value directly into the terminal and stop.
+Terminal output:
+Using Node v24.18.0
+
+% ~/ohc.network/care_fe on  portless [$] via  v24.21.0  cd ~/ohc.network/care_fe && git --no-pager diff develop...HEAD --stat && git --no-pager diff develop...HEAD
+ package.json    | 4 ++++
+ vite.config.mts | 6 ++++--
+ 2 files changed, 8 insertions(+), 2 deletions(-)
+diff --git a/package.json b/package.json
+index e2fa09b9a..9c9fd837c 100644
+--- a/package.json
++++ b/package.json
+@@ -26,6 +26,10 @@
+   ],
+   "author": "Open Healthcare Network Contributors",
+   "license": "MIT",
++  "portless": {
++    "name": "care",
++    "script": "dev"
++  },
+   "scripts": {
+     "dev": "npm run build:meta && npm run supported-browsers && vite",
+     "local": "npm run supported-browsers && vite --mode docker",
+diff --git a/vite.config.mts b/vite.config.mts
+index 2ba0f3648..0070d0aa0 100644
+--- a/vite.config.mts
++++ b/vite.config.mts
+@@ -532,7 +532,8 @@ export default defineConfig(async ({ mode }): Promise<UserConfig> => {
+       target: "es2022",
+     },
+     server: {
+-      port: 4000,
++      port: Number(process.env.PORT) || 4000,
++      strictPort: !!process.env.PORT,
+       host: "0.0.0.0",
+       allowedHosts: true,
+       watch: {
+@@ -554,7 +555,8 @@ export default defineConfig(async ({ mode }): Promise<UserConfig> => {
+           img-src 'self' https://cdn.ohc.network ${cdnUrls};\
+           object-src 'self' ${cdnUrls};`,
+       },
+-      port: 4000,
++      port: Number(process.env.PORT) || 4000,
++      strictPort: !!process.env.PORT,
+     },
+   };
+ });
+
+% ~/ohc.network/care_fe on  portless [$] via  v24.21.0  portless --help 2>&1 | head -60
+
+portless - Replace port numbers with stable, named .localhost URLs. For humans and agents.
+
+Eliminates port conflicts, memorizing port numbers, and cookie/storage
+clashes by giving each dev server a stable .localhost URL.
+
+Install:
+  npm install -g portless          Global (recommended)
+  npm install -D portless          Project dev dependency
+
+Requirements:
+  Node.js 24+
+
+Usage:
+  portless                         Run dev script through proxy
+  portless                         From monorepo root: run all workspace packages
+  portless run                     Same as above
+  portless run <cmd>               Run a command through the proxy
+  portless <name> <cmd>            Run with an explicit app name
+  portless proxy start             Start the proxy (HTTPS on port 443, daemon); rarely needed since it auto-starts on first run
+  portless proxy stop              Stop the proxy
+  portless service install         Start proxy automatically when the OS starts
+  portless get <name>              Print URL for a service (for cross-service refs)
+  portless alias <name> <port>     Register a static route (e.g. for Docker)
+  portless alias --remove <name>   Remove a static route
+  portless list                    Show active routes
+  portless doctor                  Check local portless health
+  portless trust                   Add local CA to system trust store
+  portless clean                   Remove portless state, trust entry, and hosts block
+  portless prune                   Kill orphaned dev servers from crashed sessions
+  portless hosts sync              Add routes to /etc/hosts (fixes Safari)
+  portless hosts clean             Remove portless entries from /etc/hosts
+
+Examples:
+  portless                            # Run dev script through proxy
+  portless                            # From monorepo root: start all apps
+  portless --script start             # Run "start" script instead of "dev"
+  portless myapp next dev             # -> https://myapp.localhost
+  portless run next dev               # -> https://<project>.localhost
+  portless run next dev               # in worktree -> https://<worktree>.<project>.localhost
+  portless service install            # Start HTTPS proxy on OS startup
+  portless service install --lan      # Persist LAN mode in the startup service
+  portless service install --wildcard # Persist wildcard routing in the startup service
+  portless get backend                # -> https://backend.localhost
+  portless doctor                     # Check proxy, routes, DNS, and CA trust
+  portless myapp --tailscale next dev # -> also https://<node>.ts.net (tailnet)
+  portless myapp --funnel next dev    # -> also https://<node>.ts.net (public)
+  portless myapp --ngrok next dev     # -> also https://<random>.ngrok.app (public)
+
+Configuration (portless.json):
+  Optional. Portless works out of the box by running the "dev" script
+  from package.json. Use portless.json to override defaults.
+
+  Override name:   { "name": "myapp" }
+  Override script: { "name": "myapp", "script": "start" }
+  Monorepo:        { "apps": { "apps/web": { "name": "myapp" } } }
+
+In package.json:
+  {
+    "scripts": {
+
+% ~/ohc.network/care_fe on  portless [$] via  v24.21.0
+
+---
+
+[Terminal ef15e5c6-3446-49a7-8e05-b32e04b91803 notification: command may be waiting for input — assess the output below.]
+This note is not a signal to end the turn — pick one of the actions below and continue.
+  1. If the command may still be producing output or the shell prompt has not returned, call get_terminal_output with id="ef15e5c6-3446-49a7-8e05-b32e04b91803" to continue polling. This is the default and safest action when unsure.
+  2. Only if the output clearly ends with a real non-secret input prompt (Continue? (y/n), Enter selection, etc. — a normal shell prompt like `$` or `#` does NOT count), call the vscode_askQuestions tool to ask the user, then send each answer using send_to_terminal with id="ef15e5c6-3446-49a7-8e05-b32e04b91803" (which returns the next few lines of output). Repeat one prompt at a time. NEVER route secret prompts (passwords, passphrases, tokens, API keys, etc.) through vscode_askQuestions — answers to that tool are sent through the model. For secret prompts, tell the user to type the value directly into the terminal and stop.
+Terminal output:
+Using Node v24.18.0
+
+% ~/ohc.network/care_fe on  portless [$] via  v24.21.0  cd ~/ohc.network/care_fe && git --no-pager diff develop...HEAD --stat && git --no-pager diff develop...HEAD
+ package.json    | 4 ++++
+ vite.config.mts | 6 ++++--
+ 2 files changed, 8 insertions(+), 2 deletions(-)
+diff --git a/package.json b/package.json
+index e2fa09b9a..9c9fd837c 100644
+--- a/package.json
++++ b/package.json
+@@ -26,6 +26,10 @@
+   ],
+   "author": "Open Healthcare Network Contributors",
+   "license": "MIT",
++  "portless": {
++    "name": "care",
++    "script": "dev"
++  },
+   "scripts": {
+     "dev": "npm run build:meta && npm run supported-browsers && vite",
+     "local": "npm run supported-browsers && vite --mode docker",
+diff --git a/vite.config.mts b/vite.config.mts
+index 2ba0f3648..0070d0aa0 100644
+--- a/vite.config.mts
++++ b/vite.config.mts
+@@ -532,7 +532,8 @@ export default defineConfig(async ({ mode }): Promise<UserConfig> => {
+       target: "es2022",
+     },
+     server: {
+-      port: 4000,
++      port: Number(process.env.PORT) || 4000,
++      strictPort: !!process.env.PORT,
+       host: "0.0.0.0",
+       allowedHosts: true,
+       watch: {
+@@ -554,7 +555,8 @@ export default defineConfig(async ({ mode }): Promise<UserConfig> => {
+           img-src 'self' https://cdn.ohc.network ${cdnUrls};\
+           object-src 'self' ${cdnUrls};`,
+       },
+-      port: 4000,
++      port: Number(process.env.PORT) || 4000,
++      strictPort: !!process.env.PORT,
+     },
+   };
+ });
+
+% ~/ohc.network/care_fe on  portless [$] via  v24.21.0  portless --help 2>&1 | head -60
+
+portless - Replace port numbers with stable, named .localhost URLs. For humans and agents.
+
+Eliminates port conflicts, memorizing port numbers, and cookie/storage
+clashes by giving each dev server a stable .localhost URL.
+
+Install:
+  npm install -g portless          Global (recommended)
+  npm install -D portless          Project dev dependency
+
+Requirements:
+  Node.js 24+
+
+Usage:
+  portless                         Run dev script through proxy
+  portless                         From monorepo root: run all workspace packages
+  portless run                     Same as above
+  portless run <cmd>               Run a command through the proxy
+  portless <name> <cmd>            Run with an explicit app name
+  portless proxy start             Start the proxy (HTTPS on port 443, daemon); rarely needed since it auto-starts on first run
+  portless proxy stop              Stop the proxy
+  portless service install         Start proxy automatically when the OS starts
+  portless get <name>              Print URL for a service (for cross-service refs)
+  portless alias <name> <port>     Register a static route (e.g. for Docker)
+  portless alias --remove <name>   Remove a static route
+  portless list                    Show active routes
+  portless doctor                  Check local portless health
+  portless trust                   Add local CA to system trust store
+  portless clean                   Remove portless state, trust entry, and hosts block
+  portless prune                   Kill orphaned dev servers from crashed sessions
+  portless hosts sync              Add routes to /etc/hosts (fixes Safari)
+  portless hosts clean             Remove portless entries from /etc/hosts
+
+Examples:
+  portless                            # Run dev script through proxy
+  portless                            # From monorepo root: start all apps
+  portless --script start             # Run "start" script instead of "dev"
+  portless myapp next dev             # -> https://myapp.localhost
+  portless run next dev               # -> https://<project>.localhost
+  portless run next dev               # in worktree -> https://<worktree>.<project>.localhost
+  portless service install            # Start HTTPS proxy on OS startup
+  portless service install --lan      # Persist LAN mode in the startup service
+  portless service install --wildcard # Persist wildcard routing in the startup service
+  portless get backend                # -> https://backend.localhost
+  portless doctor                     # Check proxy, routes, DNS, and CA trust
+  portless myapp --tailscale next dev # -> also https://<node>.ts.net (tailnet)
+  portless myapp --funnel next dev    # -> also https://<node>.ts.net (public)
+  portless myapp --ngrok next dev     # -> also https://<random>.ngrok.app (public)
+
+Configuration (portless.json):
+  Optional. Portless works out of the box by running the "dev" script
+  from package.json. Use portless.json to override defaults.
+
+  Override name:   { "name": "myapp" }
+  Override script: { "name": "myapp", "script": "start" }
+  Monorepo:        { "apps": { "apps/web": { "name": "myapp" } } }
+
+In package.json:
+  {
+    "scripts": {
+
+% ~/ohc.network/care_fe on  portless [$] via  v24.21.0
+
+---
+
+do not make it very detailed. let it stay super concise. also update README
+
+---
+
+do not make it very detailed. let it stay super concise. also update README
