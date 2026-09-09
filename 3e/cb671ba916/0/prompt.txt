@@ -1,0 +1,213 @@
+when running `portless` and accessing care.localhost, i am getting HTTP 502
+
+---
+
+when running `portless` and accessing care.localhost, i am getting HTTP 502
+
+---
+
+[Terminal 285ea3f2-7114-4c46-9866-9734257fc9d4 notification: command completed with exit code 130. Use send_to_terminal to send another command or kill_terminal to stop it.]
+Terminal output:
+Using Node v24.18.0
+
+% ~/ohc.network/care_fe on  develop [$!] via  v24.21.0  cd ~/ohc.network/care_fe && portless
+
+portless
+
+-- Proxy is running
+-- care.localhost (auto-resolves to 127.0.0.1)
+-- Name "care" (from portless.json)
+-- Using port 4855
+
+  -> https://care.localhost
+
+Running: PORT=4855 HOST=127.0.0.1 PORTLESS_URL=https://care.localhost NODE_EXTRA_CA_CERTS="/Users/rithviknishad/.portless/ca.pem" npm run dev
+
+
+> care_fe@3.0.5 dev
+> npm run build:meta && npm run supported-browsers && vite
+
+
+> care_fe@3.0.5 build:meta
+> node ./scripts/generate-build-version.js
+
+
+> care_fe@3.0.5 supported-browsers
+> node ./scripts/generate-supported-browsers.mjs
+
+Both esbuild and oxc options were set. oxc options will be used and esbuild options will be ignored. The following esbuild options were set: `{ target: 'es2022' }`
+1:20:51 PM [vite] (client) Re-optimizing dependencies because vite config has changed
+
+══════════════════════════════════════════════════════════════════════════════════════════
+                            WELCOME TO OPEN HEALTHCARE NETWORK
+══════════════════════════════════════════════════════════════════════════════════════════
+
+
+          +++++   ++++++                                                            
+          +++++   ++++++            ######     ##### ###  #########   #####         
+     +++++++++#####+++++++++      ########## ###########  ######### #########       
+     ++++++   #####    +++++     #####   ## #####  #####  #####    ####   ####      
+      ++++#############+++++     ####       ####     ###  ####    ############      
+          ##############         #####   ## #####   ####  ####     ####    #        
+          ##############          ########## ###########  ####      #########       
+              #####                  #####     ##### ###  ####       #######        
+              #####                                                                 
+
+══════════════════════════════════════════════════════════════════════════════════════════
+
+
+  VITE v8.1.4  ready in 1574 ms
+
+  ➜  Local:   http://localhost:4855/
+  ➜  Network: http://192.168.165.204:4855/
+  ➜  Network: http://100.127.72.71:4855/
+  ➜  press h + enter to show help
+1:20:58 PM [vite] (client) dependency optimized: workbox-window
+1:20:58 PM [vite] (client) optimized dependencies changed. reloading
+1:24:03 PM [vite] vite.config.mts changed, restarting server...
+Both esbuild and oxc options were set. oxc options will be used and esbuild options will be ignored. The following esbuild options were set: `{ target: 'es2022' }`
+
+══════════════════════════════════════════════════════════════════════════════════════════
+                            WELCOME TO OPEN HEALTHCARE NETWORK
+══════════════════════════════════════════════════════════════════════════════════════════
+
+
+          +++++   ++++++                                                            
+          +++++   ++++++            ######     ##### ###  #########   #####         
+     +++++++++#####+++++++++      ########## ###########  ######### #########       
+     ++++++   #####    +++++     #####   ## #####  #####  #####    ####   ####      
+      ++++#############+++++     ####       ####     ###  ####    ############      
+          ##############         #####   ## #####   ####  ####     ####    #        
+          ##############          ########## ###########  ####      #########       
+              #####                  #####     ##### ###  ####       #######        
+              #####                                                                 
+
+══════════════════════════════════════════════════════════════════════════════════════════
+
+1:24:03 PM [vite] server restarted.
+1:24:06 PM [vite] vite.config.mts changed, restarting server...
+Both esbuild and oxc options were set. oxc options will be used and esbuild options will be ignored. The following esbuild options were set: `{ target: 'es2022' }`
+
+══════════════════════════════════════════════════════════════════════════════════════════
+                            WELCOME TO OPEN HEALTHCARE NETWORK
+══════════════════════════════════════════════════════════════════════════════════════════
+
+
+          +++++   ++++++                                                            
+          +++++   ++++++            ######     ##### ###  #########   #####         
+     +++++++++#####+++++++++      ########## ###########  ######### #########       
+     ++++++   #####    +++++     #####   ## #####  #####  #####    ####   ####      
+      ++++#############+++++     ####       ####     ###  ####    ############      
+          ##############         #####   ## #####   ####  ####     ####    #        
+          ##############          ########## ###########  ####      #########       
+              #####                  #####     ##### ###  ####       #######        
+              #####                                                                 
+
+══════════════════════════════════════════════════════════════════════════════════════════
+
+1:24:06 PM [vite] server restarted.
+^C%
+
+---
+
+[Terminal 285ea3f2-7114-4c46-9866-9734257fc9d4 notification: command completed with exit code 130. Use send_to_terminal to send another command or kill_terminal to stop it.]
+Terminal output:
+Using Node v24.18.0
+
+% ~/ohc.network/care_fe on  develop [$!] via  v24.21.0  cd ~/ohc.network/care_fe && portless
+
+portless
+
+-- Proxy is running
+-- care.localhost (auto-resolves to 127.0.0.1)
+-- Name "care" (from portless.json)
+-- Using port 4855
+
+  -> https://care.localhost
+
+Running: PORT=4855 HOST=127.0.0.1 PORTLESS_URL=https://care.localhost NODE_EXTRA_CA_CERTS="/Users/rithviknishad/.portless/ca.pem" npm run dev
+
+
+> care_fe@3.0.5 dev
+> npm run build:meta && npm run supported-browsers && vite
+
+
+> care_fe@3.0.5 build:meta
+> node ./scripts/generate-build-version.js
+
+
+> care_fe@3.0.5 supported-browsers
+> node ./scripts/generate-supported-browsers.mjs
+
+Both esbuild and oxc options were set. oxc options will be used and esbuild options will be ignored. The following esbuild options were set: `{ target: 'es2022' }`
+1:20:51 PM [vite] (client) Re-optimizing dependencies because vite config has changed
+
+══════════════════════════════════════════════════════════════════════════════════════════
+                            WELCOME TO OPEN HEALTHCARE NETWORK
+══════════════════════════════════════════════════════════════════════════════════════════
+
+
+          +++++   ++++++                                                            
+          +++++   ++++++            ######     ##### ###  #########   #####         
+     +++++++++#####+++++++++      ########## ###########  ######### #########       
+     ++++++   #####    +++++     #####   ## #####  #####  #####    ####   ####      
+      ++++#############+++++     ####       ####     ###  ####    ############      
+          ##############         #####   ## #####   ####  ####     ####    #        
+          ##############          ########## ###########  ####      #########       
+              #####                  #####     ##### ###  ####       #######        
+              #####                                                                 
+
+══════════════════════════════════════════════════════════════════════════════════════════
+
+
+  VITE v8.1.4  ready in 1574 ms
+
+  ➜  Local:   http://localhost:4855/
+  ➜  Network: http://192.168.165.204:4855/
+  ➜  Network: http://100.127.72.71:4855/
+  ➜  press h + enter to show help
+1:20:58 PM [vite] (client) dependency optimized: workbox-window
+1:20:58 PM [vite] (client) optimized dependencies changed. reloading
+1:24:03 PM [vite] vite.config.mts changed, restarting server...
+Both esbuild and oxc options were set. oxc options will be used and esbuild options will be ignored. The following esbuild options were set: `{ target: 'es2022' }`
+
+══════════════════════════════════════════════════════════════════════════════════════════
+                            WELCOME TO OPEN HEALTHCARE NETWORK
+══════════════════════════════════════════════════════════════════════════════════════════
+
+
+          +++++   ++++++                                                            
+          +++++   ++++++            ######     ##### ###  #########   #####         
+     +++++++++#####+++++++++      ########## ###########  ######### #########       
+     ++++++   #####    +++++     #####   ## #####  #####  #####    ####   ####      
+      ++++#############+++++     ####       ####     ###  ####    ############      
+          ##############         #####   ## #####   ####  ####     ####    #        
+          ##############          ########## ###########  ####      #########       
+              #####                  #####     ##### ###  ####       #######        
+              #####                                                                 
+
+══════════════════════════════════════════════════════════════════════════════════════════
+
+1:24:03 PM [vite] server restarted.
+1:24:06 PM [vite] vite.config.mts changed, restarting server...
+Both esbuild and oxc options were set. oxc options will be used and esbuild options will be ignored. The following esbuild options were set: `{ target: 'es2022' }`
+
+══════════════════════════════════════════════════════════════════════════════════════════
+                            WELCOME TO OPEN HEALTHCARE NETWORK
+══════════════════════════════════════════════════════════════════════════════════════════
+
+
+          +++++   ++++++                                                            
+          +++++   ++++++            ######     ##### ###  #########   #####         
+     +++++++++#####+++++++++      ########## ###########  ######### #########       
+     ++++++   #####    +++++     #####   ## #####  #####  #####    ####   ####      
+      ++++#############+++++     ####       ####     ###  ####    ############      
+          ##############         #####   ## #####   ####  ####     ####    #        
+          ##############          ########## ###########  ####      #########       
+              #####                  #####     ##### ###  ####       #######        
+              #####                                                                 
+
+══════════════════════════════════════════════════════════════════════════════════════════
+
+1:24:06 PM [vite] server restarted.
+^C%
