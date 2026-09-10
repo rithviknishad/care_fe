@@ -1,0 +1,27 @@
+{
+  "cli_version": "0.9.0",
+  "checkpoint_id": "ecc7b994f7a0",
+  "strategy": "manual-commit",
+  "branch": "star-it",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "AGENTS.md",
+    "README.md"
+  ],
+  "sessions": [
+    {
+      "metadata": "/ec/c7b994f7a0/0/metadata.json",
+      "transcript": "/ec/c7b994f7a0/0/full.jsonl",
+      "compact_transcript": "/ec/c7b994f7a0/0/transcript.jsonl",
+      "content_hash": "/ec/c7b994f7a0/0/content_hash.txt",
+      "prompt": "/ec/c7b994f7a0/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 0,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 0,
+    "output_tokens": 0,
+    "api_call_count": 0
+  }
+}
