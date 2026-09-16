@@ -1,0 +1,5 @@
+When the `location` prop changes in the form, the origin value does not change. This can be done by using the location switcher, which causes to soft-navigate to same route with different location id.
+
+---
+
+When the `location` prop changes in the form, the origin value does not change. This can be done by using the location switcher, which causes to soft-navigate to same route with different location id.
