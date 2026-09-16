@@ -1,0 +1,26 @@
+{
+  "cli_version": "0.9.0",
+  "checkpoint_id": "a0c2ae69ab5c",
+  "strategy": "manual-commit",
+  "branch": "ENG-1023-in-delivery-order-page-ensure-origins-state-is-updated-when-location-is-switched",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "src/pages/Facility/services/inventory/externalSupply/requestOrder/RequestOrderForm.tsx"
+  ],
+  "sessions": [
+    {
+      "metadata": "/a0/c2ae69ab5c/0/metadata.json",
+      "transcript": "/a0/c2ae69ab5c/0/full.jsonl",
+      "compact_transcript": "/a0/c2ae69ab5c/0/transcript.jsonl",
+      "content_hash": "/a0/c2ae69ab5c/0/content_hash.txt",
+      "prompt": "/a0/c2ae69ab5c/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 0,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 0,
+    "output_tokens": 0,
+    "api_call_count": 0
+  }
+}
