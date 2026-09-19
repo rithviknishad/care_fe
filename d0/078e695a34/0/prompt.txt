@@ -1,0 +1,3 @@
+Review my comments and fix the PR,  it should be super clean and slick;&#x20;
+
+[https://github.com/ohcnetwork/care\_fe/pull/16476#pullrequestreview-5257684551](https://github.com/ohcnetwork/care_fe/pull/16476#pullrequestreview-5257684551)
