@@ -1,0 +1,57 @@
+{
+  "cli_version": "0.9.0",
+  "checkpoint_id": "d0078e695a34",
+  "session_id": "01a0bb84-8250-7220-a45e-89da140fd77a",
+  "strategy": "manual-commit",
+  "created_at": "2026-09-19T21:19:20.693168Z",
+  "branch": "issues/16476/encounter-cancellation",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "src/components/Questionnaire/QuestionTypes/EncounterQuestion.tsx",
+    "tests/facility/patient/encounter/encounterFormHelpers.ts",
+    "tests/facility/patient/encounter/encounterPlannedStatusTransition.spec.ts"
+  ],
+  "agent": "Codex",
+  "model": "gpt-6-astra",
+  "turn_id": "fd0ee85eedc5",
+  "compact_transcript_start": 0,
+  "token_usage": {
+    "input_tokens": 85205,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 2715520,
+    "output_tokens": 8527,
+    "api_call_count": 42
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-09-19T21:19:20.644973Z",
+    "agent_lines": 0,
+    "agent_removed": 0,
+    "human_added": 261,
+    "human_modified": 61,
+    "human_removed": 0,
+    "total_committed": 261,
+    "total_lines_changed": 322,
+    "agent_percentage": 0,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 12680,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        ".context/retros/2026-03-15-1.json": 36,
+        ".gstack/browse-console.log": 437,
+        ".gstack/browse-dialog.log": 1,
+        ".gstack/browse-network.log": 12201,
+        ".husky/commit-msg": 1,
+        ".husky/post-commit": 1,
+        ".husky/post-rewrite": 1,
+        ".husky/pre-push": 1,
+        ".husky/prepare-commit-msg": 1
+      }
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "cli_version": "0.9.0",
+  "checkpoint_id": "d0078e695a34",
+  "strategy": "manual-commit",
+  "branch": "issues/16476/encounter-cancellation",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "src/components/Questionnaire/QuestionTypes/EncounterQuestion.tsx",
+    "tests/facility/patient/encounter/encounterFormHelpers.ts",
+    "tests/facility/patient/encounter/encounterPlannedStatusTransition.spec.ts"
+  ],
+  "sessions": [
+    {
+      "metadata": "/d0/078e695a34/0/metadata.json",
+      "transcript": "/d0/078e695a34/0/full.jsonl",
+      "compact_transcript": "/d0/078e695a34/0/transcript.jsonl",
+      "content_hash": "/d0/078e695a34/0/content_hash.txt",
+      "prompt": ""
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 85205,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 2715520,
+    "output_tokens": 8527,
+    "api_call_count": 42
+  }
+}
