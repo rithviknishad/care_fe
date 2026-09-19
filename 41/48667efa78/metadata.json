@@ -1,0 +1,29 @@
+{
+  "cli_version": "0.9.0",
+  "checkpoint_id": "4148667efa78",
+  "strategy": "manual-commit",
+  "branch": "issues/16455/review-fixes",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "src/components/Billing/ChargeItems/ChargeItemsSection.tsx",
+    "src/pages/Facility/services/serviceRequests/components/DiagnosticReportObservationPicker.tsx",
+    "src/pages/Facility/services/serviceRequests/components/DiagnosticReportReviewHeader.tsx",
+    "src/pages/Facility/services/serviceRequests/components/DiagnosticReportTimestamps.tsx"
+  ],
+  "sessions": [
+    {
+      "metadata": "/41/48667efa78/0/metadata.json",
+      "transcript": "/41/48667efa78/0/full.jsonl",
+      "compact_transcript": "/41/48667efa78/0/transcript.jsonl",
+      "content_hash": "/41/48667efa78/0/content_hash.txt",
+      "prompt": ""
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 125218,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 4150784,
+    "output_tokens": 11416,
+    "api_call_count": 57
+  }
+}
