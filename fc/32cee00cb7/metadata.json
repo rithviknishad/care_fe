@@ -1,0 +1,31 @@
+{
+  "cli_version": "0.9.0",
+  "checkpoint_id": "fc32cee00cb7",
+  "strategy": "manual-commit",
+  "branch": "issues/16455/review-fixes",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "public/locale/en.json",
+    "src/pages/Facility/services/serviceRequests/components/DiagnosticReportForm.tsx",
+    "src/pages/Facility/services/serviceRequests/components/DiagnosticReportObservationPicker.tsx",
+    "src/types/emr/observation/observation.ts",
+    "src/types/emr/observationDefinition/observationDefinition.ts",
+    "tests/facility/patient/encounter/serviceRequests/AdditionalReportObservations.spec.ts"
+  ],
+  "sessions": [
+    {
+      "metadata": "/fc/32cee00cb7/0/metadata.json",
+      "transcript": "/fc/32cee00cb7/0/full.jsonl",
+      "compact_transcript": "/fc/32cee00cb7/0/transcript.jsonl",
+      "content_hash": "/fc/32cee00cb7/0/content_hash.txt",
+      "prompt": ""
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 298113,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 19335680,
+    "output_tokens": 53495,
+    "api_call_count": 191
+  }
+}
