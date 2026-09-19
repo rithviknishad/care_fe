@@ -1,0 +1,26 @@
+{
+  "cli_version": "0.9.0",
+  "checkpoint_id": "f2abd789169a",
+  "strategy": "manual-commit",
+  "branch": "issues/16455/review-fixes",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "src/pages/Facility/services/serviceRequests/components/ServiceRequestDetails.tsx"
+  ],
+  "sessions": [
+    {
+      "metadata": "/f2/abd789169a/0/metadata.json",
+      "transcript": "/f2/abd789169a/0/full.jsonl",
+      "compact_transcript": "/f2/abd789169a/0/transcript.jsonl",
+      "content_hash": "/f2/abd789169a/0/content_hash.txt",
+      "prompt": ""
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 19576,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 2812416,
+    "output_tokens": 6423,
+    "api_call_count": 17
+  }
+}
