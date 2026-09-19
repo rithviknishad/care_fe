@@ -1,0 +1,28 @@
+{
+  "cli_version": "0.9.0",
+  "checkpoint_id": "0a741ca4b187",
+  "strategy": "manual-commit",
+  "branch": "issues/16455/review-fixes",
+  "checkpoints_count": 4,
+  "files_touched": [
+    "src/pages/Facility/services/serviceRequests/components/DiagnosticReportForm.tsx",
+    "src/types/emr/observationDefinition/observationDefinition.ts",
+    "tests/facility/patient/encounter/serviceRequests/AdditionalReportObservations.spec.ts"
+  ],
+  "sessions": [
+    {
+      "metadata": "/0a/741ca4b187/0/metadata.json",
+      "transcript": "/0a/741ca4b187/0/full.jsonl",
+      "compact_transcript": "/0a/741ca4b187/0/transcript.jsonl",
+      "content_hash": "/0a/741ca4b187/0/content_hash.txt",
+      "prompt": ""
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 53203,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 2968832,
+    "output_tokens": 7865,
+    "api_call_count": 24
+  }
+}
