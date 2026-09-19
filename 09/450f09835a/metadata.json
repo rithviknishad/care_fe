@@ -1,0 +1,39 @@
+{
+  "cli_version": "0.9.0",
+  "checkpoint_id": "09450f09835a",
+  "strategy": "manual-commit",
+  "branch": "issues/16455/review-fixes",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "public/locale/en.json",
+    "src/pages/Encounters/tabs/diagnostic-reports.tsx",
+    "src/pages/Facility/services/diagnosticReports/DiagnosticReportPrint.tsx",
+    "src/pages/Facility/services/diagnosticReports/DiagnosticReportPrintPreview.tsx",
+    "src/pages/Facility/services/diagnosticReports/MultipleDiagnosticReportsPrint.tsx",
+    "src/pages/Facility/services/serviceRequests/ServiceRequestShow.tsx",
+    "src/pages/Facility/services/serviceRequests/components/DiagnosticReportForm.tsx",
+    "src/pages/Facility/services/serviceRequests/components/DiagnosticReportReview.tsx",
+    "src/pages/Facility/services/serviceRequests/components/DiagnosticReportReviewContent.tsx",
+    "src/pages/Facility/services/serviceRequests/components/DiagnosticReportReviewHeader.tsx",
+    "src/pages/Facility/services/serviceRequests/components/WorkflowProgress.tsx",
+    "tests/facility/patient/encounter/serviceRequests/DiagnosticReportPrint.spec.ts",
+    "tests/facility/patient/encounter/serviceRequests/DiagnosticReportReview.spec.ts",
+    "tests/facility/patient/encounter/serviceRequests/MultipleDiagnosticReports.spec.ts"
+  ],
+  "sessions": [
+    {
+      "metadata": "/09/450f09835a/0/metadata.json",
+      "transcript": "/09/450f09835a/0/full.jsonl",
+      "compact_transcript": "/09/450f09835a/0/transcript.jsonl",
+      "content_hash": "/09/450f09835a/0/content_hash.txt",
+      "prompt": ""
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 144267,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 8824064,
+    "output_tokens": 21001,
+    "api_call_count": 90
+  }
+}

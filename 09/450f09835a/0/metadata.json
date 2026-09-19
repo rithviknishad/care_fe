@@ -1,0 +1,68 @@
+{
+  "cli_version": "0.9.0",
+  "checkpoint_id": "09450f09835a",
+  "session_id": "01a0bba3-3ccd-7811-965b-3af568c141cc",
+  "strategy": "manual-commit",
+  "created_at": "2026-09-19T22:02:16.618578Z",
+  "branch": "issues/16455/review-fixes",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "public/locale/en.json",
+    "src/pages/Encounters/tabs/diagnostic-reports.tsx",
+    "src/pages/Facility/services/diagnosticReports/DiagnosticReportPrint.tsx",
+    "src/pages/Facility/services/diagnosticReports/DiagnosticReportPrintPreview.tsx",
+    "src/pages/Facility/services/diagnosticReports/MultipleDiagnosticReportsPrint.tsx",
+    "src/pages/Facility/services/serviceRequests/ServiceRequestShow.tsx",
+    "src/pages/Facility/services/serviceRequests/components/DiagnosticReportForm.tsx",
+    "src/pages/Facility/services/serviceRequests/components/DiagnosticReportReview.tsx",
+    "src/pages/Facility/services/serviceRequests/components/DiagnosticReportReviewContent.tsx",
+    "src/pages/Facility/services/serviceRequests/components/DiagnosticReportReviewHeader.tsx",
+    "src/pages/Facility/services/serviceRequests/components/WorkflowProgress.tsx",
+    "tests/facility/patient/encounter/serviceRequests/DiagnosticReportPrint.spec.ts",
+    "tests/facility/patient/encounter/serviceRequests/DiagnosticReportReview.spec.ts",
+    "tests/facility/patient/encounter/serviceRequests/MultipleDiagnosticReports.spec.ts"
+  ],
+  "agent": "Codex",
+  "model": "gpt-6-astra",
+  "turn_id": "f41d77940244",
+  "compact_transcript_start": 0,
+  "token_usage": {
+    "input_tokens": 144267,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 8824064,
+    "output_tokens": 21001,
+    "api_call_count": 90
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-09-19T22:02:16.483288Z",
+    "agent_lines": 2798,
+    "agent_removed": 1241,
+    "human_added": 0,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 2798,
+    "total_lines_changed": 4039,
+    "agent_percentage": 100,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 12680,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        ".context/retros/2026-03-15-1.json": 36,
+        ".gstack/browse-console.log": 437,
+        ".gstack/browse-dialog.log": 1,
+        ".gstack/browse-network.log": 12201,
+        ".husky/commit-msg": 1,
+        ".husky/post-commit": 1,
+        ".husky/post-rewrite": 1,
+        ".husky/pre-push": 1,
+        ".husky/prepare-commit-msg": 1
+      }
+    }
+  ]
+}
