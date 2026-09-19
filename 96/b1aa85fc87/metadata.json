@@ -1,0 +1,19 @@
+{
+  "cli_version": "0.9.0",
+  "checkpoint_id": "96b1aa85fc87",
+  "strategy": "manual-commit",
+  "branch": "issues/16476/encounter-cancellation",
+  "checkpoints_count": 5,
+  "files_touched": [
+    "src/components/Questionnaire/structured/handlers.ts"
+  ],
+  "sessions": [
+    {
+      "metadata": "/96/b1aa85fc87/0/metadata.json",
+      "transcript": "/96/b1aa85fc87/0/full.jsonl",
+      "compact_transcript": "/96/b1aa85fc87/0/transcript.jsonl",
+      "content_hash": "/96/b1aa85fc87/0/content_hash.txt",
+      "prompt": ""
+    }
+  ]
+}
