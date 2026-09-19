@@ -1,0 +1,35 @@
+{
+  "cli_version": "0.9.0",
+  "checkpoint_id": "8bc4ca10c995",
+  "strategy": "manual-commit",
+  "branch": "issues/16455/review-fixes",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "src/pages/Facility/services/serviceRequests/PatientHoverCard.tsx",
+    "src/pages/Facility/services/serviceRequests/ServiceRequestShow.tsx",
+    "src/pages/Facility/services/serviceRequests/components/DiagnosticReportForm.tsx",
+    "src/pages/Facility/services/serviceRequests/components/DiagnosticReportReview.tsx",
+    "src/pages/Facility/services/serviceRequests/components/DiagnosticReportReviewHeader.tsx",
+    "src/pages/Facility/services/serviceRequests/components/DiagnosticReportTimestamps.tsx",
+    "src/pages/Facility/services/serviceRequests/components/ServiceRequestDetails.tsx",
+    "src/pages/Facility/services/serviceRequests/components/SpecimenHistorySheet.tsx",
+    "src/pages/Facility/services/serviceRequests/components/SpecimenWorkflowCard.tsx",
+    "src/pages/Facility/services/serviceRequests/components/WorkflowProgress.tsx"
+  ],
+  "sessions": [
+    {
+      "metadata": "/8b/c4ca10c995/0/metadata.json",
+      "transcript": "/8b/c4ca10c995/0/full.jsonl",
+      "compact_transcript": "/8b/c4ca10c995/0/transcript.jsonl",
+      "content_hash": "/8b/c4ca10c995/0/content_hash.txt",
+      "prompt": ""
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 60802,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 5206912,
+    "output_tokens": 15022,
+    "api_call_count": 38
+  }
+}
