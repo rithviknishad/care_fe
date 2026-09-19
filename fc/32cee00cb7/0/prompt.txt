@@ -1,0 +1,13 @@
+review and fix all issues in this [https://github.com/ohcnetwork/care\_fe/pull/16455](https://github.com/ohcnetwork/care_fe/pull/16455)
+
+---
+
+we should also allow users to add other observations right, else multiple reports won't we useful right? 1st evaluvate feasibility in backend before createing it.
+
+---
+
+status?
+
+---
+
+please do it, also show me ss once done
