@@ -1,0 +1,11 @@
+can you classify all PR open PR;s?
+
+https://github.com/ohcnetwork/care_fe/pulls?q=is%3Apr+state%3Aopen
+
+---
+
+can you give me a report grouped by user?
+
+---
+
+can we also cluster all the issues in Care_fe?

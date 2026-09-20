@@ -1,0 +1,96 @@
+{
+  "cli_version": "0.9.0",
+  "checkpoint_id": "684e912b2560",
+  "session_id": "cf4cdbbe-a1e2-43de-aa1d-d77f31bdfcef",
+  "strategy": "manual-commit",
+  "created_at": "2026-09-20T20:38:19.636058Z",
+  "branch": "bodhi/questionnaire-actions",
+  "checkpoints_count": 1,
+  "save_step_count": 1,
+  "files_touched": [
+    ".github/workflows/playwright.yaml"
+  ],
+  "agent": "Claude Code",
+  "model": "claude-fable-5-1",
+  "turn_id": "a9b41066b7ab",
+  "compact_transcript_start": 0,
+  "token_usage": {
+    "input_tokens": 64,
+    "cache_creation_tokens": 404288,
+    "cache_read_tokens": 3707691,
+    "output_tokens": 103387,
+    "api_call_count": 30
+  },
+  "session_metrics": {
+    "turn_count": 1
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-09-20T20:38:19.596371Z",
+    "agent_lines": 14,
+    "agent_removed": 4,
+    "human_added": 0,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 14,
+    "total_lines_changed": 18,
+    "agent_percentage": 100,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 15954,
+      "user_lines_removed": 2019,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        ".context/retros/2026-03-15-1.json": 36,
+        ".gstack/browse-console.log": 437,
+        ".gstack/browse-dialog.log": 1,
+        ".gstack/browse-network.log": 12201,
+        ".husky/commit-msg": 1,
+        ".husky/post-commit": 1,
+        ".husky/post-rewrite": 1,
+        ".husky/pre-push": 1,
+        ".husky/prepare-commit-msg": 1,
+        "public/locale/en.json": 1,
+        "src/components/QuestionnaireV2/fill/FillHeader.tsx": 5,
+        "src/components/QuestionnaireV2/fill/FillPageBody.tsx": 107,
+        "src/components/QuestionnaireV2/fill/FillSessionNotices.tsx": 128,
+        "src/components/QuestionnaireV2/fill/FillSessionTabs.tsx": 99,
+        "src/components/QuestionnaireV2/fill/QuestionnaireFillPage.tsx": 34,
+        "src/components/QuestionnaireV2/fill/draft/subscribeToFillEdits.test.ts": 198,
+        "src/components/QuestionnaireV2/fill/draft/subscribeToFillEdits.ts": 70,
+        "src/components/QuestionnaireV2/fill/draft/useFillAutosave.ts": 12,
+        "src/components/QuestionnaireV2/fill/useFillPageDrafts.ts": 81,
+        "src/components/QuestionnaireV2/fill/useFillPageQueries.ts": 108,
+        "src/components/QuestionnaireV2/studio/QuestionnaireStudioPage.tsx": 62,
+        "src/components/QuestionnaireV2/studio/StudioMobileQuestionNav.tsx": 65,
+        "src/components/QuestionnaireV2/studio/useStudioDraft.ts": 200,
+        "src/components/QuestionnaireV2/studio/useStudioIssues.ts": 95,
+        "src/components/QuestionnaireV2/studio/useStudioSelection.test.ts": 139,
+        "src/components/QuestionnaireV2/studio/useStudioSelection.ts": 106,
+        "src/components/ValueSet/ValueSetBasedOnFields.tsx": 216,
+        "src/components/ValueSet/ValueSetBasicFields.tsx": 216,
+        "src/components/ValueSet/ValueSetConceptFields.tsx": 88,
+        "src/components/ValueSet/ValueSetFilterFields.tsx": 146,
+        "src/components/ValueSet/ValueSetForm.tsx": 46,
+        "src/components/ValueSet/ValueSetFormPreview.tsx": 44,
+        "src/components/ValueSet/ValueSetRuleCard.tsx": 241,
+        "src/components/ValueSet/ValueSetRuleFields.test.ts": 201,
+        "src/components/ValueSet/ValueSetRuleFields.tsx": 173,
+        "src/components/ValueSet/useValueSetEditorForm.ts": 189,
+        "src/components/ValueSet/valueSetFormTypes.ts": 29,
+        "tests/facility/patient/encounter/fill/fillContextRefresh.spec.ts": 175
+      },
+      "user_removed_per_file": {
+        "src/components/QuestionnaireV2/fill/FillHeader.tsx": 2,
+        "src/components/QuestionnaireV2/fill/FillPageBody.tsx": 279,
+        "src/components/QuestionnaireV2/fill/QuestionnaireFillPage.tsx": 124,
+        "src/components/QuestionnaireV2/fill/draft/useFillAutosave.ts": 69,
+        "src/components/QuestionnaireV2/studio/QuestionnaireStudioPage.tsx": 405,
+        "src/components/ValueSet/ValueSetForm.tsx": 1140
+      }
+    }
+  ]
+}
