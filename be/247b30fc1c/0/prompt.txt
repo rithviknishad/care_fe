@@ -1,0 +1,26 @@
+can we also review the react doctor warnings and clean up the code, we want high quality react code for the project.
+
+---
+
+docker compose -f docker-compose.yaml -f docker-compose.local.yaml up -d --wait
+&#x20;backend Pulling&#x20;
+&#x20;db Pulling&#x20;
+&#x20;redis Pulling&#x20;
+&#x20;celery Pulling&#x20;
+&#x20;minio Pulling&#x20;
+&#x20;minio Error pull access denied for minio/minio, repository does not exist or may require 'docker login': denied: requested access to the resource is denied
+&#x20;backend  Interrupted
+&#x20;db  Interrupted
+&#x20;celery  Interrupted
+&#x20;redis  Interrupted
+Error response from daemon: pull access denied for minio/minio, repository does not exist or may require 'docker login': denied: requested access to the resource is denied
+make: \*\*\* [Makefile:26: up] Error 1
+Error: Process completed with exit code 2.
+
+---
+
+dont do it ignore it
+
+---
+
+commit evetything clean and push

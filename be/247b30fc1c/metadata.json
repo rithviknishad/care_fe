@@ -1,0 +1,26 @@
+{
+  "cli_version": "0.9.0",
+  "checkpoint_id": "be247b30fc1c",
+  "strategy": "manual-commit",
+  "branch": "bodhi/questionnaire-actions",
+  "checkpoints_count": 1,
+  "files_touched": [
+    ".gitignore"
+  ],
+  "sessions": [
+    {
+      "metadata": "/be/247b30fc1c/0/metadata.json",
+      "transcript": "/be/247b30fc1c/0/full.jsonl",
+      "compact_transcript": "/be/247b30fc1c/0/transcript.jsonl",
+      "content_hash": "/be/247b30fc1c/0/content_hash.txt",
+      "prompt": "/be/247b30fc1c/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 62328,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 7125888,
+    "output_tokens": 14049,
+    "api_call_count": 58
+  }
+}
