@@ -1,0 +1,9 @@
+We should remove **Fixed** (QA-10), it dosen't make sense.
+
+---
+
+push once done
+
+---
+
+Can we remove the edit inline it is not looking nice (QA-03)
