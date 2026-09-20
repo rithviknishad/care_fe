@@ -1,0 +1,42 @@
+{
+  "cli_version": "0.9.0",
+  "checkpoint_id": "69623dbdab8e",
+  "strategy": "manual-commit",
+  "branch": "bodhi/questionnaire-actions",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "src/components/QuestionnaireV2/builder/ImportQuestionsDialog.tsx",
+    "src/components/QuestionnaireV2/builder/actions/ActionExpressionEditor.test.ts",
+    "src/components/QuestionnaireV2/fill/useFillSessionForms.test.ts",
+    "src/components/QuestionnaireV2/fill/useFillSessionForms.ts",
+    "src/components/QuestionnaireV2/form/FormCanvas.tsx",
+    "src/components/QuestionnaireV2/form/QuestionBlock.tsx",
+    "src/components/QuestionnaireV2/form/engine/inputs/ChoiceInput.tsx",
+    "src/components/QuestionnaireV2/form/engine/inputs/DateInput.tsx",
+    "src/components/QuestionnaireV2/form/engine/inputs/DateTimeQuestionInput.tsx",
+    "src/components/QuestionnaireV2/form/engine/inputs/QuestionInputGroup.tsx",
+    "src/components/QuestionnaireV2/form/engine/store.errors.test.ts",
+    "src/components/QuestionnaireV2/form/engine/store.ts",
+    "src/components/QuestionnaireV2/studio/StudioCanvas.tsx",
+    "tests/facility/locationQuestionnaire.spec.ts",
+    "tests/facility/patient/encounter/fill/fillPrimitiveInputs.spec.ts",
+    "tests/facility/settings/questionnaires/questionnaireImportCancellation.spec.ts",
+    "tests/helper/questionnaire.ts"
+  ],
+  "sessions": [
+    {
+      "metadata": "/69/623dbdab8e/0/metadata.json",
+      "transcript": "/69/623dbdab8e/0/full.jsonl",
+      "compact_transcript": "/69/623dbdab8e/0/transcript.jsonl",
+      "content_hash": "/69/623dbdab8e/0/content_hash.txt",
+      "prompt": "/69/623dbdab8e/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 182901,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 8549248,
+    "output_tokens": 18164,
+    "api_call_count": 80
+  }
+}

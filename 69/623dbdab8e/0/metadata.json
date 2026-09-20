@@ -1,0 +1,76 @@
+{
+  "cli_version": "0.9.0",
+  "checkpoint_id": "69623dbdab8e",
+  "session_id": "01a0c05a-ac3e-7362-9a1f-f9feb7929f88",
+  "strategy": "manual-commit",
+  "created_at": "2026-09-20T20:20:32.403538Z",
+  "branch": "bodhi/questionnaire-actions",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "src/components/QuestionnaireV2/builder/ImportQuestionsDialog.tsx",
+    "src/components/QuestionnaireV2/builder/actions/ActionExpressionEditor.test.ts",
+    "src/components/QuestionnaireV2/fill/useFillSessionForms.test.ts",
+    "src/components/QuestionnaireV2/fill/useFillSessionForms.ts",
+    "src/components/QuestionnaireV2/form/FormCanvas.tsx",
+    "src/components/QuestionnaireV2/form/QuestionBlock.tsx",
+    "src/components/QuestionnaireV2/form/engine/inputs/ChoiceInput.tsx",
+    "src/components/QuestionnaireV2/form/engine/inputs/DateInput.tsx",
+    "src/components/QuestionnaireV2/form/engine/inputs/DateTimeQuestionInput.tsx",
+    "src/components/QuestionnaireV2/form/engine/inputs/QuestionInputGroup.tsx",
+    "src/components/QuestionnaireV2/form/engine/store.errors.test.ts",
+    "src/components/QuestionnaireV2/form/engine/store.ts",
+    "src/components/QuestionnaireV2/studio/StudioCanvas.tsx",
+    "tests/facility/locationQuestionnaire.spec.ts",
+    "tests/facility/patient/encounter/fill/fillPrimitiveInputs.spec.ts",
+    "tests/facility/settings/questionnaires/questionnaireImportCancellation.spec.ts",
+    "tests/helper/questionnaire.ts"
+  ],
+  "agent": "Codex",
+  "model": "gpt-6-astra",
+  "turn_id": "f800e1b45608",
+  "checkpoint_transcript_start": 561,
+  "transcript_lines_at_start": 561,
+  "compact_transcript_start": 63,
+  "token_usage": {
+    "input_tokens": 182901,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 8549248,
+    "output_tokens": 18164,
+    "api_call_count": 80
+  },
+  "session_metrics": {
+    "turn_count": 3
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-09-20T20:20:32.026586Z",
+    "agent_lines": 0,
+    "agent_removed": 0,
+    "human_added": 3511,
+    "human_modified": 79,
+    "human_removed": 0,
+    "total_committed": 3511,
+    "total_lines_changed": 5179,
+    "agent_percentage": 0,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 12680,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        ".context/retros/2026-03-15-1.json": 36,
+        ".gstack/browse-console.log": 437,
+        ".gstack/browse-dialog.log": 1,
+        ".gstack/browse-network.log": 12201,
+        ".husky/commit-msg": 1,
+        ".husky/post-commit": 1,
+        ".husky/post-rewrite": 1,
+        ".husky/pre-push": 1,
+        ".husky/prepare-commit-msg": 1
+      }
+    }
+  ]
+}
