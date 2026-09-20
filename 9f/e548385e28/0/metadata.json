@@ -1,0 +1,61 @@
+{
+  "cli_version": "0.9.0",
+  "checkpoint_id": "9fe548385e28",
+  "session_id": "01a0bc88-42b4-7bd1-be29-4fd7b1dc59df",
+  "strategy": "manual-commit",
+  "created_at": "2026-09-20T19:26:02.67478Z",
+  "branch": "bodhi/questionnaire-actions",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "src/components/ui/sidebar/app-sidebar.tsx",
+    "tests/navigation/sidebarNavigation.spec.ts"
+  ],
+  "agent": "Codex",
+  "model": "gpt-6-astra",
+  "turn_id": "f132ad154d10",
+  "checkpoint_transcript_start": 2471,
+  "transcript_lines_at_start": 2471,
+  "compact_transcript_start": 285,
+  "token_usage": {
+    "input_tokens": 59156,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 2081664,
+    "output_tokens": 5530,
+    "api_call_count": 14
+  },
+  "session_metrics": {
+    "turn_count": 3
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-09-20T19:26:02.378053Z",
+    "agent_lines": 100,
+    "agent_removed": 2,
+    "human_added": 0,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 100,
+    "total_lines_changed": 102,
+    "agent_percentage": 100,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 12680,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        ".context/retros/2026-03-15-1.json": 36,
+        ".gstack/browse-console.log": 437,
+        ".gstack/browse-dialog.log": 1,
+        ".gstack/browse-network.log": 12201,
+        ".husky/commit-msg": 1,
+        ".husky/post-commit": 1,
+        ".husky/post-rewrite": 1,
+        ".husky/pre-push": 1,
+        ".husky/prepare-commit-msg": 1
+      }
+    }
+  ]
+}
