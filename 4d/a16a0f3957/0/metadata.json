@@ -1,0 +1,76 @@
+{
+  "cli_version": "0.9.0",
+  "checkpoint_id": "4da16a0f3957",
+  "session_id": "01a0c05a-ac3e-7362-9a1f-f9feb7929f88",
+  "strategy": "manual-commit",
+  "created_at": "2026-09-20T20:33:58.918432Z",
+  "branch": "bodhi/questionnaire-actions",
+  "checkpoints_count": 1,
+  "save_step_count": 1,
+  "files_touched": [
+    "public/locale/en.json",
+    "src/components/QuestionnaireV2/fill/FillHeader.tsx",
+    "src/components/QuestionnaireV2/fill/QuestionnaireFillPage.tsx",
+    "src/components/QuestionnaireV2/fill/draft/subscribeToFillEdits.test.ts",
+    "src/components/QuestionnaireV2/fill/draft/subscribeToFillEdits.ts",
+    "src/components/QuestionnaireV2/fill/draft/useFillAutosave.ts",
+    "src/components/QuestionnaireV2/fill/useFillPageQueries.ts",
+    "src/components/QuestionnaireV2/studio/useStudioDraft.ts",
+    "src/components/QuestionnaireV2/studio/useStudioSelection.test.ts",
+    "src/components/QuestionnaireV2/studio/useStudioSelection.ts",
+    "src/components/ValueSet/ValueSetConceptFields.tsx",
+    "src/components/ValueSet/ValueSetFilterFields.tsx",
+    "src/components/ValueSet/ValueSetForm.tsx",
+    "src/components/ValueSet/ValueSetRuleCard.tsx",
+    "src/components/ValueSet/ValueSetRuleFields.test.ts",
+    "tests/admin/valueset/valuesetEdit.spec.ts",
+    "tests/facility/patient/encounter/fill/fillContextRefresh.spec.ts",
+    "tests/facility/patient/encounter/fill/fillDraftOverview.spec.ts"
+  ],
+  "agent": "Codex",
+  "model": "gpt-6-astra",
+  "turn_id": "70b88188530e",
+  "compact_transcript_start": 0,
+  "token_usage": {
+    "input_tokens": 540924,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 25476736,
+    "output_tokens": 53937,
+    "api_call_count": 225
+  },
+  "session_metrics": {
+    "turn_count": 4
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-09-20T20:33:58.442038Z",
+    "agent_lines": 0,
+    "agent_removed": 0,
+    "human_added": 1940,
+    "human_modified": 1339,
+    "human_removed": 0,
+    "total_committed": 1940,
+    "total_lines_changed": 3963,
+    "agent_percentage": 0,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 2,
+      "user_lines_added": 12680,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        ".context/retros/2026-03-15-1.json": 36,
+        ".gstack/browse-console.log": 437,
+        ".gstack/browse-dialog.log": 1,
+        ".gstack/browse-network.log": 12201,
+        ".husky/commit-msg": 1,
+        ".husky/post-commit": 1,
+        ".husky/post-rewrite": 1,
+        ".husky/pre-push": 1,
+        ".husky/prepare-commit-msg": 1
+      }
+    }
+  ]
+}

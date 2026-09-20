@@ -1,0 +1,43 @@
+{
+  "cli_version": "0.9.0",
+  "checkpoint_id": "4da16a0f3957",
+  "strategy": "manual-commit",
+  "branch": "bodhi/questionnaire-actions",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "public/locale/en.json",
+    "src/components/QuestionnaireV2/fill/FillHeader.tsx",
+    "src/components/QuestionnaireV2/fill/QuestionnaireFillPage.tsx",
+    "src/components/QuestionnaireV2/fill/draft/subscribeToFillEdits.test.ts",
+    "src/components/QuestionnaireV2/fill/draft/subscribeToFillEdits.ts",
+    "src/components/QuestionnaireV2/fill/draft/useFillAutosave.ts",
+    "src/components/QuestionnaireV2/fill/useFillPageQueries.ts",
+    "src/components/QuestionnaireV2/studio/useStudioDraft.ts",
+    "src/components/QuestionnaireV2/studio/useStudioSelection.test.ts",
+    "src/components/QuestionnaireV2/studio/useStudioSelection.ts",
+    "src/components/ValueSet/ValueSetConceptFields.tsx",
+    "src/components/ValueSet/ValueSetFilterFields.tsx",
+    "src/components/ValueSet/ValueSetForm.tsx",
+    "src/components/ValueSet/ValueSetRuleCard.tsx",
+    "src/components/ValueSet/ValueSetRuleFields.test.ts",
+    "tests/admin/valueset/valuesetEdit.spec.ts",
+    "tests/facility/patient/encounter/fill/fillContextRefresh.spec.ts",
+    "tests/facility/patient/encounter/fill/fillDraftOverview.spec.ts"
+  ],
+  "sessions": [
+    {
+      "metadata": "/4d/a16a0f3957/0/metadata.json",
+      "transcript": "/4d/a16a0f3957/0/full.jsonl",
+      "compact_transcript": "/4d/a16a0f3957/0/transcript.jsonl",
+      "content_hash": "/4d/a16a0f3957/0/content_hash.txt",
+      "prompt": "/4d/a16a0f3957/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 540924,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 25476736,
+    "output_tokens": 53937,
+    "api_call_count": 225
+  }
+}
