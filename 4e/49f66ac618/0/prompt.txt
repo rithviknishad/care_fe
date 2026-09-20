@@ -1,1 +1,29 @@
-review the changes and if its required push it
+The currently `questionnaire.response.set` replaces all existing `values` instead of adding to them ( for structure). We should change it so that structured responses can append new rows without requiring the caller to resend everything that already exists (mainly for diagnosis, allergy, symptoms rest of the things its ok)Right now, `coerceStructuredFillValue` creates `values` from `rawValues`, and `store.set` replaces `current.values` with that array. There is no merge with the existing data.\
+\
+as a result 2 issue/problems
+
+1. Every plugin has to read the existing values, merge them with the new ones, and send everything back. We already had to do this in `care_filly_fe`, but this logic should live in the host instead.
+2. The entire list is validated again every time. So if an old existing row no longer passes the latest schema, resending it can make the whole request fail—even when the caller only wanted to add a new row.
+
+\
+\
+Instead, `questionnaire.response.set` should treat the input as rows to add or update
+
+- If the row has an id/code that already exists, then its a duplicate entrie
+- If it has no matching id/code, add it as a new row.
+- Existing rows that were not changed should not be revalidated.
+- Only the new or updated rows should be validated.
+
+This way, callers can simply send the new or changed rows instead of resending the entire list.
+
+
+
+Abhimanyu Rajeesh  [9:33 AM]\
+
+
+**In&#x20;****`FormQuestionSummary`**
+
+1. add `description` field from `helperText` so the model has more context when filling the question.
+2. add the question's `enable_when` conditions so the can evaluate them against the current value, even if that value hasn't been saved yet.
+3. add `enable_behavior` (`all` or `any`) so the agent knows how to evaluate multiple conditions.
+4. add `ancestors_enabled` to indicate whether the question is enabled based on its parent groups. If this is `false`, the question should remain disabled even if its own conditions are satisfied.
