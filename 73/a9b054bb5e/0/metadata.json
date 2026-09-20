@@ -1,0 +1,83 @@
+{
+  "cli_version": "0.9.0",
+  "checkpoint_id": "73a9b054bb5e",
+  "session_id": "01a0bc88-42b4-7bd1-be29-4fd7b1dc59df",
+  "strategy": "manual-commit",
+  "created_at": "2026-09-20T20:01:50.992546Z",
+  "branch": "bodhi/questionnaire-actions",
+  "checkpoints_count": 1,
+  "save_step_count": 1,
+  "files_touched": [
+    "src/PluginEngine.tsx",
+    "src/Providers/AuthUserProvider.tsx",
+    "src/components/Questionnaire/QuestionTypes/AllergyQuestion.tsx",
+    "src/components/Questionnaire/QuestionTypes/ChargeItemQuestion.tsx",
+    "src/components/Questionnaire/QuestionTypes/DiagnosisQuestion.tsx",
+    "src/components/Questionnaire/QuestionTypes/EncounterQuestion.tsx",
+    "src/components/Questionnaire/QuestionTypes/FileQuestion.tsx",
+    "src/components/Questionnaire/QuestionTypes/MedicationRequestQuestion.tsx",
+    "src/components/Questionnaire/QuestionTypes/MedicationStatementQuestion.tsx",
+    "src/components/Questionnaire/QuestionTypes/ServiceRequestQuestion.tsx",
+    "src/components/Questionnaire/QuestionTypes/SymptomQuestion.tsx",
+    "src/components/Questionnaire/ResourceResponses/response.ts",
+    "src/components/Questionnaire/SelectOrCreateValueset.tsx",
+    "src/components/Questionnaire/ValueSetSearchContent.tsx",
+    "src/components/QuestionnaireV2/builder/AnswerOptionsEditor.tsx",
+    "src/components/QuestionnaireV2/builder/QuestionTypePicker.tsx",
+    "src/components/QuestionnaireV2/builder/VisibilityConditionsCard.tsx",
+    "src/components/QuestionnaireV2/builder/actions/ActionConditionEditor.tsx",
+    "src/components/QuestionnaireV2/builder/saveValidation.ts",
+    "src/components/QuestionnaireV2/builder/useEditorRowKeys.ts",
+    "src/components/QuestionnaireV2/fill/draft/draftMerge.ts",
+    "src/components/QuestionnaireV2/fill/draft/useFillAutosave.ts",
+    "src/components/QuestionnaireV2/fill/submit/validateActionReferences.ts",
+    "src/components/QuestionnaireV2/fill/useFillActions.ts",
+    "src/components/QuestionnaireV2/form/engine/inputs/ChoiceInput.tsx",
+    "src/components/QuestionnaireV2/form/engine/inputs/DateInput.tsx",
+    "src/components/QuestionnaireV2/form/engine/inputs/NumberInput.tsx",
+    "src/components/QuestionnaireV2/form/engine/inputs/answeredEntry.ts",
+    "src/components/QuestionnaireV2/form/engine/sanitizeStylingClasses.ts",
+    "src/components/QuestionnaireV2/form/engine/store.ts",
+    "src/components/ui/combined-date-picker.tsx",
+    "src/types/questionnaire/questionnaireApi.ts",
+    "tests/PLAYWRIGHT_GUIDE.md",
+    "tests/support/questionnaireId.ts"
+  ],
+  "agent": "Codex",
+  "model": "gpt-6-astra",
+  "turn_id": "87963f6d116e",
+  "checkpoint_transcript_start": 2895,
+  "transcript_lines_at_start": 2895,
+  "compact_transcript_start": 337,
+  "token_usage": {
+    "input_tokens": 7168,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 734848,
+    "output_tokens": 2357,
+    "api_call_count": 10
+  },
+  "session_metrics": {
+    "turn_count": 7
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-09-20T20:01:50.669306Z",
+    "agent_lines": 307,
+    "agent_removed": 113,
+    "human_added": 620,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 927,
+    "total_lines_changed": 1050,
+    "agent_percentage": 40,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0
+    }
+  ]
+}

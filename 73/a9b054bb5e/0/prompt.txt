@@ -1,0 +1,1 @@
+Can we remove the edit inline it is not looking nice (QA-03)
