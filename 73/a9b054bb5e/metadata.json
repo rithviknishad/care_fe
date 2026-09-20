@@ -3,7 +3,7 @@
   "checkpoint_id": "73a9b054bb5e",
   "strategy": "manual-commit",
   "branch": "bodhi/questionnaire-actions",
-  "checkpoints_count": 1,
+  "checkpoints_count": 2,
   "files_touched": [
     "src/PluginEngine.tsx",
     "src/Providers/AuthUserProvider.tsx",
@@ -38,6 +38,7 @@
     "src/components/ui/combined-date-picker.tsx",
     "src/types/questionnaire/questionnaireApi.ts",
     "tests/PLAYWRIGHT_GUIDE.md",
+    "tests/facility/patient/encounter/fill/fillStructuredState.spec.ts",
     "tests/support/questionnaireId.ts"
   ],
   "sessions": [
@@ -47,13 +48,20 @@
       "compact_transcript": "/73/a9b054bb5e/0/transcript.jsonl",
       "content_hash": "/73/a9b054bb5e/0/content_hash.txt",
       "prompt": "/73/a9b054bb5e/0/prompt.txt"
+    },
+    {
+      "metadata": "/73/a9b054bb5e/1/metadata.json",
+      "transcript": "/73/a9b054bb5e/1/full.jsonl",
+      "compact_transcript": "/73/a9b054bb5e/1/transcript.jsonl",
+      "content_hash": "/73/a9b054bb5e/1/content_hash.txt",
+      "prompt": "/73/a9b054bb5e/1/prompt.txt"
     }
   ],
   "token_usage": {
-    "input_tokens": 7168,
+    "input_tokens": 113843,
     "cache_creation_tokens": 0,
-    "cache_read_tokens": 734848,
-    "output_tokens": 2357,
-    "api_call_count": 10
+    "cache_read_tokens": 4077440,
+    "output_tokens": 11371,
+    "api_call_count": 60
   }
 }
