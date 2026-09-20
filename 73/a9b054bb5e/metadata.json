@@ -3,7 +3,7 @@
   "checkpoint_id": "73a9b054bb5e",
   "strategy": "manual-commit",
   "branch": "bodhi/questionnaire-actions",
-  "checkpoints_count": 2,
+  "checkpoints_count": 4,
   "files_touched": [
     "src/PluginEngine.tsx",
     "src/Providers/AuthUserProvider.tsx",
@@ -16,6 +16,7 @@
     "src/components/Questionnaire/QuestionTypes/MedicationStatementQuestion.tsx",
     "src/components/Questionnaire/QuestionTypes/ServiceRequestQuestion.tsx",
     "src/components/Questionnaire/QuestionTypes/SymptomQuestion.tsx",
+    "src/components/Questionnaire/ResourceResponses/response.test.ts",
     "src/components/Questionnaire/ResourceResponses/response.ts",
     "src/components/Questionnaire/SelectOrCreateValueset.tsx",
     "src/components/Questionnaire/ValueSetSearchContent.tsx",
@@ -23,8 +24,11 @@
     "src/components/QuestionnaireV2/builder/QuestionTypePicker.tsx",
     "src/components/QuestionnaireV2/builder/VisibilityConditionsCard.tsx",
     "src/components/QuestionnaireV2/builder/actions/ActionConditionEditor.tsx",
+    "src/components/QuestionnaireV2/builder/saveValidation.test.ts",
     "src/components/QuestionnaireV2/builder/saveValidation.ts",
+    "src/components/QuestionnaireV2/builder/useEditorRowKeys.test.ts",
     "src/components/QuestionnaireV2/builder/useEditorRowKeys.ts",
+    "src/components/QuestionnaireV2/fill/answerSemantics.test.ts",
     "src/components/QuestionnaireV2/fill/draft/draftMerge.ts",
     "src/components/QuestionnaireV2/fill/draft/useFillAutosave.ts",
     "src/components/QuestionnaireV2/fill/submit/validateActionReferences.ts",
@@ -33,11 +37,13 @@
     "src/components/QuestionnaireV2/form/engine/inputs/DateInput.tsx",
     "src/components/QuestionnaireV2/form/engine/inputs/NumberInput.tsx",
     "src/components/QuestionnaireV2/form/engine/inputs/answeredEntry.ts",
+    "src/components/QuestionnaireV2/form/engine/sanitizeStylingClasses.test.ts",
     "src/components/QuestionnaireV2/form/engine/sanitizeStylingClasses.ts",
     "src/components/QuestionnaireV2/form/engine/store.ts",
     "src/components/ui/combined-date-picker.tsx",
     "src/types/questionnaire/questionnaireApi.ts",
     "tests/PLAYWRIGHT_GUIDE.md",
+    "tests/facility/patient/encounter/fill/fillPrimitiveInputs.spec.ts",
     "tests/facility/patient/encounter/fill/fillStructuredState.spec.ts",
     "tests/support/questionnaireId.ts"
   ],
@@ -55,13 +61,20 @@
       "compact_transcript": "/73/a9b054bb5e/1/transcript.jsonl",
       "content_hash": "/73/a9b054bb5e/1/content_hash.txt",
       "prompt": "/73/a9b054bb5e/1/prompt.txt"
+    },
+    {
+      "metadata": "/73/a9b054bb5e/2/metadata.json",
+      "transcript": "/73/a9b054bb5e/2/full.jsonl",
+      "compact_transcript": "/73/a9b054bb5e/2/transcript.jsonl",
+      "content_hash": "/73/a9b054bb5e/2/content_hash.txt",
+      "prompt": "/73/a9b054bb5e/2/prompt.txt"
     }
   ],
   "token_usage": {
-    "input_tokens": 113843,
+    "input_tokens": 271740,
     "cache_creation_tokens": 0,
-    "cache_read_tokens": 4077440,
-    "output_tokens": 11371,
-    "api_call_count": 60
+    "cache_read_tokens": 11115648,
+    "output_tokens": 27330,
+    "api_call_count": 127
   }
 }

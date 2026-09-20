@@ -1,0 +1,129 @@
+{
+  "cli_version": "0.9.0",
+  "checkpoint_id": "73a9b054bb5e",
+  "session_id": "01a0c05a-ac3e-7362-9a1f-f9feb7929f88",
+  "strategy": "manual-commit",
+  "created_at": "2026-09-20T20:02:00.342716Z",
+  "branch": "bodhi/questionnaire-actions",
+  "checkpoints_count": 2,
+  "save_step_count": 2,
+  "files_touched": [
+    "src/PluginEngine.tsx",
+    "src/Providers/AuthUserProvider.tsx",
+    "src/components/Questionnaire/QuestionTypes/AllergyQuestion.tsx",
+    "src/components/Questionnaire/QuestionTypes/ChargeItemQuestion.tsx",
+    "src/components/Questionnaire/QuestionTypes/DiagnosisQuestion.tsx",
+    "src/components/Questionnaire/QuestionTypes/EncounterQuestion.tsx",
+    "src/components/Questionnaire/QuestionTypes/FileQuestion.tsx",
+    "src/components/Questionnaire/QuestionTypes/MedicationRequestQuestion.tsx",
+    "src/components/Questionnaire/QuestionTypes/MedicationStatementQuestion.tsx",
+    "src/components/Questionnaire/QuestionTypes/ServiceRequestQuestion.tsx",
+    "src/components/Questionnaire/QuestionTypes/SymptomQuestion.tsx",
+    "src/components/Questionnaire/ResourceResponses/response.test.ts",
+    "src/components/Questionnaire/ResourceResponses/response.ts",
+    "src/components/Questionnaire/SelectOrCreateValueset.tsx",
+    "src/components/Questionnaire/ValueSetSearchContent.tsx",
+    "src/components/QuestionnaireV2/builder/AnswerOptionsEditor.tsx",
+    "src/components/QuestionnaireV2/builder/QuestionTypePicker.tsx",
+    "src/components/QuestionnaireV2/builder/VisibilityConditionsCard.tsx",
+    "src/components/QuestionnaireV2/builder/actions/ActionConditionEditor.tsx",
+    "src/components/QuestionnaireV2/builder/saveValidation.test.ts",
+    "src/components/QuestionnaireV2/builder/saveValidation.ts",
+    "src/components/QuestionnaireV2/builder/useEditorRowKeys.test.ts",
+    "src/components/QuestionnaireV2/builder/useEditorRowKeys.ts",
+    "src/components/QuestionnaireV2/fill/answerSemantics.test.ts",
+    "src/components/QuestionnaireV2/fill/draft/draftMerge.ts",
+    "src/components/QuestionnaireV2/fill/draft/useFillAutosave.ts",
+    "src/components/QuestionnaireV2/fill/submit/validateActionReferences.ts",
+    "src/components/QuestionnaireV2/fill/useFillActions.ts",
+    "src/components/QuestionnaireV2/form/engine/inputs/ChoiceInput.tsx",
+    "src/components/QuestionnaireV2/form/engine/inputs/DateInput.tsx",
+    "src/components/QuestionnaireV2/form/engine/inputs/NumberInput.tsx",
+    "src/components/QuestionnaireV2/form/engine/inputs/answeredEntry.ts",
+    "src/components/QuestionnaireV2/form/engine/sanitizeStylingClasses.test.ts",
+    "src/components/QuestionnaireV2/form/engine/sanitizeStylingClasses.ts",
+    "src/components/QuestionnaireV2/form/engine/store.ts",
+    "src/components/ui/combined-date-picker.tsx",
+    "src/types/questionnaire/questionnaireApi.ts",
+    "tests/PLAYWRIGHT_GUIDE.md",
+    "tests/facility/patient/encounter/fill/fillPrimitiveInputs.spec.ts",
+    "tests/facility/patient/encounter/fill/fillStructuredState.spec.ts",
+    "tests/support/questionnaireId.ts"
+  ],
+  "agent": "Codex",
+  "model": "gpt-6-astra",
+  "turn_id": "5bb9b8e527e0",
+  "compact_transcript_start": 0,
+  "token_usage": {
+    "input_tokens": 157897,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 7038208,
+    "output_tokens": 15959,
+    "api_call_count": 67
+  },
+  "session_metrics": {
+    "turn_count": 2
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-09-20T20:02:00.178474Z",
+    "agent_lines": 927,
+    "agent_removed": 123,
+    "human_added": 0,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 927,
+    "total_lines_changed": 1050,
+    "agent_percentage": 100,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 12680,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        ".context/retros/2026-03-15-1.json": 36,
+        ".gstack/browse-console.log": 437,
+        ".gstack/browse-dialog.log": 1,
+        ".gstack/browse-network.log": 12201,
+        ".husky/commit-msg": 1,
+        ".husky/post-commit": 1,
+        ".husky/post-rewrite": 1,
+        ".husky/pre-push": 1,
+        ".husky/prepare-commit-msg": 1
+      }
+    },
+    {
+      "checkpoint_number": 2,
+      "user_lines_added": 41,
+      "user_lines_removed": 0,
+      "agent_lines_added": 13566,
+      "agent_lines_removed": 123,
+      "user_added_per_file": {
+        ".context/retros/2026-03-15-1.json": 36,
+        ".husky/commit-msg": 1,
+        ".husky/post-commit": 1,
+        ".husky/post-rewrite": 1,
+        ".husky/pre-push": 1,
+        ".husky/prepare-commit-msg": 1
+      }
+    },
+    {
+      "checkpoint_number": 3,
+      "user_lines_added": 41,
+      "user_lines_removed": 0,
+      "agent_lines_added": 13566,
+      "agent_lines_removed": 123,
+      "user_added_per_file": {
+        ".context/retros/2026-03-15-1.json": 36,
+        ".husky/commit-msg": 1,
+        ".husky/post-commit": 1,
+        ".husky/post-rewrite": 1,
+        ".husky/pre-push": 1,
+        ".husky/prepare-commit-msg": 1
+      }
+    }
+  ]
+}
