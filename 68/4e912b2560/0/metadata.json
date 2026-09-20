@@ -3,58 +3,38 @@
   "checkpoint_id": "684e912b2560",
   "session_id": "01a0c05a-ac3e-7362-9a1f-f9feb7929f88",
   "strategy": "manual-commit",
-  "created_at": "2026-09-20T20:38:19.24028Z",
+  "created_at": "2026-09-20T20:39:32.17153Z",
   "branch": "bodhi/questionnaire-actions",
   "checkpoints_count": 1,
   "files_touched": [
-    ".github/workflows/playwright.yaml"
+    "tests/facility/settings/valuesets/valuesetFacility.spec.ts"
   ],
   "agent": "Codex",
   "model": "gpt-6-astra",
   "turn_id": "a4f2cc03eb6d",
-  "checkpoint_transcript_start": 1678,
-  "transcript_lines_at_start": 1678,
-  "compact_transcript_start": 191,
+  "checkpoint_transcript_start": 1902,
+  "transcript_lines_at_start": 1902,
+  "compact_transcript_start": 218,
   "token_usage": {
-    "input_tokens": 37104,
+    "input_tokens": 11731,
     "cache_creation_tokens": 0,
-    "cache_read_tokens": 2311040,
-    "output_tokens": 6081,
-    "api_call_count": 29
+    "cache_read_tokens": 966528,
+    "output_tokens": 2141,
+    "api_call_count": 8
   },
   "session_metrics": {
     "turn_count": 4
   },
   "initial_attribution": {
-    "calculated_at": "2026-09-20T20:38:18.75223Z",
-    "agent_lines": 14,
-    "agent_removed": 4,
-    "human_added": 0,
+    "calculated_at": "2026-09-20T20:39:31.665302Z",
+    "agent_lines": 3,
+    "agent_removed": 1,
+    "human_added": 14,
     "human_modified": 0,
     "human_removed": 0,
-    "total_committed": 14,
-    "total_lines_changed": 18,
-    "agent_percentage": 100,
+    "total_committed": 17,
+    "total_lines_changed": 22,
+    "agent_percentage": 18.181818181818183,
     "metric_version": 2
-  },
-  "prompt_attributions": [
-    {
-      "checkpoint_number": 1,
-      "user_lines_added": 12680,
-      "user_lines_removed": 0,
-      "agent_lines_added": 0,
-      "agent_lines_removed": 0,
-      "user_added_per_file": {
-        ".context/retros/2026-03-15-1.json": 36,
-        ".gstack/browse-console.log": 437,
-        ".gstack/browse-dialog.log": 1,
-        ".gstack/browse-network.log": 12201,
-        ".husky/commit-msg": 1,
-        ".husky/post-commit": 1,
-        ".husky/post-rewrite": 1,
-        ".husky/pre-push": 1,
-        ".husky/prepare-commit-msg": 1
-      }
-    }
-  ]
+  }
 }
