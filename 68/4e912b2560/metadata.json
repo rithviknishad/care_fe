@@ -3,10 +3,9 @@
   "checkpoint_id": "684e912b2560",
   "strategy": "manual-commit",
   "branch": "bodhi/questionnaire-actions",
-  "checkpoints_count": 2,
+  "checkpoints_count": 1,
   "files_touched": [
-    ".github/workflows/playwright.yaml",
-    "tests/facility/settings/valuesets/valuesetFacility.spec.ts"
+    ".github/workflows/playwright.yaml"
   ],
   "sessions": [
     {
@@ -14,21 +13,14 @@
       "transcript": "/68/4e912b2560/0/full.jsonl",
       "compact_transcript": "/68/4e912b2560/0/transcript.jsonl",
       "content_hash": "/68/4e912b2560/0/content_hash.txt",
-      "prompt": ""
-    },
-    {
-      "metadata": "/68/4e912b2560/1/metadata.json",
-      "transcript": "/68/4e912b2560/1/full.jsonl",
-      "compact_transcript": "/68/4e912b2560/1/transcript.jsonl",
-      "content_hash": "/68/4e912b2560/1/content_hash.txt",
-      "prompt": "/68/4e912b2560/1/prompt.txt"
+      "prompt": "/68/4e912b2560/0/prompt.txt"
     }
   ],
   "token_usage": {
-    "input_tokens": 11795,
-    "cache_creation_tokens": 404288,
-    "cache_read_tokens": 4674219,
-    "output_tokens": 105528,
-    "api_call_count": 38
+    "input_tokens": 37104,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 2311040,
+    "output_tokens": 6081,
+    "api_call_count": 29
   }
 }
