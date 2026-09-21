@@ -1,0 +1,5 @@
+Run play wright tests, and verify why the mr pipelines are failing in gthub
+
+---
+
+fix the failing ones
