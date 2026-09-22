@@ -1,0 +1,28 @@
+{
+  "cli_version": "0.9.0",
+  "checkpoint_id": "ca85834cd537",
+  "strategy": "manual-commit",
+  "branch": "ENG-914-fix-plugin-auto-discovery",
+  "checkpoints_count": 4,
+  "files_touched": [
+    "docs/care-apps-architecture-note.md",
+    "docs/care-apps-local-dev.md",
+    "vite.config.mts"
+  ],
+  "sessions": [
+    {
+      "metadata": "/ca/85834cd537/0/metadata.json",
+      "transcript": "/ca/85834cd537/0/full.jsonl",
+      "compact_transcript": "/ca/85834cd537/0/transcript.jsonl",
+      "content_hash": "/ca/85834cd537/0/content_hash.txt",
+      "prompt": "/ca/85834cd537/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 48,
+    "cache_creation_tokens": 93085,
+    "cache_read_tokens": 1525455,
+    "output_tokens": 18647,
+    "api_call_count": 25
+  }
+}
