@@ -1,1 +1,5 @@
 I have checked out to this PR; can you implement the new approach we discussed
+
+---
+
+Commit as well
