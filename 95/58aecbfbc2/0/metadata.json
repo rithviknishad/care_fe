@@ -1,0 +1,75 @@
+{
+  "cli_version": "0.10.6",
+  "checkpoint_id": "9558aecbfbc2",
+  "session_id": "c907cfeb-18bc-4be4-9c49-05c3bedaf15e",
+  "strategy": "manual-commit",
+  "created_at": "2026-09-23T11:02:19.178586Z",
+  "branch": "ENG-1053",
+  "checkpoints_count": 2,
+  "save_step_count": 2,
+  "files_touched": [
+    "src/pages/Encounters/tabs/overview/summary-panel-details-tab/encounter-details.tsx",
+    "tests/facility/patient/encounter/encounterShortcuts.spec.ts"
+  ],
+  "agent": "Copilot CLI",
+  "model": "",
+  "turn_id": "769487adcb1e",
+  "compact_transcript_start": 0,
+  "token_usage": {
+    "input_tokens": 0,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 0,
+    "output_tokens": 0,
+    "api_call_count": 0
+  },
+  "session_metrics": {
+    "turn_count": 2
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-09-23T11:02:19.169633Z",
+    "agent_lines": 15,
+    "agent_removed": 1,
+    "human_added": 0,
+    "human_modified": 3,
+    "human_removed": 0,
+    "total_committed": 18,
+    "total_lines_changed": 19,
+    "agent_percentage": 84.21052631578947,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 1006,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        ".github/agents/care-code-researcher.agent.md": 90,
+        ".github/agents/manyu.agent.md": 278,
+        ".github/skills/care-coding/SKILL.md": 89,
+        ".github/skills/care-coding/references/backend-contracts.md": 150,
+        ".github/skills/care-coding/references/frontend-patterns.md": 264,
+        ".github/skills/care-coding/references/ui-inventory.md": 135
+      }
+    },
+    {
+      "checkpoint_number": 2,
+      "user_lines_added": 1006,
+      "user_lines_removed": 1,
+      "agent_lines_added": 3,
+      "agent_lines_removed": 2,
+      "user_added_per_file": {
+        ".github/agents/care-code-researcher.agent.md": 90,
+        ".github/agents/manyu.agent.md": 278,
+        ".github/skills/care-coding/SKILL.md": 89,
+        ".github/skills/care-coding/references/backend-contracts.md": 150,
+        ".github/skills/care-coding/references/frontend-patterns.md": 264,
+        ".github/skills/care-coding/references/ui-inventory.md": 135
+      },
+      "user_removed_per_file": {
+        "src/pages/Encounters/tabs/overview/summary-panel-details-tab/encounter-details.tsx": 1
+      }
+    }
+  ]
+}
