@@ -1,0 +1,553 @@
+fix like this
+**One responsive wrapper, not two branches.**
+
+`src/components/ui/responsive-dialog.tsx` — renders `Sheet side="bottom"` on mobile, `Dialog` on desktop, same API for both:
+
+```
+<ResponsiveDialog
+  open={isCompleteDialogOpen}
+  onOpenChange={setIsCompleteDialogOpen}
+  title={t("add_completion_note")}
+  description={t("service_request_completion_note_description")}
+  contentClassName="sm:max-w-lg"
+>
+  <CompletionNoteContent ... />
+</ResponsiveDialog>
+```
+
+    
+      
+    
+
+    
+  
+
+The branch collapses to one block. Nothing is written twice.
+
+**2. Then move the mutation down — but take the dialog with it.**
+
+This is the part the PR got half right. Extract `CompleteServiceRequestDialog` that owns the open state, the mutation, the note, *and* the `ResponsiveDialog`. The parent becomes a trigger button. Because the mutation and the dialog then live together, `isPending` can gate `onOpenChange` again — which is exactly the bug the current PR opened by splitting them.
+
+---
+
+review this pr including the current changes
+
+---
+
+fix the findings
+
+---
+
+1. **Note draft reset** — the trigger now reseeds `note` from `serviceRequest.note` before opening the dialog, so Cancel-then-reopen (or reopening after the underlying request changes) no longer shows a stale draft. do this
+
+---
+
+i want recall tab and content in mobile
+
+---
+
+show count using #sym:getTokenQueueStatusCount
+
+---
+
+for getting waiting tokens count should be token with not subqueue id and called + now serving are either token status should be inprogress or token status waiting but has sub queue id that is called state .. so currently wating and called showing incorrect  data fix it
+
+---
+
+don't add extra query for that , becuase we get the  count from summary api itself right? so calculate from those
+
+---
+
+modify this function #sym:getTokenQueueStatusCount  to get the
+1.  watiting tokens ->status=wating and subqueue_id is null which is exactly watiting  tokens count
+2. serving tokens ->status=waiting and subqueue_id is present which is called tokens
+becasue the serving token count actually= status = in_progress + called tokens count(2), and the wating tokens are (1)
+
+---
+
+[Terminal 5daec633-8159-40f0-981d-6884ff2838f0 notification: command may be waiting for input — assess the output below.]
+This note is not a signal to end the turn — pick one of the actions below and continue.
+  1. If the command may still be producing output or the shell prompt has not returned, call get_terminal_output with id="5daec633-8159-40f0-981d-6884ff2838f0" to continue polling. This is the default and safest action when unsure.
+  2. Only if the output clearly ends with a real non-secret input prompt (Continue? (y/n), Enter selection, etc. — a normal shell prompt like `$` or `#` does NOT count), call the vscode_askQuestions tool to ask the user, then send each answer using send_to_terminal with id="5daec633-8159-40f0-981d-6884ff2838f0" (which returns the next few lines of output). Repeat one prompt at a time. NEVER route secret prompts (passwords, passphrases, tokens, API keys, etc.) through vscode_askQuestions — answers to that tool are sent through the model. For secret prompts, tell the user to type the value directly into the terminal and stop.
+Terminal output:
+Using Node v24.18.0
+
+fish is running in private mode, history will not be persisted.
+direnv: unloading
+
+…e-duplication-of-mutation [$!?⇡] via  v24.18.0 via  v3.14.5 (ohc-experience) 
+git status && echo ---- && git log --oneline -5 && echo ---- && git diff origin/develop...HEAD --stat
+On branch ENG-581-optimize-complete-service-request-logic-by-remove-duplication-of-mutation
+Your branch is ahead of 'origin/ENG-581-optimize-complete-service-request-logic-by-remove-duplication-of-mutation' by 44 commits.
+  (use "git push" to publish your local commits)
+
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+        modified:   src/pages/Facility/services/serviceRequests/ServiceRequestShow.tsx
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+        src/components/ui/responsive-dialog.tsx
+        src/pages/Facility/services/serviceRequests/components/CompleteServiceRequestDialog.tsx
+
+no changes added to commit (use "git add" and/or "git commit -a")
+----
+89b16195a (HEAD -> ENG-581-optimize-complete-service-request-logic-by-remove-duplication-of-mutation) Merge remote-tracking branch 'origin/develop' into ENG-581-optimize-complete-service-request-logic-by-remove-duplication-of-mutation
+db29fd2ea (origin/develop, origin/HEAD) Add Entire trail runner configs (#16862)
+38852cf45 (develop) feat: add tooltips for amount due and billed gross in AccountShow component (#16851)
+f78cc27ac [ENG-922] Adds expiration date filter for inventory items list view (#16737)
+305d4ebbd refactor: Accept method and path as separate parameters in `API` factory (#16310)
+----
+ .../serviceRequests/ServiceRequestShow.tsx         | 116 +++++++++------------
+ 1 file changed, 52 insertions(+), 64 deletions(-)
+
+…e-duplication-of-mutation [$!?⇡] via  v24.18.0 via  v3.14.5 (ohc-experience) 
+git diff origin/develop...HEAD -- src/pages/Facility/services/serviceRequests/ServiceRequestShow.tsx
+diff --git a/src/pages/Facility/services/serviceRequests/ServiceRequestShow.tsx b/src/pages/Facility/services/serviceRequests/ServiceRequestShow.tsx
+index 2b6ac15ca..58f482da8 100644
+--- a/src/pages/Facility/services/serviceRequests/ServiceRequestShow.tsx
++++ b/src/pages/Facility/services/serviceRequests/ServiceRequestShow.tsx
+@@ -37,6 +37,7 @@ import activityDefinitionApi from "@/types/emr/activityDefinition/activityDefini
+ import { DiagnosticReportStatus } from "@/types/emr/diagnosticReport/diagnosticReport";
+ import {
+   EDITABLE_SERVICE_REQUEST_STATUSES,
++  ServiceRequestReadSpec,
+   Status,
+ } from "@/types/emr/serviceRequest/serviceRequest";
+ import serviceRequestApi from "@/types/emr/serviceRequest/serviceRequestApi";
+@@ -95,7 +96,6 @@ export default function ServiceRequestShow({
+   const [isPrintingAllQRCodes, setIsPrintingAllQRCodes] = useState(false);
+   const [isQRCodeSheetOpen, setIsQRCodeSheetOpen] = useState(false);
+   const [isCompleteDialogOpen, setIsCompleteDialogOpen] = useState(false);
+-  const [completionNote, setCompletionNote] = useState("");
+   const [selectedSpecimenDefinition, setSelectedSpecimenDefinition] =
+     useState<SpecimenDefinitionRead | null>(null);
+ 
+@@ -157,22 +157,6 @@ export default function ServiceRequestShow({
+     },
+   });
+ 
+-  const {
+-    mutate: completeServiceRequest,
+-    isPending: isCompletingServiceRequest,
+-  } = useMutation({
+-    mutationFn: mutate(serviceRequestApi.updateServiceRequest, {
+-      pathParams: { facilityId, serviceRequestId },
+-    }),
+-    onSuccess: () => {
+-      toast.success(t("service_request_completed"));
+-      setIsCompleteDialogOpen(false);
+-      queryClient.invalidateQueries({
+-        queryKey: ["serviceRequest", facilityId, serviceRequestId],
+-      });
+-    },
+-  });
+-
+   const createDraftSpecimen = (requirement: SpecimenDefinitionRead) => {
+     const matchingSpecimens = request?.specimens.filter(
+       (spec) => spec.specimen_definition?.id === requirement.id,
+@@ -642,11 +626,7 @@ export default function ServiceRequestShow({
+               <Button
+                 variant="primary"
+                 className="font-semibold shrink-0"
+-                onClick={() => {
+-                  setCompletionNote(request.note ?? "");
+-                  setIsCompleteDialogOpen(true);
+-                }}
+-                disabled={isCompletingServiceRequest}
++                onClick={() => setIsCompleteDialogOpen(true)}
+               >
+                 {t("mark_as_complete")}
+                 <ShortcutBadge actionId="mark-as-complete" />
+@@ -657,9 +637,7 @@ export default function ServiceRequestShow({
+           {isMobile ? (
+             <Sheet
+               open={isCompleteDialogOpen}
+-              onOpenChange={(open) => {
+-                if (!isCompletingServiceRequest) setIsCompleteDialogOpen(open);
+-              }}
++              onOpenChange={setIsCompleteDialogOpen}
+             >
+               <SheetContent side="bottom">
+                 <SheetHeader>
+@@ -669,26 +647,16 @@ export default function ServiceRequestShow({
+                   </SheetDescription>
+                 </SheetHeader>
+                 <CompletionNoteContent
+-                  note={completionNote}
+-                  isUpdating={isCompletingServiceRequest}
+-                  onNoteChange={setCompletionNote}
+-                  onComplete={() =>
+-                    completeServiceRequest({
+-                      status: Status.completed,
+-                      note: completionNote.trim() || null,
+-                      locations: request.locations.map((loc) => loc.id),
+-                    })
+-                  }
+-                  onCancel={() => setIsCompleteDialogOpen(false)}
++                  facilityId={facilityId}
++                  onClose={() => setIsCompleteDialogOpen(false)}
++                  serviceRequest={request}
+                 />
+               </SheetContent>
+             </Sheet>
+           ) : (
+             <Dialog
+               open={isCompleteDialogOpen}
+-              onOpenChange={(open) => {
+-                if (!isCompletingServiceRequest) setIsCompleteDialogOpen(open);
+-              }}
++              onOpenChange={setIsCompleteDialogOpen}
+             >
+               <DialogContent className="sm:max-w-lg shadow-lg border-white/20">
+                 <DialogHeader>
+@@ -698,17 +666,9 @@ export default function ServiceRequestShow({
+                   </DialogDescription>
+                 </DialogHeader>
+                 <CompletionNoteContent
+-                  note={completionNote}
+-                  isUpdating={isCompletingServiceRequest}
+-                  onNoteChange={setCompletionNote}
+-                  onComplete={() =>
+-                    completeServiceRequest({
+-                      status: Status.completed,
+-                      note: completionNote.trim() || null,
+-                      locations: request.locations.map((loc) => loc.id),
+-                    })
+-                  }
+-                  onCancel={() => setIsCompleteDialogOpen(false)}
++                  facilityId={facilityId}
++                  onClose={() => setIsCompleteDialogOpen(false)}
++                  serviceRequest={request}
+                 />
+               </DialogContent>
+             </Dialog>
+@@ -720,21 +680,35 @@ export default function ServiceRequestShow({
+ }
+ 
+ interface CompletionNoteContentProps {
+-  note: string;
+-  isUpdating: boolean;
+-  onNoteChange: (note: string) => void;
+-  onComplete: () => void;
+-  onCancel: () => void;
++  facilityId: string;
++  serviceRequest: ServiceRequestReadSpec;
++  onClose: () => void;
+ }
+ 
+ const CompletionNoteContent = ({
+-  note,
+-  isUpdating,
+-  onNoteChange,
+-  onComplete,
+-  onCancel,
++  facilityId,
++  onClose,
++  serviceRequest,
+ }: CompletionNoteContentProps) => {
+   const { t } = useTranslation();
++  const queryClient = useQueryClient();
++  const [note, setNote] = useState(serviceRequest.note ?? "");
++
++  const {
++    mutate: completeServiceRequest,
++    isPending: isCompletingServiceRequest,
++  } = useMutation({
++    mutationFn: mutate(serviceRequestApi.updateServiceRequest, {
++      pathParams: { facilityId, serviceRequestId: serviceRequest.id },
++    }),
++    onSuccess: () => {
++      toast.success(t("service_request_completed"));
++      onClose();
++      queryClient.invalidateQueries({
++        queryKey: ["serviceRequest", facilityId, serviceRequest.id],
++      });
++    },
++  });
+ 
+   return (
+     <>
+@@ -744,18 +718,32 @@ const CompletionNoteContent = ({
+         </p>
+         <Textarea
+           value={note}
+-          onChange={(e) => onNoteChange(e.target.value)}
++          onChange={(e) => setNote(e.target.value)}
+           placeholder={t("enter_note")}
+           className="min-h-14"
+           aria-label={t("completion_note")}
+         />
+       </div>
+       <div className="flex flex-row items-start justify-start gap-2 pt-2 sm:pt-0">
+-        <Button variant="primary" onClick={onComplete} disabled={isUpdating}>
++        <Button
++          variant="primary"
++          onClick={() =>
++            completeServiceRequest({
++              status: Status.completed,
++              note: note.trim() || null,
++              locations: serviceRequest.locations.map((loc) => loc.id),
++            })
++          }
++          disabled={isCompletingServiceRequest}
++        >
+           <CheckIcon className="size-4" />
+-          {isUpdating ? t("updating") : `${t("save_and_complete")}`}
++          {isCompletingServiceRequest ? t("updating") : t("save_and_complete")}
+         </Button>
+-        <Button variant="outline" onClick={onCancel} disabled={isUpdating}>
++        <Button
++          variant="outline"
++          onClick={onClose}
++          disabled={isCompletingServiceRequest}
++        >
+           {t("cancel")}
+         </Button>
+       </div>
+
+…e-duplication-of-mutation [$!?⇡] via  v24.18.0 via  v3.14.5 (ohc-experience) 
+git diff origin/develop -- src/pages/Facility/services/serviceRequests/ServiceRequestShow.tsx
+diff --git a/src/pages/Facility/services/serviceRequests/ServiceRequestShow.tsx b/src/pages/Facility/services/serviceRequests/ServiceRequestShow.tsx
+index 2b6ac15ca..54250267b 100644
+--- a/src/pages/Facility/services/serviceRequests/ServiceRequestShow.tsx
++++ b/src/pages/Facility/services/serviceRequests/ServiceRequestShow.tsx
+@@ -1,5 +1,5 @@
+ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+-import { ArrowLeft, CheckIcon, MoreVertical, PrinterIcon } from "lucide-react";
++import { ArrowLeft, MoreVertical, PrinterIcon } from "lucide-react";
+ import { navigate } from "raviger";
+ import { useState } from "react";
+ import { useTranslation } from "react-i18next";
+@@ -9,13 +9,6 @@ import CareIcon from "@/CAREUI/icons/CareIcon";
+ 
+ import { Button } from "@/components/ui/button";
+ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+-import {
+-  Dialog,
+-  DialogContent,
+-  DialogDescription,
+-  DialogHeader,
+-  DialogTitle,
+-} from "@/components/ui/dialog";
+ import {
+   DropdownMenu,
+   DropdownMenuContent,
+@@ -23,7 +16,6 @@ import {
+   DropdownMenuTrigger,
+ } from "@/components/ui/dropdown-menu";
+ import { Skeleton } from "@/components/ui/skeleton";
+-import { Textarea } from "@/components/ui/textarea";
+ 
+ import { ChargeItemsSection } from "@/components/Billing/ChargeItems/ChargeItemsSection";
+ 
+@@ -51,14 +43,8 @@ import { SpecimenDefinitionRead } from "@/types/emr/specimenDefinition/specimenD
+ import { ShortcutBadge } from "@/Utils/keyboardShortcutComponents";
+ import BackButton from "@/components/Common/BackButton";
+ import { PatientHeader } from "@/components/Patient/PatientHeader";
+-import {
+-  Sheet,
+-  SheetContent,
+-  SheetDescription,
+-  SheetHeader,
+-  SheetTitle,
+-} from "@/components/ui/sheet";
+ import { Classification } from "@/types/emr/activityDefinition/activityDefinition";
++import { CompleteServiceRequestDialog } from "./components/CompleteServiceRequestDialog";
+ import { DiagnosticReportForm } from "./components/DiagnosticReportForm";
+ import { DiagnosticReportReview } from "./components/DiagnosticReportReview";
+ import { MultiQRCodePrintSheet } from "./components/MultiQRCodePrintSheet";
+@@ -94,8 +80,6 @@ export default function ServiceRequestShow({
+ 
+   const [isPrintingAllQRCodes, setIsPrintingAllQRCodes] = useState(false);
+   const [isQRCodeSheetOpen, setIsQRCodeSheetOpen] = useState(false);
+-  const [isCompleteDialogOpen, setIsCompleteDialogOpen] = useState(false);
+-  const [completionNote, setCompletionNote] = useState("");
+   const [selectedSpecimenDefinition, setSelectedSpecimenDefinition] =
+     useState<SpecimenDefinitionRead | null>(null);
+ 
+@@ -157,22 +141,6 @@ export default function ServiceRequestShow({
+     },
+   });
+ 
+-  const {
+-    mutate: completeServiceRequest,
+-    isPending: isCompletingServiceRequest,
+-  } = useMutation({
+-    mutationFn: mutate(serviceRequestApi.updateServiceRequest, {
+-      pathParams: { facilityId, serviceRequestId },
+-    }),
+-    onSuccess: () => {
+-      toast.success(t("service_request_completed"));
+-      setIsCompleteDialogOpen(false);
+-      queryClient.invalidateQueries({
+-        queryKey: ["serviceRequest", facilityId, serviceRequestId],
+-      });
+-    },
+-  });
+-
+   const createDraftSpecimen = (requirement: SpecimenDefinitionRead) => {
+     const matchingSpecimens = request?.specimens.filter(
+       (spec) => spec.specimen_definition?.id === requirement.id,
+@@ -628,137 +596,11 @@ export default function ServiceRequestShow({
+       )}
+ 
+       {canShowMarkAsCompleteFootBar && (
+-        <>
+-          <div className="fixed bottom-0 inset-x-0 z-40 border-t bg-white border-gray-300 p-2">
+-            <div className="flex w-full items-center justify-between px-4 py-3 gap-2 bg-white">
+-              <div className="space-y-1">
+-                <p className="text-sm font-semibold text-gray-900">
+-                  {t("complete_service_request")}
+-                </p>
+-                <p className="text-xs text-gray-600">
+-                  {t("complete_service_request_help_text")}
+-                </p>
+-              </div>
+-              <Button
+-                variant="primary"
+-                className="font-semibold shrink-0"
+-                onClick={() => {
+-                  setCompletionNote(request.note ?? "");
+-                  setIsCompleteDialogOpen(true);
+-                }}
+-                disabled={isCompletingServiceRequest}
+-              >
+-                {t("mark_as_complete")}
+-                <ShortcutBadge actionId="mark-as-complete" />
+-              </Button>
+-            </div>
+-          </div>
+-
+-          {isMobile ? (
+-            <Sheet
+-              open={isCompleteDialogOpen}
+-              onOpenChange={(open) => {
+-                if (!isCompletingServiceRequest) setIsCompleteDialogOpen(open);
+-              }}
+-            >
+-              <SheetContent side="bottom">
+-                <SheetHeader>
+-                  <SheetTitle>{t("add_completion_note")}</SheetTitle>
+-                  <SheetDescription>
+-                    {t("service_request_completion_note_description")}
+-                  </SheetDescription>
+-                </SheetHeader>
+-                <CompletionNoteContent
+-                  note={completionNote}
+-                  isUpdating={isCompletingServiceRequest}
+-                  onNoteChange={setCompletionNote}
+-                  onComplete={() =>
+-                    completeServiceRequest({
+-                      status: Status.completed,
+-                      note: completionNote.trim() || null,
+-                      locations: request.locations.map((loc) => loc.id),
+-                    })
+-                  }
+-                  onCancel={() => setIsCompleteDialogOpen(false)}
+-                />
+-              </SheetContent>
+-            </Sheet>
+-          ) : (
+-            <Dialog
+-              open={isCompleteDialogOpen}
+-              onOpenChange={(open) => {
+-                if (!isCompletingServiceRequest) setIsCompleteDialogOpen(open);
+-              }}
+-            >
+-              <DialogContent className="sm:max-w-lg shadow-lg border-white/20">
+-                <DialogHeader>
+-                  <DialogTitle>{t("add_completion_note")}</DialogTitle>
+-                  <DialogDescription>
+-                    {t("service_request_completion_note_description")}
+-                  </DialogDescription>
+-                </DialogHeader>
+-                <CompletionNoteContent
+-                  note={completionNote}
+-                  isUpdating={isCompletingServiceRequest}
+-                  onNoteChange={setCompletionNote}
+-                  onComplete={() =>
+-                    completeServiceRequest({
+-                      status: Status.completed,
+-                      note: completionNote.trim() || null,
+-                      locations: request.locations.map((loc) => loc.id),
+-                    })
+-                  }
+-                  onCancel={() => setIsCompleteDialogOpen(false)}
+-                />
+-              </DialogContent>
+-            </Dialog>
+-          )}
+-        </>
++        <CompleteServiceRequestDialog
++          facilityId={facilityId}
++          serviceRequest={request}
++        />
+       )}
+     </div>
+   );
+ }
+-
+-interface CompletionNoteContentProps {
+-  note: string;
+-  isUpdating: boolean;
+-  onNoteChange: (note: string) => void;
+-  onComplete: () => void;
+-  onCancel: () => void;
+-}
+-
+-const CompletionNoteContent = ({
+-  note,
+-  isUpdating,
+-  onNoteChange,
+-  onComplete,
+-  onCancel,
+-}: CompletionNoteContentProps) => {
+-  const { t } = useTranslation();
+-
+-  return (
+-    <>
+-      <div className="space-y-2">
+-        <p className="text-sm font-medium text-gray-900">
+-          {t("completion_note")}
+-        </p>
+-        <Textarea
+-          value={note}
+-          onChange={(e) => onNoteChange(e.target.value)}
+-          placeholder={t("enter_note")}
+-          className="min-h-14"
+-          aria-label={t("completion_note")}
+-        />
+-      </div>
+-      <div className="flex flex-row items-start justify-start gap-2 pt-2 sm:pt-0">
+-        <Button variant="primary" onClick={onComplete} disabled={isUpdating}>
+-          <CheckIcon className="size-4" />
+-          {isUpdating ? t("updating") : `${t("save_and_complete")}`}
+-        </Button>
+-        <Button variant="outline" onClick={onCancel} disabled={isUpdating}>
+-          {t("cancel")}
+-        </Button>
+-      </div>
+-    </>
+-  );
+-};
+
+…e-duplication-of-mutation [$!?⇡] via  v24.18.0 via  v3.14.5 (ohc-experience) 
+ls ~/ohc.network/ 2>/dev/null
+care/                          care_token_display_fe/
+care_analytics_fe/             docker/
+care_apps_registry/            experience/
+care_be_plug_config_generator/ leaderboard/
+care_cash_management_fe/       leaderboard-data/
+care_fe/                       leaderboard-github-plugin/
+care_system_diagnostics/       leaderboard-github-scraper/
+care_teleicu_devices/          leaderboard-slack-plugin/
+care_teleicu_devices_fe/       leaderboard-slack-scraper/
+care_token_display/
+
+…t-Patientcard-in-Queue-board [$] via  v24.18.0 via  v3.14.5 (ohc-experience)
+
+---
+
+let's not allow customising dialog contents classname unnecessarily. let's keep the design standard across all usage.
