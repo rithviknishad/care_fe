@@ -1,0 +1,48 @@
+{
+  "cli_version": "0.9.0",
+  "checkpoint_id": "d18eac6b7e55",
+  "strategy": "manual-commit",
+  "branch": "bodhi/questionnaire-actions",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "src/Routers/AppRouter.tsx",
+    "src/components/Common/ScrollableSidebarContent.tsx",
+    "src/components/Facility/ConsultationDetails/QuestionnaireResponsesList.tsx",
+    "src/components/Patient/EncounterAccordionLayout.tsx",
+    "src/components/Patient/PatientHeader.tsx",
+    "src/components/Patient/allergy/list.tsx",
+    "src/components/Patient/diagnosis/list.tsx",
+    "src/components/Patient/symptoms/list.tsx",
+    "src/components/Patient/vitals/list.tsx",
+    "src/components/ui/sidebar/workspace-header.tsx",
+    "src/pages/Encounters/EncounterHistorySelector.tsx",
+    "src/pages/Encounters/EncounterShow.tsx",
+    "src/pages/Encounters/tabs/observations.tsx",
+    "src/pages/Encounters/tabs/overview.tsx",
+    "src/pages/Encounters/tabs/overview/FormSubmissionDrafts.tsx",
+    "src/pages/Encounters/tabs/overview/clinical-history-overview.tsx",
+    "src/pages/Encounters/tabs/overview/quick-actions.tsx",
+    "src/pages/Encounters/tabs/overview/summary-panel-actions.tab.tsx",
+    "src/pages/Encounters/tabs/overview/summary-panel-details-tab/account.tsx",
+    "src/pages/Encounters/tabs/overview/summary-panel-details-tab/auditlogs.tsx",
+    "src/pages/Encounters/tabs/overview/summary-panel-details-tab/department-and-team.tsx",
+    "src/pages/Encounters/tabs/overview/summary-panel-details-tab/discharge-summary.tsx",
+    "src/pages/Encounters/tabs/overview/summary-panel-details-tab/encounter-details.tsx",
+    "src/pages/Encounters/tabs/overview/summary-panel-details-tab/encounter-tags.tsx",
+    "src/pages/Encounters/tabs/overview/summary-panel-details-tab/hospitalisation.tsx",
+    "src/pages/Encounters/tabs/overview/summary-panel-details-tab/locations.tsx",
+    "src/pages/Encounters/tabs/overview/summary-panel-details-tab/manage-care-team.tsx",
+    "src/pages/Encounters/tabs/overview/summary-panel-details-tab/summary-panel-encounter-details.tsx",
+    "src/pages/Encounters/tabs/overview/summary-panel-reports-tab.tsx",
+    "src/pages/Encounters/tabs/overview/summary-panel.tsx",
+    "tests/facility/patient/encounter/medicine/prescriptionCreate.spec.ts",
+    "tests/facility/patient/encounter/medicine/prescriptionEdit.spec.ts",
+    "tests/facility/patient/encounter/structuredQuestions/allergy.spec.ts"
+  ],
+  "sessions": [
+    {
+      "metadata": "/d1/8eac6b7e55/0/metadata.json",
+      "prompt": ""
+    }
+  ]
+}
