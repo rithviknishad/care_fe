@@ -3,9 +3,48 @@
   "checkpoint_id": "82388648fe7b",
   "strategy": "manual-commit",
   "branch": "bodhi/questionnaire-actions",
-  "checkpoints_count": 1,
+  "checkpoints_count": 2,
   "files_touched": [
-    ".github/workflows/playwright.yaml"
+    ".github/workflows/playwright.yaml",
+    "public/locale/en.json",
+    "src/components/Questionnaire/SelectOrCreateValueset.tsx",
+    "src/components/Questionnaire/ValueSetVariantChooser.tsx",
+    "src/components/QuestionnaireV2/builder/AnswerOptionsEditor.tsx",
+    "src/components/QuestionnaireV2/builder/EditPreviewToggle.tsx",
+    "src/components/QuestionnaireV2/builder/ImportQuestionsDialog.tsx",
+    "src/components/QuestionnaireV2/builder/MoveQuestionsDialog.tsx",
+    "src/components/QuestionnaireV2/builder/VisibilityConditionsCard.tsx",
+    "src/components/QuestionnaireV2/builder/actions/ActionConditionEditor.tsx",
+    "src/components/QuestionnaireV2/builder/actions/ActionListEditor.tsx",
+    "src/components/QuestionnaireV2/builder/saveValidation.test.ts",
+    "src/components/QuestionnaireV2/builder/saveValidation.ts",
+    "src/components/QuestionnaireV2/fill/draft/useFillAutosave.ts",
+    "src/components/QuestionnaireV2/form/QuestionAnswerInput.tsx",
+    "src/components/QuestionnaireV2/form/QuestionBlock.tsx",
+    "src/components/QuestionnaireV2/form/RepeatedQuestionInput.tsx",
+    "src/components/QuestionnaireV2/form/SectionCard.tsx",
+    "src/components/QuestionnaireV2/form/engine/inputs/BooleanInput.tsx",
+    "src/components/QuestionnaireV2/form/engine/inputs/DateInput.tsx",
+    "src/components/QuestionnaireV2/form/engine/inputs/DateTimeQuestionInput.tsx",
+    "src/components/QuestionnaireV2/form/engine/inputs/FixedChoiceInput.tsx",
+    "src/components/QuestionnaireV2/form/engine/inputs/NumberInput.tsx",
+    "src/components/QuestionnaireV2/form/engine/inputs/QuantityInput.tsx",
+    "src/components/QuestionnaireV2/form/engine/inputs/QuestionInputGroup.tsx",
+    "src/components/QuestionnaireV2/form/engine/inputs/TextInput.tsx",
+    "src/components/QuestionnaireV2/form/engine/inputs/TimeInput.tsx",
+    "src/components/QuestionnaireV2/form/engine/inputs/ValueSetChoiceInput.tsx",
+    "src/components/QuestionnaireV2/form/engine/questionTypeRegistry.tsx",
+    "src/components/QuestionnaireV2/form/engine/sanitizeStylingClasses.test.ts",
+    "src/components/QuestionnaireV2/form/engine/sanitizeStylingClasses.ts",
+    "src/components/QuestionnaireV2/form/engine/store.ts",
+    "src/components/QuestionnaireV2/manage/BasicInformationCard.tsx",
+    "src/components/QuestionnaireV2/manage/QuestionOverviewList.tsx",
+    "src/components/QuestionnaireV2/manage/questionnaireFormSchema.ts",
+    "src/components/QuestionnaireV2/studio/StudioMobileQuestionNav.tsx",
+    "src/components/ValueSet/ValueSetParentPicker.tsx",
+    "src/components/ValueSet/useScopedValueSets.ts",
+    "tests/facility/patient/encounter/fill/fillValidation.spec.ts",
+    "tests/facility/settings/questionnaires/questionnairePreviewTypes.spec.ts"
   ],
   "sessions": [
     {
@@ -14,13 +53,20 @@
       "compact_transcript": "/82/388648fe7b/0/transcript.jsonl",
       "content_hash": "/82/388648fe7b/0/content_hash.txt",
       "prompt": "/82/388648fe7b/0/prompt.txt"
+    },
+    {
+      "metadata": "/82/388648fe7b/1/metadata.json",
+      "transcript": "/82/388648fe7b/1/full.jsonl",
+      "compact_transcript": "/82/388648fe7b/1/transcript.jsonl",
+      "content_hash": "/82/388648fe7b/1/content_hash.txt",
+      "prompt": "/82/388648fe7b/1/prompt.txt"
     }
   ],
   "token_usage": {
-    "input_tokens": 878084,
+    "input_tokens": 1126859,
     "cache_creation_tokens": 0,
-    "cache_read_tokens": 48131968,
-    "output_tokens": 103169,
-    "api_call_count": 433
+    "cache_read_tokens": 68124416,
+    "output_tokens": 143284,
+    "api_call_count": 621
   }
 }
