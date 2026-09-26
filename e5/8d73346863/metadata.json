@@ -3,15 +3,36 @@
   "checkpoint_id": "e58d73346863",
   "strategy": "manual-commit",
   "branch": "bodhi/questionnaire-actions",
-  "checkpoints_count": 1,
+  "checkpoints_count": 7,
   "files_touched": [
+    "public/locale/en.json",
+    "src/pages/Encounters/EncounterDetailsHeader.tsx",
+    "src/pages/Encounters/EncounterNavigation.tsx",
     "src/pages/Encounters/EncounterProperties.tsx",
-    "src/pages/Encounters/tabs/overview/summary-panel-details-tab.tsx"
+    "src/pages/Encounters/EncounterShow.tsx",
+    "src/pages/Encounters/tabs/overview/summary-panel-details-tab.tsx",
+    "src/pages/Encounters/tabs/overview/summary-panel-details-tab/encounter-details.tsx",
+    "src/pages/Encounters/tabs/overview/summary-panel-details-tab/summary-panel-encounter-details.tsx",
+    "tests/facility/patient/encounter/encounterNavigation.spec.ts"
   ],
   "sessions": [
     {
       "metadata": "/e5/8d73346863/0/metadata.json",
       "prompt": ""
+    },
+    {
+      "metadata": "/e5/8d73346863/1/metadata.json",
+      "transcript": "/e5/8d73346863/1/full.jsonl",
+      "compact_transcript": "/e5/8d73346863/1/transcript.jsonl",
+      "content_hash": "/e5/8d73346863/1/content_hash.txt",
+      "prompt": "/e5/8d73346863/1/prompt.txt"
     }
-  ]
+  ],
+  "token_usage": {
+    "input_tokens": 636646,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 14121728,
+    "output_tokens": 27463,
+    "api_call_count": 110
+  }
 }
