@@ -1,0 +1,243 @@
+{
+  "cli_version": "0.9.0",
+  "checkpoint_id": "d18eac6b7e55",
+  "session_id": "01a0deaf-cb0d-7d33-a66a-43b28520705d",
+  "strategy": "manual-commit",
+  "created_at": "2026-09-26T19:08:18.471499Z",
+  "branch": "bodhi/questionnaire-actions",
+  "checkpoints_count": 6,
+  "save_step_count": 6,
+  "files_touched": [
+    "public/locale/en.json",
+    "src/Routers/AppRouter.tsx",
+    "src/components/Common/ScrollableSidebarContent.tsx",
+    "src/components/Facility/ConsultationDetails/QuestionnaireResponsesList.tsx",
+    "src/components/Patient/EncounterAccordionLayout.tsx",
+    "src/components/Patient/PatientHeader.tsx",
+    "src/components/Patient/allergy/list.tsx",
+    "src/components/Patient/diagnosis/list.tsx",
+    "src/components/Patient/symptoms/list.tsx",
+    "src/components/Patient/vitals/list.tsx",
+    "src/components/ui/sidebar/workspace-header.tsx",
+    "src/pages/Encounters/EncounterDetailsHeader.tsx",
+    "src/pages/Encounters/EncounterHistorySelector.tsx",
+    "src/pages/Encounters/EncounterNavigation.tsx",
+    "src/pages/Encounters/EncounterPageHeader.tsx",
+    "src/pages/Encounters/EncounterShow.tsx",
+    "src/pages/Encounters/tabs/observations.tsx",
+    "src/pages/Encounters/tabs/overview.tsx",
+    "src/pages/Encounters/tabs/overview/FormSubmissionDrafts.tsx",
+    "src/pages/Encounters/tabs/overview/clinical-history-overview.tsx",
+    "src/pages/Encounters/tabs/overview/quick-actions.tsx",
+    "src/pages/Encounters/tabs/overview/summary-panel-actions.tab.tsx",
+    "src/pages/Encounters/tabs/overview/summary-panel-details-tab/account.tsx",
+    "src/pages/Encounters/tabs/overview/summary-panel-details-tab/auditlogs.tsx",
+    "src/pages/Encounters/tabs/overview/summary-panel-details-tab/department-and-team.tsx",
+    "src/pages/Encounters/tabs/overview/summary-panel-details-tab/discharge-summary.tsx",
+    "src/pages/Encounters/tabs/overview/summary-panel-details-tab/encounter-details.tsx",
+    "src/pages/Encounters/tabs/overview/summary-panel-details-tab/encounter-tags.tsx",
+    "src/pages/Encounters/tabs/overview/summary-panel-details-tab/hospitalisation.tsx",
+    "src/pages/Encounters/tabs/overview/summary-panel-details-tab/locations.tsx",
+    "src/pages/Encounters/tabs/overview/summary-panel-details-tab/manage-care-team.tsx",
+    "src/pages/Encounters/tabs/overview/summary-panel-details-tab/summary-panel-encounter-details.tsx",
+    "src/pages/Encounters/tabs/overview/summary-panel-reports-tab.tsx",
+    "src/pages/Encounters/tabs/overview/summary-panel.tsx",
+    "src/pages/Facility/services/serviceRequests/PatientHoverCard.tsx",
+    "tests/facility/patient/encounter/encounterNavigation.spec.ts",
+    "tests/facility/patient/encounter/encounterShortcuts.spec.ts",
+    "tests/facility/patient/encounter/medicine/prescriptionCreate.spec.ts",
+    "tests/facility/patient/encounter/medicine/prescriptionEdit.spec.ts",
+    "tests/facility/patient/encounter/structuredQuestions/allergy.spec.ts"
+  ],
+  "agent": "Codex",
+  "model": "gpt-6-astra",
+  "turn_id": "7e63050f9f95",
+  "compact_transcript_start": 0,
+  "token_usage": {
+    "input_tokens": 875382,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 52829952,
+    "output_tokens": 103563,
+    "api_call_count": 477
+  },
+  "session_metrics": {
+    "turn_count": 6
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-09-26T19:08:18.063734Z",
+    "agent_lines": 0,
+    "agent_removed": 0,
+    "human_added": 488,
+    "human_modified": 731,
+    "human_removed": 0,
+    "total_committed": 488,
+    "total_lines_changed": 1219,
+    "agent_percentage": 0,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 471,
+      "user_lines_removed": 247,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        ".context/retros/2026-03-15-1.json": 36,
+        ".husky/commit-msg": 1,
+        ".husky/post-commit": 1,
+        ".husky/post-rewrite": 1,
+        ".husky/pre-push": 1,
+        ".husky/prepare-commit-msg": 1,
+        "public/locale/en.json": 2,
+        "src/pages/Encounters/EncounterHistorySelector.tsx": 113,
+        "src/pages/Encounters/EncounterNavigation.tsx": 96,
+        "src/pages/Encounters/EncounterShow.tsx": 128,
+        "tests/facility/patient/encounter/encounterNavigation.spec.ts": 83,
+        "tests/facility/patient/encounter/encounterShortcuts.spec.ts": 2,
+        "tests/facility/patient/encounter/medicine/prescriptionCreate.spec.ts": 3,
+        "tests/facility/patient/encounter/medicine/prescriptionEdit.spec.ts": 3
+      },
+      "user_removed_per_file": {
+        "src/pages/Encounters/EncounterHistorySelector.tsx": 122,
+        "src/pages/Encounters/EncounterShow.tsx": 117,
+        "tests/facility/patient/encounter/encounterShortcuts.spec.ts": 2,
+        "tests/facility/patient/encounter/medicine/prescriptionCreate.spec.ts": 3,
+        "tests/facility/patient/encounter/medicine/prescriptionEdit.spec.ts": 3
+      }
+    },
+    {
+      "checkpoint_number": 2,
+      "user_lines_added": 41,
+      "user_lines_removed": 0,
+      "agent_lines_added": 436,
+      "agent_lines_removed": 247,
+      "user_added_per_file": {
+        ".context/retros/2026-03-15-1.json": 36,
+        ".husky/commit-msg": 1,
+        ".husky/post-commit": 1,
+        ".husky/post-rewrite": 1,
+        ".husky/pre-push": 1,
+        ".husky/prepare-commit-msg": 1
+      }
+    },
+    {
+      "checkpoint_number": 3,
+      "user_lines_added": 52,
+      "user_lines_removed": 2,
+      "agent_lines_added": 711,
+      "agent_lines_removed": 383,
+      "user_added_per_file": {
+        ".context/retros/2026-03-15-1.json": 36,
+        ".husky/commit-msg": 1,
+        ".husky/post-commit": 1,
+        ".husky/post-rewrite": 1,
+        ".husky/pre-push": 1,
+        ".husky/prepare-commit-msg": 1,
+        "src/pages/Encounters/EncounterNavigation.tsx": 11
+      },
+      "user_removed_per_file": {
+        "src/pages/Encounters/EncounterNavigation.tsx": 2
+      }
+    },
+    {
+      "checkpoint_number": 4,
+      "user_lines_added": 49,
+      "user_lines_removed": 6,
+      "agent_lines_added": 729,
+      "agent_lines_removed": 402,
+      "user_added_per_file": {
+        ".context/retros/2026-03-15-1.json": 36,
+        ".husky/commit-msg": 1,
+        ".husky/post-commit": 1,
+        ".husky/post-rewrite": 1,
+        ".husky/pre-push": 1,
+        ".husky/prepare-commit-msg": 1,
+        "src/pages/Encounters/EncounterNavigation.tsx": 8
+      },
+      "user_removed_per_file": {
+        "src/pages/Encounters/EncounterNavigation.tsx": 6
+      }
+    },
+    {
+      "checkpoint_number": 5,
+      "user_lines_added": 53,
+      "user_lines_removed": 10,
+      "agent_lines_added": 910,
+      "agent_lines_removed": 479,
+      "user_added_per_file": {
+        ".context/retros/2026-03-15-1.json": 36,
+        ".husky/commit-msg": 1,
+        ".husky/post-commit": 1,
+        ".husky/post-rewrite": 1,
+        ".husky/pre-push": 1,
+        ".husky/prepare-commit-msg": 1,
+        "src/pages/Encounters/EncounterDetailsHeader.tsx": 3,
+        "src/pages/Encounters/EncounterNavigation.tsx": 9
+      },
+      "user_removed_per_file": {
+        "src/pages/Encounters/EncounterDetailsHeader.tsx": 3,
+        "src/pages/Encounters/EncounterNavigation.tsx": 7
+      }
+    },
+    {
+      "checkpoint_number": 6,
+      "user_lines_added": 53,
+      "user_lines_removed": 10,
+      "agent_lines_added": 913,
+      "agent_lines_removed": 479,
+      "user_added_per_file": {
+        ".context/retros/2026-03-15-1.json": 36,
+        ".husky/commit-msg": 1,
+        ".husky/post-commit": 1,
+        ".husky/post-rewrite": 1,
+        ".husky/pre-push": 1,
+        ".husky/prepare-commit-msg": 1,
+        "src/pages/Encounters/EncounterDetailsHeader.tsx": 3,
+        "src/pages/Encounters/EncounterNavigation.tsx": 9
+      },
+      "user_removed_per_file": {
+        "src/pages/Encounters/EncounterDetailsHeader.tsx": 3,
+        "src/pages/Encounters/EncounterNavigation.tsx": 7
+      }
+    },
+    {
+      "checkpoint_number": 7,
+      "user_lines_added": 629,
+      "user_lines_removed": 228,
+      "agent_lines_added": 913,
+      "agent_lines_removed": 479,
+      "user_added_per_file": {
+        ".context/retros/2026-03-15-1.json": 36,
+        ".husky/commit-msg": 1,
+        ".husky/post-commit": 1,
+        ".husky/post-rewrite": 1,
+        ".husky/pre-push": 1,
+        ".husky/prepare-commit-msg": 1,
+        "public/locale/en.json": 2,
+        "src/Routers/AppRouter.tsx": 3,
+        "src/components/Common/ScrollableSidebarContent.tsx": 19,
+        "src/components/Patient/PatientHeader.tsx": 102,
+        "src/components/ui/sidebar/workspace-header.tsx": 40,
+        "src/pages/Encounters/EncounterDetailsHeader.tsx": 56,
+        "src/pages/Encounters/EncounterNavigation.tsx": 9,
+        "src/pages/Encounters/EncounterPageHeader.tsx": 133,
+        "src/pages/Encounters/EncounterShow.tsx": 26,
+        "src/pages/Encounters/tabs/overview/quick-actions.tsx": 121,
+        "src/pages/Facility/services/serviceRequests/PatientHoverCard.tsx": 9,
+        "tests/facility/patient/encounter/encounterNavigation.spec.ts": 68
+      },
+      "user_removed_per_file": {
+        "src/components/Common/ScrollableSidebarContent.tsx": 7,
+        "src/components/Patient/PatientHeader.tsx": 71,
+        "src/components/ui/sidebar/workspace-header.tsx": 21,
+        "src/pages/Encounters/EncounterDetailsHeader.tsx": 4,
+        "src/pages/Encounters/EncounterNavigation.tsx": 7,
+        "src/pages/Encounters/EncounterShow.tsx": 12,
+        "src/pages/Encounters/tabs/overview/quick-actions.tsx": 61,
+        "src/pages/Facility/services/serviceRequests/PatientHoverCard.tsx": 44,
+        "tests/facility/patient/encounter/encounterNavigation.spec.ts": 1
+      }
+    }
+  ]
+}

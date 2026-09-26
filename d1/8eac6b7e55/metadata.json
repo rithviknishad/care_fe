@@ -3,8 +3,9 @@
   "checkpoint_id": "d18eac6b7e55",
   "strategy": "manual-commit",
   "branch": "bodhi/questionnaire-actions",
-  "checkpoints_count": 1,
+  "checkpoints_count": 7,
   "files_touched": [
+    "public/locale/en.json",
     "src/Routers/AppRouter.tsx",
     "src/components/Common/ScrollableSidebarContent.tsx",
     "src/components/Facility/ConsultationDetails/QuestionnaireResponsesList.tsx",
@@ -15,7 +16,10 @@
     "src/components/Patient/symptoms/list.tsx",
     "src/components/Patient/vitals/list.tsx",
     "src/components/ui/sidebar/workspace-header.tsx",
+    "src/pages/Encounters/EncounterDetailsHeader.tsx",
     "src/pages/Encounters/EncounterHistorySelector.tsx",
+    "src/pages/Encounters/EncounterNavigation.tsx",
+    "src/pages/Encounters/EncounterPageHeader.tsx",
     "src/pages/Encounters/EncounterShow.tsx",
     "src/pages/Encounters/tabs/observations.tsx",
     "src/pages/Encounters/tabs/overview.tsx",
@@ -35,6 +39,9 @@
     "src/pages/Encounters/tabs/overview/summary-panel-details-tab/summary-panel-encounter-details.tsx",
     "src/pages/Encounters/tabs/overview/summary-panel-reports-tab.tsx",
     "src/pages/Encounters/tabs/overview/summary-panel.tsx",
+    "src/pages/Facility/services/serviceRequests/PatientHoverCard.tsx",
+    "tests/facility/patient/encounter/encounterNavigation.spec.ts",
+    "tests/facility/patient/encounter/encounterShortcuts.spec.ts",
     "tests/facility/patient/encounter/medicine/prescriptionCreate.spec.ts",
     "tests/facility/patient/encounter/medicine/prescriptionEdit.spec.ts",
     "tests/facility/patient/encounter/structuredQuestions/allergy.spec.ts"
@@ -43,6 +50,20 @@
     {
       "metadata": "/d1/8eac6b7e55/0/metadata.json",
       "prompt": ""
+    },
+    {
+      "metadata": "/d1/8eac6b7e55/1/metadata.json",
+      "transcript": "/d1/8eac6b7e55/1/full.jsonl",
+      "compact_transcript": "/d1/8eac6b7e55/1/transcript.jsonl",
+      "content_hash": "/d1/8eac6b7e55/1/content_hash.txt",
+      "prompt": "/d1/8eac6b7e55/1/prompt.txt"
     }
-  ]
+  ],
+  "token_usage": {
+    "input_tokens": 875382,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 52829952,
+    "output_tokens": 103563,
+    "api_call_count": 477
+  }
 }
