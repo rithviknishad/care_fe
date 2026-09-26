@@ -1,0 +1,39 @@
+{
+  "cli_version": "0.9.0",
+  "checkpoint_id": "82388648fe7b",
+  "session_id": "01a0c05a-ac3e-7362-9a1f-f9feb7929f88",
+  "strategy": "manual-commit",
+  "created_at": "2026-09-26T16:55:47.155722Z",
+  "branch": "bodhi/questionnaire-actions",
+  "checkpoints_count": 1,
+  "save_step_count": 1,
+  "files_touched": [
+    ".github/workflows/playwright.yaml"
+  ],
+  "agent": "Codex",
+  "model": "gpt-6-astra",
+  "turn_id": "59d6b79b4268",
+  "compact_transcript_start": 0,
+  "token_usage": {
+    "input_tokens": 878084,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 48131968,
+    "output_tokens": 103169,
+    "api_call_count": 433
+  },
+  "session_metrics": {
+    "turn_count": 5
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-09-26T16:55:46.539575Z",
+    "agent_lines": 12,
+    "agent_removed": 15,
+    "human_added": 1129,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 1141,
+    "total_lines_changed": 1425,
+    "agent_percentage": 1.8947368421052633,
+    "metric_version": 2
+  }
+}

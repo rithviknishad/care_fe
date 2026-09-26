@@ -1,0 +1,26 @@
+{
+  "cli_version": "0.9.0",
+  "checkpoint_id": "82388648fe7b",
+  "strategy": "manual-commit",
+  "branch": "bodhi/questionnaire-actions",
+  "checkpoints_count": 1,
+  "files_touched": [
+    ".github/workflows/playwright.yaml"
+  ],
+  "sessions": [
+    {
+      "metadata": "/82/388648fe7b/0/metadata.json",
+      "transcript": "/82/388648fe7b/0/full.jsonl",
+      "compact_transcript": "/82/388648fe7b/0/transcript.jsonl",
+      "content_hash": "/82/388648fe7b/0/content_hash.txt",
+      "prompt": "/82/388648fe7b/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 878084,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 48131968,
+    "output_tokens": 103169,
+    "api_call_count": 433
+  }
+}
