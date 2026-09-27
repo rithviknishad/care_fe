@@ -3,7 +3,7 @@
   "checkpoint_id": "cc61f4b25f8f",
   "strategy": "manual-commit",
   "branch": "bodhi/questionnaire-actions",
-  "checkpoints_count": 1,
+  "checkpoints_count": 3,
   "files_touched": [
     "src/components/Common/InnerPageHeader.tsx",
     "src/components/ui/sidebar/app-sidebar-provider.tsx",
@@ -13,6 +13,13 @@
     {
       "metadata": "/cc/61f4b25f8f/0/metadata.json",
       "prompt": ""
+    },
+    {
+      "metadata": "/cc/61f4b25f8f/1/metadata.json",
+      "transcript": "/cc/61f4b25f8f/1/full.jsonl",
+      "compact_transcript": "/cc/61f4b25f8f/1/transcript.jsonl",
+      "content_hash": "/cc/61f4b25f8f/1/content_hash.txt",
+      "prompt": "/cc/61f4b25f8f/1/prompt.txt"
     }
   ]
 }
