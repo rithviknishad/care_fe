@@ -3,8 +3,31 @@
   "checkpoint_id": "86b5cf3c181e",
   "strategy": "manual-commit",
   "branch": "bodhi/questionnaire-actions",
-  "checkpoints_count": 2,
-  "files_touched": null,
+  "checkpoints_count": 6,
+  "files_touched": [
+    "src/components/Common/InnerPageHeader.tsx",
+    "src/components/Common/WorkspaceHeaderSlot.tsx",
+    "src/components/Facility/ConsultationDetails/QuestionnaireResponsesList.tsx",
+    "src/components/Patient/Common/ClinicalInformationRow.tsx",
+    "src/components/Patient/EncounterAccordionLayout.tsx",
+    "src/components/Patient/PatientHeader.tsx",
+    "src/components/Patient/allergy/AllergyTable.tsx",
+    "src/components/Patient/allergy/list.tsx",
+    "src/components/Patient/diagnosis/DiagnosisTable.tsx",
+    "src/components/Patient/diagnosis/list.tsx",
+    "src/components/Patient/symptoms/SymptomTable.tsx",
+    "src/components/Patient/symptoms/list.tsx",
+    "src/components/ui/sidebar/workspace-header.tsx",
+    "src/pages/Encounters/AppointmentEncounterHeader.tsx",
+    "src/pages/Encounters/EncounterDetailsHeader.tsx",
+    "src/pages/Encounters/EncounterNavigation.tsx",
+    "src/pages/Encounters/EncounterShow.tsx",
+    "src/pages/Encounters/tabs/overview.tsx",
+    "src/pages/Encounters/tabs/overview/summary-panel-details-tab.tsx",
+    "src/pages/Encounters/tabs/overview/summary-panel-details-tab/summary-panel-encounter-details.tsx",
+    "src/pages/Encounters/tabs/overview/summary-panel.tsx",
+    "tests/facility/patient/encounter/encounterNavigation.spec.ts"
+  ],
   "sessions": [
     {
       "metadata": "/86/b5cf3c181e/0/metadata.json",
@@ -12,13 +35,20 @@
       "compact_transcript": "/86/b5cf3c181e/0/transcript.jsonl",
       "content_hash": "/86/b5cf3c181e/0/content_hash.txt",
       "prompt": "/86/b5cf3c181e/0/prompt.txt"
+    },
+    {
+      "metadata": "/86/b5cf3c181e/1/metadata.json",
+      "transcript": "/86/b5cf3c181e/1/full.jsonl",
+      "compact_transcript": "/86/b5cf3c181e/1/transcript.jsonl",
+      "content_hash": "/86/b5cf3c181e/1/content_hash.txt",
+      "prompt": "/86/b5cf3c181e/1/prompt.txt"
     }
   ],
   "token_usage": {
-    "input_tokens": 1971152,
+    "input_tokens": 2232787,
     "cache_creation_tokens": 0,
-    "cache_read_tokens": 98062336,
-    "output_tokens": 182846,
-    "api_call_count": 841
+    "cache_read_tokens": 111959424,
+    "output_tokens": 213568,
+    "api_call_count": 962
   }
 }

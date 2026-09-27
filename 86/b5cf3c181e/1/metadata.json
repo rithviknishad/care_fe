@@ -1,0 +1,153 @@
+{
+  "cli_version": "0.9.0",
+  "checkpoint_id": "86b5cf3c181e",
+  "session_id": "01a0e20b-3b8b-7d92-88d2-cef90ca7920c",
+  "strategy": "manual-commit",
+  "created_at": "2026-09-27T09:38:16.6057Z",
+  "branch": "bodhi/questionnaire-actions",
+  "checkpoints_count": 4,
+  "save_step_count": 4,
+  "files_touched": [
+    "src/components/Common/InnerPageHeader.tsx",
+    "src/components/Common/WorkspaceHeaderSlot.tsx",
+    "src/components/Facility/ConsultationDetails/QuestionnaireResponsesList.tsx",
+    "src/components/Patient/Common/ClinicalInformationRow.tsx",
+    "src/components/Patient/EncounterAccordionLayout.tsx",
+    "src/components/Patient/PatientHeader.tsx",
+    "src/components/Patient/allergy/AllergyTable.tsx",
+    "src/components/Patient/allergy/list.tsx",
+    "src/components/Patient/diagnosis/DiagnosisTable.tsx",
+    "src/components/Patient/diagnosis/list.tsx",
+    "src/components/Patient/symptoms/SymptomTable.tsx",
+    "src/components/Patient/symptoms/list.tsx",
+    "src/components/ui/sidebar/workspace-header.tsx",
+    "src/pages/Encounters/AppointmentEncounterHeader.tsx",
+    "src/pages/Encounters/EncounterDetailsHeader.tsx",
+    "src/pages/Encounters/EncounterNavigation.tsx",
+    "src/pages/Encounters/EncounterShow.tsx",
+    "src/pages/Encounters/tabs/overview.tsx",
+    "src/pages/Encounters/tabs/overview/summary-panel-details-tab.tsx",
+    "src/pages/Encounters/tabs/overview/summary-panel-details-tab/summary-panel-encounter-details.tsx",
+    "src/pages/Encounters/tabs/overview/summary-panel.tsx",
+    "tests/facility/patient/encounter/encounterNavigation.spec.ts"
+  ],
+  "agent": "Codex",
+  "model": "gpt-6-astra",
+  "turn_id": "eaf87301ceab",
+  "compact_transcript_start": 0,
+  "token_usage": {
+    "input_tokens": 261635,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 13897088,
+    "output_tokens": 30722,
+    "api_call_count": 121
+  },
+  "session_metrics": {
+    "turn_count": 4
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-09-27T09:38:16.507488Z",
+    "agent_lines": 187,
+    "agent_removed": 74,
+    "human_added": 114,
+    "human_modified": 58,
+    "human_removed": 0,
+    "total_committed": 359,
+    "total_lines_changed": 433,
+    "agent_percentage": 60.27713625866051,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 41,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        ".context/retros/2026-03-15-1.json": 36,
+        ".husky/commit-msg": 1,
+        ".husky/post-commit": 1,
+        ".husky/post-rewrite": 1,
+        ".husky/pre-push": 1,
+        ".husky/prepare-commit-msg": 1
+      }
+    },
+    {
+      "checkpoint_number": 2,
+      "user_lines_added": 41,
+      "user_lines_removed": 0,
+      "agent_lines_added": 1,
+      "agent_lines_removed": 1,
+      "user_added_per_file": {
+        ".context/retros/2026-03-15-1.json": 36,
+        ".husky/commit-msg": 1,
+        ".husky/post-commit": 1,
+        ".husky/post-rewrite": 1,
+        ".husky/pre-push": 1,
+        ".husky/prepare-commit-msg": 1
+      }
+    },
+    {
+      "checkpoint_number": 3,
+      "user_lines_added": 41,
+      "user_lines_removed": 0,
+      "agent_lines_added": 23,
+      "agent_lines_removed": 23,
+      "user_added_per_file": {
+        ".context/retros/2026-03-15-1.json": 36,
+        ".husky/commit-msg": 1,
+        ".husky/post-commit": 1,
+        ".husky/post-rewrite": 1,
+        ".husky/pre-push": 1,
+        ".husky/prepare-commit-msg": 1
+      }
+    },
+    {
+      "checkpoint_number": 4,
+      "user_lines_added": 640,
+      "user_lines_removed": 58,
+      "agent_lines_added": 92,
+      "agent_lines_removed": 39,
+      "user_added_per_file": {
+        ".context/retros/2026-03-15-1.json": 36,
+        ".husky/commit-msg": 1,
+        ".husky/post-commit": 1,
+        ".husky/post-rewrite": 1,
+        ".husky/pre-push": 1,
+        ".husky/prepare-commit-msg": 1,
+        ".playwright-cli/console-2026-09-27T09-02-21-001Z.log": 31,
+        ".playwright-cli/console-2026-09-27T09-02-24-322Z.log": 31,
+        ".playwright-cli/page-2026-09-27T09-02-21-258Z.yml": 1,
+        ".playwright-cli/page-2026-09-27T09-02-24-508Z.yml": 1,
+        ".playwright-cli/page-2026-09-27T09-03-02-448Z.yml": 363,
+        "src/components/Common/InnerPageHeader.tsx": 1,
+        "src/components/Common/WorkspaceHeaderSlot.tsx": 1,
+        "src/pages/Encounters/AppointmentEncounterHeader.tsx": 107,
+        "tests/facility/patient/encounter/encounterNavigation.spec.ts": 63
+      },
+      "user_removed_per_file": {
+        "src/components/Common/InnerPageHeader.tsx": 7,
+        "src/components/Common/WorkspaceHeaderSlot.tsx": 4,
+        "src/components/ui/sidebar/workspace-header.tsx": 1,
+        "src/pages/Encounters/AppointmentEncounterHeader.tsx": 41,
+        "tests/facility/patient/encounter/encounterNavigation.spec.ts": 5
+      }
+    },
+    {
+      "checkpoint_number": 5,
+      "user_lines_added": 41,
+      "user_lines_removed": 0,
+      "agent_lines_added": 417,
+      "agent_lines_removed": 132,
+      "user_added_per_file": {
+        ".context/retros/2026-03-15-1.json": 36,
+        ".husky/commit-msg": 1,
+        ".husky/post-commit": 1,
+        ".husky/post-rewrite": 1,
+        ".husky/pre-push": 1,
+        ".husky/prepare-commit-msg": 1
+      }
+    }
+  ]
+}
