@@ -1,0 +1,46 @@
+{
+  "cli_version": "0.9.0",
+  "checkpoint_id": "cc61f4b25f8f",
+  "session_id": "01a0e1ac-962b-7393-bc08-faa39d43ceb0",
+  "strategy": "manual-commit",
+  "created_at": "2026-09-27T08:32:42.49335Z",
+  "branch": "bodhi/questionnaire-actions",
+  "checkpoints_count": 4,
+  "save_step_count": 1,
+  "files_touched": [
+    "docs/architecture.md",
+    "src/Routers/AppRouter.tsx",
+    "src/components/Common/InnerPageHeader.tsx",
+    "src/components/ui/sidebar/app-sidebar-provider.tsx",
+    "src/components/ui/sidebar/workspace-header.tsx",
+    "src/pages/Encounters/AppointmentEncounterHeader.tsx",
+    "src/pages/Encounters/EncounterShow.tsx",
+    "tests/facility/patient/encounter/encounterNavigation.spec.ts"
+  ],
+  "agent": "Codex",
+  "model": "gpt-6-astra",
+  "turn_id": "d6fe46227dd4",
+  "compact_transcript_start": 0,
+  "token_usage": {
+    "input_tokens": 498901,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 34958592,
+    "output_tokens": 84390,
+    "api_call_count": 338
+  },
+  "session_metrics": {
+    "turn_count": 4
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-09-27T08:32:42.227213Z",
+    "agent_lines": 508,
+    "agent_removed": 248,
+    "human_added": 112,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 620,
+    "total_lines_changed": 1001,
+    "agent_percentage": 75.52447552447552,
+    "metric_version": 2
+  }
+}

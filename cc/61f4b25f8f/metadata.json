@@ -3,11 +3,16 @@
   "checkpoint_id": "cc61f4b25f8f",
   "strategy": "manual-commit",
   "branch": "bodhi/questionnaire-actions",
-  "checkpoints_count": 3,
+  "checkpoints_count": 7,
   "files_touched": [
+    "docs/architecture.md",
+    "src/Routers/AppRouter.tsx",
     "src/components/Common/InnerPageHeader.tsx",
     "src/components/ui/sidebar/app-sidebar-provider.tsx",
-    "src/pages/Encounters/AppointmentEncounterHeader.tsx"
+    "src/components/ui/sidebar/workspace-header.tsx",
+    "src/pages/Encounters/AppointmentEncounterHeader.tsx",
+    "src/pages/Encounters/EncounterShow.tsx",
+    "tests/facility/patient/encounter/encounterNavigation.spec.ts"
   ],
   "sessions": [
     {
@@ -20,6 +25,20 @@
       "compact_transcript": "/cc/61f4b25f8f/1/transcript.jsonl",
       "content_hash": "/cc/61f4b25f8f/1/content_hash.txt",
       "prompt": "/cc/61f4b25f8f/1/prompt.txt"
+    },
+    {
+      "metadata": "/cc/61f4b25f8f/2/metadata.json",
+      "transcript": "/cc/61f4b25f8f/2/full.jsonl",
+      "compact_transcript": "/cc/61f4b25f8f/2/transcript.jsonl",
+      "content_hash": "/cc/61f4b25f8f/2/content_hash.txt",
+      "prompt": "/cc/61f4b25f8f/2/prompt.txt"
     }
-  ]
+  ],
+  "token_usage": {
+    "input_tokens": 498901,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 34958592,
+    "output_tokens": 84390,
+    "api_call_count": 338
+  }
 }
