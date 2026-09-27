@@ -1,0 +1,18 @@
+{
+  "cli_version": "0.9.0",
+  "checkpoint_id": "cc61f4b25f8f",
+  "strategy": "manual-commit",
+  "branch": "bodhi/questionnaire-actions",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "src/components/Common/InnerPageHeader.tsx",
+    "src/components/ui/sidebar/app-sidebar-provider.tsx",
+    "src/pages/Encounters/AppointmentEncounterHeader.tsx"
+  ],
+  "sessions": [
+    {
+      "metadata": "/cc/61f4b25f8f/0/metadata.json",
+      "prompt": ""
+    }
+  ]
+}
