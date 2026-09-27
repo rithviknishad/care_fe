@@ -1,0 +1,37 @@
+{
+  "cli_version": "0.9.0",
+  "checkpoint_id": "1716da49c4f0",
+  "session_id": "01a0de65-0817-7893-99bd-922b63bf6a4e",
+  "strategy": "manual-commit",
+  "created_at": "2026-09-27T06:52:14.397455Z",
+  "branch": "bodhi/questionnaire-actions",
+  "checkpoints_count": 1,
+  "save_step_count": 1,
+  "files_touched": [
+    "src/components/QuestionnaireV2/fill/FillSessionTabs.tsx",
+    "src/components/QuestionnaireV2/fill/QuestionnaireFillPage.tsx",
+    "tests/facility/patient/encounter/fill/fillAutosave.spec.ts",
+    "tests/facility/patient/encounter/fill/fillDraftOverview.spec.ts",
+    "tests/facility/patient/encounter/fill/fillPage.spec.ts",
+    "tests/facility/patient/encounter/fill/fillServerDraft.spec.ts",
+    "tests/facility/patient/encounter/fill/fillStructuredState.spec.ts"
+  ],
+  "agent": "Codex",
+  "model": "gpt-6-astra",
+  "turn_id": "72a8ae02f0a3",
+  "session_metrics": {
+    "turn_count": 1
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-09-27T06:52:14.396185Z",
+    "agent_lines": 0,
+    "agent_removed": 0,
+    "human_added": 577,
+    "human_modified": 36,
+    "human_removed": 0,
+    "total_committed": 577,
+    "total_lines_changed": 887,
+    "agent_percentage": 0,
+    "metric_version": 2
+  }
+}

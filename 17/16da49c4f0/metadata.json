@@ -1,0 +1,22 @@
+{
+  "cli_version": "0.9.0",
+  "checkpoint_id": "1716da49c4f0",
+  "strategy": "manual-commit",
+  "branch": "bodhi/questionnaire-actions",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "src/components/QuestionnaireV2/fill/FillSessionTabs.tsx",
+    "src/components/QuestionnaireV2/fill/QuestionnaireFillPage.tsx",
+    "tests/facility/patient/encounter/fill/fillAutosave.spec.ts",
+    "tests/facility/patient/encounter/fill/fillDraftOverview.spec.ts",
+    "tests/facility/patient/encounter/fill/fillPage.spec.ts",
+    "tests/facility/patient/encounter/fill/fillServerDraft.spec.ts",
+    "tests/facility/patient/encounter/fill/fillStructuredState.spec.ts"
+  ],
+  "sessions": [
+    {
+      "metadata": "/17/16da49c4f0/0/metadata.json",
+      "prompt": ""
+    }
+  ]
+}
