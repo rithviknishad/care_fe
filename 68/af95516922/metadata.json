@@ -3,8 +3,10 @@
   "checkpoint_id": "68af95516922",
   "strategy": "manual-commit",
   "branch": "bodhi/questionnaire-actions",
-  "checkpoints_count": 2,
-  "files_touched": null,
+  "checkpoints_count": 6,
+  "files_touched": [
+    "src/pages/Encounters/EncounterShow.tsx"
+  ],
   "sessions": [
     {
       "metadata": "/68/af95516922/0/metadata.json",
@@ -12,6 +14,20 @@
       "compact_transcript": "/68/af95516922/0/transcript.jsonl",
       "content_hash": "/68/af95516922/0/content_hash.txt",
       "prompt": "/68/af95516922/0/prompt.txt"
+    },
+    {
+      "metadata": "/68/af95516922/1/metadata.json",
+      "transcript": "/68/af95516922/1/full.jsonl",
+      "compact_transcript": "/68/af95516922/1/transcript.jsonl",
+      "content_hash": "/68/af95516922/1/content_hash.txt",
+      "prompt": ""
     }
-  ]
+  ],
+  "token_usage": {
+    "input_tokens": 57131,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 2832384,
+    "output_tokens": 3383,
+    "api_call_count": 22
+  }
 }
