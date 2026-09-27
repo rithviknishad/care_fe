@@ -1,0 +1,19 @@
+{
+  "cli_version": "0.9.0",
+  "checkpoint_id": "a83ee99d9b75",
+  "strategy": "manual-commit",
+  "branch": "bodhi/questionnaire-actions",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "src/Routers/routes/adminRoutes.tsx",
+    "src/components/ui/sidebar/admin-nav.tsx",
+    "src/components/ui/sidebar/facility/settings/facility-settings-nav.tsx",
+    "src/pages/Facility/settings/layout.tsx"
+  ],
+  "sessions": [
+    {
+      "metadata": "/a8/3ee99d9b75/0/metadata.json",
+      "prompt": ""
+    }
+  ]
+}
