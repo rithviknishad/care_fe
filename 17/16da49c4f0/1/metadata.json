@@ -1,0 +1,99 @@
+{
+  "cli_version": "0.9.0",
+  "checkpoint_id": "1716da49c4f0",
+  "session_id": "01a0deaf-cb0d-7d33-a66a-43b28520705d",
+  "strategy": "manual-commit",
+  "created_at": "2026-09-27T06:53:16.99182Z",
+  "branch": "bodhi/questionnaire-actions",
+  "checkpoints_count": 2,
+  "files_touched": [
+    "public/locale/en.json",
+    "src/components/QuestionnaireV2/fill/FillHeader.tsx",
+    "src/components/QuestionnaireV2/fill/FillPageBody.tsx",
+    "src/components/QuestionnaireV2/fill/FillSessionTabs.tsx",
+    "src/components/QuestionnaireV2/fill/FillShell.tsx",
+    "src/components/QuestionnaireV2/fill/QuestionnaireFillPage.tsx",
+    "src/components/QuestionnaireV2/fill/draft/fillDraftStore.ts",
+    "src/components/QuestionnaireV2/fill/draft/useFillAutosave.ts",
+    "tests/facility/patient/encounter/fill/fillAutosave.spec.ts",
+    "tests/facility/patient/encounter/fill/fillDraftOverview.spec.ts",
+    "tests/facility/patient/encounter/fill/fillPage.spec.ts",
+    "tests/facility/patient/encounter/fill/fillServerDraft.spec.ts",
+    "tests/facility/patient/encounter/fill/fillStructuredState.spec.ts"
+  ],
+  "agent": "Codex",
+  "model": "gpt-6-astra",
+  "turn_id": "c93c73a0ca3a",
+  "checkpoint_transcript_start": 4257,
+  "transcript_lines_at_start": 4257,
+  "compact_transcript_start": 523,
+  "token_usage": {
+    "input_tokens": 419014,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 24477312,
+    "output_tokens": 45740,
+    "api_call_count": 212
+  },
+  "session_metrics": {
+    "turn_count": 8
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-09-27T06:53:16.255604Z",
+    "agent_lines": 0,
+    "agent_removed": 0,
+    "human_added": 0,
+    "human_modified": 574,
+    "human_removed": 10,
+    "total_committed": 0,
+    "total_lines_changed": 620,
+    "agent_percentage": 0,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 659,
+      "user_lines_removed": 310,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        ".context/retros/2026-03-15-1.json": 36,
+        ".husky/commit-msg": 1,
+        ".husky/post-commit": 1,
+        ".husky/post-rewrite": 1,
+        ".husky/pre-push": 1,
+        ".husky/prepare-commit-msg": 1,
+        "public/locale/en.json": 5,
+        "src/components/Patient/PatientHeader.tsx": 21,
+        "src/components/QuestionnaireV2/fill/FillHeader.tsx": 104,
+        "src/components/QuestionnaireV2/fill/FillOutlineOverlay.tsx": 10,
+        "src/components/QuestionnaireV2/fill/FillOutlineRail.tsx": 13,
+        "src/components/QuestionnaireV2/fill/FillPageBody.tsx": 160,
+        "src/components/QuestionnaireV2/fill/FillSessionTabs.tsx": 9,
+        "src/components/QuestionnaireV2/fill/FillShell.tsx": 123,
+        "src/components/QuestionnaireV2/fill/QuestionnaireFillPage.tsx": 1,
+        "src/components/QuestionnaireV2/fill/draft/fillDraftStore.ts": 10,
+        "src/components/QuestionnaireV2/fill/draft/useFillAutosave.ts": 43,
+        "tests/facility/patient/encounter/fill/fillAutosave.spec.ts": 45,
+        "tests/facility/patient/encounter/fill/fillDraftOverview.spec.ts": 4,
+        "tests/facility/patient/encounter/fill/fillPage.spec.ts": 31,
+        "tests/facility/patient/encounter/fill/fillServerDraft.spec.ts": 24,
+        "tests/facility/patient/encounter/fill/fillStructuredState.spec.ts": 15
+      },
+      "user_removed_per_file": {
+        "src/components/Patient/PatientHeader.tsx": 15,
+        "src/components/QuestionnaireV2/fill/FillHeader.tsx": 147,
+        "src/components/QuestionnaireV2/fill/FillOutlineOverlay.tsx": 8,
+        "src/components/QuestionnaireV2/fill/FillOutlineRail.tsx": 13,
+        "src/components/QuestionnaireV2/fill/FillPageBody.tsx": 68,
+        "src/components/QuestionnaireV2/fill/FillShell.tsx": 11,
+        "src/components/QuestionnaireV2/fill/draft/useFillAutosave.ts": 12,
+        "tests/facility/patient/encounter/fill/fillAutosave.spec.ts": 3,
+        "tests/facility/patient/encounter/fill/fillDraftOverview.spec.ts": 4,
+        "tests/facility/patient/encounter/fill/fillPage.spec.ts": 6,
+        "tests/facility/patient/encounter/fill/fillServerDraft.spec.ts": 22,
+        "tests/facility/patient/encounter/fill/fillStructuredState.spec.ts": 1
+      }
+    }
+  ]
+}

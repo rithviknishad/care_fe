@@ -3,10 +3,16 @@
   "checkpoint_id": "1716da49c4f0",
   "strategy": "manual-commit",
   "branch": "bodhi/questionnaire-actions",
-  "checkpoints_count": 1,
+  "checkpoints_count": 3,
   "files_touched": [
+    "public/locale/en.json",
+    "src/components/QuestionnaireV2/fill/FillHeader.tsx",
+    "src/components/QuestionnaireV2/fill/FillPageBody.tsx",
     "src/components/QuestionnaireV2/fill/FillSessionTabs.tsx",
+    "src/components/QuestionnaireV2/fill/FillShell.tsx",
     "src/components/QuestionnaireV2/fill/QuestionnaireFillPage.tsx",
+    "src/components/QuestionnaireV2/fill/draft/fillDraftStore.ts",
+    "src/components/QuestionnaireV2/fill/draft/useFillAutosave.ts",
     "tests/facility/patient/encounter/fill/fillAutosave.spec.ts",
     "tests/facility/patient/encounter/fill/fillDraftOverview.spec.ts",
     "tests/facility/patient/encounter/fill/fillPage.spec.ts",
@@ -17,6 +23,20 @@
     {
       "metadata": "/17/16da49c4f0/0/metadata.json",
       "prompt": ""
+    },
+    {
+      "metadata": "/17/16da49c4f0/1/metadata.json",
+      "transcript": "/17/16da49c4f0/1/full.jsonl",
+      "compact_transcript": "/17/16da49c4f0/1/transcript.jsonl",
+      "content_hash": "/17/16da49c4f0/1/content_hash.txt",
+      "prompt": "/17/16da49c4f0/1/prompt.txt"
     }
-  ]
+  ],
+  "token_usage": {
+    "input_tokens": 419014,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 24477312,
+    "output_tokens": 45740,
+    "api_call_count": 212
+  }
 }
