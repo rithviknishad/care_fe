@@ -3,12 +3,26 @@
   "checkpoint_id": "a83ee99d9b75",
   "strategy": "manual-commit",
   "branch": "bodhi/questionnaire-actions",
-  "checkpoints_count": 3,
+  "checkpoints_count": 7,
   "files_touched": [
+    "public/locale/en.json",
     "src/Routers/routes/adminRoutes.tsx",
+    "src/common/Permissions.tsx",
     "src/components/ui/sidebar/admin-nav.tsx",
     "src/components/ui/sidebar/facility/settings/facility-settings-nav.tsx",
-    "src/pages/Facility/settings/layout.tsx"
+    "src/pages/Facility/settings/layout.tsx",
+    "src/pages/ImmunizationPolicies/ImmunizationPolicyForm.tsx",
+    "src/pages/ImmunizationPolicies/ImmunizationPolicyList.tsx",
+    "src/pages/ImmunizationPolicies/PolicyCodePicker.tsx",
+    "src/pages/ImmunizationPolicies/PolicyTemplateDetails.tsx",
+    "src/pages/ImmunizationPolicies/PolicyTemplateEditor.tsx",
+    "src/pages/ImmunizationPolicies/RecommendationOutline.tsx",
+    "src/pages/ImmunizationPolicies/policySchema.ts",
+    "src/pages/ImmunizationPolicies/useImmunizationPolicyAccess.ts",
+    "src/pages/ImmunizationPolicies/useImmunizationPolicyOwnership.ts",
+    "src/types/emr/immunizationPolicy/immunizationPolicy.ts",
+    "src/types/emr/immunizationPolicy/immunizationPolicyApi.ts",
+    "tests/admin/immunizationPolicies/immunizationPolicies.spec.ts"
   ],
   "sessions": [
     {
@@ -21,13 +35,20 @@
       "compact_transcript": "/a8/3ee99d9b75/1/transcript.jsonl",
       "content_hash": "/a8/3ee99d9b75/1/content_hash.txt",
       "prompt": "/a8/3ee99d9b75/1/prompt.txt"
+    },
+    {
+      "metadata": "/a8/3ee99d9b75/2/metadata.json",
+      "transcript": "/a8/3ee99d9b75/2/full.jsonl",
+      "compact_transcript": "/a8/3ee99d9b75/2/transcript.jsonl",
+      "content_hash": "/a8/3ee99d9b75/2/content_hash.txt",
+      "prompt": "/a8/3ee99d9b75/2/prompt.txt"
     }
   ],
   "token_usage": {
-    "input_tokens": 1971152,
+    "input_tokens": 2464965,
     "cache_creation_tokens": 0,
-    "cache_read_tokens": 98062336,
-    "output_tokens": 182846,
-    "api_call_count": 841
+    "cache_read_tokens": 131881600,
+    "output_tokens": 265557,
+    "api_call_count": 1170
   }
 }
