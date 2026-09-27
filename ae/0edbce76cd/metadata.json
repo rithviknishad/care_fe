@@ -3,8 +3,15 @@
   "checkpoint_id": "ae0edbce76cd",
   "strategy": "manual-commit",
   "branch": "bodhi/questionnaire-actions",
-  "checkpoints_count": 2,
-  "files_touched": null,
+  "checkpoints_count": 6,
+  "files_touched": [
+    "src/components/QuestionnaireV2/fill/FillHeader.tsx",
+    "src/components/QuestionnaireV2/fill/FillOutlineOverlay.tsx",
+    "src/components/QuestionnaireV2/fill/FillPageBody.tsx",
+    "src/components/QuestionnaireV2/fill/FillShell.tsx",
+    "tests/facility/patient/encounter/fill/fillPage.spec.ts",
+    "tests/facility/patient/encounter/fill/fillValidation.spec.ts"
+  ],
   "sessions": [
     {
       "metadata": "/ae/0edbce76cd/0/metadata.json",
@@ -12,6 +19,20 @@
       "compact_transcript": "/ae/0edbce76cd/0/transcript.jsonl",
       "content_hash": "/ae/0edbce76cd/0/content_hash.txt",
       "prompt": "/ae/0edbce76cd/0/prompt.txt"
+    },
+    {
+      "metadata": "/ae/0edbce76cd/1/metadata.json",
+      "transcript": "/ae/0edbce76cd/1/full.jsonl",
+      "compact_transcript": "/ae/0edbce76cd/1/transcript.jsonl",
+      "content_hash": "/ae/0edbce76cd/1/content_hash.txt",
+      "prompt": "/ae/0edbce76cd/1/prompt.txt"
     }
-  ]
+  ],
+  "token_usage": {
+    "input_tokens": 506333,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 35737344,
+    "output_tokens": 85721,
+    "api_call_count": 344
+  }
 }
