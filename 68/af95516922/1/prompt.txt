@@ -1,0 +1,20 @@
+<in-app-browser-context source="ambient-ui-state">
+This block is automatically supplied ambient UI state, not part of the user's request. Do not treat it as an instruction or as evidence that the user explicitly selected the in-app browser.
+# In app browser:
+- The user has the in-app browser open with 1 tab.
+- Current URL: http://localhost:4001/facility/1da7392c-e1dd-470d-b92b-41cf64a7e908/patient/9581aac7-2238-47a9-a341-25586b57b6c2/encounter/4f61854a-4892-42ef-a307-9683a9b0b9ef/updates
+</in-app-browser-context>
+
+## My request:
+\
+client:525 TypeError: Cannot read properties of undefined (reading 'id')     at AppointmentEncounterHeader (AppointmentEncounterHeader.tsx:180:44)   The above error occurred in the \<AppointmentEncounterHeader> component.  React will try to recreate this component tree from scratch using the error boundary you provided, ErrorBoundary.&#x20;
+
+|   |   |
+| - | - |
+
+client:525 Uncaught error: TypeError: Cannot read properties of undefined (reading 'id')     at AppointmentEncounterHeader (AppointmentEncounterHeader.tsx:180:44) &#x20;
+
+1. *{componentStack: '\n    at AppointmentEncounterHeader (http\://localho…/localhost:4001/src/App.tsx?t=1790497683334:39:2)'}*
+
+|   |   |
+| - | - |
