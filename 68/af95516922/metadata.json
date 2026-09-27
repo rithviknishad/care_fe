@@ -1,0 +1,17 @@
+{
+  "cli_version": "0.9.0",
+  "checkpoint_id": "68af95516922",
+  "strategy": "manual-commit",
+  "branch": "bodhi/questionnaire-actions",
+  "checkpoints_count": 2,
+  "files_touched": null,
+  "sessions": [
+    {
+      "metadata": "/68/af95516922/0/metadata.json",
+      "transcript": "/68/af95516922/0/full.jsonl",
+      "compact_transcript": "/68/af95516922/0/transcript.jsonl",
+      "content_hash": "/68/af95516922/0/content_hash.txt",
+      "prompt": "/68/af95516922/0/prompt.txt"
+    }
+  ]
+}

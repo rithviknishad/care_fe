@@ -1,0 +1,19 @@
+{
+  "cli_version": "0.9.0",
+  "checkpoint_id": "68af95516922",
+  "session_id": "01a0deaf-cb0d-7d33-a66a-43b28520705d",
+  "strategy": "manual-commit",
+  "created_at": "2026-09-27T08:38:21.633225Z",
+  "branch": "bodhi/questionnaire-actions",
+  "checkpoints_count": 2,
+  "files_touched": [],
+  "agent": "Codex",
+  "model": "gpt-6-astra",
+  "turn_id": "c93c73a0ca3a",
+  "checkpoint_transcript_start": 6059,
+  "transcript_lines_at_start": 6059,
+  "compact_transcript_start": 739,
+  "session_metrics": {
+    "turn_count": 8
+  }
+}
