@@ -1,0 +1,9 @@
+Did we break the css in this branch? the weights and all looks different.
+
+---
+
+Please fix
+
+---
+
+did we have bg-white before? if not lets not have in AppRouter

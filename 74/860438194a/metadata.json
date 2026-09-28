@@ -1,0 +1,28 @@
+{
+  "cli_version": "0.9.0",
+  "checkpoint_id": "74860438194a",
+  "strategy": "manual-commit",
+  "branch": "bodhi/questionnaire-actions",
+  "checkpoints_count": 3,
+  "files_touched": [
+    "src/Routers/AppRouter.tsx",
+    "src/Routers/PatientRouter.tsx",
+    "src/components/ui/sidebar/app-sidebar-provider.tsx"
+  ],
+  "sessions": [
+    {
+      "metadata": "/74/860438194a/0/metadata.json",
+      "transcript": "/74/860438194a/0/full.jsonl",
+      "compact_transcript": "/74/860438194a/0/transcript.jsonl",
+      "content_hash": "/74/860438194a/0/content_hash.txt",
+      "prompt": "/74/860438194a/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 94629,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 3253504,
+    "output_tokens": 7836,
+    "api_call_count": 41
+  }
+}
