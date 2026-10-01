@@ -1,0 +1,100 @@
+{
+  "cli_version": "0.9.0",
+  "checkpoint_id": "2e6d43705075",
+  "session_id": "fe70437e-a894-4ce7-859f-b37a6af5da6c",
+  "strategy": "manual-commit",
+  "created_at": "2026-10-01T15:31:01.27198Z",
+  "branch": "feat/abdm",
+  "checkpoints_count": 10,
+  "save_step_count": 6,
+  "files_touched": [
+    "AGENTS.md",
+    "public/locale/en.json",
+    "src/components/Abdm/AbhaAccountDialog.tsx",
+    "src/components/Abdm/AbhaRegistrationPanel.tsx",
+    "src/components/Abdm/AbhaVerifyDialog.tsx",
+    "src/components/Abdm/PatientAbhaSection.tsx",
+    "src/components/Abdm/utils.ts",
+    "src/components/Patient/PatientDetailsTab/Demography.tsx",
+    "src/components/Patient/PatientRegistration.tsx",
+    "src/types/abdm/abha.ts",
+    "src/types/abdm/abhaApi.ts"
+  ],
+  "agent": "Copilot CLI",
+  "model": "claude-sonnet-5.5",
+  "turn_id": "0a98359433c2",
+  "compact_transcript_start": 0,
+  "token_usage": {
+    "input_tokens": 0,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 0,
+    "output_tokens": 0,
+    "api_call_count": 0
+  },
+  "session_metrics": {
+    "turn_count": 10
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-10-01T15:31:00.9579Z",
+    "agent_lines": 2215,
+    "agent_removed": 17,
+    "human_added": 0,
+    "human_modified": 80,
+    "human_removed": 0,
+    "total_committed": 2295,
+    "total_lines_changed": 2312,
+    "agent_percentage": 96.53979238754326,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0
+    },
+    {
+      "checkpoint_number": 2,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0
+    },
+    {
+      "checkpoint_number": 3,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0
+    },
+    {
+      "checkpoint_number": 4,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 2126,
+      "agent_lines_removed": 18
+    },
+    {
+      "checkpoint_number": 5,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0
+    },
+    {
+      "checkpoint_number": 6,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0
+    },
+    {
+      "checkpoint_number": 7,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 2295,
+      "agent_lines_removed": 18
+    }
+  ]
+}
