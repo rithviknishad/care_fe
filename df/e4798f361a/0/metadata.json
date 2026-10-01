@@ -1,0 +1,126 @@
+{
+  "cli_version": "0.9.0",
+  "checkpoint_id": "dfe4798f361a",
+  "session_id": "fe70437e-a894-4ce7-859f-b37a6af5da6c",
+  "strategy": "manual-commit",
+  "created_at": "2026-10-01T18:05:30.952123Z",
+  "branch": "feat/abdm",
+  "checkpoints_count": 10,
+  "save_step_count": 8,
+  "files_touched": [
+    "public/locale/en.json",
+    "src/components/Abdm/AbdmErrorAlert.tsx",
+    "src/components/Abdm/AbdmRecordCard.tsx",
+    "src/components/Abdm/AbhaVerifyDialog.tsx",
+    "src/components/Abdm/EncounterAbdmCard.tsx",
+    "src/components/Abdm/PatientAbdmRecords.tsx",
+    "src/components/Abdm/RequestAbdmRecordsSheet.tsx",
+    "src/components/Abdm/fhir.ts",
+    "src/components/Abdm/utils.ts",
+    "src/components/Patient/PatientDetailsTab/index.tsx",
+    "src/components/Patient/PatientProfile.tsx",
+    "src/pages/Encounters/tabs/overview.tsx",
+    "src/pages/Facility/settings/FacilitySettingsPageHeader.tsx",
+    "src/pages/Facility/settings/abdm/AbdmSettings.tsx",
+    "src/pages/Facility/settings/general/general.tsx",
+    "src/pages/Facility/settings/layout.tsx",
+    "src/types/abdm/careContext.ts",
+    "src/types/abdm/careContextApi.ts",
+    "src/types/abdm/consent.ts",
+    "src/types/abdm/consentApi.ts",
+    "src/types/abdm/facility.ts",
+    "src/types/abdm/facilityApi.ts"
+  ],
+  "agent": "Copilot CLI",
+  "model": "claude-sonnet-5.5",
+  "turn_id": "6bfccfbf7be2",
+  "checkpoint_transcript_start": 1383,
+  "transcript_lines_at_start": 1383,
+  "compact_transcript_start": 227,
+  "token_usage": {
+    "input_tokens": 0,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 0,
+    "output_tokens": 0,
+    "api_call_count": 0
+  },
+  "session_metrics": {
+    "turn_count": 20
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-10-01T18:05:30.719124Z",
+    "agent_lines": 2522,
+    "agent_removed": 26,
+    "human_added": 36,
+    "human_modified": 185,
+    "human_removed": 0,
+    "total_committed": 2743,
+    "total_lines_changed": 2769,
+    "agent_percentage": 92.01877934272301,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0
+    },
+    {
+      "checkpoint_number": 2,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0
+    },
+    {
+      "checkpoint_number": 3,
+      "user_lines_added": 5,
+      "user_lines_removed": 1,
+      "agent_lines_added": 2707,
+      "agent_lines_removed": 27,
+      "user_added_per_file": {
+        "src/pages/Facility/settings/FacilitySettingsPageHeader.tsx": 5
+      },
+      "user_removed_per_file": {
+        "src/pages/Facility/settings/FacilitySettingsPageHeader.tsx": 1
+      }
+    },
+    {
+      "checkpoint_number": 4,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0
+    },
+    {
+      "checkpoint_number": 5,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0
+    },
+    {
+      "checkpoint_number": 6,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0
+    },
+    {
+      "checkpoint_number": 7,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 2712,
+      "agent_lines_removed": 28
+    },
+    {
+      "checkpoint_number": 8,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0
+    }
+  ]
+}
