@@ -1,0 +1,45 @@
+{
+  "cli_version": "0.9.0",
+  "checkpoint_id": "2b26747157d9",
+  "strategy": "manual-commit",
+  "branch": "3.1/encounter-workspace",
+  "checkpoints_count": 20,
+  "files_touched": [
+    "public/locale/en.json",
+    "src/components/Workspace/EncounterWorkspaceEditor.tsx",
+    "src/components/Workspace/WorkspaceConfigFields.tsx",
+    "src/components/Workspace/WorkspaceForm.tsx",
+    "src/components/Workspace/WorkspaceInstanceOrganizationSelector.tsx",
+    "src/components/Workspace/WorkspaceOrganizationsField.tsx",
+    "src/components/Workspace/WorkspacePageCanvas.tsx",
+    "src/components/Workspace/WorkspacePageDialog.tsx",
+    "src/components/Workspace/WorkspaceSystemPageMenu.tsx",
+    "src/components/Workspace/WorkspaceWidgetInspector.tsx",
+    "src/components/Workspace/WorkspaceWidgetLibrary.tsx",
+    "src/components/Workspace/workspaceEditorUtils.ts",
+    "src/pages/Encounters/workspace/EncounterWorkspaceContent.tsx",
+    "src/pages/Encounters/workspace/EncounterWorkspaceSwitcher.tsx",
+    "src/pages/Encounters/workspace/parseEncounterWorkspace.ts",
+    "src/types/workspace/encounterWorkspace.ts",
+    "src/types/workspace/workspace.ts",
+    "src/types/workspace/workspaceApi.ts",
+    "tests/admin/workspaces/workspaceEditor.spec.ts",
+    "tests/facility/patient/encounter/encounterWorkspace.spec.ts"
+  ],
+  "sessions": [
+    {
+      "metadata": "/2b/26747157d9/0/metadata.json",
+      "transcript": "/2b/26747157d9/0/full.jsonl",
+      "compact_transcript": "/2b/26747157d9/0/transcript.jsonl",
+      "content_hash": "/2b/26747157d9/0/content_hash.txt",
+      "prompt": "/2b/26747157d9/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 2671436,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 147853568,
+    "output_tokens": 330139,
+    "api_call_count": 1302
+  }
+}
