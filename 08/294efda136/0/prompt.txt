@@ -1,0 +1,349 @@
+Fetch and execute the instructions to set me up for ABDM integration from https://docs.abdm.gov.in/agent-setup/prompt.md
+
+---
+
+Fetch and execute the instructions to set me up for ABDM integration from https://docs.abdm.gov.in/agent-setup/prompt.md
+
+---
+
+let's integrate m1 into this care hmis software
+
+---
+
+let's integrate m1 into this care hmis software
+
+---
+
+Thoroughness: thorough. Read-only research, do not edit files. Do NOT print values of secrets/env vars (names only).
+
+Two repos: backend Django at /Users/rithviknishad/ohc.network/care and frontend React at /Users/rithviknishad/ohc.network/care_fe. We are planning to integrate ABDM Milestone 1 (ABHA creation/login/profile via ABDM sandbox APIs, RSA-encrypted fields, gateway session token) into CARE. Survey the ACTUAL code (not READMEs) and report exact file paths (and key line numbers / class names) for each item:
+
+Backend (care):
+1. Python/Django versions & dependency manifest (Pipfile) — list relevant deps: HTTP client libs (requests/httpx), cryptography libs (cryptography, pycryptodome, jwcrypto), cache (django-redis), celery.
+2. Build/run/test commands (Makefile, CI workflows under .github/workflows), test base classes used in care/emr tests (e.g. CareAPITestBase), how tests mock outbound HTTP if at all (requests_mock, responses, unittest.mock).
+3. Existing shared outbound HTTP client module(s) in the backend (grep for `requests.` and `httpx` usage in care/ and config/), e.g. for SMS, OTP, file uploads, etc.
+4. How settings/secrets are loaded: config/settings/base.py env usage (django-environ `env(...)`), any existing ABDM-related settings remnants, and how plugins get settings (plugs/manager.py, plugs/plug.py, plug_config.py). Explain the plug mechanism briefly (how a plug registers a Django app, its URLs, its settings).
+5. Patient model: path, class name, its identifier fields. Look for a PatientIdentifier / PatientIdentifierConfig mechanism (configurable identifiers per facility/instance) in care/emr — describe how extra identifiers are modelled, configured, and exposed in the API spec (resource specs under care/emr/resources/patient*). This is critical: would an ABHA number/address fit as a configured identifier?
+6. Encounter model path (for future care contexts).
+7. API routing: config/api_router.py — how viewsets are registered (EMRModelViewSet etc.), authentication classes (config/authentication.py), how a public unauthenticated callback endpoint could be added, and how plugins add routes (config/urls.py).
+8. Existing cryptography helpers (grep for `cryptography`, `rsa`, `RSA`, `OAEP`, `PKCS1`, `jwk`, `jwks`).
+9. Caching: how Django cache is configured (config/caches.py, settings CACHES) and examples of cache.get/set usage.
+10. Error handling/logging conventions: config/exception_handler.py, how ValidationError is raised in EMR viewsets, logging setup.
+11. Any leftover ABDM / ABHA references anywhere (migrations, settings, env examples like .env.example, docker-compose files, app.json).
+
+Frontend (care_fe):
+12. Patient registration form component path(s) (e.g. src/components/Patient/PatientRegistration.tsx or similar), how it's structured (react-hook-form + zod), and where patient identifiers are rendered/edited in the form.
+13. The Demography tab at src/components/Patient/PatientDetailsTab/Demography.tsx around line 333 shows abha_number/abha_address placeholders — describe that.
+14. Plugin system: src/pluginTypes.ts and src/PluginEngine.tsx — list the extension points (e.g. PatientRegistrationForm components, PatientInfoCard, ExtendPatientRegisterForm, etc.) that a care_abdm frontend plug could hook into. Quote the type names.
+15. API route definition pattern in src/types/**/ *Api.ts (one example path) and the patient API file path.
+16. Where toasts/errors are shown (src/Utils/request/errorHandler.ts or similar).
+
+Return a concise structured report organized by the numbers above, with file paths and line numbers. Flag any ambiguity (e.g., two candidate places for a thing) and what would decide between them.
+
+---
+
+Thoroughness: thorough. Read-only research, do not edit files. Do NOT print values of secrets/env vars (names only).
+
+Two repos: backend Django at /Users/rithviknishad/ohc.network/care and frontend React at /Users/rithviknishad/ohc.network/care_fe. We are planning to integrate ABDM Milestone 1 (ABHA creation/login/profile via ABDM sandbox APIs, RSA-encrypted fields, gateway session token) into CARE. Survey the ACTUAL code (not READMEs) and report exact file paths (and key line numbers / class names) for each item:
+
+Backend (care):
+1. Python/Django versions & dependency manifest (Pipfile) — list relevant deps: HTTP client libs (requests/httpx), cryptography libs (cryptography, pycryptodome, jwcrypto), cache (django-redis), celery.
+2. Build/run/test commands (Makefile, CI workflows under .github/workflows), test base classes used in care/emr tests (e.g. CareAPITestBase), how tests mock outbound HTTP if at all (requests_mock, responses, unittest.mock).
+3. Existing shared outbound HTTP client module(s) in the backend (grep for `requests.` and `httpx` usage in care/ and config/), e.g. for SMS, OTP, file uploads, etc.
+4. How settings/secrets are loaded: config/settings/base.py env usage (django-environ `env(...)`), any existing ABDM-related settings remnants, and how plugins get settings (plugs/manager.py, plugs/plug.py, plug_config.py). Explain the plug mechanism briefly (how a plug registers a Django app, its URLs, its settings).
+5. Patient model: path, class name, its identifier fields. Look for a PatientIdentifier / PatientIdentifierConfig mechanism (configurable identifiers per facility/instance) in care/emr — describe how extra identifiers are modelled, configured, and exposed in the API spec (resource specs under care/emr/resources/patient*). This is critical: would an ABHA number/address fit as a configured identifier?
+6. Encounter model path (for future care contexts).
+7. API routing: config/api_router.py — how viewsets are registered (EMRModelViewSet etc.), authentication classes (config/authentication.py), how a public unauthenticated callback endpoint could be added, and how plugins add routes (config/urls.py).
+8. Existing cryptography helpers (grep for `cryptography`, `rsa`, `RSA`, `OAEP`, `PKCS1`, `jwk`, `jwks`).
+9. Caching: how Django cache is configured (config/caches.py, settings CACHES) and examples of cache.get/set usage.
+10. Error handling/logging conventions: config/exception_handler.py, how ValidationError is raised in EMR viewsets, logging setup.
+11. Any leftover ABDM / ABHA references anywhere (migrations, settings, env examples like .env.example, docker-compose files, app.json).
+
+Frontend (care_fe):
+12. Patient registration form component path(s) (e.g. src/components/Patient/PatientRegistration.tsx or similar), how it's structured (react-hook-form + zod), and where patient identifiers are rendered/edited in the form.
+13. The Demography tab at src/components/Patient/PatientDetailsTab/Demography.tsx around line 333 shows abha_number/abha_address placeholders — describe that.
+14. Plugin system: src/pluginTypes.ts and src/PluginEngine.tsx — list the extension points (e.g. PatientRegistrationForm components, PatientInfoCard, ExtendPatientRegisterForm, etc.) that a care_abdm frontend plug could hook into. Quote the type names.
+15. API route definition pattern in src/types/**/ *Api.ts (one example path) and the patient API file path.
+16. Where toasts/errors are shown (src/Utils/request/errorHandler.ts or similar).
+
+Return a concise structured report organized by the numbers above, with file paths and line numbers. Flag any ambiguity (e.g., two candidate places for a thing) and what would decide between them.
+
+---
+
+Thoroughness: medium-thorough. Read-only; do not edit files; never print secret values.
+
+Two existing CARE plug repos: backend Django plug at /Users/rithviknishad/ohc.network/care_abdm and frontend module-federation plug at /Users/rithviknishad/ohc.network/care_abdm_fe. Also check /Users/rithviknishad/ohc.network/care/.env line ~33 for a commented ADDITIONAL_PLUGS entry referencing the abdm plug — report its structure (package name, git URL/branch, config KEY NAMES only, no values).
+
+Report:
+1. Git state of each repo: current branch, last 5 commit subjects with dates (`git -C <repo> log -5 --format='%h %ad %s' --date=short`), and whether the working tree is dirty. Also remote URL.
+2. Backend plug: Django app name, models (esp. AbhaNumber or similar, fields, relation to care.emr.models.Patient — does it link to the NEW EMR Patient model or the old facility.PatientRegistration?), settings/config keys it reads (plugin settings names), URLs/viewsets exposed, and the ABDM API version it targets: grep for `/v3/`, `abha/api/v3`, `abhasbx`, `/v0.5/`, `/v1/`, `api/hiecm`, `gateway/v3/sessions`, `dev.abdm.gov.in`. Specifically list which M1 journeys are implemented: Aadhaar OTP enrolment, mobile OTP login, ABHA number/address login, profile fetch, ABHA card/QR, scan & share (profile/share callback), demographic auth, abha address creation, mobile verify. Note the RSA encryption implementation (library, padding: OAEP SHA-1 vs PKCS1v15) and whether it reads `encryptionAlgorithm` from the certificate response or hard-codes padding. Note how the gateway session token is obtained and cached, and whether REQUEST-ID/TIMESTAMP headers are set.
+3. Frontend plug: manifest (which plugin slots / component keys it registers, e.g. PatientRegistrationForm, PatientDetailsTabDemographyGeneralInfo, PatientInfoCardQuickActions, routes), which M1 flows have UI, and its API route definitions (paths).
+4. Tests present in each repo and how to run them.
+5. Any obvious incompatibility with current CARE core: e.g. imports from `care.facility.models.patient` (old model, likely removed) vs `care.emr.models.patient`. Quick-check by grepping for `from care.` imports in care_abdm and verifying those modules exist in /Users/rithviknishad/ohc.network/care.
+
+Return a concise structured report with file paths and line numbers, plus a short verdict: is M1 already substantially implemented in these plugs against ABDM v3, what is missing or broken vs the current care core.
+
+---
+
+Thoroughness: medium-thorough. Read-only; do not edit files; never print secret values.
+
+Two existing CARE plug repos: backend Django plug at /Users/rithviknishad/ohc.network/care_abdm and frontend module-federation plug at /Users/rithviknishad/ohc.network/care_abdm_fe. Also check /Users/rithviknishad/ohc.network/care/.env line ~33 for a commented ADDITIONAL_PLUGS entry referencing the abdm plug — report its structure (package name, git URL/branch, config KEY NAMES only, no values).
+
+Report:
+1. Git state of each repo: current branch, last 5 commit subjects with dates (`git -C <repo> log -5 --format='%h %ad %s' --date=short`), and whether the working tree is dirty. Also remote URL.
+2. Backend plug: Django app name, models (esp. AbhaNumber or similar, fields, relation to care.emr.models.Patient — does it link to the NEW EMR Patient model or the old facility.PatientRegistration?), settings/config keys it reads (plugin settings names), URLs/viewsets exposed, and the ABDM API version it targets: grep for `/v3/`, `abha/api/v3`, `abhasbx`, `/v0.5/`, `/v1/`, `api/hiecm`, `gateway/v3/sessions`, `dev.abdm.gov.in`. Specifically list which M1 journeys are implemented: Aadhaar OTP enrolment, mobile OTP login, ABHA number/address login, profile fetch, ABHA card/QR, scan & share (profile/share callback), demographic auth, abha address creation, mobile verify. Note the RSA encryption implementation (library, padding: OAEP SHA-1 vs PKCS1v15) and whether it reads `encryptionAlgorithm` from the certificate response or hard-codes padding. Note how the gateway session token is obtained and cached, and whether REQUEST-ID/TIMESTAMP headers are set.
+3. Frontend plug: manifest (which plugin slots / component keys it registers, e.g. PatientRegistrationForm, PatientDetailsTabDemographyGeneralInfo, PatientInfoCardQuickActions, routes), which M1 flows have UI, and its API route definitions (paths).
+4. Tests present in each repo and how to run them.
+5. Any obvious incompatibility with current CARE core: e.g. imports from `care.facility.models.patient` (old model, likely removed) vs `care.emr.models.patient`. Quick-check by grepping for `from care.` imports in care_abdm and verifying those modules exist in /Users/rithviknishad/ohc.network/care.
+
+Return a concise structured report with file paths and line numbers, plus a short verdict: is M1 already substantially implemented in these plugs against ABDM v3, what is missing or broken vs the current care core.
+
+---
+
+let's not survey anythin other than ~/ohc.network/care and care_fe. you might find existing projects attempting to integrate abdm outside these dirs, ignore it, we need fresh integration
+
+---
+
+let's not survey anythin other than ~/ohc.network/care and care_fe. you might find existing projects attempting to integrate abdm outside these dirs, ignore it, we need fresh integration
+
+---
+
+Thorough, read-only survey. ONLY look inside /Users/rithviknishad/ohc.network/care (Django backend) and /Users/rithviknishad/ohc.network/care_fe (React frontend). Do NOT look at or report on any other directories, and IGNORE any existing ABDM integration code/plugins (e.g. anything named care_abdm, abdm plug in plugs/ or installed site-packages, or abdm references in plug_config.py) — we're designing a fresh integration. Also ignore the `.github/skills/abdm-*` folders (those are docs). Do not read README descriptions as truth; read actual code/manifests.
+
+For each item below, give exact file paths (and key line numbers / class or function names), or say "none":
+
+BACKEND (care):
+1. Python/Django versions, how deps are declared (Pipfile), test command, lint command, CI config path.
+2. How the API is routed (config/api_router.py, urls.py) — how a new viewset/route under /api/v1/ would be added; the pattern of existing EMR viewsets (e.g. care/emr/api/viewsets/*: base classes like EMRModelViewSet, EMRBaseViewSet, mixins) and resource specs (care/emr/resources/*, pydantic-based spec classes).
+3. The outbound HTTP client used by the backend (requests? httpx? a shared wrapper module?) — find any existing module that makes outbound HTTP calls to third parties (SMS, OTP, files, etc.) and how it is structured.
+4. How settings/secrets reach the process: config/settings/base.py patterns (environ / env()), and any existing settings named ABDM_* or similar placeholders in settings (report them but note they may be leftover). Also how plugins get settings (plug_config.py and care/utils plugin settings mechanism) - just the mechanism.
+5. Caching: Django cache config (Redis), and examples of cache.get/set usage.
+6. Patient model: path, fields, especially identifier fields (e.g. PatientIdentifier / PatientIdentifierConfig models — how configurable identifiers work, their resource spec, how they're created/validated, whether a "system" or config slug exists). Report how gender, date of birth/year_of_birth, phone_number, address, geo_organization are stored.
+7. Encounter model path (for future care contexts).
+8. Authentication of inbound requests (JWT, DRF auth classes in settings), any existing unauthenticated/public endpoints or webhook/callback endpoints and how they authenticate (e.g. middleware, custom auth classes in config/authentication.py).
+9. Cryptography helpers or dependencies (cryptography, pycryptodome, jwcrypto, etc. in Pipfile) and any module using RSA.
+10. Logging setup and how errors are raised to API clients (ValidationError patterns, custom exception handler config/exception_handler.py).
+11. Celery setup (config/celery_app.py) and how tasks are defined.
+12. Existing abstractions for OTP / SMS (care/utils/sms or similar) — just structure.
+
+FRONTEND (care_fe):
+13. How the frontend calls the backend: src/Utils/request/* (query, mutate), API route definition pattern in src/types/*/ *Api.ts.
+14. Patient registration form component path(s) (e.g. src/components/Patient/PatientRegistration.tsx or similar) — how the form is built (react-hook-form + zod), what fields, how patient identifiers are rendered/filled, and where would a "fetch from ABHA" step be inserted before the form. Report how the form gets initial values / defaults.
+15. Patient types: src/types/emr/patient/* — identifier types.
+16. Plugin/extension points the registration form exposes (PluginEngine, pluginTypes.ts — e.g. any "PatientRegistrationForm" or "ExtendPatientRegistrationForm" component slot). Report exact slot names and their props.
+17. Where errors are shown (toast / sonner), i18n file path.
+18. Facility settings / admin pages where config (like patient identifier configs) is managed.
+
+Return a structured report with sections matching the numbers. Be precise with paths and line numbers; keep each answer concise but complete.
+
+---
+
+Thorough, read-only survey. ONLY look inside /Users/rithviknishad/ohc.network/care (Django backend) and /Users/rithviknishad/ohc.network/care_fe (React frontend). Do NOT look at or report on any other directories, and IGNORE any existing ABDM integration code/plugins (e.g. anything named care_abdm, abdm plug in plugs/ or installed site-packages, or abdm references in plug_config.py) — we're designing a fresh integration. Also ignore the `.github/skills/abdm-*` folders (those are docs). Do not read README descriptions as truth; read actual code/manifests.
+
+For each item below, give exact file paths (and key line numbers / class or function names), or say "none":
+
+BACKEND (care):
+1. Python/Django versions, how deps are declared (Pipfile), test command, lint command, CI config path.
+2. How the API is routed (config/api_router.py, urls.py) — how a new viewset/route under /api/v1/ would be added; the pattern of existing EMR viewsets (e.g. care/emr/api/viewsets/*: base classes like EMRModelViewSet, EMRBaseViewSet, mixins) and resource specs (care/emr/resources/*, pydantic-based spec classes).
+3. The outbound HTTP client used by the backend (requests? httpx? a shared wrapper module?) — find any existing module that makes outbound HTTP calls to third parties (SMS, OTP, files, etc.) and how it is structured.
+4. How settings/secrets reach the process: config/settings/base.py patterns (environ / env()), and any existing settings named ABDM_* or similar placeholders in settings (report them but note they may be leftover). Also how plugins get settings (plug_config.py and care/utils plugin settings mechanism) - just the mechanism.
+5. Caching: Django cache config (Redis), and examples of cache.get/set usage.
+6. Patient model: path, fields, especially identifier fields (e.g. PatientIdentifier / PatientIdentifierConfig models — how configurable identifiers work, their resource spec, how they're created/validated, whether a "system" or config slug exists). Report how gender, date of birth/year_of_birth, phone_number, address, geo_organization are stored.
+7. Encounter model path (for future care contexts).
+8. Authentication of inbound requests (JWT, DRF auth classes in settings), any existing unauthenticated/public endpoints or webhook/callback endpoints and how they authenticate (e.g. middleware, custom auth classes in config/authentication.py).
+9. Cryptography helpers or dependencies (cryptography, pycryptodome, jwcrypto, etc. in Pipfile) and any module using RSA.
+10. Logging setup and how errors are raised to API clients (ValidationError patterns, custom exception handler config/exception_handler.py).
+11. Celery setup (config/celery_app.py) and how tasks are defined.
+12. Existing abstractions for OTP / SMS (care/utils/sms or similar) — just structure.
+
+FRONTEND (care_fe):
+13. How the frontend calls the backend: src/Utils/request/* (query, mutate), API route definition pattern in src/types/*/ *Api.ts.
+14. Patient registration form component path(s) (e.g. src/components/Patient/PatientRegistration.tsx or similar) — how the form is built (react-hook-form + zod), what fields, how patient identifiers are rendered/filled, and where would a "fetch from ABHA" step be inserted before the form. Report how the form gets initial values / defaults.
+15. Patient types: src/types/emr/patient/* — identifier types.
+16. Plugin/extension points the registration form exposes (PluginEngine, pluginTypes.ts — e.g. any "PatientRegistrationForm" or "ExtendPatientRegistrationForm" component slot). Report exact slot names and their props.
+17. Where errors are shown (toast / sonner), i18n file path.
+18. Facility settings / admin pages where config (like patient identifier configs) is managed.
+
+Return a structured report with sections matching the numbers. Be precise with paths and line numbers; keep each answer concise but complete.
+
+---
+
+now let's go ahead with building m2!
+
+---
+
+now let's go ahead with building m2!
+
+---
+
+Thorough, read-only. ONLY look in /Users/rithviknishad/ohc.network/care (Django backend). Ignore any existing ABDM code anywhere (including care/abdm/ which is ours, and any plugs). I'm building ABDM M2 (HIP) FHIR bundle generation for OPConsultation and Prescription records, and need to know how CARE stores the data.
+
+Report exact file paths, class names, key fields (with types), and line numbers for:
+
+1. Encounter model (care/emr/models/encounter.py): fields for status, encounter_class, period (start/end), patient, facility, care_team, created_date; status values enum (where defined, e.g. care/emr/resources/encounter/constants.py) — which statuses mean completed/in-progress.
+2. MedicationRequest model + resource spec: fields (medication coded? as JSON with system/code/display), dosage_instruction structure, status/intent enums, encounter FK, patient FK, authored_on, requester, created_date. Also MedicationRequestPrescription (prescription grouping) model if present and how it relates to MedicationRequest.
+3. Condition model (diagnosis & symptom — category field), code JSON shape (system/code/display), clinical_status, verification_status, encounter FK, onset.
+4. Observation model: code JSON, value fields, effective_datetime, encounter FK, status.
+5. AllergyIntolerance model: code, encounter FK, criticality.
+6. ServiceRequest model (for investigation advice): code, encounter FK, status.
+7. Questionnaire responses: how clinical data entered via questionnaires maps to these models (does submitting a questionnaire create MedicationRequest/Condition/Observation rows with encounter FK?), and the QuestionnaireResponse model.
+8. Facility model (care/facility/models/facility.py): name, address fields, any existing external registry id fields (hfr? ndhm?), and the facility settings JSON fields if any.
+9. User model: name fields, any registration/professional id fields (HPR?), and how encounter care team/requester refers to users.
+10. Signals: existing Django signals or post_save receivers in care/emr (any `post_save.connect` / `@receiver`), and whether EMRBaseModel save hooks exist. Also how Celery tasks are triggered after commit (transaction.on_commit usage examples).
+11. Coded value JSON structure used in EMR (the `Coding` / ValueSet types — care/emr/resources/common/coding.py) — exact field names.
+12. How CARE's EMR stores patient's identifiers (PatientIdentifier with config system) — just confirm a helper to get an identifier by config system, if any.
+13. Existing FHIR-ish code: care/emr/fhir/* — what it does (just summary), and whether any FHIR resource builder / fhir.resources library is in Pipfile.
+
+Return a concise but complete structured report with paths/lines for each.
+
+---
+
+Thorough, read-only. ONLY look in /Users/rithviknishad/ohc.network/care (Django backend). Ignore any existing ABDM code anywhere (including care/abdm/ which is ours, and any plugs). I'm building ABDM M2 (HIP) FHIR bundle generation for OPConsultation and Prescription records, and need to know how CARE stores the data.
+
+Report exact file paths, class names, key fields (with types), and line numbers for:
+
+1. Encounter model (care/emr/models/encounter.py): fields for status, encounter_class, period (start/end), patient, facility, care_team, created_date; status values enum (where defined, e.g. care/emr/resources/encounter/constants.py) — which statuses mean completed/in-progress.
+2. MedicationRequest model + resource spec: fields (medication coded? as JSON with system/code/display), dosage_instruction structure, status/intent enums, encounter FK, patient FK, authored_on, requester, created_date. Also MedicationRequestPrescription (prescription grouping) model if present and how it relates to MedicationRequest.
+3. Condition model (diagnosis & symptom — category field), code JSON shape (system/code/display), clinical_status, verification_status, encounter FK, onset.
+4. Observation model: code JSON, value fields, effective_datetime, encounter FK, status.
+5. AllergyIntolerance model: code, encounter FK, criticality.
+6. ServiceRequest model (for investigation advice): code, encounter FK, status.
+7. Questionnaire responses: how clinical data entered via questionnaires maps to these models (does submitting a questionnaire create MedicationRequest/Condition/Observation rows with encounter FK?), and the QuestionnaireResponse model.
+8. Facility model (care/facility/models/facility.py): name, address fields, any existing external registry id fields (hfr? ndhm?), and the facility settings JSON fields if any.
+9. User model: name fields, any registration/professional id fields (HPR?), and how encounter care team/requester refers to users.
+10. Signals: existing Django signals or post_save receivers in care/emr (any `post_save.connect` / `@receiver`), and whether EMRBaseModel save hooks exist. Also how Celery tasks are triggered after commit (transaction.on_commit usage examples).
+11. Coded value JSON structure used in EMR (the `Coding` / ValueSet types — care/emr/resources/common/coding.py) — exact field names.
+12. How CARE's EMR stores patient's identifiers (PatientIdentifier with config system) — just confirm a helper to get an identifier by config system, if any.
+13. Existing FHIR-ish code: care/emr/fhir/* — what it does (just summary), and whether any FHIR resource builder / fhir.resources library is in Pipfile.
+
+Return a concise but complete structured report with paths/lines for each.
+
+---
+
+Continue: "Continue to iterate?"
+
+---
+
+Continue: "Continue to iterate?"
+
+---
+
+where can we see the linked records in the software?
+
+---
+
+where can we see the linked records in the software?
+
+---
+
+let's have a patient level list as well. add abdm tab
+
+---
+
+let's have a patient level list as well. add abdm tab
+
+---
+
+i see: "Waiting for link token" for the record i have linked, why would that be?
+also can we make it in a way so that we can see detailed view of what has been shared?
+
+---
+
+i see: "Waiting for link token" for the record i have linked, why would that be?
+also can we make it in a way so that we can see detailed view of what has been shared?
+
+---
+
+let's build M3 as well.
+
+---
+
+let's build M3 as well.
+
+---
+
+updated, set the callback url to the ```
+https://care-abdm-m2.rithviknishad.dev
+```
+
+---
+
+updated, set the callback url to the ```
+https://care-abdm-m2.rithviknishad.dev
+```
+
+---
+
+ABDM-9999: [{'error': {'code': 'ABDM-9999: ', 'message': 'Invalid from/to date and Date must be a present/before date'}}]
+
+---
+
+ABDM-9999: [{'error': {'code': 'ABDM-9999: ', 'message': 'Invalid from/to date and Date must be a present/before date'}}]
+
+---
+
+consent accepted, but it failed to fetch records that were granted: path: /api/v3/hiecm/data-flow/health-information/request; error: Bad Request; requestId: 04849387-2057722
+
+---
+
+consent accepted, but it failed to fetch records that were granted: path: /api/v3/hiecm/data-flow/health-information/request; error: Bad Request; requestId: 04849387-2057722
+
+---
+
+303001: Runtime Error
+
+got this when fetching records
+
+---
+
+303001: Runtime Error
+
+got this when fetching records
+
+---
+
+ABDM-8877: HIP did not acknowledge the HIP consent notify. Please try again after some time
+
+---
+
+ABDM-8877: HIP did not acknowledge the HIP consent notify. Please try again after some time
+
+---
+
+can we set the callback url back to this again?
+
+---
+
+can we set the callback url back to this again?
+
+---
+
+can we also have discharge summary and other hi profiles as well?
+
+---
+
+can we also have discharge summary and other hi profiles as well?
+
+---
+
+https://care-abdm-m2.rithviknishad.dev set the callback url to this base
+
+---
+
+https://care-abdm-m2.rithviknishad.dev set the callback url to this base
+
+---
+
+are we sending the bearer token when doing the data push?
+
+---
+
+are we sending the bearer token when doing the data push?
+
+---
+
+Let's integrate M4 milestone of ABDM
+
+---
+
+Let's integrate M4 milestone of ABDM

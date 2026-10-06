@@ -1,0 +1,61 @@
+{
+  "cli_version": "0.9.0",
+  "checkpoint_id": "08294efda136",
+  "strategy": "manual-commit",
+  "branch": "nha/abdm-workshop-delhi",
+  "checkpoints_count": 36,
+  "files_touched": [
+    "public/locale/en.json",
+    "src/Routers/routes/adminRoutes.tsx",
+    "src/components/Abdm/AbdmCareContextStatus.tsx",
+    "src/components/Abdm/AbdmConsentRequestSheet.tsx",
+    "src/components/Abdm/AbdmConsentRequestsCard.tsx",
+    "src/components/Abdm/AbdmReceivedSheet.tsx",
+    "src/components/Abdm/AbdmRecordView.tsx",
+    "src/components/Abdm/AbdmTransferSheet.tsx",
+    "src/components/Abdm/AbdmVisitSheet.tsx",
+    "src/components/Abdm/AbhaCardButton.tsx",
+    "src/components/Abdm/AbhaFlow.tsx",
+    "src/components/Abdm/AbhaRegistrationCard.tsx",
+    "src/components/Abdm/useAbhaFacts.ts",
+    "src/components/Patient/PatientDetailsTab/Abdm.tsx",
+    "src/components/Patient/PatientDetailsTab/Demography.tsx",
+    "src/components/Patient/PatientDetailsTab/index.tsx",
+    "src/components/Patient/PatientRegistration.tsx",
+    "src/components/ui/sidebar/admin-nav.tsx",
+    "src/components/ui/sidebar/facility/facility-nav.tsx",
+    "src/pages/Admin/Abdm/AbdmExchangeLog.tsx",
+    "src/pages/Encounters/tabs/overview.tsx",
+    "src/pages/Facility/settings/abdm/AbdmHfrOnboardSheet.tsx",
+    "src/pages/Facility/settings/abdm/AbdmHfrSearchSheet.tsx",
+    "src/pages/Facility/settings/abdm/AbdmHprCreateSheet.tsx",
+    "src/pages/Facility/settings/abdm/AbdmHprLinkSheet.tsx",
+    "src/pages/Facility/settings/abdm/AbdmOptionSelect.tsx",
+    "src/pages/Facility/settings/abdm/AbdmProfessionalsCard.tsx",
+    "src/pages/Facility/settings/abdm/AbdmSettings.tsx",
+    "src/pages/Facility/settings/abdm/useAbdmMaster.ts",
+    "src/pages/Facility/settings/layout.tsx",
+    "src/types/abdm/abha.ts",
+    "src/types/abdm/abhaApi.ts",
+    "src/types/abdm/hip.ts",
+    "src/types/abdm/hipApi.ts",
+    "src/types/abdm/registry.ts",
+    "src/types/abdm/registryApi.ts"
+  ],
+  "sessions": [
+    {
+      "metadata": "/08/294efda136/0/metadata.json",
+      "transcript": "/08/294efda136/0/full.jsonl",
+      "compact_transcript": "/08/294efda136/0/transcript.jsonl",
+      "content_hash": "/08/294efda136/0/content_hash.txt",
+      "prompt": "/08/294efda136/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 0,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 0,
+    "output_tokens": 0,
+    "api_call_count": 0
+  }
+}

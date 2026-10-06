@@ -1,0 +1,299 @@
+{
+  "cli_version": "0.9.0",
+  "checkpoint_id": "08294efda136",
+  "session_id": "31ca5544-674d-407a-8c4b-d6f865b6f7f4",
+  "strategy": "manual-commit",
+  "created_at": "2026-10-06T14:33:51.560113Z",
+  "branch": "nha/abdm-workshop-delhi",
+  "checkpoints_count": 36,
+  "save_step_count": 31,
+  "files_touched": [
+    "public/locale/en.json",
+    "src/Routers/routes/adminRoutes.tsx",
+    "src/components/Abdm/AbdmCareContextStatus.tsx",
+    "src/components/Abdm/AbdmConsentRequestSheet.tsx",
+    "src/components/Abdm/AbdmConsentRequestsCard.tsx",
+    "src/components/Abdm/AbdmReceivedSheet.tsx",
+    "src/components/Abdm/AbdmRecordView.tsx",
+    "src/components/Abdm/AbdmTransferSheet.tsx",
+    "src/components/Abdm/AbdmVisitSheet.tsx",
+    "src/components/Abdm/AbhaCardButton.tsx",
+    "src/components/Abdm/AbhaFlow.tsx",
+    "src/components/Abdm/AbhaRegistrationCard.tsx",
+    "src/components/Abdm/useAbhaFacts.ts",
+    "src/components/Patient/PatientDetailsTab/Abdm.tsx",
+    "src/components/Patient/PatientDetailsTab/Demography.tsx",
+    "src/components/Patient/PatientDetailsTab/index.tsx",
+    "src/components/Patient/PatientRegistration.tsx",
+    "src/components/ui/sidebar/admin-nav.tsx",
+    "src/components/ui/sidebar/facility/facility-nav.tsx",
+    "src/pages/Admin/Abdm/AbdmExchangeLog.tsx",
+    "src/pages/Encounters/tabs/overview.tsx",
+    "src/pages/Facility/settings/abdm/AbdmHfrOnboardSheet.tsx",
+    "src/pages/Facility/settings/abdm/AbdmHfrSearchSheet.tsx",
+    "src/pages/Facility/settings/abdm/AbdmHprCreateSheet.tsx",
+    "src/pages/Facility/settings/abdm/AbdmHprLinkSheet.tsx",
+    "src/pages/Facility/settings/abdm/AbdmOptionSelect.tsx",
+    "src/pages/Facility/settings/abdm/AbdmProfessionalsCard.tsx",
+    "src/pages/Facility/settings/abdm/AbdmSettings.tsx",
+    "src/pages/Facility/settings/abdm/useAbdmMaster.ts",
+    "src/pages/Facility/settings/layout.tsx",
+    "src/types/abdm/abha.ts",
+    "src/types/abdm/abhaApi.ts",
+    "src/types/abdm/hip.ts",
+    "src/types/abdm/hipApi.ts",
+    "src/types/abdm/registry.ts",
+    "src/types/abdm/registryApi.ts"
+  ],
+  "agent": "Copilot CLI",
+  "model": "claude-opus-5.5",
+  "turn_id": "c9170bd528f8",
+  "compact_transcript_start": 0,
+  "token_usage": {
+    "input_tokens": 0,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 0,
+    "output_tokens": 0,
+    "api_call_count": 0
+  },
+  "session_metrics": {
+    "turn_count": 36
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-10-06T14:33:51.425192Z",
+    "agent_lines": 5214,
+    "agent_removed": 5,
+    "human_added": 367,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 5581,
+    "total_lines_changed": 5586,
+    "agent_percentage": 93.43000358037952,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0
+    },
+    {
+      "checkpoint_number": 2,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0
+    },
+    {
+      "checkpoint_number": 3,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0
+    },
+    {
+      "checkpoint_number": 4,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 1386,
+      "agent_lines_removed": 5
+    },
+    {
+      "checkpoint_number": 5,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0
+    },
+    {
+      "checkpoint_number": 6,
+      "user_lines_added": 232,
+      "user_lines_removed": 0,
+      "agent_lines_added": 1386,
+      "agent_lines_removed": 5,
+      "user_added_per_file": {
+        "src/components/Abdm/AbdmCareContextStatus.tsx": 130,
+        "src/pages/Encounters/tabs/overview.tsx": 2,
+        "src/types/abdm/hip.ts": 57,
+        "src/types/abdm/hipApi.ts": 43
+      }
+    },
+    {
+      "checkpoint_number": 7,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0
+    },
+    {
+      "checkpoint_number": 8,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0
+    },
+    {
+      "checkpoint_number": 9,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 1983,
+      "agent_lines_removed": 5
+    },
+    {
+      "checkpoint_number": 10,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 1983,
+      "agent_lines_removed": 5
+    },
+    {
+      "checkpoint_number": 11,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0
+    },
+    {
+      "checkpoint_number": 12,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 2396,
+      "agent_lines_removed": 5
+    },
+    {
+      "checkpoint_number": 13,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0
+    },
+    {
+      "checkpoint_number": 14,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 2974,
+      "agent_lines_removed": 5
+    },
+    {
+      "checkpoint_number": 15,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0
+    },
+    {
+      "checkpoint_number": 16,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 3689,
+      "agent_lines_removed": 5
+    },
+    {
+      "checkpoint_number": 17,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 3689,
+      "agent_lines_removed": 5
+    },
+    {
+      "checkpoint_number": 18,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0
+    },
+    {
+      "checkpoint_number": 19,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 3689,
+      "agent_lines_removed": 5
+    },
+    {
+      "checkpoint_number": 20,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0
+    },
+    {
+      "checkpoint_number": 21,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0
+    },
+    {
+      "checkpoint_number": 22,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 3689,
+      "agent_lines_removed": 5
+    },
+    {
+      "checkpoint_number": 23,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0
+    },
+    {
+      "checkpoint_number": 24,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 3689,
+      "agent_lines_removed": 5
+    },
+    {
+      "checkpoint_number": 25,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 3689,
+      "agent_lines_removed": 5
+    },
+    {
+      "checkpoint_number": 26,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 3689,
+      "agent_lines_removed": 5
+    },
+    {
+      "checkpoint_number": 27,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 3689,
+      "agent_lines_removed": 5
+    },
+    {
+      "checkpoint_number": 28,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0
+    },
+    {
+      "checkpoint_number": 29,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 3689,
+      "agent_lines_removed": 5
+    },
+    {
+      "checkpoint_number": 30,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0
+    },
+    {
+      "checkpoint_number": 31,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 3689,
+      "agent_lines_removed": 5
+    }
+  ]
+}
