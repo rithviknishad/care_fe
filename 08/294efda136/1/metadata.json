@@ -1,0 +1,89 @@
+{
+  "cli_version": "0.9.0",
+  "checkpoint_id": "08294efda136",
+  "session_id": "5d8f6705-40c1-4ec7-844f-5cacb64da1d3",
+  "strategy": "manual-commit",
+  "created_at": "2026-10-06T14:33:51.725361Z",
+  "branch": "nha/abdm-workshop-delhi",
+  "checkpoints_count": 1,
+  "save_step_count": 1,
+  "files_touched": [
+    "public/locale/en.json",
+    "src/Routers/routes/adminRoutes.tsx",
+    "src/components/Patient/PatientDetailsTab/Demography.tsx",
+    "src/components/Patient/PatientDetailsTab/index.tsx",
+    "src/components/Patient/PatientRegistration.tsx",
+    "src/components/ui/sidebar/admin-nav.tsx",
+    "src/components/ui/sidebar/facility/facility-nav.tsx",
+    "src/pages/Encounters/tabs/overview.tsx",
+    "src/pages/Facility/settings/layout.tsx"
+  ],
+  "agent": "Copilot CLI",
+  "model": "claude-opus-5.5",
+  "turn_id": "bd954d85a42d",
+  "compact_transcript_start": 0,
+  "token_usage": {
+    "input_tokens": 0,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 0,
+    "output_tokens": 0,
+    "api_call_count": 0
+  },
+  "session_metrics": {
+    "turn_count": 1
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-10-06T14:33:51.721231Z",
+    "agent_lines": 89,
+    "agent_removed": 0,
+    "human_added": 1793,
+    "human_modified": 5,
+    "human_removed": 0,
+    "total_committed": 1887,
+    "total_lines_changed": 1887,
+    "agent_percentage": 4.716481187069423,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 3689,
+      "user_lines_removed": 5,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        "public/locale/en.json": 164,
+        "src/Routers/routes/adminRoutes.tsx": 2,
+        "src/components/Abdm/AbdmCareContextStatus.tsx": 130,
+        "src/components/Abdm/AbdmConsentRequestSheet.tsx": 175,
+        "src/components/Abdm/AbdmConsentRequestsCard.tsx": 276,
+        "src/components/Abdm/AbdmReceivedSheet.tsx": 75,
+        "src/components/Abdm/AbdmRecordView.tsx": 142,
+        "src/components/Abdm/AbdmTransferSheet.tsx": 82,
+        "src/components/Abdm/AbdmVisitSheet.tsx": 196,
+        "src/components/Abdm/AbhaCardButton.tsx": 140,
+        "src/components/Abdm/AbhaFlow.tsx": 763,
+        "src/components/Abdm/AbhaRegistrationCard.tsx": 124,
+        "src/components/Abdm/useAbhaFacts.ts": 35,
+        "src/components/Patient/PatientDetailsTab/Abdm.tsx": 395,
+        "src/components/Patient/PatientDetailsTab/Demography.tsx": 8,
+        "src/components/Patient/PatientDetailsTab/index.tsx": 7,
+        "src/components/Patient/PatientRegistration.tsx": 72,
+        "src/components/ui/sidebar/admin-nav.tsx": 5,
+        "src/components/ui/sidebar/facility/facility-nav.tsx": 4,
+        "src/pages/Admin/Abdm/AbdmExchangeLog.tsx": 178,
+        "src/pages/Encounters/tabs/overview.tsx": 2,
+        "src/pages/Facility/settings/abdm/AbdmSettings.tsx": 146,
+        "src/pages/Facility/settings/layout.tsx": 2,
+        "src/types/abdm/abha.ts": 94,
+        "src/types/abdm/abhaApi.ts": 104,
+        "src/types/abdm/hip.ts": 281,
+        "src/types/abdm/hipApi.ts": 87
+      },
+      "user_removed_per_file": {
+        "public/locale/en.json": 1,
+        "src/components/Patient/PatientDetailsTab/Demography.tsx": 4
+      }
+    }
+  ]
+}

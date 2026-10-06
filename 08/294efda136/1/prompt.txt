@@ -1,0 +1,9 @@
+set the callback url to: ```
+https://care-abdm-m2.rithviknishad.dev
+```
+
+---
+
+set the callback url to: ```
+https://care-abdm-m2.rithviknishad.dev
+```

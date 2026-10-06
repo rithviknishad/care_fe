@@ -3,7 +3,7 @@
   "checkpoint_id": "08294efda136",
   "strategy": "manual-commit",
   "branch": "nha/abdm-workshop-delhi",
-  "checkpoints_count": 36,
+  "checkpoints_count": 37,
   "files_touched": [
     "public/locale/en.json",
     "src/Routers/routes/adminRoutes.tsx",
@@ -49,6 +49,13 @@
       "compact_transcript": "/08/294efda136/0/transcript.jsonl",
       "content_hash": "/08/294efda136/0/content_hash.txt",
       "prompt": "/08/294efda136/0/prompt.txt"
+    },
+    {
+      "metadata": "/08/294efda136/1/metadata.json",
+      "transcript": "/08/294efda136/1/full.jsonl",
+      "compact_transcript": "/08/294efda136/1/transcript.jsonl",
+      "content_hash": "/08/294efda136/1/content_hash.txt",
+      "prompt": "/08/294efda136/1/prompt.txt"
     }
   ],
   "token_usage": {
