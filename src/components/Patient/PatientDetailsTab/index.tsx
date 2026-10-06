@@ -7,6 +7,7 @@ import EncounterHistory from "@/components/Patient/PatientDetailsTab/EncounterHi
 import { ClinicalHistory } from "./ClinicalHistory";
 
 import { BookingsList } from "@/pages/Appointments/BookAppointment/BookingsList";
+import { AbdmTab } from "./Abdm";
 import { Accounts } from "./Accounts";
 import { PatientFilesTab } from "./PatientFiles";
 import { PatientNotesTab } from "./PatientNotes";
@@ -71,6 +72,10 @@ export const BASE_PATIENT_TABS: Tab[] = [
     route: "clinical_history",
     component: ClinicalHistory,
   },
+  {
+    route: "abdm",
+    component: AbdmTab,
+  },
 ];
 
 export function getTabs(
@@ -95,6 +100,8 @@ export function getTabs(
       case "files":
         return { ...tab, visible: canReadEncounter || canViewClinicalData };
       case "clinical_history":
+        return { ...tab, visible: canViewClinicalData };
+      case "abdm":
         return { ...tab, visible: canViewClinicalData };
       case "updates":
         return {

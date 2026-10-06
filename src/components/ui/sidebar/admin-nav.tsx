@@ -72,6 +72,11 @@ function generateAdminLinks(
       url: `${baseUrl}/apps`,
       icon: <CareIcon icon="l-apps" />,
     },
+    {
+      name: t("abdm_exchange_log"),
+      url: `${baseUrl}/abdm/exchanges`,
+      icon: <CareIcon icon="l-exchange" />,
+    },
     ...pluginNavItems,
   ];
 

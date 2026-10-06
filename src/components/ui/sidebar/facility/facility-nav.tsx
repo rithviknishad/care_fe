@@ -195,6 +195,10 @@ function generateFacilityLinks(
           url: `${baseUrl}/settings/tag_config`,
         },
         {
+          name: t("abdm"),
+          url: `${baseUrl}/settings/abdm`,
+        },
+        {
           name: t("templates"),
           url: `${baseUrl}/template`,
           visibility: permissions.canListTemplate,

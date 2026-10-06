@@ -6,6 +6,7 @@ import { ValueSetEditor } from "@/components/ValueSet/ValueSetEditor";
 import { ValueSetList } from "@/components/ValueSet/ValueSetList";
 
 import { AppRoutes } from "@/Routers/AppRouter";
+import AbdmExchangeLog from "@/pages/Admin/Abdm/AbdmExchangeLog";
 import { PermissionsIndex } from "@/pages/Admin/Permissions/PermissionsIndex";
 import RolesIndex from "@/pages/Admin/Roles/RolesIndex";
 import TagConfigList from "@/pages/Admin/TagConfig/TagConfigList";
@@ -40,6 +41,7 @@ const AdminRoutes: AppRoutes = {
   "/admin/rbac/permissions": () => <PermissionsIndex />,
   "/admin/rbac/roles": () => <RolesIndex />,
   "/admin/apps": () => <PlugConfigList />,
+  "/admin/abdm/exchanges": () => <AbdmExchangeLog />,
   "/admin/apps/:slug": ({ slug }) => <PlugConfigEdit slug={slug} />,
   ...["govt", "product_supplier", "role"].reduce((acc: AppRoutes, type) => {
     acc[`/admin/organizations/${type}/:id`] = ({ id }) => (

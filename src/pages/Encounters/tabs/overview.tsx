@@ -8,6 +8,7 @@ import { PLUGIN_Component } from "@/PluginEngine";
 import { EmptyState } from "@/components/ui/empty-state";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
+import { AbdmCareContextStatus } from "@/components/Abdm/AbdmCareContextStatus";
 import QuestionnaireResponsesList from "@/components/Facility/ConsultationDetails/QuestionnaireResponsesList";
 import { AllergyList } from "@/components/Patient/allergy/list";
 import { DiagnosisList } from "@/components/Patient/diagnosis/list";
@@ -59,6 +60,7 @@ export const EncounterOverviewTab = () => {
                 encounterId={encounterId}
               />
             )}
+            {encounterId && <AbdmCareContextStatus encounterId={encounterId} />}
             {<ClinicalHistoryOverview />}
 
             <div className="xl:hidden">

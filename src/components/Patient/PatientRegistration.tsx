@@ -1,4 +1,5 @@
 import { BLOOD_GROUP_CHOICES, GENDER_TYPES, GENDERS } from "@/common/constants";
+import { AbhaRegistrationCard } from "@/components/Abdm/AbhaRegistrationCard";
 import BackButton from "@/components/Common/BackButton";
 import { DateTimeInput } from "@/components/Common/DateTimeInput";
 import Loading from "@/components/Common/Loading";
@@ -47,6 +48,7 @@ import {
 import { tzAwareDateTime } from "@/lib/validators";
 import useCurrentFacility from "@/pages/Facility/utils/useCurrentFacility";
 import { PLUGIN_Component } from "@/PluginEngine";
+import { AbhaConfig, AbhaProfile } from "@/types/abdm/abha";
 import {
   BloodGroupChoices,
   PatientIdentifierCreate,
@@ -299,6 +301,70 @@ export const PatientRegistration = ({ patientId }: { patientId?: string }) => {
 
   const isPending = isCreatingPatient || isUpdatingPatient;
 
+  // Fills the form from a verified ABHA profile; returns the fields it filled
+  const applyAbhaProfile = (profile: AbhaProfile, config: AbhaConfig) => {
+    const filled: string[] = [];
+    const options = { shouldDirty: true };
+
+    if (profile.name) {
+      form.setValue("name", profile.name, options);
+      filled.push("name");
+    }
+    if (profile.gender) {
+      form.setValue("gender", profile.gender, options);
+      filled.push("gender");
+    }
+    if (profile.date_of_birth) {
+      form.setValue("age_or_dob", "dob", options);
+      form.setValue("date_of_birth", profile.date_of_birth, options);
+      filled.push("date_of_birth");
+    } else if (profile.year_of_birth) {
+      form.setValue("age_or_dob", "age", options);
+      form.setValue(
+        "age",
+        new Date().getFullYear() - profile.year_of_birth,
+        options,
+      );
+      filled.push("age");
+    }
+    // The number the desk already holds is the one the patient carries
+    if (profile.phone_number && !form.getValues("phone_number")) {
+      form.setValue("phone_number", profile.phone_number, options);
+      filled.push("phone_number");
+    }
+    if (profile.address) {
+      form.setValue("address", profile.address, options);
+      form.setValue("permanent_address_same_as_address", true, options);
+      filled.push("address");
+    }
+    if (profile.pincode) {
+      form.setValue("pincode", profile.pincode, options);
+      filled.push("pincode");
+    }
+
+    const identifierValues: Record<string, string | null> = {};
+    const { abha_number, abha_address } = config.identifier_configs ?? {};
+    if (abha_number) identifierValues[abha_number] = profile.abha_number;
+    if (abha_address) identifierValues[abha_address] = profile.abha_address;
+    for (const key of ["required_identifiers", "optional_identifiers"] as const) {
+      form.setValue(
+        key,
+        form
+          .getValues(key)
+          .map((identifier) =>
+            identifierValues[identifier.config]
+              ? { ...identifier, value: identifierValues[identifier.config]! }
+              : identifier,
+          ),
+        options,
+      );
+    }
+    if (abha_number && profile.abha_number) filled.push("abha_number");
+    if (abha_address && profile.abha_address) filled.push("abha_address");
+
+    return filled;
+  };
+
   const showDuplicate =
     !patientPhoneSearch.isLoading &&
     !!duplicatePatients?.length &&
@@ -407,6 +473,12 @@ export const PatientRegistration = ({ patientId }: { patientId?: string }) => {
                   : ["patient-basics", "additional-details"]
               }
             >
+              {!patientId && (
+                <AbhaRegistrationCard
+                  phoneNumber={phone_number}
+                  onApply={applyAbhaProfile}
+                />
+              )}
               <PLUGIN_Component
                 __name="PatientRegistrationForm"
                 form={form}

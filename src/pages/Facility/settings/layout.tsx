@@ -13,6 +13,7 @@ import PatientIdentifierConfigForm from "@/pages/settings/patientIdentifierConfi
 import PatientIdentifierConfigList from "@/pages/settings/patientIdentifierConfig/PatientIdentifierConfigList";
 
 import ActivityDefinitionForm from "./activityDefinition/ActivityDefinitionForm";
+import AbdmSettings from "./abdm/AbdmSettings";
 import ActivityDefinitionList from "./activityDefinition/ActivityDefinitionList";
 import ActivityDefinitionView from "./activityDefinition/ActivityDefinitionView";
 import { ChargeItemDefinitionDetail } from "./chargeItemDefinitions/ChargeItemDefinitionDetail";
@@ -48,6 +49,7 @@ interface SettingsLayoutProps {
 
 const getRoutes = (facilityId: string) => ({
   "/general": () => <GeneralSettings facilityId={facilityId} />,
+  "/abdm": () => <AbdmSettings facilityId={facilityId} />,
   "/departments": () => <FacilityOrganizationList />,
   "/departments/:id/:tab": ({ id, tab }: { id: string; tab: string }) => (
     <FacilityOrganizationList organizationId={id} currentTab={tab} />

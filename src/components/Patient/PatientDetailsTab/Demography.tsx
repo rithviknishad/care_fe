@@ -9,6 +9,7 @@ import CareIcon from "@/CAREUI/icons/CareIcon";
 
 import { Button } from "@/components/ui/button";
 
+import { AbhaCardButton } from "@/components/Abdm/AbhaCardButton";
 import { PatientAddressLink } from "@/components/Patient/PatientAddressLink";
 import { PatientProps } from "@/components/Patient/PatientDetailsTab";
 import TagAssignmentSheet from "@/components/Tags/TagAssignmentSheet";
@@ -266,10 +267,13 @@ export const Demography = (props: PatientProps) => {
     {
       id: "identifiers",
       allowEdit: false,
-      details: getPatientIdentifiers(patientData).map((i) => ({
-        label: i.config.config.display,
-        value: i.value,
-      })),
+      details: [
+        ...getPatientIdentifiers(patientData).map((i) => ({
+          label: i.config.config.display,
+          value: i.value,
+        })),
+        <AbhaCardButton key="abha-card" patient={patientData} />,
+      ],
     },
     {
       id: "tags",
