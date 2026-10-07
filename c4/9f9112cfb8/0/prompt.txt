@@ -1,0 +1,9 @@
+How to make a Quick/Pinned links shortcut in care?
+
+---
+
+Shift+B is not working, something broke in the recent reworks.
+
+---
+
+add aria-label as well
