@@ -1,0 +1,45 @@
+{
+  "cli_version": "0.9.0",
+  "checkpoint_id": "32d8aac06e15",
+  "strategy": "manual-commit",
+  "branch": "amjithtitus09-ccn-beckn-referral",
+  "checkpoints_count": 20,
+  "files_touched": [
+    "docs/care-apps-architecture-note.md",
+    "src/Utils/schema/extensionSchema.ts",
+    "src/components/Encounter/EncounterCommandDialog.tsx",
+    "src/components/Extensions/ArrayField.tsx",
+    "src/components/Extensions/AutocompleteField.tsx",
+    "src/components/Extensions/SchemaField.tsx",
+    "src/components/Workspace/WorkspaceSchemaFields.tsx",
+    "src/components/Workspace/WorkspaceWidgetInspector.tsx",
+    "src/components/Workspace/workspaceEditorCatalog.ts",
+    "src/components/Workspace/workspaceWidgetSchema.ts",
+    "src/components/Workspace/workspaceWidgetSchemaI18n.ts",
+    "src/hooks/useCareAppEncounterWidgets.ts",
+    "src/pages/Encounters/widgets/EncounterResponsesWidget.tsx",
+    "src/pages/Encounters/widgets/EncounterServiceRequestsWidget.tsx",
+    "src/pluginTypes.ts",
+    "src/types/workspace/encounterWorkspace.ts",
+    "src/types/workspace/widgetConfigSchemas.ts",
+    "tests/admin/workspaces/workspaceEditor.spec.ts",
+    "tests/facility/patient/encounter/encounterWorkspace.spec.ts",
+    "tests/support/encounterWidgetRemote.ts"
+  ],
+  "sessions": [
+    {
+      "metadata": "/32/d8aac06e15/0/metadata.json",
+      "transcript": "/32/d8aac06e15/0/full.jsonl",
+      "compact_transcript": "/32/d8aac06e15/0/transcript.jsonl",
+      "content_hash": "/32/d8aac06e15/0/content_hash.txt",
+      "prompt": "/32/d8aac06e15/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 3188395,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 166796032,
+    "output_tokens": 376578,
+    "api_call_count": 1472
+  }
+}
