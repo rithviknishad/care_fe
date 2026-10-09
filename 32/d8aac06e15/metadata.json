@@ -3,9 +3,10 @@
   "checkpoint_id": "32d8aac06e15",
   "strategy": "manual-commit",
   "branch": "amjithtitus09-ccn-beckn-referral",
-  "checkpoints_count": 20,
+  "checkpoints_count": 21,
   "files_touched": [
     "docs/care-apps-architecture-note.md",
+    "src/Providers/AuthUserProvider.tsx",
     "src/Utils/schema/extensionSchema.ts",
     "src/components/Encounter/EncounterCommandDialog.tsx",
     "src/components/Extensions/ArrayField.tsx",
@@ -16,6 +17,9 @@
     "src/components/Workspace/workspaceEditorCatalog.ts",
     "src/components/Workspace/workspaceWidgetSchema.ts",
     "src/components/Workspace/workspaceWidgetSchemaI18n.ts",
+    "src/components/ui/sidebar/app-sidebar.tsx",
+    "src/components/ui/sidebar/facility/facility-nav.tsx",
+    "src/components/ui/sidebar/workspace-header.tsx",
     "src/hooks/useCareAppEncounterWidgets.ts",
     "src/pages/Encounters/widgets/EncounterResponsesWidget.tsx",
     "src/pages/Encounters/widgets/EncounterServiceRequestsWidget.tsx",
@@ -33,13 +37,20 @@
       "compact_transcript": "/32/d8aac06e15/0/transcript.jsonl",
       "content_hash": "/32/d8aac06e15/0/content_hash.txt",
       "prompt": "/32/d8aac06e15/0/prompt.txt"
+    },
+    {
+      "metadata": "/32/d8aac06e15/1/metadata.json",
+      "transcript": "/32/d8aac06e15/1/full.jsonl",
+      "compact_transcript": "/32/d8aac06e15/1/transcript.jsonl",
+      "content_hash": "/32/d8aac06e15/1/content_hash.txt",
+      "prompt": "/32/d8aac06e15/1/prompt.txt"
     }
   ],
   "token_usage": {
-    "input_tokens": 3188395,
+    "input_tokens": 3301889,
     "cache_creation_tokens": 0,
-    "cache_read_tokens": 166796032,
-    "output_tokens": 376578,
-    "api_call_count": 1472
+    "cache_read_tokens": 173070976,
+    "output_tokens": 390456,
+    "api_call_count": 1538
   }
 }
