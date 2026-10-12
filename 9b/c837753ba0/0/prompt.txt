@@ -5,3 +5,11 @@ Run all the plawright tests, and verify the changes in our branches doesn't fail
 aria-hidden="true"
 
 Can we fix the tests without this? It won't fit there
+
+---
+
+Go through the review and make any changes if required:
+### Broken
+**1. The accessible name substring-collides with generic action verbs app-wide.** `sr-only` puts the button in the a11y tree on every facility/admin page, named `Pin/Add to Overview` (or `Unpin/Remove from Overview`). Playwright's role-name matching is case-insensitive *substring*, so `"Add"`, `"View"` (via `Over**view**`), and `"Remove"` now all match it. That's why 6 unrelated specs needed `exact: true` — the fix is in `PinPageDialog.tsx`, not in the specs. See the inline comment for two smaller alternatives.
+
+**2. The `exact: true` sweep missed ~13 more sites.** Seven unscoped `name: "Add"` in `linkCareTeam.spec.ts`, six unscoped `name: "Remove"` across prescription/careTeam/assignUser/observationDefinition/departmentUserManage. The `"Remove"` ones only fire once a page is pinned, so they'll read as flakes rather than as this change. Details inline. (CI is still reporting 6 Playwright failures at `a1e7020`, which is consistent with this.)

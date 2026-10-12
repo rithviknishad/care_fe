@@ -3,12 +3,11 @@
   "checkpoint_id": "9bc837753ba0",
   "strategy": "manual-commit",
   "branch": "ENG-1076-fix-quick-links-shortcut",
-  "checkpoints_count": 6,
+  "checkpoints_count": 2,
   "files_touched": [
-    "tests/admin/tags/tagconfig.spec.ts",
-    "tests/facility/settings/chargeItemDefinition/chargeItemDefinitionsCreate.spec.ts",
-    "tests/facility/settings/specimenDefinitions/specimenDefinitionCreate.spec.ts",
-    "tests/facility/settings/specimenDefinitions/specimenDefinitionEdit.spec.ts"
+    "public/locale/en.json",
+    "src/components/Common/PinPageDialog.tsx",
+    "tests/facility/dashboard/pinPageShortcut.spec.ts"
   ],
   "sessions": [
     {

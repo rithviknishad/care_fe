@@ -3,22 +3,19 @@
   "checkpoint_id": "9bc837753ba0",
   "session_id": "183d1f70-fbd3-4bdb-8ec8-4f95a43dcb96",
   "strategy": "manual-commit",
-  "created_at": "2026-10-12T08:01:31.877983Z",
+  "created_at": "2026-10-12T08:31:44.764134Z",
   "branch": "ENG-1076-fix-quick-links-shortcut",
-  "checkpoints_count": 6,
-  "save_step_count": 5,
+  "checkpoints_count": 2,
+  "save_step_count": 3,
   "files_touched": [
-    "tests/admin/tags/tagconfig.spec.ts",
-    "tests/facility/settings/chargeItemDefinition/chargeItemDefinitionsCreate.spec.ts",
-    "tests/facility/settings/specimenDefinitions/specimenDefinitionCreate.spec.ts",
-    "tests/facility/settings/specimenDefinitions/specimenDefinitionEdit.spec.ts"
+    "public/locale/en.json",
+    "src/components/Common/PinPageDialog.tsx",
+    "tests/facility/dashboard/pinPageShortcut.spec.ts"
   ],
   "agent": "Copilot CLI",
   "model": "",
-  "turn_id": "388f4b2d9c05",
-  "checkpoint_transcript_start": 258,
-  "transcript_lines_at_start": 258,
-  "compact_transcript_start": 51,
+  "turn_id": "269f89bab7f7",
+  "compact_transcript_start": 0,
   "token_usage": {
     "input_tokens": 0,
     "cache_creation_tokens": 0,
@@ -27,28 +24,21 @@
     "api_call_count": 0
   },
   "session_metrics": {
-    "turn_count": 14
+    "turn_count": 16
   },
   "initial_attribution": {
-    "calculated_at": "2026-10-12T08:01:31.861347Z",
-    "agent_lines": 10,
-    "agent_removed": 8,
+    "calculated_at": "2026-10-12T08:31:44.750946Z",
+    "agent_lines": 8,
+    "agent_removed": 4,
     "human_added": 0,
-    "human_modified": 0,
+    "human_modified": 3,
     "human_removed": 0,
-    "total_committed": 10,
-    "total_lines_changed": 18,
-    "agent_percentage": 100,
+    "total_committed": 11,
+    "total_lines_changed": 15,
+    "agent_percentage": 80,
     "metric_version": 2
   },
   "prompt_attributions": [
-    {
-      "checkpoint_number": 1,
-      "user_lines_added": 0,
-      "user_lines_removed": 0,
-      "agent_lines_added": 0,
-      "agent_lines_removed": 0
-    },
     {
       "checkpoint_number": 2,
       "user_lines_added": 0,
@@ -58,20 +48,6 @@
     },
     {
       "checkpoint_number": 3,
-      "user_lines_added": 0,
-      "user_lines_removed": 0,
-      "agent_lines_added": 0,
-      "agent_lines_removed": 0
-    },
-    {
-      "checkpoint_number": 4,
-      "user_lines_added": 0,
-      "user_lines_removed": 0,
-      "agent_lines_added": 7,
-      "agent_lines_removed": 1
-    },
-    {
-      "checkpoint_number": 5,
       "user_lines_added": 0,
       "user_lines_removed": 0,
       "agent_lines_added": 0,
