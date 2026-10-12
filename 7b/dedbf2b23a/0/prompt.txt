@@ -1,1 +1,4 @@
-Add a playwright test for this.
+Comment from copilot: 
+This test only removes the fixed `/users` pin on the happy path. If CI fails after the bookmark request, its configured retry reuses the persisted preference and starts in the unpin state, so the retry cannot find the pin dialog's Title field. Normalize any existing pin during setup so retries and reruns remain independent.
+
+Is it valid or need any changes?
