@@ -1,0 +1,29 @@
+{
+  "cli_version": "0.9.0",
+  "checkpoint_id": "9bc837753ba0",
+  "strategy": "manual-commit",
+  "branch": "ENG-1076-fix-quick-links-shortcut",
+  "checkpoints_count": 6,
+  "files_touched": [
+    "tests/admin/tags/tagconfig.spec.ts",
+    "tests/facility/settings/chargeItemDefinition/chargeItemDefinitionsCreate.spec.ts",
+    "tests/facility/settings/specimenDefinitions/specimenDefinitionCreate.spec.ts",
+    "tests/facility/settings/specimenDefinitions/specimenDefinitionEdit.spec.ts"
+  ],
+  "sessions": [
+    {
+      "metadata": "/9b/c837753ba0/0/metadata.json",
+      "transcript": "/9b/c837753ba0/0/full.jsonl",
+      "compact_transcript": "/9b/c837753ba0/0/transcript.jsonl",
+      "content_hash": "/9b/c837753ba0/0/content_hash.txt",
+      "prompt": "/9b/c837753ba0/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 0,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 0,
+    "output_tokens": 0,
+    "api_call_count": 0
+  }
+}

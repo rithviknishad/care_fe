@@ -1,0 +1,7 @@
+Run all the plawright tests, and verify the changes in our branches doesn't fail any of it.
+
+---
+
+aria-hidden="true"
+
+Can we fix the tests without this? It won't fit there
