@@ -1,42 +1,45 @@
-<copilot_tauri_workspace>
-project_session_id: 7faef660-5501-4331-987d-a11bb2586e72
-project_id: 2620465d-e750-42b5-9424-97b1270f0636
-project_name: care_fe
-project_github_repo: ohcnetwork/care_fe
-project_default_branch: develop
-workspace_type: worktree
-workspace_name: New session
-workspace_branch: jacobjeevan-ubiquitous-funicular
-workspace_path: /Users/jacob/copilot-worktrees/care_fe/jacobjeevan-ubiquitous-funicular
-repo_root: /Users/jacob/copilot-worktrees/care_fe/jacobjeevan-ubiquitous-funicular
-default_branch: develop
-base_branch: develop
-original_generated_branch: jacobjeevan-ubiquitous-funicular
-current_branch: jacobjeevan-ubiquitous-funicular
-</copilot_tauri_workspace>
-
-<copilot_working_context>
-container_kind: repository
-current_working_directory: /Users/jacob/copilot-worktrees/care_fe/jacobjeevan-ubiquitous-funicular
-current_working_directory_is_git_repo: true
-checkout_strategy: worktree
-member_repositories:
-- repo_name: care_fe
-  repo_full_name: ohcnetwork/care_fe
-  main_checkout_path: /Users/jacob/Desktop/care_fe
-  main_checkout_branch: develop
-  current_checkout_kind: worktree
-  current_checkout_path: /Users/jacob/copilot-worktrees/care_fe/jacobjeevan-ubiquitous-funicular
-  current_checkout_branch: jacobjeevan-ubiquitous-funicular
-</copilot_working_context>
-
-<copilot_artifacts>
-artifacts_dir: /Users/jacob/.copilot/session-state/7faef660-5501-4331-987d-a11bb2586e72/files
-Write scratch artifacts (plans, task lists, notes) in this folder instead of the repo.
-</copilot_artifacts>
-
-<branch_rename_request>
-Before creating or editing any files, call the rename_branch tool with a kebab-case version of the session name you chose.
-</branch_rename_request>
-
 check and review changes for the playwright improver workflow.
+
+---
+
+You are reviewing two open, bot-generated Playwright E2E PRs in ohcnetwork/care_fe produced by the "Daily Playwright Test Improver" gh-aw agentic workflow (.github/workflows/daily-playwright-improver.md). This is a READ-ONLY task: do NOT edit any files in the repo, do NOT checkout/switch branches in the worktree, do NOT push, and do NOT comment/review/label anything on GitHub. Use read-only `gh` commands and read-only git commands only (git fetch is fine).
+
+Working copy: /Users/jacob/copilot-worktrees/care_fe/jacobjeevan-ubiquitous-funicular (based on current develop, HEAD 8b5066744). Treat it as "current develop". To read a PR's version of a file use `git fetch origin <headRef>` then `git show FETCH_HEAD:<path>` (or `gh pr diff`).
+
+PRs:
+1. #16634 "[daily-playwright] Add E2E tests for schedule templates" — head daily-playwright/2026-08-05-2963a2919588a7d0, adds tests/facility/services/scheduleTemplates.spec.ts (+476). NOT a draft; Jacobjeevan (the user I'm working for) is a requested reviewer. Playwright CI ran and passed on it — determine which commit/date it ran on and how far behind develop it is now (gh pr view 16634 --json commits,mergeable,mergeStateStatus; gh pr checks 16634).
+2. #16799 "[daily-playwright] Add tests for Schedule Management - Templates and Exceptions" — head develop-6745fbb9ff62fa99, adds tests/facility/scheduling/schedule.spec.ts (+489). Draft; created by github-actions with GITHUB_TOKEN, so the Playwright CI workflow NEVER ran on it — its tests have never been executed anywhere.
+Diffs and PR bodies are saved at /Users/jacob/.copilot/session-state/7faef660-5501-4331-987d-a11bb2586e72/files/prs/16634.diff, 16634.md, 16799.diff, 16799.md.
+
+Repo conventions: read tests/PLAYWRIGHT_GUIDE.md (file template, `test.use({ storageState: "tests/.auth/user.json" })`, test.step, faker for unique names, no hardcoded timeouts or waitForTimeout, `exact: true`, `.first()`, camelCase directories, file organization) and look at existing specs in tests/ related to scheduling/services (e.g. `grep -ril schedule tests/`) to compare patterns and detect duplicated coverage. Fixture IDs come from tests/support/*.ts (getFacilityId etc.) populated by tests/setup/*.setup.ts.
+
+For each PR determine:
+a) Duplication: does develop already cover these flows (existing schedule/template/exception specs)? Do #16634 and #16799 overlap each other? Which (if either) is worth keeping?
+b) Correctness against CURRENT develop source: verify routes, button/label/heading text (check public/locale/en.json and the relevant components under src/, e.g. grep for ScheduleTemplate / ScheduleException components and their routes), dialogs/sheets, form fields and their accessible names. Flag selectors that no longer match (UI drift since Aug/Sep 2026) and anything that would make the test fail today.
+c) Flakiness/robustness: hardcoded entity names, fixed timeouts/waitForTimeout, test interdependence or shared mutable state, reliance on fixture data that may not exist, date/time-sensitive logic (timezones, weekdays, "today", month boundaries), missing cleanup that breaks re-runs, strict-mode violations (ambiguous locators).
+d) Value: meaningful assertions vs. trivial visibility checks; assertions that would pass even if the feature were broken.
+e) Mergeability: conflicts with develop?
+f) Scope: only tests/ files touched?
+
+Output (concise, at most ~500 words total): for each PR a verdict — "Merge as-is", "Merge after fixes", or "Close" — with confidence (high/med/low); then the top 3–6 concrete issues with file:line references (line numbers in the PR's new file) and a suggested fix for each. End with a one-line recommendation on how to consolidate the two PRs. Only report issues you verified against source; label anything inferred as "inferred".
+
+---
+
+Diagnose the health of the "Daily Playwright Test Improver" GitHub Agentic Workflow (gh-aw) in ohcnetwork/care_fe. This is READ-ONLY: do NOT re-run or dispatch workflows, do NOT comment on/edit/close issues or PRs, do NOT edit repo files. Use read-only `gh` commands (gh run view, gh run view --log, gh run download into /tmp, gh api, gh issue view, gh pr list/view/checks, gh release list) and local file reads.
+
+Workflow source: /Users/jacob/copilot-worktrees/care_fe/jacobjeevan-ubiquitous-funicular/.github/workflows/daily-playwright-improver.md (compiled into daily-playwright-improver.lock.yml in the same folder). Also relevant: .github/workflows/retry-agentic-runs.yml and .github/workflows/playwright.yaml (the repo's Playwright CI).
+
+Answer each question with evidence:
+1. Run 38504802433 (2026-10-14, today): jobs activation and agent succeeded but detection, safe_outputs and update_cache_memory were skipped; issue #16918 got a comment saying "No Safe Outputs Generated". Find out from the agent job logs/artifacts (e.g. `gh run view 38504802433 --repo ohcnetwork/care_fe --log --job <agent job id>`, or `gh run download 38504802433 --repo ohcnetwork/care_fe -D /tmp/dpi-38504802433` and inspect agent_output.json / agent-stdio.log / safe output files) WHY the agent produced no safe outputs (tool/MCP failure, timeout, rate limit/429, model error, max turns, it picked a target then gave up, etc.). Quote the decisive log lines. Also note what target it was working on if visible.
+2. Earlier failed runs 37407748770 (2026-10-06) and 36515947972 (2026-09-29): root cause in one line each.
+3. Duplicate targets: there are three open PRs for the same "Licenses page" target (#16870 created 09-24, #16924 10-01, #16965 10-13) plus closed #16864 and #16791 for the same page. Determine why the agent keeps re-picking the same target: is cache-memory actually restored/saved between runs (inspect the cache restore/save steps and the update_cache_memory job in the lock file, and the logs of a recent successful run such as 38340836580 — was a cache hit restored? what's in the memory?) and does the prompt instruct it to check its own open PRs before choosing a target? Note: #16924 committed a file tests/daily-playwright.json, which looks like the agent writing its memory into the repo instead of /tmp/gh-aw/cache-memory.
+4. Duplicate tracker issues: #16929 and #16869 are both OPEN "[daily-playwright] Playwright Test Coverage Tracker", and there are many closed duplicates (#16863, #16859, #16844, #16828, #16822, #16816, #16803). Why does it fail to find/reuse the existing tracker? Check for gh-aw issue expiry markers (e.g. "gh-aw-expires") in issue bodies and who/what closed them, title prefix handling, and whether the agent's GitHub toolset can search issues.
+5. CI coverage: confirm whether PRs created by the safe-outputs create-pull-request job trigger the repo's "Playwright Tests" workflow. Check which token the safe_outputs job uses in the lock file (GITHUB_TOKEN vs PAT/GitHub App token) and whether "Playwright Tests"/"Lint Code Base" checks appear on e.g. #16965, #16954 (gh pr checks). Explain the implication for these PRs.
+6. Branch naming: most PR heads are "daily-playwright/YYYY-MM-DD-<hash>" but some are "develop-<hash>" (#16930, #16799, #16682). Why?
+7. gh-aw version: note the version the lock file was compiled with and compare with the latest gh-aw releases (`gh release list -R github/gh-aw -L 5`). For each problem above, say whether a gh-aw feature addresses it (e.g. safe-outputs `github-token`/GitHub App for triggering CI, create-pull-request `expires` / auto-close-older, `if-no-changes`, cache-memory configuration, `noop`). Verify feature names against gh-aw docs (https://github.github.com/gh-aw/ or the repo's docs) rather than guessing.
+
+Output (at most ~600 words): numbered findings matching the questions, each with evidence (quoted log line / file:line / URL) and a concrete recommended change to the workflow .md frontmatter or prompt text. Only state what you verified; mark anything inferred as "inferred".
+
+---
+
+do remove the rework from local once you have copied over, since I want to start working on something else.
