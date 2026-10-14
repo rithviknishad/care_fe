@@ -1,0 +1,48 @@
+From the coordinator. Thanks, I've read your final report. My answers and two follow-ups are below; the design doc is updated in §6.1, §6 Profile shares and §7 step 6.2.
+
+**Answers to your "please confirm" list**
+1. The ABDM-9999 mapping is confirmed narrow. I read `errors.py`: `abha_not_found` comes from ABDM-9999 or ABDM-1211 only for the PHR address search, and only when ABDM's message says "User not found". Any other ABDM-9999 becomes `abdm_error`, so creation is never offered on a generic failure. No change needed.
+3–8. All fine as you have them.
+
+**Follow-up A: create-mobile step must not be a dead end.**
+
+At this step the ABHA already exists. The catalogue says "Optionally verify the communication mobile". Today, if that phone isn't in the room or the OTP never arrives, the only way out is restart, which leaves a half-finished ABHA. Add:
+- **"Use a different number"**: an editable mobile (same validation), then `create/mobile/otp` again with `{transaction_id, mobile: new}`. The backend accepts this before or after an OTP was sent. Reset the OTP input and countdown.
+- **"Skip for now"**: go to the address step (a new account always needs one, so in practice this always means the address step). Show one line saying the ABHA keeps its Aadhaar-linked mobile, and the mobile can be changed later with "Update mobile" on the patient page. The backend's address calls need only the session, so this works from both `enrolled` and `mobile_otp_sent`.
+- Keep "Verify" as the primary action.
+- Add Playwright coverage for both: change the number then verify, and skip to the address step to finish.
+
+**Follow-up B: load the share by ID.**
+
+The backend is adding `GET /api/v1/facility/{facilityId}/abdm/shares/{shareId}/`. It returns one share in the same shape as a list item. An unknown share, or one from another facility, returns 404 `profile_share_not_found`.
+- Use it for register-from-share instead of listing with `limit=100`, so `share_date` is no longer needed in the URL. Keep accepting it harmlessly if present.
+- Handle 404 with your existing `profile_share_not_found` message.
+- Add it to `abdmApi`, and update the Playwright mock.
+- Implement against this contract now. I'll tell you when the backend has it live, then smoke-test it against the seeded share `aeed3c31-4331-4f02-9bb8-1d405192c49c` (facility `82a52f21-cbd1-4215-8345-3c8100564417`).
+
+Then re-run typecheck, lint, build and the ABDM Playwright specs. Commit with the trailer, keep :4100 running, and reply with the SHAs and counts.
+
+---
+
+The share retrieve endpoint is live on :9100 (backend commit 2e6f5688c), and I've checked it independently.
+
+`GET /api/v1/facility/{facility_id}/abdm/shares/{share_id}/` returns a bare object identical to a list row (`id, token_number, counter_code, abha_number, abha_address, profile, status, patient|null, created_date, expires_at`). It finds the share whatever its day, not just today.
+
+Error cases, in the order the backend checks them:
+- ABDM disabled: 503 `abdm_disabled`.
+- Unknown facility: 404 `object_not_found`.
+- No queue permission: 403 `{"detail"}`. This is returned for every share id, whether it exists or not.
+- Another facility's share, an unknown id, or a malformed id: 404 `profile_share_not_found`, loc `["profile_share"]`.
+
+Live data to smoke against:
+- Facility `82a52f21-cbd1-4215-8345-3c8100564417`, share `aeed3c31-4331-4f02-9bb8-1d405192c49c`: returns 200 as `admin`.
+- The same share through facility `d53f2a67-…`: 404 `profile_share_not_found`.
+- `care-doctor` / `Ohcn@123`: 403.
+
+The design doc §6 Profile shares has been updated to match.
+
+Please finish the two follow-ups:
+- (A) Add "Use a different number" and "Skip for now" to the create-mobile step.
+- (B) Load the share by id for register-from-share, and show `profile_share_not_found` clearly, for example "This share is no longer available".
+
+Then update Playwright, run typecheck, lint, build and Playwright, commit with the trailer, and send me a short final report with the commit hashes and test counts. Leave vite running on :4100.
