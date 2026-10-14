@@ -1,0 +1,1713 @@
+Currently, this list out all the deliveries to the loaction. I was thinking about listing all the supplies to and fro this locaton. What all are the changes should be done for this?
+check backend and other implementations in frontend for this and make the required changes
+
+---
+
+In the workspace /Users/navaspavil/Projects/ohc/care_fe, research the supply delivery feature. Report (thorough):
+
+1. Contents of src/types/inventory/supplyDelivery/supplyDeliveryApi.ts and supplyDelivery.ts - especially the query param types for listSupplyDelivery (does it support `origin`, `destination`, `location`, or similar params?).
+2. All frontend usages of `listSupplyDelivery` - file paths and the queryParams they pass. Especially any place that lists both incoming AND outgoing deliveries for a location (e.g. tabs for "incoming"/"outgoing", or origin vs destination).
+3. The SupplyDeliveryTable component (src/pages/Facility/services/inventory/SupplyDeliveryTable.tsx) props and what `showLocations` does.
+4. Any existing tab/toggle UI patterns in the inventory/services pages for switching between incoming/outgoing.
+
+Also, if a sibling care backend checkout exists (look for /Users/navaspavil/Projects/ohc/care), report the SupplyDelivery filterset fields (search for `class SupplyDeliveryFilter` or similar in the backend) to confirm which query params the API supports (origin, destination, status, etc.).
+
+Return exact code snippets for the API types and the query param interfaces. Do not write code.
+
+---
+
+This is great, Do we need to update any tests regarding inventory list due to this change?
+
+---
+
+Let's use existing components for button here. I just updated the code. Please review and verify the change
+
+---
+
+Check these review points, if not valid just ignore with a acomment:
+1. `Tabs`/`TabsList`/`TabsTrigger` are rendered without any `TabsContent`. Radix gives each trigger an `aria-controls` pointing at a panel that never exists, and the deliveries table below is not associated with the selected tab — so screen-reader users get a tablist whose panels are unreachable, and `careui.instructions.md` asks for correct ARIA on medical data views.
+
+Either wrap the table/pagination in a `TabsContent` per direction, or drop the Tabs primitive and use a plain segmented `Button` group with `aria-pressed`, since only one query result set is ever rendered anyway.
+
+---
+
+Verify the changes I just made
+
+---
+
+So do we need #sym:TabsContent  here? since the component is same for all the values just the list changes on tab change right?
+
+---
+
+Check other instances in the project, Do they duplicate same component?
+
+---
+
+OKay update it then
+
+---
+
+Also, currently the horizontal scroll will be shown only when I try to scroll, Can we display it all the time so that thw user will know there is scroll
+
+---
+
+still the scrollbar shown when I try to do the scrolling, is it a browser specific issue?
+
+---
+
+Center align the pagination component horizontally here
+
+---
+
+Commit and push
+
+---
+
+[Terminal 8b2fb813-5b95-4205-adf3-43ed01123bed notification: command may be waiting for input — assess the output below.]
+This note is not a signal to end the turn — pick one of the actions below and continue.
+  1. If the command may still be producing output or the shell prompt has not returned, call get_terminal_output with id="8b2fb813-5b95-4205-adf3-43ed01123bed" to continue polling. This is the default and safest action when unsure.
+  2. Only if the output clearly ends with a real non-secret input prompt (Continue? (y/n), Enter selection, etc. — a normal shell prompt like `$` or `#` does NOT count), call the vscode_askQuestions tool to ask the user, then send each answer using send_to_terminal with id="8b2fb813-5b95-4205-adf3-43ed01123bed" (which returns the next few lines of output). Repeat one prompt at a time. NEVER route secret prompts (passwords, passphrases, tokens, API keys, etc.) through vscode_askQuestions — answers to that tool are sent through the model. For secret prompts, tell the user to type the value directly into the terminal and stop.
+Terminal output:
+➜  care_fe  cd ~/Projects/ohc/care_fe && npx playwright test tests/facility/services/locations/inventory/allDeliveries.spec.ts --list
+◇ injected env (1) from .env.local // tip: ⌘ enable debugging { debug: true }
+◇ injected env (16) from .env // tip: ⌘ multiple files { path: ['.env.local', '.env'] }
+Listing tests:
+  [setup] › setup/auth.setup.ts:5:6 › authenticate
+  [setup] › setup/facility.setup.ts:6:5 › enter facility via UI and save facility id
+  [setup] › setup/facilityAdmin.setup.ts:5:6 › authenticate as facility admin
+  [setup] › setup/nurse.setup.ts:5:6 › authenticate as nurse
+  [setup] › setup/patient.setup.ts:8:5 › navigate to an encounter and save patient and encounter id
+  [setup] › setup/patientAccount.setup.ts:10:5 › navigate to an patient - create and save account id
+  [setup] › setup/questionnaire.setup.ts:8:5 › ensure enable-when questionnaire exists
+  [setup] › setup/staff.setup.ts:5:6 › authenticate as staff
+  [chromium] › facility/services/locations/inventory/allDeliveries.spec.ts:39:7 › Inventory Summary — All Deliveries drawer › opens the drawer and lists deliveries for a stocked product
+  [chromium] › facility/services/locations/inventory/allDeliveries.spec.ts:72:7 › Inventory Summary — All Deliveries drawer › switches between incoming and outgoing deliveries
+  [chromium] › facility/services/locations/inventory/allDeliveries.spec.ts:106:7 › Inventory Summary — All Deliveries drawer › shows the empty state in the drawer when a product has no deliveries
+  [chromium] › facility/services/locations/inventory/allDeliveries.spec.ts:145:7 › Inventory Summary — All Deliveries drawer › paginates the deliveries within the drawer
+Total: 12 tests in 9 files
+➜  care_fe git:(ENG-111-clicking-on-an-inventory-item-should-display-all-supply-deliveries) ✗ 
+➜  care_fe git:(ENG-111-clicking-on-an-inventory-item-should-display-all-supply-deliveries) ✗  cd ~/Projects/ohc/care_fe && npx playwright test tests/facility/services/locations/inventory/allDeliveries.spec.ts -g "switches between incoming and outgoing deliveries"
+◇ injected env (1) from .env.local // tip: ⌘ custom filepath { path: '/custom/path/.env' }
+◇ injected env (16) from .env // tip: ⌘ custom filepath { path: '/custom/path/.env' }
+⚠️ No DB snapshot found. Run 'npm run playwright:db-reset' to create one.
+🔄 Refreshing authentication tokens...
+⚠️ Token refresh failed with status: 401
+
+Running 9 tests using 6 workers
+◇ injected env (0) from .env.local // tip: ⌘ suppress logs { quiet: true }
+◇ injected env (0) from .env // tip: ⌘ override existing { override: true }
+◇ injected env (0) from .env.local // tip: ◈ encrypted .env [www.dotenvx.com]
+◇ injected env (0) from .env // tip: ⌘ override existing { override: true }
+◇ injected env (0) from .env.local // tip: ⌘ override existing { override: true }
+◇ injected env (0) from .env // tip: ⌘ multiple files { path: ['.env.local', '.env'] }
+◇ injected env (0) from .env.local // tip: ◈ encrypted .env [www.dotenvx.com]
+◇ injected env (0) from .env // tip: ◈ secrets for agents [www.dotenvx.com]
+◇ injected env (0) from .env.local // tip: ◈ encrypted .env [www.dotenvx.com]
+◇ injected env (0) from .env // tip: ⌘ override existing { override: true }
+◇ injected env (0) from .env.local // tip: ⌘ multiple files { path: ['.env.local', '.env'] }
+◇ injected env (0) from .env // tip: ⌘ custom filepath { path: '/custom/path/.env' }
+  1) [setup] › tests/setup/questionnaire.setup.ts:8:5 › ensure enable-when questionnaire exists 
+
+    Error: Failed to check questionnaire existence: 403 — {"detail":"Invalid Token, please relogin to continue","code":"token_not_valid","messages":[{"token_class":"AccessToken","token_type":"access","message":"Token is expired"}]}
+
+      73 |   if (checkRes.status !== 404) {
+      74 |     const errorText = await checkRes.text();
+    > 75 |     throw new Error(
+         |           ^
+      76 |       `Failed to check questionnaire existence: ${checkRes.status} — ${errorText}`,
+      77 |     );
+      78 |   }
+        at /Users/navaspavil/Projects/ohc/care_fe/tests/setup/questionnaire.setup.ts:75:11
+
+    Error Context: test-results/setup-questionnaire.setup.-60ca8-e-when-questionnaire-exists-setup/error-context.md
+
+◇ injected env (0) from .env.local // tip: ⌘ custom filepath { path: '/custom/path/.env' }
+◇ injected env (0) from .env // tip: ◈ encrypted .env [www.dotenvx.com]
+… tests/setup/facility.setup.ts:6:5 › enter facility via UI and save facility id
+❌ Failed to set up facility: locator.click: Timeout 10000ms exceeded.
+Call log:
+  - waiting for getByRole('link', { name: 'Facility with Patient' }).first()
+    - waiting for" http://localhost:4000/" navigation to finish...
+    - navigated to "http://localhost:4000/"
+
+    at /Users/navaspavil/Projects/ohc/care_fe/tests/setup/facility.setup.ts:14:8 {
+  log: [
+    "  - waiting for getByRole('link', { name: 'Facility with Patient' }).first()",
+    '    - waiting for" http://localhost:4000/" navigation to finish...',
+    '    - navigated to "http://localhost:4000/"'
+  ],
+  name: 'TimeoutError',
+  Symbol(step): {
+    location: {
+      file: '/Users/navaspavil/Projects/ohc/care_fe/tests/setup/facility.setup.ts',
+      line: 14,
+      column: 8
+    },
+    category: 'pw:api',
+    title: "Click getByRole('link', { name: 'Facility with Patient' }).first()",
+    apiName: 'locator.click',
+    params: {
+      selector: 'internal:role=link[name="Facility with Patient"i] >> nth=0',
+      strict: true,
+      timeout: 10000
+    },
+    group: undefined,
+    stepId: 'pw:api@40',
+    boxedStack: undefined,
+    steps: [],
+    attachmentIndices: [],
+    info: TestStepInfoImpl {
+      annotations: [],
+      _testInfo: [TestInfoImpl],
+      _stepId: 'pw:api@40',
+      _title: "Click getByRole('link', { name: 'Facility with Patient' }).first()",
+      _parentStep: undefined,
+      skip: [Function (anonymous)]
+    },
+    complete: [Function: complete],
+    endWallTime: 1786699480647,
+    error: {
+      message: 'TimeoutError: locator.click: Timeout 10000ms exceeded.\n' +
+        'Call log:\n' +
+        "\x1B[2m  - waiting for getByRole('link', { name: 'Facility with Patient' }).first()\x1B[22m\n" +
+        '\x1B[2m    - waiting for" http://localhost:4000/" navigation to finish...\x1B[22m\n' +
+        '\x1B[2m    - navigated to "http://localhost:4000/"\x1B[22m\n',
+      stack: 'TimeoutError: locator.click: Timeout 10000ms exceeded.\n' +
+        'Call log:\n' +
+        "\x1B[2m  - waiting for getByRole('link', { name: 'Facility with Patient' }).first()\x1B[22m\n" +
+        '\x1B[2m    - waiting for" http://localhost:4000/" navigation to finish...\x1B[22m\n' +
+        '\x1B[2m    - navigated to "http://localhost:4000/"\x1B[22m\n' +
+        '\n' +
+        '    at /Users/navaspavil/Projects/ohc/care_fe/tests/setup/facility.setup.ts:14:8',
+      cause: undefined
+    }
+  }
+}
+  2) [setup] › tests/setup/facility.setup.ts:6:5 › enter facility via UI and save facility id 
+
+    TimeoutError: locator.click: Timeout 10000ms exceeded.
+    Call log:
+      - waiting for getByRole('link', { name: 'Facility with Patient' }).first()
+        - waiting for" http://localhost:4000/" navigation to finish...
+        - navigated to "http://localhost:4000/"
+
+
+      12 |       .getByRole("link", { name: "Facility with Patient" })
+      13 |       .first()
+    > 14 |       .click();
+         |        ^
+      15 |     await page.waitForURL(/\/facility\/([^/]+)\/overview$/);
+      16 |
+      17 |     const id = page.url().match(/\/facility\/([^/]+)\/overview$/)?.[1];
+        at /Users/navaspavil/Projects/ohc/care_fe/tests/setup/facility.setup.ts:14:8
+
+    Error Context: test-results/setup-facility.setup.ts-en-ef562-via-UI-and-save-facility-id-setup/error-context.md
+
+…tient.setup.ts:8:5 › navigate to an encounter and save patient and encounter id
+❌ Failed to set up patient and encounter: locator.click: Timeout 10000ms exceeded.
+Call log:
+  - waiting for getByRole('link', { name: 'View Encounter' }).first()
+
+    at /Users/navaspavil/Projects/ohc/care_fe/tests/setup/patient.setup.ts:23:70 {
+  log: [
+    "  - waiting for getByRole('link', { name: 'View Encounter' }).first()"
+  ],
+  name: 'TimeoutError',
+  Symbol(step): {
+    location: {
+      file: '/Users/navaspavil/Projects/ohc/care_fe/tests/setup/patient.setup.ts',
+      line: 23,
+      column: 70
+    },
+    category: 'pw:api',
+    title: "Click getByRole('link', { name: 'View Encounter' }).first()",
+    apiName: 'locator.click',
+    params: {
+      selector: 'internal:role=link[name="View Encounter"i] >> nth=0',
+      strict: true,
+      timeout: 10000
+    },
+    group: undefined,
+    stepId: 'pw:api@40',
+    boxedStack: undefined,
+    steps: [],
+    attachmentIndices: [],
+    info: TestStepInfoImpl {
+      annotations: [],
+      _testInfo: [TestInfoImpl],
+      _stepId: 'pw:api@40',
+      _title: "Click getByRole('link', { name: 'View Encounter' }).first()",
+      _parentStep: undefined,
+      skip: [Function (anonymous)]
+    },
+    complete: [Function: complete],
+    endWallTime: 1786699480761,
+    error: {
+      message: 'TimeoutError: locator.click: Timeout 10000ms exceeded.\n' +
+        'Call log:\n' +
+        "\x1B[2m  - waiting for getByRole('link', { name: 'View Encounter' }).first()\x1B[22m\n",
+      stack: 'TimeoutError: locator.click: Timeout 10000ms exceeded.\n' +
+        'Call log:\n' +
+        "\x1B[2m  - waiting for getByRole('link', { name: 'View Encounter' }).first()\x1B[22m\n" +
+        '\n' +
+        '    at /Users/navaspavil/Projects/ohc/care_fe/tests/setup/patient.setup.ts:23:70',
+      cause: undefined
+    }
+  }
+}
+  3) [setup] › tests/setup/patient.setup.ts:8:5 › navigate to an encounter and save patient and encounter id 
+
+    TimeoutError: locator.click: Timeout 10000ms exceeded.
+    Call log:
+      - waiting for getByRole('link', { name: 'View Encounter' }).first()
+
+
+      21 |   try {
+      22 |     // Wait for encounter link to be visible
+    > 23 |     await page.getByRole("link", { name: "View Encounter" }).first().click();
+         |                                                                      ^
+      24 |
+      25 |     // Wait for navigation to the encounter page
+      26 |     await page.waitForURL(
+        at /Users/navaspavil/Projects/ohc/care_fe/tests/setup/patient.setup.ts:23:70
+
+    Error Context: test-results/setup-patient.setup.ts-nav-16d42-ve-patient-and-encounter-id-setup/error-context.md
+
+…ientAccount.setup.ts:10:5 › navigate to an patient - create and save account id
+❌ Failed to set up account: locator.click: Timeout 10000ms exceeded.
+Call log:
+  - waiting for getByRole('button', { name: 'Create Account' })
+
+    at /Users/navaspavil/Projects/ohc/care_fe/tests/setup/patientAccount.setup.ts:36:66 {
+  log: [ "  - waiting for getByRole('button', { name: 'Create Account' })" ],
+  name: 'TimeoutError',
+  Symbol(step): {
+    location: {
+      file: '/Users/navaspavil/Projects/ohc/care_fe/tests/setup/patientAccount.setup.ts',
+      line: 36,
+      column: 66
+    },
+    category: 'pw:api',
+    title: "Click getByRole('button', { name: 'Create Account' })",
+    apiName: 'locator.click',
+    params: {
+      selector: 'internal:role=button[name="Create Account"i]',
+      strict: true,
+      timeout: 10000
+    },
+    group: undefined,
+    stepId: 'pw:api@42',
+    boxedStack: undefined,
+    steps: [],
+    attachmentIndices: [],
+    info: TestStepInfoImpl {
+      annotations: [],
+      _testInfo: [TestInfoImpl],
+      _stepId: 'pw:api@42',
+      _title: "Click getByRole('button', { name: 'Create Account' })",
+      _parentStep: undefined,
+      skip: [Function (anonymous)]
+    },
+    complete: [Function: complete],
+    endWallTime: 1786699481985,
+    error: {
+      message: 'TimeoutError: locator.click: Timeout 10000ms exceeded.\n' +
+        'Call log:\n' +
+        "\x1B[2m  - waiting for getByRole('button', { name: 'Create Account' })\x1B[22m\n",
+      stack: 'TimeoutError: locator.click: Timeout 10000ms exceeded.\n' +
+        'Call log:\n' +
+        "\x1B[2m  - waiting for getByRole('button', { name: 'Create Account' })\x1B[22m\n" +
+        '\n' +
+        '    at /Users/navaspavil/Projects/ohc/care_fe/tests/setup/patientAccount.setup.ts:36:66',
+      cause: undefined
+    }
+  }
+}
+  4) [setup] › tests/setup/patientAccount.setup.ts:10:5 › navigate to an patient - create and save account id 
+
+    TimeoutError: locator.click: Timeout 10000ms exceeded.
+    Call log:
+      - waiting for getByRole('button', { name: 'Create Account' })
+
+
+      34 |     } else {
+      35 |       // Create new account
+    > 36 |       await page.getByRole("button", { name: "Create Account" }).click();
+         |                                                                  ^
+      37 |
+      38 |       // Generate random account name using faker
+      39 |       const accountName = faker.finance.accountName();
+        at /Users/navaspavil/Projects/ohc/care_fe/tests/setup/patientAccount.setup.ts:36:66
+
+    Error Context: test-results/setup-patientAccount.setup-f3507--create-and-save-account-id-setup/error-context.md
+
+  4 failed
+    [setup] › tests/setup/facility.setup.ts:6:5 › enter facility via UI and save facility id 
+    [setup] › tests/setup/patient.setup.ts:8:5 › navigate to an encounter and save patient and encounter id 
+    [setup] › tests/setup/patientAccount.setup.ts:10:5 › navigate to an patient - create and save account id 
+    [setup] › tests/setup/questionnaire.setup.ts:8:5 › ensure enable-when questionnaire exists 
+  1 did not run
+  4 passed (14.6s)
+
+  Serving HTML report at http://localhost:9323. Press Ctrl+C to quit.
+^C
+➜  care_fe git:(ENG-111-clicking-on-an-inventory-item-should-display-all-supply-deliveries) ✗  git diff -- src/pages/Facility/services/inventory/InventoryList.tsx tests/facility/services/locations/inventory/allDeliveries.spec.ts
+diff --git a/src/pages/Facility/services/inventory/InventoryList.tsx b/src/pages/Facility/services/inventory/InventoryList.tsx
+index febf96890..46e82e74e 100644
+--- a/src/pages/Facility/services/inventory/InventoryList.tsx
++++ b/src/pages/Facility/services/inventory/InventoryList.tsx
+@@ -27,6 +27,7 @@ import useFilters from "@/hooks/useFilters";
+ 
+ import { isLessThan, round } from "@/Utils/decimal";
+ import query from "@/Utils/request/query";
++import { Button } from "@/components/ui/button";
+ import {
+   Drawer,
+   DrawerContent,
+@@ -274,8 +275,9 @@ export function InventoryList({ facilityId, locationId }: InventoryListProps) {
+               {data?.results?.map((inventory) => (
+                 <TableRow key={inventory.id}>
+                   <TableCell className="font-semibold">
+-                    <button
++                    <Button
+                       type="button"
++                      variant="link"
+                       className="hover:text-gray-700 underline"
+                       onClick={() => {
+                         setSelectedProductKnowledgeDrawer(
+@@ -285,7 +287,7 @@ export function InventoryList({ facilityId, locationId }: InventoryListProps) {
+                       }}
+                     >
+                       {inventory.product.product_knowledge.name}
+-                    </button>
++                    </Button>
+                   </TableCell>
+                   <TableCell
+                     className={cn(
+➜  care_fe git:(ENG-111-clicking-on-an-inventory-item-should-display-all-supply-deliveries) ✗  sed -n '1,180p' src/components/ui/button.tsx && npx tsc --noEmit
+import * as React from "react";
+
+import { Slot } from "@radix-ui/react-slot";
+import { type VariantProps, cva } from "class-variance-authority";
+
+import { cn } from "@/lib/utils";
+
+const buttonVariants = cva(
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-gray-950 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 dark:focus-visible:ring-gray-300 aria-invalid:border-red-500 aria-invalid:ring-red-500/20",
+  {
+    variants: {
+      variant: {
+        default:
+          "bg-gray-900 text-gray-50 shadow-sm hover:bg-gray-900/90 dark:bg-gray-50 dark:text-gray-900 dark:hover:bg-gray-50/90",
+        destructive:
+          "bg-red-500 text-gray-50 shadow-xs hover:bg-red-500/90 dark:bg-red-900 dark:text-gray-50 dark:hover:bg-red-900/90",
+        outline:
+          "border border-gray-400 bg-white shadow-sm hover:bg-gray-100 hover:text-gray-900 dark:border-gray-800 dark:bg-gray-950 dark:hover:bg-gray-800 dark:hover:text-gray-50",
+        primary:
+          "bg-primary-700 text-white shadow-sm hover:bg-primary-700/90 dark:bg-primary-100 dark:text-primary-900 dark:hover:bg-primary-100/90",
+        secondary:
+          "bg-gray-100 text-gray-900 shadow-xs hover:bg-gray-100/80 dark:bg-gray-800 dark:text-gray-50 dark:hover:bg-gray-800/80",
+        ghost:
+          "hover:bg-gray-100 hover:text-gray-900 dark:hover:bg-gray-800 dark:hover:text-gray-50",
+        link: "text-gray-900 underline-offset-4 hover:underline dark:text-gray-50",
+        outline_primary:
+          "border border-primary-700 text-primary-700 bg-white shadow-xs hover:bg-primary-700 hover:text-white dark:border-primary-700 dark:bg-primary-700 dark:text-white",
+        primary_gradient:
+          "text-white border border-primary-900 rounded-lg font-medium relative overflow-hidden bg-linear-to-b from-primary-700 to-primary-800 hover:from-primary-800 hover:to-primary-900 shadow-lg",
+        white:
+          "bg-white border border-secondary-400 text-gray-900 shadow-xs hover:bg-gray-100 hover:text-gray-900 dark:bg-gray-800 dark:text-gray-50 dark:hover:bg-gray-800/80",
+        warning:
+          "bg-warning-100 text-warning-900 border border-warning-300 shadow-xs hover:bg-warning-100/80 dark:bg-warning-900 dark:text-warning-50 dark:hover:bg-warning-900/80",
+        alert:
+          "bg-alert-100 text-alert-900 border border-alert-300 shadow-xs hover:bg-alert-100/80 dark:bg-alert-900 dark:text-alert-50 dark:hover:bg-alert-900/80",
+      },
+      size: {
+        default: "h-9 px-4 py-2",
+        xs: "h-6 rounded-md px-2 text-xs",
+        sm: "h-8 rounded-md px-3 text-xs",
+        md: "h-9 rounded-md px-4 text-sm",
+        lg: "h-10 rounded-md px-4",
+        icon: "size-9",
+      },
+    },
+    defaultVariants: {
+      variant: "primary",
+      size: "default",
+    },
+  },
+);
+
+export type ButtonVariant =
+  | "primary"
+  | "outline"
+  | "secondary"
+  | "destructive"
+  | "primary_gradient"
+  | "ghost"
+  | "link"
+  | "white"
+  | "alert"
+  | "warning"
+  | "outline_primary";
+export type ButtonSize = "default" | "xs" | "sm" | "md" | "lg" | "icon";
+
+function Button({
+  className,
+  variant,
+  size,
+  asChild = false,
+  ...props
+}: React.ComponentProps<"button"> &
+  VariantProps<typeof buttonVariants> & { asChild?: boolean }) {
+  const Comp = asChild ? Slot : "button";
+  return (
+    <Comp
+      data-slot="button"
+      className={cn(buttonVariants({ variant, size, className }))}
+      {...props}
+    />
+  );
+}
+Button.displayName = "Button";
+
+export { Button, buttonVariants };
+➜  care_fe git:(ENG-111-clicking-on-an-inventory-item-should-display-all-supply-deliveries) ✗  git diff --check && git status --short && nl -ba src/pages/Facility/services/inventory/InventoryList.tsx | sed -n '268,300p' && nl -ba tests/facility/services/locations/inventory/allDeliveries.spec.ts | sed -n '35,105p'
+ M src/pages/Facility/services/inventory/InventoryList.tsx
+   268                  <TableHead>{t("base_price")}</TableHead>
+   269                  <TableHead>
+   270                    <span className="sr-only">{t("actions")}</span>
+   271                  </TableHead>
+   272                </TableRow>
+   273              </TableHeader>
+   274              <TableBody>
+   275                {data?.results?.map((inventory) => (
+   276                  <TableRow key={inventory.id}>
+   277                    <TableCell className="font-semibold">
+   278                      <Button
+   279                        type="button"
+   280                        variant="link"
+   281                        className="hover:text-gray-700 underline underline-offset-2"
+   282                        onClick={() => {
+   283                          setSelectedProductKnowledgeDrawer(
+   284                            inventory.product.product_knowledge,
+   285                          );
+   286                          setShowAllDeliveries(true);
+   287                        }}
+   288                      >
+   289                        {inventory.product.product_knowledge.name}
+   290                      </Button>
+   291                    </TableCell>
+   292                    <TableCell
+   293                      className={cn(
+   294                        "font-medium space-x-1",
+   295                        isLessThan(inventory.net_content, 10) &&
+   296                          "text-yellow-600",
+   297                      )}
+   298                    >
+   299                      <span>{round(inventory.net_content)}</span>
+   300                      <span className="text-sm self-center">
+    35        page.getByRole("heading", { name: "Inventory" }),
+    36      ).toBeVisible();
+    37    });
+    38
+    39    test("opens the drawer and lists deliveries for a stocked product", async ({
+    40      page,
+    41    }) => {
+    42      await test.step("Wait for the inventory row to render", async () => {
+    43        await expect(
+    44          page.getByRole("button", { name: PRODUCT_NAME }),
+    45        ).toBeVisible();
+    46      });
+    47
+    48      await test.step("Open the All Deliveries drawer and assert its API call", async () => {
+    49        const deliveriesResponse = page.waitForResponse(
+    50          (resp) =>
+    51            resp.url().includes("/api/v1/supply_delivery/") &&
+    52            resp.request().method() === "GET" &&
+    53            resp.url().includes("supplied_inventory_item_product_knowledge=") &&
+    54            resp.url().includes("destination=") &&
+    55            resp.ok(),
+    56        );
+    57        await page.getByRole("button", { name: PRODUCT_NAME }).click();
+    58        await deliveriesResponse;
+    59      });
+    60
+    61      await test.step("Verify the deliveries table is shown in the drawer", async () => {
+    62        const drawer = page.locator('[data-slot="drawer-content"]');
+    63        await expect(drawer.getByText("All Deliveries")).toBeVisible();
+    64        // The delivered product renders as a link inside the deliveries table —
+    65        // its presence proves a delivery row was rendered (not the empty state).
+    66        await expect(
+    67          drawer.getByRole("link", { name: PRODUCT_NAME }),
+    68        ).toBeVisible();
+    69      });
+    70    });
+    71
+    72    test("switches between incoming and outgoing deliveries", async ({
+    73      page,
+    74    }) => {
+    75      await expect(
+    76        page.getByRole("button", { name: PRODUCT_NAME }),
+    77      ).toBeVisible();
+    78
+    79      const incomingResponse = page.waitForResponse(
+    80        (resp) =>
+    81          resp.url().includes("/api/v1/supply_delivery/") &&
+    82          resp.url().includes("destination=") &&
+    83          resp.ok(),
+    84      );
+    85      await page.getByRole("button", { name: PRODUCT_NAME }).click();
+    86      await incomingResponse;
+    87
+    88      const drawer = page.locator('[data-slot="drawer-content"]');
+    89      await expect(
+    90        drawer.getByRole("tab", { name: "Incoming Deliveries" }),
+    91      ).toHaveAttribute("data-state", "active");
+    92
+    93      const outgoingResponse = page.waitForResponse(
+    94        (resp) =>
+    95          resp.url().includes("/api/v1/supply_delivery/") &&
+    96          resp.url().includes("origin=") &&
+    97          resp.ok(),
+    98      );
+    99      await drawer.getByRole("tab", { name: "Outgoing Deliveries" }).click();
+   100      await outgoingResponse;
+   101      await expect(
+   102        drawer.getByRole("tab", { name: "Outgoing Deliveries" }),
+   103      ).toHaveAttribute("data-state", "active");
+   104    });
+   105
+➜  care_fe git:(ENG-111-clicking-on-an-inventory-item-should-display-all-supply-deliveries) ✗  npx tsc --noEmit
+➜  care_fe git:(ENG-111-clicking-on-an-inventory-item-should-display-all-supply-deliveries) ✗  npx playwright test tests/facility/services/locations/inventory/allDeliveries.spec.ts --list >/tmp/inventory-playwright-list.txt && grep -F "opens the drawer" /tmp/inventory-playwright-list.txt && grep -F "switches between incoming and outgoing deliveries" /tmp/inventory-playwright-list.txt && git diff --check && git diff -- src/pages/Facility/services/inventory/InventoryList.tsx
+  [chromium] › facility/services/locations/inventory/allDeliveries.spec.ts:39:7 › Inventory Summary — All Deliveries drawer › opens the drawer and lists deliveries for a stocked product
+  [chromium] › facility/services/locations/inventory/allDeliveries.spec.ts:72:7 › Inventory Summary — All Deliveries drawer › switches between incoming and outgoing deliveries
+diff --git a/src/pages/Facility/services/inventory/InventoryList.tsx b/src/pages/Facility/services/inventory/InventoryList.tsx
+index febf96890..6d1699367 100644
+--- a/src/pages/Facility/services/inventory/InventoryList.tsx
++++ b/src/pages/Facility/services/inventory/InventoryList.tsx
+@@ -27,6 +27,7 @@ import useFilters from "@/hooks/useFilters";
+ 
+ import { isLessThan, round } from "@/Utils/decimal";
+ import query from "@/Utils/request/query";
++import { Button } from "@/components/ui/button";
+ import {
+   Drawer,
+   DrawerContent,
+@@ -274,9 +275,10 @@ export function InventoryList({ facilityId, locationId }: InventoryListProps) {
+               {data?.results?.map((inventory) => (
+                 <TableRow key={inventory.id}>
+                   <TableCell className="font-semibold">
+-                    <button
++                    <Button
+                       type="button"
+-                      className="hover:text-gray-700 underline"
++                      variant="link"
++                      className="h-auto justify-start rounded-none px-0 py-0 font-semibold hover:text-gray-700 underline underline-offset-2"
+                       onClick={() => {
+                         setSelectedProductKnowledgeDrawer(
+                           inventory.product.product_knowledge,
+@@ -285,7 +287,7 @@ export function InventoryList({ facilityId, locationId }: InventoryListProps) {
+                       }}
+                     >
+                       {inventory.product.product_knowledge.name}
+-                    </button>
++                    </Button>
+                   </TableCell>
+                   <TableCell
+                     className={cn(
+➜  care_fe git:(ENG-111-clicking-on-an-inventory-item-should-display-all-supply-deliveries) ✗  npx tsc --noEmit
+➜  care_fe git:(ENG-111-clicking-on-an-inventory-item-should-display-all-supply-deliveries) ✗  npx playwright test tests/facility/services/locations/inventory/allDeliveries.spec.ts --list >/tmp/inventory-playwright-list.txt && grep -F "switches between incoming and outgoing deliveries" /tmp/inventory-playwright-list.txt && git diff --check && git diff -- src/pages/Facility/services/inventory/InventoryList.tsx
+  [chromium] › facility/services/locations/inventory/allDeliveries.spec.ts:72:7 › Inventory Summary — All Deliveries drawer › switches between incoming and outgoing deliveries
+diff --git a/src/pages/Facility/services/inventory/InventoryList.tsx b/src/pages/Facility/services/inventory/InventoryList.tsx
+index a40f54807..b97d873c8 100644
+--- a/src/pages/Facility/services/inventory/InventoryList.tsx
++++ b/src/pages/Facility/services/inventory/InventoryList.tsx
+@@ -36,7 +36,12 @@ import {
+ } from "@/components/ui/drawer";
+ import { FilterSelect } from "@/components/ui/filter-select";
+ import { MonetaryDisplay } from "@/components/ui/monetary-display";
+-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
++import {
++  Tabs,
++  TabsContent,
++  TabsList,
++  TabsTrigger,
++} from "@/components/ui/tabs";
+ import { MonetaryComponentType } from "@/types/base/monetaryComponent/monetaryComponent";
+ import { ACCOUNT_STATUS_COLORS } from "@/types/billing/account/Account";
+ import { InventoryStatusOptions } from "@/types/inventory/product/inventory";
+@@ -116,31 +121,33 @@ function ProductDeliveriesDrawerContent({
+           <TabsTrigger value="outgoing">{t("outgoing_deliveries")}</TabsTrigger>
+         </TabsList>
+       </Tabs>
+-      {isLoading ? (
+-        <TableSkeleton count={2} />
+-      ) : deliveries?.results && deliveries.results.length > 0 ? (
+-        <>
+-          <SupplyDeliveryTable
+-            deliveries={deliveries.results}
+-            facilityId={facilityId}
+-            serialNumberOffset={DELIVERIES_PER_PAGE * (page - 1)}
+-            linkToProduct
+-            showLocations
+-          />
+-          <PaginationComponent
+-            data={{ totalCount: deliveries.count }}
+-            onChange={(newPage) => setPage(newPage)}
+-            defaultPerPage={DELIVERIES_PER_PAGE}
+-            cPage={page}
++      <TabsContent value={direction}>
++        {isLoading ? (
++          <TableSkeleton count={2} />
++        ) : deliveries?.results && deliveries.results.length > 0 ? (
++          <>
++            <SupplyDeliveryTable
++              deliveries={deliveries.results}
++              facilityId={facilityId}
++              serialNumberOffset={DELIVERIES_PER_PAGE * (page - 1)}
++              linkToProduct
++              showLocations
++            />
++            <PaginationComponent
++              data={{ totalCount: deliveries.count }}
++              onChange={(newPage) => setPage(newPage)}
++              defaultPerPage={DELIVERIES_PER_PAGE}
++              cPage={page}
++            />
++          </>
++        ) : (
++          <EmptyState
++            icon={<Truck className="size-5 text-primary-600" />}
++            title={t("no_deliveries_found")}
++            description={t("no_deliveries_found_description")}
+           />
+-        </>
+-      ) : (
+-        <EmptyState
+-          icon={<Truck className="size-5 text-primary-600" />}
+-          title={t("no_deliveries_found")}
+-          description={t("no_deliveries_found_description")}
+-        />
+-      )}
++        )}
++      </TabsContent>
+     </div>
+   );
+ }
+➜  care_fe git:(ENG-111-clicking-on-an-inventory-item-should-display-all-supply-deliveries) ✗  git diff -- src/pages/Facility/services/inventory/InventoryList.tsx tests/facility/services/locations/inventory/allDeliveries.spec.ts && git diff --check
+diff --git a/src/pages/Facility/services/inventory/InventoryList.tsx b/src/pages/Facility/services/inventory/InventoryList.tsx
+index 16f303bcc..c5a441f46 100644
+--- a/src/pages/Facility/services/inventory/InventoryList.tsx
++++ b/src/pages/Facility/services/inventory/InventoryList.tsx
+@@ -115,34 +115,34 @@ function ProductDeliveriesDrawerContent({
+           <TabsTrigger value="incoming">{t("incoming_deliveries")}</TabsTrigger>
+           <TabsTrigger value="outgoing">{t("outgoing_deliveries")}</TabsTrigger>
+         </TabsList>
+-      </Tabs>
+-      <TabsContent value={direction}>
+-        {isLoading ? (
+-          <TableSkeleton count={2} />
+-        ) : deliveries?.results && deliveries.results.length > 0 ? (
+-          <>
+-            <SupplyDeliveryTable
+-              deliveries={deliveries.results}
+-              facilityId={facilityId}
+-              serialNumberOffset={DELIVERIES_PER_PAGE * (page - 1)}
+-              linkToProduct
+-              showLocations
++        <TabsContent value={direction}>
++          {isLoading ? (
++            <TableSkeleton count={2} />
++          ) : deliveries?.results && deliveries.results.length > 0 ? (
++            <>
++              <SupplyDeliveryTable
++                deliveries={deliveries.results}
++                facilityId={facilityId}
++                serialNumberOffset={DELIVERIES_PER_PAGE * (page - 1)}
++                linkToProduct
++                showLocations
++              />
++              <PaginationComponent
++                data={{ totalCount: deliveries.count }}
++                onChange={(newPage) => setPage(newPage)}
++                defaultPerPage={DELIVERIES_PER_PAGE}
++                cPage={page}
++              />
++            </>
++          ) : (
++            <EmptyState
++              icon={<Truck className="size-5 text-primary-600" />}
++              title={t("no_deliveries_found")}
++              description={t("no_deliveries_found_description")}
+             />
+-            <PaginationComponent
+-              data={{ totalCount: deliveries.count }}
+-              onChange={(newPage) => setPage(newPage)}
+-              defaultPerPage={DELIVERIES_PER_PAGE}
+-              cPage={page}
+-            />
+-          </>
+-        ) : (
+-          <EmptyState
+-            icon={<Truck className="size-5 text-primary-600" />}
+-            title={t("no_deliveries_found")}
+-            description={t("no_deliveries_found_description")}
+-          />
+-        )}
+-      </TabsContent>
++          )}
++        </TabsContent>
++      </Tabs>
+     </div>
+   );
+ }
+➜  care_fe git:(ENG-111-clicking-on-an-inventory-item-should-display-all-supply-deliveries) ✗  npx tsc --noEmit && npx playwright test tests/facility/services/locations/inventory/allDeliveries.spec.ts --list >/tmp/inventory-playwright-list.txt && grep -F "switches between incoming and outgoing deliveries" /tmp/inventory-playwright-list.txt && git diff --check
+  [chromium] › facility/services/locations/inventory/allDeliveries.spec.ts:72:7 › Inventory Summary — All Deliveries drawer › switches between incoming and outgoing deliveries
+➜  care_fe git:(ENG-111-clicking-on-an-inventory-item-should-display-all-supply-deliveries) ✗  npx tsc --noEmit && npx playwright test tests/facility/services/locations/inventory/allDeliveries.spec.ts --list >/tmp/inventory-playwright-list.txt && grep -F "switches between incoming and outgoing deliveries" /tmp/inventory-playwright-list.txt && git diff --check
+  [chromium] › facility/services/locations/inventory/allDeliveries.spec.ts:72:7 › Inventory Summary — All Deliveries drawer › switches between incoming and outgoing deliveries
+➜  care_fe git:(ENG-111-clicking-on-an-inventory-item-should-display-all-supply-deliveries) ✗  npx tsc --noEmit && git diff --check && git diff --stat && git diff -- src/components/Common/Table.tsx src/pages/Facility/services/inventory/SupplyDeliveryTable.tsx src/pages/Facility/services/inventory/InventoryList.tsx
+ src/components/Common/Table.tsx                               | 11 +++++++++--
+ src/pages/Facility/services/inventory/InventoryList.tsx       |  1 +
+ src/pages/Facility/services/inventory/SupplyDeliveryTable.tsx |  4 +++-
+ 3 files changed, 13 insertions(+), 3 deletions(-)
+diff --git a/src/components/Common/Table.tsx b/src/components/Common/Table.tsx
+index 9624b09e8..4799db3d7 100644
+--- a/src/components/Common/Table.tsx
++++ b/src/components/Common/Table.tsx
+@@ -2,11 +2,18 @@ import * as React from "react";
+ 
+ import { cn } from "@/lib/utils";
+ 
+-function Table({ className, ...props }: React.ComponentProps<"table">) {
++interface TableProps extends React.ComponentProps<"table"> {
++  containerClassName?: string;
++}
++
++function Table({ className, containerClassName, ...props }: TableProps) {
+   return (
+     <div
+       data-slot="table-container"
+-      className="rounded-md overflow-x-auto border-2 border-white shadow-md"
++      className={cn(
++        "rounded-md overflow-x-auto border-2 border-white shadow-md",
++        containerClassName,
++      )}
+     >
+       <table
+         data-slot="table"
+diff --git a/src/pages/Facility/services/inventory/InventoryList.tsx b/src/pages/Facility/services/inventory/InventoryList.tsx
+index abdae8f3e..bcc4cb82d 100644
+--- a/src/pages/Facility/services/inventory/InventoryList.tsx
++++ b/src/pages/Facility/services/inventory/InventoryList.tsx
+@@ -124,6 +124,7 @@ function ProductDeliveriesDrawerContent({
+           serialNumberOffset={DELIVERIES_PER_PAGE * (page - 1)}
+           linkToProduct
+           showLocations
++          tableContainerClassName="overflow-x-scroll"
+         />
+         <PaginationComponent
+           data={{ totalCount: deliveries.count }}
+diff --git a/src/pages/Facility/services/inventory/SupplyDeliveryTable.tsx b/src/pages/Facility/services/inventory/SupplyDeliveryTable.tsx
+index ef76a41fc..a4e88b5c2 100644
+--- a/src/pages/Facility/services/inventory/SupplyDeliveryTable.tsx
++++ b/src/pages/Facility/services/inventory/SupplyDeliveryTable.tsx
+@@ -65,6 +65,7 @@ interface SupplyDeliveryTableProps {
+   linkToProduct?: boolean;
+   showLocations?: boolean;
+   serialNumberOffset?: number;
++  tableContainerClassName?: string;
+ }
+ 
+ export function SupplyDeliveryTable({
+@@ -82,6 +83,7 @@ export function SupplyDeliveryTable({
+   linkToProduct = false,
+   showLocations = false,
+   serialNumberOffset = 0,
++  tableContainerClassName,
+ }: SupplyDeliveryTableProps) {
+   const { t } = useTranslation();
+   const queryClient = useQueryClient();
+@@ -175,7 +177,7 @@ export function SupplyDeliveryTable({
+   }, [deliveries, serialNumberOffset]);
+ 
+   return (
+-    <Table>
++    <Table containerClassName={tableContainerClassName}>
+       <TableHeader>
+         <TableRow>
+           {showAllCheckbox && (
+➜  care_fe git:(ENG-111-clicking-on-an-inventory-item-should-display-all-supply-deliveries) ✗  npx tsc --noEmit && git diff --check
+➜  care_fe git:(ENG-111-clicking-on-an-inventory-item-should-display-all-supply-deliveries) ✗  git status --short --branch && git diff --stat && git diff --check
+## ENG-111-clicking-on-an-inventory-item-should-display-all-supply-deliveries
+ M src/pages/Facility/services/inventory/InventoryList.tsx
+ src/pages/Facility/services/inventory/InventoryList.tsx | 14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
+➜  care_fe git:(ENG-111-clicking-on-an-inventory-item-should-display-all-supply-deliveries) ✗  git diff -- src/pages/Facility/services/inventory/InventoryList.tsx && git log -1 --oneline
+diff --git a/src/pages/Facility/services/inventory/InventoryList.tsx b/src/pages/Facility/services/inventory/InventoryList.tsx
+index abdae8f3e..e4a296902 100644
+--- a/src/pages/Facility/services/inventory/InventoryList.tsx
++++ b/src/pages/Facility/services/inventory/InventoryList.tsx
+@@ -125,12 +125,14 @@ function ProductDeliveriesDrawerContent({
+           linkToProduct
+           showLocations
+         />
+-        <PaginationComponent
+-          data={{ totalCount: deliveries.count }}
+-          onChange={(newPage) => setPage(newPage)}
+-          defaultPerPage={DELIVERIES_PER_PAGE}
+-          cPage={page}
+-        />
++        <div className="flex justify-center">
++          <PaginationComponent
++            data={{ totalCount: deliveries.count }}
++            onChange={(newPage) => setPage(newPage)}
++            defaultPerPage={DELIVERIES_PER_PAGE}
++            cPage={page}
++          />
++        </div>
+       </>
+     );
+   };
+17c4b59bf (HEAD -> ENG-111-clicking-on-an-inventory-item-should-display-all-supply-deliveries, origin/ENG-111-clicking-on-an-inventory-item-should-display-all-supply-deliveries) fix: refactor delivery rendering logic in ProductDeliveriesDrawerContent
+➜  care_fe git:(ENG-111-clicking-on-an-inventory-item-should-display-all-supply-deliveries) ✗  git add src/pages/Facility/services/inventory/InventoryList.tsx && git commit -m "fix: center delivery pagination" && git push
+✔ Backed up original state in git stash (e62099897)
+✔ Running tasks for staged files...
+✔ Staging changes from tasks...
+✔ Cleaning up temporary files...
+
+Entire: Active Copilot CLI session detected
+  Last prompt: Center align the pagination component horizontally here
+
+Link this commit to session context?
+  [Y]es / [n]o / [a]lways (remember my choice):
+
+---
+
+[Terminal 8b2fb813-5b95-4205-adf3-43ed01123bed notification: command completed with exit code 128. The terminal has been cleaned up.]
+Terminal output:
+➜  care_fe  cd ~/Projects/ohc/care_fe && npx playwright test tests/facility/services/locations/inventory/allDeliveries.spec.ts --list
+◇ injected env (1) from .env.local // tip: ⌘ enable debugging { debug: true }
+◇ injected env (16) from .env // tip: ⌘ multiple files { path: ['.env.local', '.env'] }
+Listing tests:
+  [setup] › setup/auth.setup.ts:5:6 › authenticate
+  [setup] › setup/facility.setup.ts:6:5 › enter facility via UI and save facility id
+  [setup] › setup/facilityAdmin.setup.ts:5:6 › authenticate as facility admin
+  [setup] › setup/nurse.setup.ts:5:6 › authenticate as nurse
+  [setup] › setup/patient.setup.ts:8:5 › navigate to an encounter and save patient and encounter id
+  [setup] › setup/patientAccount.setup.ts:10:5 › navigate to an patient - create and save account id
+  [setup] › setup/questionnaire.setup.ts:8:5 › ensure enable-when questionnaire exists
+  [setup] › setup/staff.setup.ts:5:6 › authenticate as staff
+  [chromium] › facility/services/locations/inventory/allDeliveries.spec.ts:39:7 › Inventory Summary — All Deliveries drawer › opens the drawer and lists deliveries for a stocked product
+  [chromium] › facility/services/locations/inventory/allDeliveries.spec.ts:72:7 › Inventory Summary — All Deliveries drawer › switches between incoming and outgoing deliveries
+  [chromium] › facility/services/locations/inventory/allDeliveries.spec.ts:106:7 › Inventory Summary — All Deliveries drawer › shows the empty state in the drawer when a product has no deliveries
+  [chromium] › facility/services/locations/inventory/allDeliveries.spec.ts:145:7 › Inventory Summary — All Deliveries drawer › paginates the deliveries within the drawer
+Total: 12 tests in 9 files
+➜  care_fe git:(ENG-111-clicking-on-an-inventory-item-should-display-all-supply-deliveries) ✗ 
+➜  care_fe git:(ENG-111-clicking-on-an-inventory-item-should-display-all-supply-deliveries) ✗  cd ~/Projects/ohc/care_fe && npx playwright test tests/facility/services/locations/inventory/allDeliveries.spec.ts -g "switches between incoming and outgoing deliveries"
+◇ injected env (1) from .env.local // tip: ⌘ custom filepath { path: '/custom/path/.env' }
+◇ injected env (16) from .env // tip: ⌘ custom filepath { path: '/custom/path/.env' }
+⚠️ No DB snapshot found. Run 'npm run playwright:db-reset' to create one.
+🔄 Refreshing authentication tokens...
+⚠️ Token refresh failed with status: 401
+
+Running 9 tests using 6 workers
+◇ injected env (0) from .env.local // tip: ⌘ suppress logs { quiet: true }
+◇ injected env (0) from .env // tip: ⌘ override existing { override: true }
+◇ injected env (0) from .env.local // tip: ◈ encrypted .env [www.dotenvx.com]
+◇ injected env (0) from .env // tip: ⌘ override existing { override: true }
+◇ injected env (0) from .env.local // tip: ⌘ override existing { override: true }
+◇ injected env (0) from .env // tip: ⌘ multiple files { path: ['.env.local', '.env'] }
+◇ injected env (0) from .env.local // tip: ◈ encrypted .env [www.dotenvx.com]
+◇ injected env (0) from .env // tip: ◈ secrets for agents [www.dotenvx.com]
+◇ injected env (0) from .env.local // tip: ◈ encrypted .env [www.dotenvx.com]
+◇ injected env (0) from .env // tip: ⌘ override existing { override: true }
+◇ injected env (0) from .env.local // tip: ⌘ multiple files { path: ['.env.local', '.env'] }
+◇ injected env (0) from .env // tip: ⌘ custom filepath { path: '/custom/path/.env' }
+  1) [setup] › tests/setup/questionnaire.setup.ts:8:5 › ensure enable-when questionnaire exists 
+
+    Error: Failed to check questionnaire existence: 403 — {"detail":"Invalid Token, please relogin to continue","code":"token_not_valid","messages":[{"token_class":"AccessToken","token_type":"access","message":"Token is expired"}]}
+
+      73 |   if (checkRes.status !== 404) {
+      74 |     const errorText = await checkRes.text();
+    > 75 |     throw new Error(
+         |           ^
+      76 |       `Failed to check questionnaire existence: ${checkRes.status} — ${errorText}`,
+      77 |     );
+      78 |   }
+        at /Users/navaspavil/Projects/ohc/care_fe/tests/setup/questionnaire.setup.ts:75:11
+
+    Error Context: test-results/setup-questionnaire.setup.-60ca8-e-when-questionnaire-exists-setup/error-context.md
+
+◇ injected env (0) from .env.local // tip: ⌘ custom filepath { path: '/custom/path/.env' }
+◇ injected env (0) from .env // tip: ◈ encrypted .env [www.dotenvx.com]
+… tests/setup/facility.setup.ts:6:5 › enter facility via UI and save facility id
+❌ Failed to set up facility: locator.click: Timeout 10000ms exceeded.
+Call log:
+  - waiting for getByRole('link', { name: 'Facility with Patient' }).first()
+    - waiting for" http://localhost:4000/" navigation to finish...
+    - navigated to "http://localhost:4000/"
+
+    at /Users/navaspavil/Projects/ohc/care_fe/tests/setup/facility.setup.ts:14:8 {
+  log: [
+    "  - waiting for getByRole('link', { name: 'Facility with Patient' }).first()",
+    '    - waiting for" http://localhost:4000/" navigation to finish...',
+    '    - navigated to "http://localhost:4000/"'
+  ],
+  name: 'TimeoutError',
+  Symbol(step): {
+    location: {
+      file: '/Users/navaspavil/Projects/ohc/care_fe/tests/setup/facility.setup.ts',
+      line: 14,
+      column: 8
+    },
+    category: 'pw:api',
+    title: "Click getByRole('link', { name: 'Facility with Patient' }).first()",
+    apiName: 'locator.click',
+    params: {
+      selector: 'internal:role=link[name="Facility with Patient"i] >> nth=0',
+      strict: true,
+      timeout: 10000
+    },
+    group: undefined,
+    stepId: 'pw:api@40',
+    boxedStack: undefined,
+    steps: [],
+    attachmentIndices: [],
+    info: TestStepInfoImpl {
+      annotations: [],
+      _testInfo: [TestInfoImpl],
+      _stepId: 'pw:api@40',
+      _title: "Click getByRole('link', { name: 'Facility with Patient' }).first()",
+      _parentStep: undefined,
+      skip: [Function (anonymous)]
+    },
+    complete: [Function: complete],
+    endWallTime: 1786699480647,
+    error: {
+      message: 'TimeoutError: locator.click: Timeout 10000ms exceeded.\n' +
+        'Call log:\n' +
+        "\x1B[2m  - waiting for getByRole('link', { name: 'Facility with Patient' }).first()\x1B[22m\n" +
+        '\x1B[2m    - waiting for" http://localhost:4000/" navigation to finish...\x1B[22m\n' +
+        '\x1B[2m    - navigated to "http://localhost:4000/"\x1B[22m\n',
+      stack: 'TimeoutError: locator.click: Timeout 10000ms exceeded.\n' +
+        'Call log:\n' +
+        "\x1B[2m  - waiting for getByRole('link', { name: 'Facility with Patient' }).first()\x1B[22m\n" +
+        '\x1B[2m    - waiting for" http://localhost:4000/" navigation to finish...\x1B[22m\n' +
+        '\x1B[2m    - navigated to "http://localhost:4000/"\x1B[22m\n' +
+        '\n' +
+        '    at /Users/navaspavil/Projects/ohc/care_fe/tests/setup/facility.setup.ts:14:8',
+      cause: undefined
+    }
+  }
+}
+  2) [setup] › tests/setup/facility.setup.ts:6:5 › enter facility via UI and save facility id 
+
+    TimeoutError: locator.click: Timeout 10000ms exceeded.
+    Call log:
+      - waiting for getByRole('link', { name: 'Facility with Patient' }).first()
+        - waiting for" http://localhost:4000/" navigation to finish...
+        - navigated to "http://localhost:4000/"
+
+
+      12 |       .getByRole("link", { name: "Facility with Patient" })
+      13 |       .first()
+    > 14 |       .click();
+         |        ^
+      15 |     await page.waitForURL(/\/facility\/([^/]+)\/overview$/);
+      16 |
+      17 |     const id = page.url().match(/\/facility\/([^/]+)\/overview$/)?.[1];
+        at /Users/navaspavil/Projects/ohc/care_fe/tests/setup/facility.setup.ts:14:8
+
+    Error Context: test-results/setup-facility.setup.ts-en-ef562-via-UI-and-save-facility-id-setup/error-context.md
+
+…tient.setup.ts:8:5 › navigate to an encounter and save patient and encounter id
+❌ Failed to set up patient and encounter: locator.click: Timeout 10000ms exceeded.
+Call log:
+  - waiting for getByRole('link', { name: 'View Encounter' }).first()
+
+    at /Users/navaspavil/Projects/ohc/care_fe/tests/setup/patient.setup.ts:23:70 {
+  log: [
+    "  - waiting for getByRole('link', { name: 'View Encounter' }).first()"
+  ],
+  name: 'TimeoutError',
+  Symbol(step): {
+    location: {
+      file: '/Users/navaspavil/Projects/ohc/care_fe/tests/setup/patient.setup.ts',
+      line: 23,
+      column: 70
+    },
+    category: 'pw:api',
+    title: "Click getByRole('link', { name: 'View Encounter' }).first()",
+    apiName: 'locator.click',
+    params: {
+      selector: 'internal:role=link[name="View Encounter"i] >> nth=0',
+      strict: true,
+      timeout: 10000
+    },
+    group: undefined,
+    stepId: 'pw:api@40',
+    boxedStack: undefined,
+    steps: [],
+    attachmentIndices: [],
+    info: TestStepInfoImpl {
+      annotations: [],
+      _testInfo: [TestInfoImpl],
+      _stepId: 'pw:api@40',
+      _title: "Click getByRole('link', { name: 'View Encounter' }).first()",
+      _parentStep: undefined,
+      skip: [Function (anonymous)]
+    },
+    complete: [Function: complete],
+    endWallTime: 1786699480761,
+    error: {
+      message: 'TimeoutError: locator.click: Timeout 10000ms exceeded.\n' +
+        'Call log:\n' +
+        "\x1B[2m  - waiting for getByRole('link', { name: 'View Encounter' }).first()\x1B[22m\n",
+      stack: 'TimeoutError: locator.click: Timeout 10000ms exceeded.\n' +
+        'Call log:\n' +
+        "\x1B[2m  - waiting for getByRole('link', { name: 'View Encounter' }).first()\x1B[22m\n" +
+        '\n' +
+        '    at /Users/navaspavil/Projects/ohc/care_fe/tests/setup/patient.setup.ts:23:70',
+      cause: undefined
+    }
+  }
+}
+  3) [setup] › tests/setup/patient.setup.ts:8:5 › navigate to an encounter and save patient and encounter id 
+
+    TimeoutError: locator.click: Timeout 10000ms exceeded.
+    Call log:
+      - waiting for getByRole('link', { name: 'View Encounter' }).first()
+
+
+      21 |   try {
+      22 |     // Wait for encounter link to be visible
+    > 23 |     await page.getByRole("link", { name: "View Encounter" }).first().click();
+         |                                                                      ^
+      24 |
+      25 |     // Wait for navigation to the encounter page
+      26 |     await page.waitForURL(
+        at /Users/navaspavil/Projects/ohc/care_fe/tests/setup/patient.setup.ts:23:70
+
+    Error Context: test-results/setup-patient.setup.ts-nav-16d42-ve-patient-and-encounter-id-setup/error-context.md
+
+…ientAccount.setup.ts:10:5 › navigate to an patient - create and save account id
+❌ Failed to set up account: locator.click: Timeout 10000ms exceeded.
+Call log:
+  - waiting for getByRole('button', { name: 'Create Account' })
+
+    at /Users/navaspavil/Projects/ohc/care_fe/tests/setup/patientAccount.setup.ts:36:66 {
+  log: [ "  - waiting for getByRole('button', { name: 'Create Account' })" ],
+  name: 'TimeoutError',
+  Symbol(step): {
+    location: {
+      file: '/Users/navaspavil/Projects/ohc/care_fe/tests/setup/patientAccount.setup.ts',
+      line: 36,
+      column: 66
+    },
+    category: 'pw:api',
+    title: "Click getByRole('button', { name: 'Create Account' })",
+    apiName: 'locator.click',
+    params: {
+      selector: 'internal:role=button[name="Create Account"i]',
+      strict: true,
+      timeout: 10000
+    },
+    group: undefined,
+    stepId: 'pw:api@42',
+    boxedStack: undefined,
+    steps: [],
+    attachmentIndices: [],
+    info: TestStepInfoImpl {
+      annotations: [],
+      _testInfo: [TestInfoImpl],
+      _stepId: 'pw:api@42',
+      _title: "Click getByRole('button', { name: 'Create Account' })",
+      _parentStep: undefined,
+      skip: [Function (anonymous)]
+    },
+    complete: [Function: complete],
+    endWallTime: 1786699481985,
+    error: {
+      message: 'TimeoutError: locator.click: Timeout 10000ms exceeded.\n' +
+        'Call log:\n' +
+        "\x1B[2m  - waiting for getByRole('button', { name: 'Create Account' })\x1B[22m\n",
+      stack: 'TimeoutError: locator.click: Timeout 10000ms exceeded.\n' +
+        'Call log:\n' +
+        "\x1B[2m  - waiting for getByRole('button', { name: 'Create Account' })\x1B[22m\n" +
+        '\n' +
+        '    at /Users/navaspavil/Projects/ohc/care_fe/tests/setup/patientAccount.setup.ts:36:66',
+      cause: undefined
+    }
+  }
+}
+  4) [setup] › tests/setup/patientAccount.setup.ts:10:5 › navigate to an patient - create and save account id 
+
+    TimeoutError: locator.click: Timeout 10000ms exceeded.
+    Call log:
+      - waiting for getByRole('button', { name: 'Create Account' })
+
+
+      34 |     } else {
+      35 |       // Create new account
+    > 36 |       await page.getByRole("button", { name: "Create Account" }).click();
+         |                                                                  ^
+      37 |
+      38 |       // Generate random account name using faker
+      39 |       const accountName = faker.finance.accountName();
+        at /Users/navaspavil/Projects/ohc/care_fe/tests/setup/patientAccount.setup.ts:36:66
+
+    Error Context: test-results/setup-patientAccount.setup-f3507--create-and-save-account-id-setup/error-context.md
+
+  4 failed
+    [setup] › tests/setup/facility.setup.ts:6:5 › enter facility via UI and save facility id 
+    [setup] › tests/setup/patient.setup.ts:8:5 › navigate to an encounter and save patient and encounter id 
+    [setup] › tests/setup/patientAccount.setup.ts:10:5 › navigate to an patient - create and save account id 
+    [setup] › tests/setup/questionnaire.setup.ts:8:5 › ensure enable-when questionnaire exists 
+  1 did not run
+  4 passed (14.6s)
+
+  Serving HTML report at http://localhost:9323. Press Ctrl+C to quit.
+^C
+➜  care_fe git:(ENG-111-clicking-on-an-inventory-item-should-display-all-supply-deliveries) ✗  git diff -- src/pages/Facility/services/inventory/InventoryList.tsx tests/facility/services/locations/inventory/allDeliveries.spec.ts
+diff --git a/src/pages/Facility/services/inventory/InventoryList.tsx b/src/pages/Facility/services/inventory/InventoryList.tsx
+index febf96890..46e82e74e 100644
+--- a/src/pages/Facility/services/inventory/InventoryList.tsx
++++ b/src/pages/Facility/services/inventory/InventoryList.tsx
+@@ -27,6 +27,7 @@ import useFilters from "@/hooks/useFilters";
+ 
+ import { isLessThan, round } from "@/Utils/decimal";
+ import query from "@/Utils/request/query";
++import { Button } from "@/components/ui/button";
+ import {
+   Drawer,
+   DrawerContent,
+@@ -274,8 +275,9 @@ export function InventoryList({ facilityId, locationId }: InventoryListProps) {
+               {data?.results?.map((inventory) => (
+                 <TableRow key={inventory.id}>
+                   <TableCell className="font-semibold">
+-                    <button
++                    <Button
+                       type="button"
++                      variant="link"
+                       className="hover:text-gray-700 underline"
+                       onClick={() => {
+                         setSelectedProductKnowledgeDrawer(
+@@ -285,7 +287,7 @@ export function InventoryList({ facilityId, locationId }: InventoryListProps) {
+                       }}
+                     >
+                       {inventory.product.product_knowledge.name}
+-                    </button>
++                    </Button>
+                   </TableCell>
+                   <TableCell
+                     className={cn(
+➜  care_fe git:(ENG-111-clicking-on-an-inventory-item-should-display-all-supply-deliveries) ✗  sed -n '1,180p' src/components/ui/button.tsx && npx tsc --noEmit
+import * as React from "react";
+
+import { Slot } from "@radix-ui/react-slot";
+import { type VariantProps, cva } from "class-variance-authority";
+
+import { cn } from "@/lib/utils";
+
+const buttonVariants = cva(
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-gray-950 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 dark:focus-visible:ring-gray-300 aria-invalid:border-red-500 aria-invalid:ring-red-500/20",
+  {
+    variants: {
+      variant: {
+        default:
+          "bg-gray-900 text-gray-50 shadow-sm hover:bg-gray-900/90 dark:bg-gray-50 dark:text-gray-900 dark:hover:bg-gray-50/90",
+        destructive:
+          "bg-red-500 text-gray-50 shadow-xs hover:bg-red-500/90 dark:bg-red-900 dark:text-gray-50 dark:hover:bg-red-900/90",
+        outline:
+          "border border-gray-400 bg-white shadow-sm hover:bg-gray-100 hover:text-gray-900 dark:border-gray-800 dark:bg-gray-950 dark:hover:bg-gray-800 dark:hover:text-gray-50",
+        primary:
+          "bg-primary-700 text-white shadow-sm hover:bg-primary-700/90 dark:bg-primary-100 dark:text-primary-900 dark:hover:bg-primary-100/90",
+        secondary:
+          "bg-gray-100 text-gray-900 shadow-xs hover:bg-gray-100/80 dark:bg-gray-800 dark:text-gray-50 dark:hover:bg-gray-800/80",
+        ghost:
+          "hover:bg-gray-100 hover:text-gray-900 dark:hover:bg-gray-800 dark:hover:text-gray-50",
+        link: "text-gray-900 underline-offset-4 hover:underline dark:text-gray-50",
+        outline_primary:
+          "border border-primary-700 text-primary-700 bg-white shadow-xs hover:bg-primary-700 hover:text-white dark:border-primary-700 dark:bg-primary-700 dark:text-white",
+        primary_gradient:
+          "text-white border border-primary-900 rounded-lg font-medium relative overflow-hidden bg-linear-to-b from-primary-700 to-primary-800 hover:from-primary-800 hover:to-primary-900 shadow-lg",
+        white:
+          "bg-white border border-secondary-400 text-gray-900 shadow-xs hover:bg-gray-100 hover:text-gray-900 dark:bg-gray-800 dark:text-gray-50 dark:hover:bg-gray-800/80",
+        warning:
+          "bg-warning-100 text-warning-900 border border-warning-300 shadow-xs hover:bg-warning-100/80 dark:bg-warning-900 dark:text-warning-50 dark:hover:bg-warning-900/80",
+        alert:
+          "bg-alert-100 text-alert-900 border border-alert-300 shadow-xs hover:bg-alert-100/80 dark:bg-alert-900 dark:text-alert-50 dark:hover:bg-alert-900/80",
+      },
+      size: {
+        default: "h-9 px-4 py-2",
+        xs: "h-6 rounded-md px-2 text-xs",
+        sm: "h-8 rounded-md px-3 text-xs",
+        md: "h-9 rounded-md px-4 text-sm",
+        lg: "h-10 rounded-md px-4",
+        icon: "size-9",
+      },
+    },
+    defaultVariants: {
+      variant: "primary",
+      size: "default",
+    },
+  },
+);
+
+export type ButtonVariant =
+  | "primary"
+  | "outline"
+  | "secondary"
+  | "destructive"
+  | "primary_gradient"
+  | "ghost"
+  | "link"
+  | "white"
+  | "alert"
+  | "warning"
+  | "outline_primary";
+export type ButtonSize = "default" | "xs" | "sm" | "md" | "lg" | "icon";
+
+function Button({
+  className,
+  variant,
+  size,
+  asChild = false,
+  ...props
+}: React.ComponentProps<"button"> &
+  VariantProps<typeof buttonVariants> & { asChild?: boolean }) {
+  const Comp = asChild ? Slot : "button";
+  return (
+    <Comp
+      data-slot="button"
+      className={cn(buttonVariants({ variant, size, className }))}
+      {...props}
+    />
+  );
+}
+Button.displayName = "Button";
+
+export { Button, buttonVariants };
+➜  care_fe git:(ENG-111-clicking-on-an-inventory-item-should-display-all-supply-deliveries) ✗  git diff --check && git status --short && nl -ba src/pages/Facility/services/inventory/InventoryList.tsx | sed -n '268,300p' && nl -ba tests/facility/services/locations/inventory/allDeliveries.spec.ts | sed -n '35,105p'
+ M src/pages/Facility/services/inventory/InventoryList.tsx
+   268                  <TableHead>{t("base_price")}</TableHead>
+   269                  <TableHead>
+   270                    <span className="sr-only">{t("actions")}</span>
+   271                  </TableHead>
+   272                </TableRow>
+   273              </TableHeader>
+   274              <TableBody>
+   275                {data?.results?.map((inventory) => (
+   276                  <TableRow key={inventory.id}>
+   277                    <TableCell className="font-semibold">
+   278                      <Button
+   279                        type="button"
+   280                        variant="link"
+   281                        className="hover:text-gray-700 underline underline-offset-2"
+   282                        onClick={() => {
+   283                          setSelectedProductKnowledgeDrawer(
+   284                            inventory.product.product_knowledge,
+   285                          );
+   286                          setShowAllDeliveries(true);
+   287                        }}
+   288                      >
+   289                        {inventory.product.product_knowledge.name}
+   290                      </Button>
+   291                    </TableCell>
+   292                    <TableCell
+   293                      className={cn(
+   294                        "font-medium space-x-1",
+   295                        isLessThan(inventory.net_content, 10) &&
+   296                          "text-yellow-600",
+   297                      )}
+   298                    >
+   299                      <span>{round(inventory.net_content)}</span>
+   300                      <span className="text-sm self-center">
+    35        page.getByRole("heading", { name: "Inventory" }),
+    36      ).toBeVisible();
+    37    });
+    38
+    39    test("opens the drawer and lists deliveries for a stocked product", async ({
+    40      page,
+    41    }) => {
+    42      await test.step("Wait for the inventory row to render", async () => {
+    43        await expect(
+    44          page.getByRole("button", { name: PRODUCT_NAME }),
+    45        ).toBeVisible();
+    46      });
+    47
+    48      await test.step("Open the All Deliveries drawer and assert its API call", async () => {
+    49        const deliveriesResponse = page.waitForResponse(
+    50          (resp) =>
+    51            resp.url().includes("/api/v1/supply_delivery/") &&
+    52            resp.request().method() === "GET" &&
+    53            resp.url().includes("supplied_inventory_item_product_knowledge=") &&
+    54            resp.url().includes("destination=") &&
+    55            resp.ok(),
+    56        );
+    57        await page.getByRole("button", { name: PRODUCT_NAME }).click();
+    58        await deliveriesResponse;
+    59      });
+    60
+    61      await test.step("Verify the deliveries table is shown in the drawer", async () => {
+    62        const drawer = page.locator('[data-slot="drawer-content"]');
+    63        await expect(drawer.getByText("All Deliveries")).toBeVisible();
+    64        // The delivered product renders as a link inside the deliveries table —
+    65        // its presence proves a delivery row was rendered (not the empty state).
+    66        await expect(
+    67          drawer.getByRole("link", { name: PRODUCT_NAME }),
+    68        ).toBeVisible();
+    69      });
+    70    });
+    71
+    72    test("switches between incoming and outgoing deliveries", async ({
+    73      page,
+    74    }) => {
+    75      await expect(
+    76        page.getByRole("button", { name: PRODUCT_NAME }),
+    77      ).toBeVisible();
+    78
+    79      const incomingResponse = page.waitForResponse(
+    80        (resp) =>
+    81          resp.url().includes("/api/v1/supply_delivery/") &&
+    82          resp.url().includes("destination=") &&
+    83          resp.ok(),
+    84      );
+    85      await page.getByRole("button", { name: PRODUCT_NAME }).click();
+    86      await incomingResponse;
+    87
+    88      const drawer = page.locator('[data-slot="drawer-content"]');
+    89      await expect(
+    90        drawer.getByRole("tab", { name: "Incoming Deliveries" }),
+    91      ).toHaveAttribute("data-state", "active");
+    92
+    93      const outgoingResponse = page.waitForResponse(
+    94        (resp) =>
+    95          resp.url().includes("/api/v1/supply_delivery/") &&
+    96          resp.url().includes("origin=") &&
+    97          resp.ok(),
+    98      );
+    99      await drawer.getByRole("tab", { name: "Outgoing Deliveries" }).click();
+   100      await outgoingResponse;
+   101      await expect(
+   102        drawer.getByRole("tab", { name: "Outgoing Deliveries" }),
+   103      ).toHaveAttribute("data-state", "active");
+   104    });
+   105
+➜  care_fe git:(ENG-111-clicking-on-an-inventory-item-should-display-all-supply-deliveries) ✗  npx tsc --noEmit
+➜  care_fe git:(ENG-111-clicking-on-an-inventory-item-should-display-all-supply-deliveries) ✗  npx playwright test tests/facility/services/locations/inventory/allDeliveries.spec.ts --list >/tmp/inventory-playwright-list.txt && grep -F "opens the drawer" /tmp/inventory-playwright-list.txt && grep -F "switches between incoming and outgoing deliveries" /tmp/inventory-playwright-list.txt && git diff --check && git diff -- src/pages/Facility/services/inventory/InventoryList.tsx
+  [chromium] › facility/services/locations/inventory/allDeliveries.spec.ts:39:7 › Inventory Summary — All Deliveries drawer › opens the drawer and lists deliveries for a stocked product
+  [chromium] › facility/services/locations/inventory/allDeliveries.spec.ts:72:7 › Inventory Summary — All Deliveries drawer › switches between incoming and outgoing deliveries
+diff --git a/src/pages/Facility/services/inventory/InventoryList.tsx b/src/pages/Facility/services/inventory/InventoryList.tsx
+index febf96890..6d1699367 100644
+--- a/src/pages/Facility/services/inventory/InventoryList.tsx
++++ b/src/pages/Facility/services/inventory/InventoryList.tsx
+@@ -27,6 +27,7 @@ import useFilters from "@/hooks/useFilters";
+ 
+ import { isLessThan, round } from "@/Utils/decimal";
+ import query from "@/Utils/request/query";
++import { Button } from "@/components/ui/button";
+ import {
+   Drawer,
+   DrawerContent,
+@@ -274,9 +275,10 @@ export function InventoryList({ facilityId, locationId }: InventoryListProps) {
+               {data?.results?.map((inventory) => (
+                 <TableRow key={inventory.id}>
+                   <TableCell className="font-semibold">
+-                    <button
++                    <Button
+                       type="button"
+-                      className="hover:text-gray-700 underline"
++                      variant="link"
++                      className="h-auto justify-start rounded-none px-0 py-0 font-semibold hover:text-gray-700 underline underline-offset-2"
+                       onClick={() => {
+                         setSelectedProductKnowledgeDrawer(
+                           inventory.product.product_knowledge,
+@@ -285,7 +287,7 @@ export function InventoryList({ facilityId, locationId }: InventoryListProps) {
+                       }}
+                     >
+                       {inventory.product.product_knowledge.name}
+-                    </button>
++                    </Button>
+                   </TableCell>
+                   <TableCell
+                     className={cn(
+➜  care_fe git:(ENG-111-clicking-on-an-inventory-item-should-display-all-supply-deliveries) ✗  npx tsc --noEmit
+➜  care_fe git:(ENG-111-clicking-on-an-inventory-item-should-display-all-supply-deliveries) ✗  npx playwright test tests/facility/services/locations/inventory/allDeliveries.spec.ts --list >/tmp/inventory-playwright-list.txt && grep -F "switches between incoming and outgoing deliveries" /tmp/inventory-playwright-list.txt && git diff --check && git diff -- src/pages/Facility/services/inventory/InventoryList.tsx
+  [chromium] › facility/services/locations/inventory/allDeliveries.spec.ts:72:7 › Inventory Summary — All Deliveries drawer › switches between incoming and outgoing deliveries
+diff --git a/src/pages/Facility/services/inventory/InventoryList.tsx b/src/pages/Facility/services/inventory/InventoryList.tsx
+index a40f54807..b97d873c8 100644
+--- a/src/pages/Facility/services/inventory/InventoryList.tsx
++++ b/src/pages/Facility/services/inventory/InventoryList.tsx
+@@ -36,7 +36,12 @@ import {
+ } from "@/components/ui/drawer";
+ import { FilterSelect } from "@/components/ui/filter-select";
+ import { MonetaryDisplay } from "@/components/ui/monetary-display";
+-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
++import {
++  Tabs,
++  TabsContent,
++  TabsList,
++  TabsTrigger,
++} from "@/components/ui/tabs";
+ import { MonetaryComponentType } from "@/types/base/monetaryComponent/monetaryComponent";
+ import { ACCOUNT_STATUS_COLORS } from "@/types/billing/account/Account";
+ import { InventoryStatusOptions } from "@/types/inventory/product/inventory";
+@@ -116,31 +121,33 @@ function ProductDeliveriesDrawerContent({
+           <TabsTrigger value="outgoing">{t("outgoing_deliveries")}</TabsTrigger>
+         </TabsList>
+       </Tabs>
+-      {isLoading ? (
+-        <TableSkeleton count={2} />
+-      ) : deliveries?.results && deliveries.results.length > 0 ? (
+-        <>
+-          <SupplyDeliveryTable
+-            deliveries={deliveries.results}
+-            facilityId={facilityId}
+-            serialNumberOffset={DELIVERIES_PER_PAGE * (page - 1)}
+-            linkToProduct
+-            showLocations
+-          />
+-          <PaginationComponent
+-            data={{ totalCount: deliveries.count }}
+-            onChange={(newPage) => setPage(newPage)}
+-            defaultPerPage={DELIVERIES_PER_PAGE}
+-            cPage={page}
++      <TabsContent value={direction}>
++        {isLoading ? (
++          <TableSkeleton count={2} />
++        ) : deliveries?.results && deliveries.results.length > 0 ? (
++          <>
++            <SupplyDeliveryTable
++              deliveries={deliveries.results}
++              facilityId={facilityId}
++              serialNumberOffset={DELIVERIES_PER_PAGE * (page - 1)}
++              linkToProduct
++              showLocations
++            />
++            <PaginationComponent
++              data={{ totalCount: deliveries.count }}
++              onChange={(newPage) => setPage(newPage)}
++              defaultPerPage={DELIVERIES_PER_PAGE}
++              cPage={page}
++            />
++          </>
++        ) : (
++          <EmptyState
++            icon={<Truck className="size-5 text-primary-600" />}
++            title={t("no_deliveries_found")}
++            description={t("no_deliveries_found_description")}
+           />
+-        </>
+-      ) : (
+-        <EmptyState
+-          icon={<Truck className="size-5 text-primary-600" />}
+-          title={t("no_deliveries_found")}
+-          description={t("no_deliveries_found_description")}
+-        />
+-      )}
++        )}
++      </TabsContent>
+     </div>
+   );
+ }
+➜  care_fe git:(ENG-111-clicking-on-an-inventory-item-should-display-all-supply-deliveries) ✗  git diff -- src/pages/Facility/services/inventory/InventoryList.tsx tests/facility/services/locations/inventory/allDeliveries.spec.ts && git diff --check
+diff --git a/src/pages/Facility/services/inventory/InventoryList.tsx b/src/pages/Facility/services/inventory/InventoryList.tsx
+index 16f303bcc..c5a441f46 100644
+--- a/src/pages/Facility/services/inventory/InventoryList.tsx
++++ b/src/pages/Facility/services/inventory/InventoryList.tsx
+@@ -115,34 +115,34 @@ function ProductDeliveriesDrawerContent({
+           <TabsTrigger value="incoming">{t("incoming_deliveries")}</TabsTrigger>
+           <TabsTrigger value="outgoing">{t("outgoing_deliveries")}</TabsTrigger>
+         </TabsList>
+-      </Tabs>
+-      <TabsContent value={direction}>
+-        {isLoading ? (
+-          <TableSkeleton count={2} />
+-        ) : deliveries?.results && deliveries.results.length > 0 ? (
+-          <>
+-            <SupplyDeliveryTable
+-              deliveries={deliveries.results}
+-              facilityId={facilityId}
+-              serialNumberOffset={DELIVERIES_PER_PAGE * (page - 1)}
+-              linkToProduct
+-              showLocations
++        <TabsContent value={direction}>
++          {isLoading ? (
++            <TableSkeleton count={2} />
++          ) : deliveries?.results && deliveries.results.length > 0 ? (
++            <>
++              <SupplyDeliveryTable
++                deliveries={deliveries.results}
++                facilityId={facilityId}
++                serialNumberOffset={DELIVERIES_PER_PAGE * (page - 1)}
++                linkToProduct
++                showLocations
++              />
++              <PaginationComponent
++                data={{ totalCount: deliveries.count }}
++                onChange={(newPage) => setPage(newPage)}
++                defaultPerPage={DELIVERIES_PER_PAGE}
++                cPage={page}
++              />
++            </>
++          ) : (
++            <EmptyState
++              icon={<Truck className="size-5 text-primary-600" />}
++              title={t("no_deliveries_found")}
++              description={t("no_deliveries_found_description")}
+             />
+-            <PaginationComponent
+-              data={{ totalCount: deliveries.count }}
+-              onChange={(newPage) => setPage(newPage)}
+-              defaultPerPage={DELIVERIES_PER_PAGE}
+-              cPage={page}
+-            />
+-          </>
+-        ) : (
+-          <EmptyState
+-            icon={<Truck className="size-5 text-primary-600" />}
+-            title={t("no_deliveries_found")}
+-            description={t("no_deliveries_found_description")}
+-          />
+-        )}
+-      </TabsContent>
++          )}
++        </TabsContent>
++      </Tabs>
+     </div>
+   );
+ }
+➜  care_fe git:(ENG-111-clicking-on-an-inventory-item-should-display-all-supply-deliveries) ✗  npx tsc --noEmit && npx playwright test tests/facility/services/locations/inventory/allDeliveries.spec.ts --list >/tmp/inventory-playwright-list.txt && grep -F "switches between incoming and outgoing deliveries" /tmp/inventory-playwright-list.txt && git diff --check
+  [chromium] › facility/services/locations/inventory/allDeliveries.spec.ts:72:7 › Inventory Summary — All Deliveries drawer › switches between incoming and outgoing deliveries
+➜  care_fe git:(ENG-111-clicking-on-an-inventory-item-should-display-all-supply-deliveries) ✗  npx tsc --noEmit && npx playwright test tests/facility/services/locations/inventory/allDeliveries.spec.ts --list >/tmp/inventory-playwright-list.txt && grep -F "switches between incoming and outgoing deliveries" /tmp/inventory-playwright-list.txt && git diff --check
+  [chromium] › facility/services/locations/inventory/allDeliveries.spec.ts:72:7 › Inventory Summary — All Deliveries drawer › switches between incoming and outgoing deliveries
+➜  care_fe git:(ENG-111-clicking-on-an-inventory-item-should-display-all-supply-deliveries) ✗  npx tsc --noEmit && git diff --check && git diff --stat && git diff -- src/components/Common/Table.tsx src/pages/Facility/services/inventory/SupplyDeliveryTable.tsx src/pages/Facility/services/inventory/InventoryList.tsx
+ src/components/Common/Table.tsx                               | 11 +++++++++--
+ src/pages/Facility/services/inventory/InventoryList.tsx       |  1 +
+ src/pages/Facility/services/inventory/SupplyDeliveryTable.tsx |  4 +++-
+ 3 files changed, 13 insertions(+), 3 deletions(-)
+diff --git a/src/components/Common/Table.tsx b/src/components/Common/Table.tsx
+index 9624b09e8..4799db3d7 100644
+--- a/src/components/Common/Table.tsx
++++ b/src/components/Common/Table.tsx
+@@ -2,11 +2,18 @@ import * as React from "react";
+ 
+ import { cn } from "@/lib/utils";
+ 
+-function Table({ className, ...props }: React.ComponentProps<"table">) {
++interface TableProps extends React.ComponentProps<"table"> {
++  containerClassName?: string;
++}
++
++function Table({ className, containerClassName, ...props }: TableProps) {
+   return (
+     <div
+       data-slot="table-container"
+-      className="rounded-md overflow-x-auto border-2 border-white shadow-md"
++      className={cn(
++        "rounded-md overflow-x-auto border-2 border-white shadow-md",
++        containerClassName,
++      )}
+     >
+       <table
+         data-slot="table"
+diff --git a/src/pages/Facility/services/inventory/InventoryList.tsx b/src/pages/Facility/services/inventory/InventoryList.tsx
+index abdae8f3e..bcc4cb82d 100644
+--- a/src/pages/Facility/services/inventory/InventoryList.tsx
++++ b/src/pages/Facility/services/inventory/InventoryList.tsx
+@@ -124,6 +124,7 @@ function ProductDeliveriesDrawerContent({
+           serialNumberOffset={DELIVERIES_PER_PAGE * (page - 1)}
+           linkToProduct
+           showLocations
++          tableContainerClassName="overflow-x-scroll"
+         />
+         <PaginationComponent
+           data={{ totalCount: deliveries.count }}
+diff --git a/src/pages/Facility/services/inventory/SupplyDeliveryTable.tsx b/src/pages/Facility/services/inventory/SupplyDeliveryTable.tsx
+index ef76a41fc..a4e88b5c2 100644
+--- a/src/pages/Facility/services/inventory/SupplyDeliveryTable.tsx
++++ b/src/pages/Facility/services/inventory/SupplyDeliveryTable.tsx
+@@ -65,6 +65,7 @@ interface SupplyDeliveryTableProps {
+   linkToProduct?: boolean;
+   showLocations?: boolean;
+   serialNumberOffset?: number;
++  tableContainerClassName?: string;
+ }
+ 
+ export function SupplyDeliveryTable({
+@@ -82,6 +83,7 @@ export function SupplyDeliveryTable({
+   linkToProduct = false,
+   showLocations = false,
+   serialNumberOffset = 0,
++  tableContainerClassName,
+ }: SupplyDeliveryTableProps) {
+   const { t } = useTranslation();
+   const queryClient = useQueryClient();
+@@ -175,7 +177,7 @@ export function SupplyDeliveryTable({
+   }, [deliveries, serialNumberOffset]);
+ 
+   return (
+-    <Table>
++    <Table containerClassName={tableContainerClassName}>
+       <TableHeader>
+         <TableRow>
+           {showAllCheckbox && (
+➜  care_fe git:(ENG-111-clicking-on-an-inventory-item-should-display-all-supply-deliveries) ✗  npx tsc --noEmit && git diff --check
+➜  care_fe git:(ENG-111-clicking-on-an-inventory-item-should-display-all-supply-deliveries) ✗  git status --short --branch && git diff --stat && git diff --check
+## ENG-111-clicking-on-an-inventory-item-should-display-all-supply-deliveries
+ M src/pages/Facility/services/inventory/InventoryList.tsx
+ src/pages/Facility/services/inventory/InventoryList.tsx | 14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
+➜  care_fe git:(ENG-111-clicking-on-an-inventory-item-should-display-all-supply-deliveries) ✗  git diff -- src/pages/Facility/services/inventory/InventoryList.tsx && git log -1 --oneline
+diff --git a/src/pages/Facility/services/inventory/InventoryList.tsx b/src/pages/Facility/services/inventory/InventoryList.tsx
+index abdae8f3e..e4a296902 100644
+--- a/src/pages/Facility/services/inventory/InventoryList.tsx
++++ b/src/pages/Facility/services/inventory/InventoryList.tsx
+@@ -125,12 +125,14 @@ function ProductDeliveriesDrawerContent({
+           linkToProduct
+           showLocations
+         />
+-        <PaginationComponent
+-          data={{ totalCount: deliveries.count }}
+-          onChange={(newPage) => setPage(newPage)}
+-          defaultPerPage={DELIVERIES_PER_PAGE}
+-          cPage={page}
+-        />
++        <div className="flex justify-center">
++          <PaginationComponent
++            data={{ totalCount: deliveries.count }}
++            onChange={(newPage) => setPage(newPage)}
++            defaultPerPage={DELIVERIES_PER_PAGE}
++            cPage={page}
++          />
++        </div>
+       </>
+     );
+   };
+17c4b59bf (HEAD -> ENG-111-clicking-on-an-inventory-item-should-display-all-supply-deliveries, origin/ENG-111-clicking-on-an-inventory-item-should-display-all-supply-deliveries) fix: refactor delivery rendering logic in ProductDeliveriesDrawerContent
+➜  care_fe git:(ENG-111-clicking-on-an-inventory-item-should-display-all-supply-deliveries) ✗  git add src/pages/Facility/services/inventory/InventoryList.tsx && git commit -m "fix: center delivery pagination" && git push
+✔ Backed up original state in git stash (e62099897)
+✔ Running tasks for staged files...
+✔ Staging changes from tasks...
+✔ Cleaning up temporary files...
+
+Entire: Active Copilot CLI session detected
+  Last prompt: Center align the pagination component horizontally here
+
+Link this commit to session context?
+  [Y]es / [n]o / [a]lways (remember my choice): n
+[ENG-111-clicking-on-an-inventory-item-should-display-all-supply-deliveries 2b956e9b9] fix: center delivery pagination
+ 1 file changed, 8 insertions(+), 6 deletions(-)
+fatal: The current branch ENG-111-clicking-on-an-inventory-item-should-display-all-supply-deliveries has no upstream branch.
+To push the current branch and set the remote as upstream, use
+
+    git push --set-upstream origin ENG-111-clicking-on-an-inventory-item-should-display-all-supply-deliveries
+
+To have this happen automatically for branches without a tracking
+upstream, see 'push.autoSetupRemote' in 'git help config'.
+
+---
+
+Let's filter the deliveries based on product instead of product knowledge.
+backend app is here if required: ../care
