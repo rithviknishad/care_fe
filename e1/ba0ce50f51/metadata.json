@@ -3,10 +3,16 @@
   "checkpoint_id": "e1ba0ce50f51",
   "strategy": "manual-commit",
   "branch": "ENG-1093-token-category-edit-to-skip-resource-type-select-improve-list-ui",
-  "checkpoints_count": 25,
+  "checkpoints_count": 27,
   "files_touched": [
     "public/locale/en.json",
-    "src/pages/Facility/settings/layout.tsx"
+    "src/pages/Facility/settings/layout.tsx",
+    "src/pages/Facility/settings/tokenCategory/TokenCategoryForm.tsx",
+    "src/pages/Facility/settings/tokenCategory/TokenCategoryList.tsx",
+    "src/types/tokens/tokenCategory/tokenCategory.ts",
+    "tests/facility/settings/tokenCategory/tokenCategoryCreate.spec.ts",
+    "tests/facility/settings/tokenCategory/tokenCategoryEdit.spec.ts",
+    "tests/facility/settings/tokenCategory/tokenCategoryList.spec.ts"
   ],
   "sessions": [
     {
@@ -15,6 +21,13 @@
       "compact_transcript": "/e1/ba0ce50f51/0/transcript.jsonl",
       "content_hash": "/e1/ba0ce50f51/0/content_hash.txt",
       "prompt": "/e1/ba0ce50f51/0/prompt.txt"
+    },
+    {
+      "metadata": "/e1/ba0ce50f51/1/metadata.json",
+      "transcript": "/e1/ba0ce50f51/1/full.jsonl",
+      "compact_transcript": "/e1/ba0ce50f51/1/transcript.jsonl",
+      "content_hash": "/e1/ba0ce50f51/1/content_hash.txt",
+      "prompt": "/e1/ba0ce50f51/1/prompt.txt"
     }
   ],
   "token_usage": {

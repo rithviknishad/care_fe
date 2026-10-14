@@ -1,0 +1,15 @@
+1. token category form, we shouldn't allow updating resource category. see changes: https://github.com/ohcnetwork/care/pull/3794
+2. ideally how i would design is, token category list page should have shown it by grouping it (so maybe separate API calls with resource type filter). re-design it. and each group should have it's own add/create token category line item or trigger to open the create form, pass the resource category as query param to that page that way we can remove the resource category select all-together from the form.
+
+---
+
+1. token category form, we shouldn't allow updating resource category. see changes: https://github.com/ohcnetwork/care/pull/3794
+2. ideally how i would design is, token category list page should have shown it by grouping it (so maybe separate API calls with resource type filter). re-design it. and each group should have it's own add/create token category line item or trigger to open the create form, pass the resource category as query param to that page that way we can remove the resource category select all-together from the form.
+
+---
+
+can we remove the separate page we have for creating token category? instead now what we can do it, the form could be opened inline as a popover within list page. that way things can be much simpler
+
+---
+
+can we remove the separate page we have for creating token category? instead now what we can do it, the form could be opened inline as a popover within list page. that way things can be much simpler
