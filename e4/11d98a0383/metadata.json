@@ -1,0 +1,32 @@
+{
+  "cli_version": "0.11.4",
+  "checkpoint_id": "e411d98a0383",
+  "strategy": "manual-commit",
+  "branch": "jacobjeevan-abdm-m1-core-frontend-v2",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "public/locale/en.json",
+    "src/components/Abdm/AbhaRegistrationStep.tsx",
+    "src/components/Patient/PatientRegistration.tsx",
+    "src/pages/Facility/abdm/AbhaShares.tsx",
+    "src/types/abdm/abdmApi.ts",
+    "tests/facility/patient/abha/abhaRegistration.spec.ts",
+    "tests/facility/patient/abha/abhaShares.spec.ts"
+  ],
+  "sessions": [
+    {
+      "metadata": "/e4/11d98a0383/0/metadata.json",
+      "transcript": "/e4/11d98a0383/0/full.jsonl",
+      "compact_transcript": "/e4/11d98a0383/0/transcript.jsonl",
+      "content_hash": "/e4/11d98a0383/0/content_hash.txt",
+      "prompt": ""
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 0,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 0,
+    "output_tokens": 0,
+    "api_call_count": 0
+  }
+}
