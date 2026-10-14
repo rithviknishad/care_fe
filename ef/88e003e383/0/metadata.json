@@ -1,0 +1,49 @@
+{
+  "cli_version": "0.11.4",
+  "checkpoint_id": "ef88e003e383",
+  "session_id": "b135e26f-37b6-4cbc-87b8-fd253a161bf4",
+  "strategy": "manual-commit",
+  "created_at": "2026-10-14T06:02:29.516262Z",
+  "branch": "jacobjeevan-ubiquitous-funicular",
+  "checkpoints_count": 1,
+  "save_step_count": 1,
+  "files_touched": [
+    "playwright.abdm-e2e.config.ts",
+    "tests/facility/patient/abha/realStack.tmp.spec.ts"
+  ],
+  "agent": "Copilot CLI",
+  "model": "claude-opus-5.5",
+  "turn_id": "27615407acd4",
+  "compact_transcript_start": 0,
+  "token_usage": {
+    "input_tokens": 82855128,
+    "cache_creation_tokens": 1618024,
+    "cache_read_tokens": 81236078,
+    "output_tokens": 639238,
+    "api_call_count": 510
+  },
+  "session_metrics": {
+    "turn_count": 1
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-10-14T06:02:29.26325Z",
+    "agent_lines": 0,
+    "agent_removed": 0,
+    "human_added": 1,
+    "human_modified": 16,
+    "human_removed": 0,
+    "total_committed": 17,
+    "total_lines_changed": 19,
+    "agent_percentage": 0,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0
+    }
+  ]
+}

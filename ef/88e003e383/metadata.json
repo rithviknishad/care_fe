@@ -1,0 +1,27 @@
+{
+  "cli_version": "0.11.4",
+  "checkpoint_id": "ef88e003e383",
+  "strategy": "manual-commit",
+  "branch": "jacobjeevan-ubiquitous-funicular",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "playwright.abdm-e2e.config.ts",
+    "tests/facility/patient/abha/realStack.tmp.spec.ts"
+  ],
+  "sessions": [
+    {
+      "metadata": "/ef/88e003e383/0/metadata.json",
+      "transcript": "/ef/88e003e383/0/full.jsonl",
+      "compact_transcript": "/ef/88e003e383/0/transcript.jsonl",
+      "content_hash": "/ef/88e003e383/0/content_hash.txt",
+      "prompt": "/ef/88e003e383/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 82855128,
+    "cache_creation_tokens": 1618024,
+    "cache_read_tokens": 81236078,
+    "output_tokens": 639238,
+    "api_call_count": 510
+  }
+}

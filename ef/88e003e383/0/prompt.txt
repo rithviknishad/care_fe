@@ -1,0 +1,141 @@
+<cross_session_message>
+from_session_id: 68ed3233-0a87-43b0-b86e-25d71c230e94
+from_display_name: General Chat
+
+To reply to the sender, use the send_session_message tool with session_id: "68ed3233-0a87-43b0-b86e-25d71c230e94"
+</cross_session_message>
+
+<copilot_tauri_workspace>
+project_session_id: 2209d3ff-702a-42fd-a546-f70908619261
+project_id: 2620465d-e750-42b5-9424-97b1270f0636
+project_name: care_fe
+project_github_repo: ohcnetwork/care_fe
+project_default_branch: develop
+workspace_type: worktree
+workspace_name: Abdm m1 core frontend
+workspace_branch: jacobjeevan-effective-succotash
+workspace_path: /Users/jacob/copilot-worktrees/care_fe/jacobjeevan-effective-succotash
+repo_root: /Users/jacob/copilot-worktrees/care_fe/jacobjeevan-effective-succotash
+default_branch: develop
+base_branch: develop
+original_generated_branch: jacobjeevan-effective-succotash
+current_branch: jacobjeevan-effective-succotash
+creator_chat_session_id: 68ed3233-0a87-43b0-b86e-25d71c230e94
+</copilot_tauri_workspace>
+
+<copilot_working_context>
+container_kind: repository
+current_working_directory: /Users/jacob/copilot-worktrees/care_fe/jacobjeevan-effective-succotash
+current_working_directory_is_git_repo: true
+checkout_strategy: worktree
+member_repositories:
+- repo_name: care_fe
+  repo_full_name: ohcnetwork/care_fe
+  main_checkout_path: /Users/jacob/Desktop/care_fe
+  main_checkout_branch: abdm-skills
+  current_checkout_kind: worktree
+  current_checkout_path: /Users/jacob/copilot-worktrees/care_fe/jacobjeevan-effective-succotash
+  current_checkout_branch: jacobjeevan-effective-succotash
+</copilot_working_context>
+
+<copilot_artifacts>
+artifacts_dir: /Users/jacob/.copilot/session-state/b135e26f-37b6-4cbc-87b8-fd253a161bf4/files
+Write scratch artifacts (plans, task lists, notes) in this folder instead of the repo.
+</copilot_artifacts>
+
+<branch_rename_request>
+Before creating or editing any files, call the rename_branch tool with a kebab-case version of the session name you chose.
+</branch_rename_request>
+
+# Task: implement ABDM Milestone 1 (ABHA create + verify) in CARE core frontend
+
+You are the FRONTEND half of a two-session build. A parallel session is implementing the CARE backend (ohcnetwork/care) against the SAME HTTP contract. I am the coordinating chat; I will relay any backend contract deviations to you.
+
+## Reference documents (read these first)
+They are in `/var/folders/92/6gf3n7yn1mdcyrcr31xn2v880000gn/T/abdm-m1-docs/` (the system temp dir). A backup copy is in `/Users/jacob/.copilot/session-state/68ed3233-0a87-43b0-b86e-25d71c230e94/files/abdm/`. Copy them into your session workspace if that's convenient. Do not add them to the repo.
+- `m1-core-design.md` is THE CONTRACT and the source of truth. Read it fully before writing any code.
+  - Sections 0-3, 5, 6, 7 and 8 apply to you.
+  - Section 5 is the exact HTTP API you consume.
+  - Section 6 is your design.
+  - Section 4 is the backend's, but skim it.
+- `m1-design.md` contains the M1 UX rules: the six counter screens, "never ask twice", consent and the duplicate rules.
+- `m1-test.md` lists the ABDM functional test cases (CRT_ABHA_*, VRFY_ABHA_*, TAGGING); treat them as the acceptance criteria.
+- `m1-scaffold-core.md`, `m1-integrate.md` and `m1-debug.md` are background only. You never call ABDM directly; only the CARE backend does.
+
+The user's instruction was: "let's implement m1 as part of core. Ignore all other implementations you may find."
+- Do NOT use, import, copy from or build on the care_abdm_fe plugin, ABDM plugin hooks/slots (`PLUGIN_Component` slots, plugin manifests), or old commented-out ABHA code.
+- Build fresh in core.
+- Leave existing plugin slots in place; don't delete them, and don't route through them.
+- Replace the commented-out ABHA block in Demography.tsx as described in §6.5.
+- Do not edit or delete existing ABHA-related i18n keys in `public/locale/*.json`; plugins may use them. Add new keys instead.
+
+## Step 0 - set the branch base (do this first)
+1. In YOUR worktree only, make sure `git status` is clean and do this before any edits.
+2. Run `git fetch origin`, then `git reset --hard origin/develop`. Here `origin` is ohcnetwork/care_fe. The expected HEAD is at or after ff7fce24e (2026-10-12).
+
+Never touch the user's main checkout at /Users/jacob/Desktop/care_fe (branch abdm-skills). The user's own vite dev server runs from it on port 4000 (PID 44669); do not stop it and do not use it.
+
+## Step 1 - survey, then plan
+Read:
+- `AGENTS.md` (plus any CLAUDE.md or .github/copilot-instructions.md)
+- `care.config.ts` and the vite env typing file, to see how env flags are declared
+- `src/types/emr/patient/patient.ts` and `patientApi.ts`
+- `src/Utils/request/` (query, mutate, HttpMethod, Type, error handling)
+- `src/components/Patient/PatientRegistration.tsx` (create flow and navigation after create)
+- `src/components/Patient/PatientIndex.tsx` (search; the verification route `/facility/:facilityId/patients/home?phone_number&year_of_birth&partial_id`)
+- `src/components/Patient/PatientDetailsTab/Demography.tsx`
+- `src/components/Auth/Login.tsx` (OTP resend countdown pattern)
+- `src/hooks/useFileManager.tsx` (blob handling)
+- permission helpers (`usePermissions`/`getPermissions`)
+- `src/components/ui/` (shadcn primitives available)
+- `public/locale/en.json`
+- `tests/PLAYWRIGHT_GUIDE.md` and a couple of existing patient specs under `tests/`
+
+Write a file-by-file plan in your session workspace (NOT in the repo), then implement it.
+
+## Step 2 - implement contract §6 against §5
+- **Flag:** `careConfig.abdm.enabled` from `REACT_ENABLE_ABDM`. When it is off, nothing ABHA renders and no ABHA calls are made.
+- **Types:** `src/types/abdm/abha.ts` and `src/types/abdm/abhaApi.ts`. Match §5 exactly: the AbhaJourney statuses, the otp sub-object, AbhaAccount, AbhaProfile, LinkedPatient, PatientAbha, the error format and the error codes.
+- **Components:** `src/components/Patient/Abha/` holds the journey with the screens in §6.3, the page-scoped write-once fact store (§6.2), the consent panel with the verbatim text in §6.6 as ONE i18n key, and the card dialog.
+- **Registration** (§6.4): journey first in create mode; prefill and lock name, DOB and gender; an ABHA summary card; `link/` after a successful create, which never blocks registration; TAGGING blocks continuing.
+- **Demography ABHA section** (§6.5): view card (re-verify), link and unlink.
+- **Strings:** all strings through i18n, `public/locale/en.json` only, then `npm run sort-locales`.
+- **Code style:** follow repo conventions; no `any`; keep changes to existing large files surgical.
+
+## Step 3 - static checks
+1. Run `npm ci` in your worktree (Node 22 is installed).
+2. Then run `npm run lint`, `npm run typecheck` and `npm run build`. Also do a build with `REACT_ENABLE_ABDM=true` to make sure the flag path compiles.
+3. Run `npx prettier --check` on the changed files.
+
+## Step 4 - Playwright specs (§6.7)
+Write specs per §6.7.
+- Use `page.route` mocks for every `**/api/v1/abdm/abha/**` and `**/api/v1/patient/*/abha/**` call, with fixtures matching §5.
+- Put the shared fixtures and builders in a helper so they're easy to update if the contract changes.
+
+Running them needs a CARE backend on :9000 plus fixtures. Follow these SAFETY RULES; the machine is shared with the user's dev setup:
+- (a) Always export `PLAYWRIGHT_DB_SNAPSHOT=/nonexistent/none.dump` so `tests/globalSetup.ts` skips its DB restore.
+- (b) Never run `npm run playwright:db-*` or `scripts/playwright-db.sh`. They drop and recreate `POSTGRES_DB`, which defaults to `care`, the user's dev DB.
+- (c) Never let Playwright reuse the user's server on :4000. `playwright.config.ts` has `reuseExistingServer` and a hard-coded baseURL of :4000. Use an uncommitted override config (outside the repo, or a gitignored path) with:
+  - `baseURL: http://localhost:4100`
+  - webServer command `PORT=4100 npm run preview`, on url :4100
+  - the build made with `REACT_CARE_API_URL=http://localhost:9000 REACT_ENABLE_ABDM=true`
+- (d) Do not start a backend yourself, and do not use the user's `care`/`test_care` databases or the docker containers named care-reference-*. When the backend session finishes, I will message you with an isolated backend: database `care_abdm_e2e`, port 9000, with fixtures. Then run e2e.
+
+If you finish everything else before that message arrives:
+1. Commit.
+2. Report that e2e is pending.
+3. Stop.
+
+## Step 5 - finish
+Commit on your session branch in logical commits with clear messages, and include the Co-authored-by trailer your environment specifies. Do NOT push and do NOT open a PR.
+
+Your final message must include:
+- the files changed
+- how each M1 test case in contract §7 is covered
+- any deviation from the contract, or anything you need from the backend
+- the env vars
+- the exact commands you ran and their results
+- whether e2e was executed
+- known gaps
+
+If you hit a genuine contract ambiguity, choose the option most consistent with the contract and record it, rather than stopping.
