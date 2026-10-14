@@ -1,0 +1,24 @@
+{
+  "cli_version": "0.11.4",
+  "checkpoint_id": "c8b345391cc2",
+  "strategy": "manual-commit",
+  "branch": "jacobjeevan-abdm-m1-core-frontend-v2",
+  "checkpoints_count": 1,
+  "files_touched": null,
+  "sessions": [
+    {
+      "metadata": "/c8/b345391cc2/0/metadata.json",
+      "transcript": "/c8/b345391cc2/0/full.jsonl",
+      "compact_transcript": "/c8/b345391cc2/0/transcript.jsonl",
+      "content_hash": "/c8/b345391cc2/0/content_hash.txt",
+      "prompt": "/c8/b345391cc2/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 0,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 0,
+    "output_tokens": 0,
+    "api_call_count": 0
+  }
+}
