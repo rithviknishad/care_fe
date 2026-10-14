@@ -1,0 +1,42 @@
+<copilot_tauri_workspace>
+project_session_id: 7faef660-5501-4331-987d-a11bb2586e72
+project_id: 2620465d-e750-42b5-9424-97b1270f0636
+project_name: care_fe
+project_github_repo: ohcnetwork/care_fe
+project_default_branch: develop
+workspace_type: worktree
+workspace_name: New session
+workspace_branch: jacobjeevan-ubiquitous-funicular
+workspace_path: /Users/jacob/copilot-worktrees/care_fe/jacobjeevan-ubiquitous-funicular
+repo_root: /Users/jacob/copilot-worktrees/care_fe/jacobjeevan-ubiquitous-funicular
+default_branch: develop
+base_branch: develop
+original_generated_branch: jacobjeevan-ubiquitous-funicular
+current_branch: jacobjeevan-ubiquitous-funicular
+</copilot_tauri_workspace>
+
+<copilot_working_context>
+container_kind: repository
+current_working_directory: /Users/jacob/copilot-worktrees/care_fe/jacobjeevan-ubiquitous-funicular
+current_working_directory_is_git_repo: true
+checkout_strategy: worktree
+member_repositories:
+- repo_name: care_fe
+  repo_full_name: ohcnetwork/care_fe
+  main_checkout_path: /Users/jacob/Desktop/care_fe
+  main_checkout_branch: develop
+  current_checkout_kind: worktree
+  current_checkout_path: /Users/jacob/copilot-worktrees/care_fe/jacobjeevan-ubiquitous-funicular
+  current_checkout_branch: jacobjeevan-ubiquitous-funicular
+</copilot_working_context>
+
+<copilot_artifacts>
+artifacts_dir: /Users/jacob/.copilot/session-state/7faef660-5501-4331-987d-a11bb2586e72/files
+Write scratch artifacts (plans, task lists, notes) in this folder instead of the repo.
+</copilot_artifacts>
+
+<branch_rename_request>
+Before creating or editing any files, call the rename_branch tool with a kebab-case version of the session name you chose.
+</branch_rename_request>
+
+check and review changes for the playwright improver workflow.

@@ -1,0 +1,9 @@
+{
+  "tool_use_id": "toolu_01CS13qeLUSuD53xB9yP3uDJ",
+  "agent_id": "f3b06a9d-cf72-439f-b930-295cdbac066c",
+  "subagent_type": "general-purpose",
+  "task_description": "Review schedule template PRs",
+  "started_at": "2026-10-14T11:50:28.829086+05:30",
+  "completed_at": "2026-10-14T11:50:28.830031+05:30",
+  "transcript_unavailable_reason": "transcript path unresolvable"
+}
