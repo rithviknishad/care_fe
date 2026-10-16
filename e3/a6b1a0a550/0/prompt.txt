@@ -1,0 +1,46 @@
+<copilot_tauri_workspace>
+project_session_id: fd736f1c-fa87-4676-96aa-c977f2fa1c5f
+project_id: 7e3c56a5-cfab-40cb-93fc-aa5fc2c2fa28
+project_name: care_fe
+project_github_repo: ohcnetwork/care_fe
+project_default_branch: develop
+workspace_type: worktree
+workspace_name: New session
+workspace_branch: jacobjeevan-upgraded-happiness
+workspace_path: /Users/jacob/copilot-worktrees/care_fe/jacobjeevan-upgraded-happiness
+repo_root: /Users/jacob/copilot-worktrees/care_fe/jacobjeevan-upgraded-happiness
+default_branch: develop
+base_branch: develop
+original_generated_branch: jacobjeevan-upgraded-happiness
+current_branch: jacobjeevan-upgraded-happiness
+</copilot_tauri_workspace>
+
+<copilot_working_context>
+container_kind: repository
+current_working_directory: /Users/jacob/copilot-worktrees/care_fe/jacobjeevan-upgraded-happiness
+current_working_directory_is_git_repo: true
+checkout_strategy: worktree
+member_repositories:
+- repo_name: care_fe
+  repo_full_name: ohcnetwork/care_fe
+  main_checkout_path: /Users/jacob/Desktop/care_fe
+  main_checkout_branch: 3.1/encounter-workspace
+  current_checkout_kind: worktree
+  current_checkout_path: /Users/jacob/copilot-worktrees/care_fe/jacobjeevan-upgraded-happiness
+  current_checkout_branch: jacobjeevan-upgraded-happiness
+</copilot_working_context>
+
+<copilot_artifacts>
+artifacts_dir: /Users/jacob/.copilot/session-state/fd736f1c-fa87-4676-96aa-c977f2fa1c5f/files
+Write scratch artifacts (plans, task lists, notes) in this folder instead of the repo.
+</copilot_artifacts>
+
+<branch_rename_request>
+Before creating or editing any files, call the rename_branch tool with a kebab-case version of the session name you chose.
+</branch_rename_request>
+
+Attached folder: care (/Users/jacob/Desktop/care) is the backend repo.
+
+
+
+Implement m1 flows for this project; ignore any previous implementations or sessions, only browse these two repos.

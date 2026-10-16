@@ -1,0 +1,47 @@
+{
+  "cli_version": "0.11.5",
+  "checkpoint_id": "e3a6b1a0a550",
+  "strategy": "manual-commit",
+  "branch": "jacobjeevan-abdm-m1-flows",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "src/components/Abdm/AbhaAccountChooser.tsx",
+    "src/components/Abdm/AbhaAddressStep.tsx",
+    "src/components/Abdm/AbhaCardDialog.tsx",
+    "src/components/Abdm/AbhaChoiceGroup.tsx",
+    "src/components/Abdm/AbhaConsent.tsx",
+    "src/components/Abdm/AbhaErrors.tsx",
+    "src/components/Abdm/AbhaFilledHint.tsx",
+    "src/components/Abdm/AbhaIdentifyStep.tsx",
+    "src/components/Abdm/AbhaJourneyFlow.tsx",
+    "src/components/Abdm/AbhaLinkActions.tsx",
+    "src/components/Abdm/AbhaMobileVerifyStep.tsx",
+    "src/components/Abdm/AbhaNotFoundStep.tsx",
+    "src/components/Abdm/AbhaOtpStep.tsx",
+    "src/components/Abdm/AbhaPatientDialog.tsx",
+    "src/components/Abdm/AbhaRegistrationPanel.tsx",
+    "src/components/Abdm/AbhaVerifiedStep.tsx",
+    "src/components/Abdm/utils.ts",
+    "src/components/Patient/PatientDetailsTab/Demography.tsx",
+    "src/components/Patient/PatientRegistration.tsx",
+    "src/hooks/useAbdmConfig.ts",
+    "src/types/abdm/abha.ts",
+    "src/types/abdm/abhaApi.ts"
+  ],
+  "sessions": [
+    {
+      "metadata": "/e3/a6b1a0a550/0/metadata.json",
+      "transcript": "/e3/a6b1a0a550/0/full.jsonl",
+      "compact_transcript": "/e3/a6b1a0a550/0/transcript.jsonl",
+      "content_hash": "/e3/a6b1a0a550/0/content_hash.txt",
+      "prompt": "/e3/a6b1a0a550/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 0,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 0,
+    "output_tokens": 0,
+    "api_call_count": 0
+  }
+}
