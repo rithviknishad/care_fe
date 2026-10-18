@@ -1,0 +1,191 @@
+{
+  "cli_version": "0.9.0",
+  "checkpoint_id": "4b2b2e66b79c",
+  "session_id": "01a14e60-4564-79c0-8d0b-3f68673be59f",
+  "strategy": "manual-commit",
+  "created_at": "2026-10-18T10:50:27.451171Z",
+  "branch": "codex/delivery-inline-flow-fixes",
+  "checkpoints_count": 5,
+  "save_step_count": 5,
+  "files_touched": [
+    "public/locale/en.json",
+    "src/pages/Facility/services/inventory/SupplyDeliveryTable.tsx",
+    "src/pages/Facility/services/inventory/externalSupply/deliveryOrder/AddSupplyDeliveryForm.tsx",
+    "src/pages/Facility/services/inventory/externalSupply/deliveryOrder/DeliveryOrderShow.tsx",
+    "src/pages/Facility/services/inventory/externalSupply/deliveryOrder/SmartExternalDeliveryRow.tsx",
+    "src/pages/Facility/services/inventory/externalSupply/deliveryOrder/useDeliveryRowItem.ts",
+    "src/types/billing/chargeItemDefinition/chargeItemDefinition.ts",
+    "src/types/billing/chargeItemDefinition/chargeItemDefinitionApi.ts",
+    "src/types/inventory/product/product.ts",
+    "tests/facility/services/locations/inventory/externalDeliveryEdit.spec.ts",
+    "tests/facility/services/locations/inventory/toDispatch.spec.ts"
+  ],
+  "agent": "Codex",
+  "model": "gpt-6.1-sol",
+  "turn_id": "76f5d5f09b6f",
+  "compact_transcript_start": 0,
+  "token_usage": {
+    "input_tokens": 454898,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 48557184,
+    "output_tokens": 96860,
+    "api_call_count": 331
+  },
+  "session_metrics": {
+    "turn_count": 5
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-10-18T10:50:27.278226Z",
+    "agent_lines": 0,
+    "agent_removed": 0,
+    "human_added": 0,
+    "human_modified": 1977,
+    "human_removed": 510,
+    "total_committed": 0,
+    "total_lines_changed": 2487,
+    "agent_percentage": 0,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 2417,
+      "user_lines_removed": 330,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        ".context/retros/2026-03-15-1.json": 36,
+        ".husky/commit-msg": 1,
+        ".husky/post-commit": 1,
+        ".husky/post-rewrite": 1,
+        ".husky/pre-push": 1,
+        ".husky/prepare-commit-msg": 1,
+        "public/locale/en.json": 23,
+        "src/pages/Facility/services/inventory/SupplyDeliveryTable.tsx": 115,
+        "src/pages/Facility/services/inventory/externalSupply/deliveryOrder/AddSupplyDeliveryForm.tsx": 501,
+        "src/pages/Facility/services/inventory/externalSupply/deliveryOrder/DeliveryMonetaryInput.tsx": 48,
+        "src/pages/Facility/services/inventory/externalSupply/deliveryOrder/DeliveryOrderShow.tsx": 106,
+        "src/pages/Facility/services/inventory/externalSupply/deliveryOrder/SmartExternalDeliveryRow.tsx": 114,
+        "src/pages/Facility/services/inventory/externalSupply/deliveryOrder/useDeliveryRowItem.ts": 105,
+        "src/types/billing/chargeItemDefinition/chargeItemDefinition.ts": 3,
+        "src/types/billing/chargeItemDefinition/chargeItemDefinitionApi.ts": 1,
+        "src/types/inventory/product/product.ts": 1,
+        "tests/facility/services/locations/inventory/externalDeliveryEdit.spec.ts": 1359
+      },
+      "user_removed_per_file": {
+        "public/locale/en.json": 2,
+        "src/pages/Facility/services/inventory/SupplyDeliveryTable.tsx": 20,
+        "src/pages/Facility/services/inventory/externalSupply/deliveryOrder/AddSupplyDeliveryForm.tsx": 142,
+        "src/pages/Facility/services/inventory/externalSupply/deliveryOrder/DeliveryOrderShow.tsx": 34,
+        "src/pages/Facility/services/inventory/externalSupply/deliveryOrder/SmartExternalDeliveryRow.tsx": 83,
+        "src/pages/Facility/services/inventory/externalSupply/deliveryOrder/useDeliveryRowItem.ts": 47,
+        "src/types/billing/chargeItemDefinition/chargeItemDefinition.ts": 1,
+        "src/types/billing/chargeItemDefinition/chargeItemDefinitionApi.ts": 1
+      }
+    },
+    {
+      "checkpoint_number": 2,
+      "user_lines_added": 1933,
+      "user_lines_removed": 1965,
+      "agent_lines_added": 2376,
+      "agent_lines_removed": 330,
+      "user_added_per_file": {
+        ".context/retros/2026-03-15-1.json": 36,
+        ".husky/commit-msg": 1,
+        ".husky/post-commit": 1,
+        ".husky/post-rewrite": 1,
+        ".husky/pre-push": 1,
+        ".husky/prepare-commit-msg": 1,
+        "public/locale/en.json": 10,
+        "src/pages/Facility/services/inventory/externalSupply/deliveryOrder/AddSupplyDeliveryForm.tsx": 492,
+        "src/pages/Facility/services/inventory/externalSupply/deliveryOrder/ExternalDeliveryItemFields.tsx": 699,
+        "src/pages/Facility/services/inventory/externalSupply/deliveryOrder/useDeliveryItem.ts": 443,
+        "tests/facility/services/locations/inventory/externalDeliveryEdit.spec.ts": 217,
+        "tests/facility/services/locations/inventory/toDispatch.spec.ts": 31
+      },
+      "user_removed_per_file": {
+        "src/pages/Facility/services/inventory/externalSupply/deliveryOrder/AddSupplyDeliveryForm.tsx": 754,
+        "src/pages/Facility/services/inventory/externalSupply/deliveryOrder/SmartExternalDeliveryRow.tsx": 657,
+        "src/pages/Facility/services/inventory/externalSupply/deliveryOrder/useDeliveryRowItem.ts": 448,
+        "tests/facility/services/locations/inventory/externalDeliveryEdit.spec.ts": 94,
+        "tests/facility/services/locations/inventory/toDispatch.spec.ts": 12
+      }
+    },
+    {
+      "checkpoint_number": 3,
+      "user_lines_added": 216,
+      "user_lines_removed": 38,
+      "agent_lines_added": 2426,
+      "agent_lines_removed": 471,
+      "user_added_per_file": {
+        ".context/retros/2026-03-15-1.json": 36,
+        ".husky/commit-msg": 1,
+        ".husky/post-commit": 1,
+        ".husky/post-rewrite": 1,
+        ".husky/pre-push": 1,
+        ".husky/prepare-commit-msg": 1,
+        "tests/facility/services/locations/inventory/externalDeliveryEdit.spec.ts": 175
+      },
+      "user_removed_per_file": {
+        "tests/facility/services/locations/inventory/externalDeliveryEdit.spec.ts": 38
+      }
+    },
+    {
+      "checkpoint_number": 4,
+      "user_lines_added": 216,
+      "user_lines_removed": 38,
+      "agent_lines_added": 2426,
+      "agent_lines_removed": 471,
+      "user_added_per_file": {
+        ".context/retros/2026-03-15-1.json": 36,
+        ".husky/commit-msg": 1,
+        ".husky/post-commit": 1,
+        ".husky/post-rewrite": 1,
+        ".husky/pre-push": 1,
+        ".husky/prepare-commit-msg": 1,
+        "tests/facility/services/locations/inventory/externalDeliveryEdit.spec.ts": 175
+      },
+      "user_removed_per_file": {
+        "tests/facility/services/locations/inventory/externalDeliveryEdit.spec.ts": 38
+      }
+    },
+    {
+      "checkpoint_number": 5,
+      "user_lines_added": 216,
+      "user_lines_removed": 38,
+      "agent_lines_added": 2426,
+      "agent_lines_removed": 471,
+      "user_added_per_file": {
+        ".context/retros/2026-03-15-1.json": 36,
+        ".husky/commit-msg": 1,
+        ".husky/post-commit": 1,
+        ".husky/post-rewrite": 1,
+        ".husky/pre-push": 1,
+        ".husky/prepare-commit-msg": 1,
+        "tests/facility/services/locations/inventory/externalDeliveryEdit.spec.ts": 175
+      },
+      "user_removed_per_file": {
+        "tests/facility/services/locations/inventory/externalDeliveryEdit.spec.ts": 38
+      }
+    },
+    {
+      "checkpoint_number": 6,
+      "user_lines_added": 391,
+      "user_lines_removed": 38,
+      "agent_lines_added": 2452,
+      "agent_lines_removed": 492,
+      "user_added_per_file": {
+        ".context/retros/2026-03-15-1.json": 36,
+        ".husky/commit-msg": 1,
+        ".husky/post-commit": 1,
+        ".husky/post-rewrite": 1,
+        ".husky/pre-push": 1,
+        ".husky/prepare-commit-msg": 1,
+        "tests/facility/services/locations/inventory/externalDeliveryEdit.spec.ts": 350
+      },
+      "user_removed_per_file": {
+        "tests/facility/services/locations/inventory/externalDeliveryEdit.spec.ts": 38
+      }
+    }
+  ]
+}

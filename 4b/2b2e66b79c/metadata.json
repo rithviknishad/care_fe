@@ -3,7 +3,7 @@
   "checkpoint_id": "4b2b2e66b79c",
   "strategy": "manual-commit",
   "branch": "codex/delivery-inline-flow-fixes",
-  "checkpoints_count": 24,
+  "checkpoints_count": 29,
   "files_touched": [
     "public/locale/en.json",
     "src/pages/Facility/services/inventory/SupplyDeliveryTable.tsx",
@@ -15,7 +15,8 @@
     "src/types/billing/chargeItemDefinition/chargeItemDefinition.ts",
     "src/types/billing/chargeItemDefinition/chargeItemDefinitionApi.ts",
     "src/types/inventory/product/product.ts",
-    "tests/facility/services/locations/inventory/externalDeliveryEdit.spec.ts"
+    "tests/facility/services/locations/inventory/externalDeliveryEdit.spec.ts",
+    "tests/facility/services/locations/inventory/toDispatch.spec.ts"
   ],
   "sessions": [
     {
@@ -38,13 +39,20 @@
       "compact_transcript": "/4b/2b2e66b79c/2/transcript.jsonl",
       "content_hash": "/4b/2b2e66b79c/2/content_hash.txt",
       "prompt": "/4b/2b2e66b79c/2/prompt.txt"
+    },
+    {
+      "metadata": "/4b/2b2e66b79c/3/metadata.json",
+      "transcript": "/4b/2b2e66b79c/3/full.jsonl",
+      "compact_transcript": "/4b/2b2e66b79c/3/transcript.jsonl",
+      "content_hash": "/4b/2b2e66b79c/3/content_hash.txt",
+      "prompt": "/4b/2b2e66b79c/3/prompt.txt"
     }
   ],
   "token_usage": {
-    "input_tokens": 1250284,
+    "input_tokens": 1705182,
     "cache_creation_tokens": 0,
-    "cache_read_tokens": 120781568,
-    "output_tokens": 221434,
-    "api_call_count": 286
+    "cache_read_tokens": 169338752,
+    "output_tokens": 318294,
+    "api_call_count": 617
   }
 }
