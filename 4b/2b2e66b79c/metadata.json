@@ -3,7 +3,7 @@
   "checkpoint_id": "4b2b2e66b79c",
   "strategy": "manual-commit",
   "branch": "codex/delivery-inline-flow-fixes",
-  "checkpoints_count": 22,
+  "checkpoints_count": 24,
   "files_touched": [
     "public/locale/en.json",
     "src/pages/Facility/services/inventory/SupplyDeliveryTable.tsx",
@@ -31,13 +31,20 @@
       "compact_transcript": "/4b/2b2e66b79c/1/transcript.jsonl",
       "content_hash": "/4b/2b2e66b79c/1/content_hash.txt",
       "prompt": "/4b/2b2e66b79c/1/prompt.txt"
+    },
+    {
+      "metadata": "/4b/2b2e66b79c/2/metadata.json",
+      "transcript": "/4b/2b2e66b79c/2/full.jsonl",
+      "compact_transcript": "/4b/2b2e66b79c/2/transcript.jsonl",
+      "content_hash": "/4b/2b2e66b79c/2/content_hash.txt",
+      "prompt": "/4b/2b2e66b79c/2/prompt.txt"
     }
   ],
   "token_usage": {
-    "input_tokens": 1153625,
+    "input_tokens": 1250284,
     "cache_creation_tokens": 0,
-    "cache_read_tokens": 115752064,
-    "output_tokens": 207877,
-    "api_call_count": 228
+    "cache_read_tokens": 120781568,
+    "output_tokens": 221434,
+    "api_call_count": 286
   }
 }

@@ -1,0 +1,99 @@
+{
+  "cli_version": "0.9.0",
+  "checkpoint_id": "4b2b2e66b79c",
+  "session_id": "01a14dfd-5661-7543-858c-eb0f86385fee",
+  "strategy": "manual-commit",
+  "created_at": "2026-10-18T10:50:20.484927Z",
+  "branch": "codex/delivery-inline-flow-fixes",
+  "checkpoints_count": 2,
+  "save_step_count": 2,
+  "files_touched": [
+    "public/locale/en.json",
+    "src/pages/Facility/services/inventory/SupplyDeliveryTable.tsx",
+    "src/pages/Facility/services/inventory/externalSupply/deliveryOrder/AddSupplyDeliveryForm.tsx",
+    "src/pages/Facility/services/inventory/externalSupply/deliveryOrder/DeliveryOrderShow.tsx",
+    "src/pages/Facility/services/inventory/externalSupply/deliveryOrder/SmartExternalDeliveryRow.tsx",
+    "src/pages/Facility/services/inventory/externalSupply/deliveryOrder/useDeliveryRowItem.ts",
+    "src/types/billing/chargeItemDefinition/chargeItemDefinition.ts",
+    "src/types/billing/chargeItemDefinition/chargeItemDefinitionApi.ts",
+    "src/types/inventory/product/product.ts"
+  ],
+  "agent": "Codex",
+  "model": "gpt-6.1-sol",
+  "turn_id": "670098ff5271",
+  "compact_transcript_start": 0,
+  "token_usage": {
+    "input_tokens": 96659,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 5029504,
+    "output_tokens": 13557,
+    "api_call_count": 58
+  },
+  "session_metrics": {
+    "turn_count": 2
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-10-18T10:50:20.42771Z",
+    "agent_lines": 0,
+    "agent_removed": 197,
+    "human_added": 356,
+    "human_modified": 285,
+    "human_removed": 0,
+    "total_committed": 466,
+    "total_lines_changed": 850,
+    "agent_percentage": 23.176470588235293,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 2056,
+      "user_lines_removed": 283,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        ".context/retros/2026-03-15-1.json": 36,
+        ".husky/commit-msg": 1,
+        ".husky/post-commit": 1,
+        ".husky/post-rewrite": 1,
+        ".husky/pre-push": 1,
+        ".husky/prepare-commit-msg": 1,
+        "public/locale/en.json": 23,
+        "src/pages/Facility/services/inventory/SupplyDeliveryTable.tsx": 109,
+        "src/pages/Facility/services/inventory/externalSupply/deliveryOrder/AddSupplyDeliveryForm.tsx": 467,
+        "src/pages/Facility/services/inventory/externalSupply/deliveryOrder/DeliveryOrderShow.tsx": 106,
+        "src/pages/Facility/services/inventory/externalSupply/deliveryOrder/SmartExternalDeliveryRow.tsx": 93,
+        "src/pages/Facility/services/inventory/externalSupply/deliveryOrder/useDeliveryRowItem.ts": 102,
+        "src/types/billing/chargeItemDefinition/chargeItemDefinition.ts": 3,
+        "src/types/billing/chargeItemDefinition/chargeItemDefinitionApi.ts": 1,
+        "src/types/inventory/product/product.ts": 1,
+        "tests/facility/services/locations/inventory/externalDeliveryEdit.spec.ts": 1110
+      },
+      "user_removed_per_file": {
+        "public/locale/en.json": 2,
+        "src/pages/Facility/services/inventory/SupplyDeliveryTable.tsx": 18,
+        "src/pages/Facility/services/inventory/externalSupply/deliveryOrder/AddSupplyDeliveryForm.tsx": 137,
+        "src/pages/Facility/services/inventory/externalSupply/deliveryOrder/DeliveryOrderShow.tsx": 34,
+        "src/pages/Facility/services/inventory/externalSupply/deliveryOrder/SmartExternalDeliveryRow.tsx": 48,
+        "src/pages/Facility/services/inventory/externalSupply/deliveryOrder/useDeliveryRowItem.ts": 42,
+        "src/types/billing/chargeItemDefinition/chargeItemDefinition.ts": 1,
+        "src/types/billing/chargeItemDefinition/chargeItemDefinitionApi.ts": 1
+      }
+    },
+    {
+      "checkpoint_number": 2,
+      "user_lines_added": 41,
+      "user_lines_removed": 0,
+      "agent_lines_added": 2015,
+      "agent_lines_removed": 283,
+      "user_added_per_file": {
+        ".context/retros/2026-03-15-1.json": 36,
+        ".husky/commit-msg": 1,
+        ".husky/post-commit": 1,
+        ".husky/post-rewrite": 1,
+        ".husky/pre-push": 1,
+        ".husky/prepare-commit-msg": 1
+      }
+    }
+  ]
+}
