@@ -1,0 +1,433 @@
+{
+  "cli_version": "0.9.0",
+  "checkpoint_id": "4b2b2e66b79c",
+  "session_id": "01a14b70-3fe8-77f3-a664-50ad86305e90",
+  "strategy": "manual-commit",
+  "created_at": "2026-10-18T10:50:18.971962Z",
+  "branch": "codex/delivery-inline-flow-fixes",
+  "checkpoints_count": 19,
+  "save_step_count": 19,
+  "files_touched": [
+    "public/locale/en.json",
+    "src/pages/Facility/services/inventory/SupplyDeliveryTable.tsx",
+    "src/pages/Facility/services/inventory/externalSupply/deliveryOrder/AddSupplyDeliveryForm.tsx",
+    "src/pages/Facility/services/inventory/externalSupply/deliveryOrder/DeliveryMonetaryInput.tsx",
+    "src/pages/Facility/services/inventory/externalSupply/deliveryOrder/DeliveryOrderShow.tsx",
+    "src/pages/Facility/services/inventory/externalSupply/deliveryOrder/SmartExternalDeliveryRow.tsx",
+    "src/pages/Facility/services/inventory/externalSupply/deliveryOrder/useDeliveryRowItem.ts",
+    "src/types/billing/chargeItemDefinition/chargeItemDefinition.ts",
+    "src/types/billing/chargeItemDefinition/chargeItemDefinitionApi.ts",
+    "src/types/inventory/product/product.ts",
+    "tests/facility/services/locations/inventory/externalDeliveryEdit.spec.ts"
+  ],
+  "agent": "Codex",
+  "model": "gpt-6.1-sol",
+  "turn_id": "118d33a31ba5",
+  "compact_transcript_start": 0,
+  "token_usage": {
+    "input_tokens": 1040801,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 110013056,
+    "output_tokens": 192261,
+    "api_call_count": 168
+  },
+  "session_metrics": {
+    "turn_count": 19
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-10-18T10:50:18.883516Z",
+    "agent_lines": 0,
+    "agent_removed": 0,
+    "human_added": 5278,
+    "human_modified": 1546,
+    "human_removed": 0,
+    "total_committed": 5278,
+    "total_lines_changed": 6836,
+    "agent_percentage": 0,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 654,
+      "user_lines_removed": 56,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        ".context/retros/2026-03-15-1.json": 36,
+        ".husky/commit-msg": 1,
+        ".husky/post-commit": 1,
+        ".husky/post-rewrite": 1,
+        ".husky/pre-push": 1,
+        ".husky/prepare-commit-msg": 1,
+        ".playwright-cli/console-2026-10-17T19-59-19-567Z.log": 108,
+        ".playwright-cli/page-2026-10-17T19-59-20-000Z.yml": 1,
+        "public/locale/en.json": 5,
+        "src/pages/Facility/services/inventory/SupplyDeliveryTable.tsx": 43,
+        "src/pages/Facility/services/inventory/externalSupply/deliveryOrder/AddSupplyDeliveryForm.tsx": 143,
+        "src/pages/Facility/services/inventory/externalSupply/deliveryOrder/DeliveryOrderShow.tsx": 73,
+        "src/pages/Facility/services/inventory/externalSupply/deliveryOrder/SmartExternalDeliveryRow.tsx": 2,
+        "src/pages/Facility/services/inventory/externalSupply/deliveryOrder/useDeliveryRowItem.ts": 2,
+        "tests/facility/services/locations/inventory/externalDeliveryEdit.spec.ts": 236
+      },
+      "user_removed_per_file": {
+        "src/pages/Facility/services/inventory/SupplyDeliveryTable.tsx": 13,
+        "src/pages/Facility/services/inventory/externalSupply/deliveryOrder/AddSupplyDeliveryForm.tsx": 17,
+        "src/pages/Facility/services/inventory/externalSupply/deliveryOrder/DeliveryOrderShow.tsx": 26
+      }
+    },
+    {
+      "checkpoint_number": 2,
+      "user_lines_added": 41,
+      "user_lines_removed": 0,
+      "agent_lines_added": 613,
+      "agent_lines_removed": 59,
+      "user_added_per_file": {
+        ".context/retros/2026-03-15-1.json": 36,
+        ".husky/commit-msg": 1,
+        ".husky/post-commit": 1,
+        ".husky/post-rewrite": 1,
+        ".husky/pre-push": 1,
+        ".husky/prepare-commit-msg": 1
+      }
+    },
+    {
+      "checkpoint_number": 3,
+      "user_lines_added": 74,
+      "user_lines_removed": 11,
+      "agent_lines_added": 945,
+      "agent_lines_removed": 191,
+      "user_added_per_file": {
+        ".context/retros/2026-03-15-1.json": 36,
+        ".husky/commit-msg": 1,
+        ".husky/post-commit": 1,
+        ".husky/post-rewrite": 1,
+        ".husky/pre-push": 1,
+        ".husky/prepare-commit-msg": 1,
+        "tests/facility/services/locations/inventory/externalDeliveryEdit.spec.ts": 33
+      },
+      "user_removed_per_file": {
+        "tests/facility/services/locations/inventory/externalDeliveryEdit.spec.ts": 11
+      }
+    },
+    {
+      "checkpoint_number": 4,
+      "user_lines_added": 107,
+      "user_lines_removed": 9,
+      "agent_lines_added": 964,
+      "agent_lines_removed": 182,
+      "user_added_per_file": {
+        ".context/retros/2026-03-15-1.json": 36,
+        ".husky/commit-msg": 1,
+        ".husky/post-commit": 1,
+        ".husky/post-rewrite": 1,
+        ".husky/pre-push": 1,
+        ".husky/prepare-commit-msg": 1,
+        "tests/facility/services/locations/inventory/externalDeliveryEdit.spec.ts": 66
+      },
+      "user_removed_per_file": {
+        "tests/facility/services/locations/inventory/externalDeliveryEdit.spec.ts": 9
+      }
+    },
+    {
+      "checkpoint_number": 5,
+      "user_lines_added": 107,
+      "user_lines_removed": 9,
+      "agent_lines_added": 960,
+      "agent_lines_removed": 181,
+      "user_added_per_file": {
+        ".context/retros/2026-03-15-1.json": 36,
+        ".husky/commit-msg": 1,
+        ".husky/post-commit": 1,
+        ".husky/post-rewrite": 1,
+        ".husky/pre-push": 1,
+        ".husky/prepare-commit-msg": 1,
+        "tests/facility/services/locations/inventory/externalDeliveryEdit.spec.ts": 66
+      },
+      "user_removed_per_file": {
+        "tests/facility/services/locations/inventory/externalDeliveryEdit.spec.ts": 9
+      }
+    },
+    {
+      "checkpoint_number": 6,
+      "user_lines_added": 213,
+      "user_lines_removed": 9,
+      "agent_lines_added": 1096,
+      "agent_lines_removed": 230,
+      "user_added_per_file": {
+        ".context/retros/2026-03-15-1.json": 36,
+        ".husky/commit-msg": 1,
+        ".husky/post-commit": 1,
+        ".husky/post-rewrite": 1,
+        ".husky/pre-push": 1,
+        ".husky/prepare-commit-msg": 1,
+        "tests/facility/services/locations/inventory/externalDeliveryEdit.spec.ts": 172
+      },
+      "user_removed_per_file": {
+        "tests/facility/services/locations/inventory/externalDeliveryEdit.spec.ts": 9
+      }
+    },
+    {
+      "checkpoint_number": 7,
+      "user_lines_added": 320,
+      "user_lines_removed": 9,
+      "agent_lines_added": 1099,
+      "agent_lines_removed": 230,
+      "user_added_per_file": {
+        ".context/retros/2026-03-15-1.json": 36,
+        ".husky/commit-msg": 1,
+        ".husky/post-commit": 1,
+        ".husky/post-rewrite": 1,
+        ".husky/pre-push": 1,
+        ".husky/prepare-commit-msg": 1,
+        "tests/facility/services/locations/inventory/externalDeliveryEdit.spec.ts": 279
+      },
+      "user_removed_per_file": {
+        "tests/facility/services/locations/inventory/externalDeliveryEdit.spec.ts": 9
+      }
+    },
+    {
+      "checkpoint_number": 8,
+      "user_lines_added": 320,
+      "user_lines_removed": 9,
+      "agent_lines_added": 1099,
+      "agent_lines_removed": 230,
+      "user_added_per_file": {
+        ".context/retros/2026-03-15-1.json": 36,
+        ".husky/commit-msg": 1,
+        ".husky/post-commit": 1,
+        ".husky/post-rewrite": 1,
+        ".husky/pre-push": 1,
+        ".husky/prepare-commit-msg": 1,
+        "tests/facility/services/locations/inventory/externalDeliveryEdit.spec.ts": 279
+      },
+      "user_removed_per_file": {
+        "tests/facility/services/locations/inventory/externalDeliveryEdit.spec.ts": 9
+      }
+    },
+    {
+      "checkpoint_number": 9,
+      "user_lines_added": 404,
+      "user_lines_removed": 9,
+      "agent_lines_added": 1100,
+      "agent_lines_removed": 231,
+      "user_added_per_file": {
+        ".context/retros/2026-03-15-1.json": 36,
+        ".husky/commit-msg": 1,
+        ".husky/post-commit": 1,
+        ".husky/post-rewrite": 1,
+        ".husky/pre-push": 1,
+        ".husky/prepare-commit-msg": 1,
+        "tests/facility/services/locations/inventory/externalDeliveryEdit.spec.ts": 363
+      },
+      "user_removed_per_file": {
+        "tests/facility/services/locations/inventory/externalDeliveryEdit.spec.ts": 9
+      }
+    },
+    {
+      "checkpoint_number": 10,
+      "user_lines_added": 404,
+      "user_lines_removed": 9,
+      "agent_lines_added": 1100,
+      "agent_lines_removed": 231,
+      "user_added_per_file": {
+        ".context/retros/2026-03-15-1.json": 36,
+        ".husky/commit-msg": 1,
+        ".husky/post-commit": 1,
+        ".husky/post-rewrite": 1,
+        ".husky/pre-push": 1,
+        ".husky/prepare-commit-msg": 1,
+        "tests/facility/services/locations/inventory/externalDeliveryEdit.spec.ts": 363
+      },
+      "user_removed_per_file": {
+        "tests/facility/services/locations/inventory/externalDeliveryEdit.spec.ts": 9
+      }
+    },
+    {
+      "checkpoint_number": 11,
+      "user_lines_added": 404,
+      "user_lines_removed": 9,
+      "agent_lines_added": 1095,
+      "agent_lines_removed": 232,
+      "user_added_per_file": {
+        ".context/retros/2026-03-15-1.json": 36,
+        ".husky/commit-msg": 1,
+        ".husky/post-commit": 1,
+        ".husky/post-rewrite": 1,
+        ".husky/pre-push": 1,
+        ".husky/prepare-commit-msg": 1,
+        "tests/facility/services/locations/inventory/externalDeliveryEdit.spec.ts": 363
+      },
+      "user_removed_per_file": {
+        "tests/facility/services/locations/inventory/externalDeliveryEdit.spec.ts": 9
+      }
+    },
+    {
+      "checkpoint_number": 12,
+      "user_lines_added": 404,
+      "user_lines_removed": 9,
+      "agent_lines_added": 1095,
+      "agent_lines_removed": 232,
+      "user_added_per_file": {
+        ".context/retros/2026-03-15-1.json": 36,
+        ".husky/commit-msg": 1,
+        ".husky/post-commit": 1,
+        ".husky/post-rewrite": 1,
+        ".husky/pre-push": 1,
+        ".husky/prepare-commit-msg": 1,
+        "tests/facility/services/locations/inventory/externalDeliveryEdit.spec.ts": 363
+      },
+      "user_removed_per_file": {
+        "tests/facility/services/locations/inventory/externalDeliveryEdit.spec.ts": 9
+      }
+    },
+    {
+      "checkpoint_number": 13,
+      "user_lines_added": 859,
+      "user_lines_removed": 94,
+      "agent_lines_added": 1184,
+      "agent_lines_removed": 264,
+      "user_added_per_file": {
+        ".context/retros/2026-03-15-1.json": 36,
+        ".husky/commit-msg": 1,
+        ".husky/post-commit": 1,
+        ".husky/post-rewrite": 1,
+        ".husky/pre-push": 1,
+        ".husky/prepare-commit-msg": 1,
+        "tests/facility/services/locations/inventory/externalDeliveryEdit.spec.ts": 818
+      },
+      "user_removed_per_file": {
+        "tests/facility/services/locations/inventory/externalDeliveryEdit.spec.ts": 94
+      }
+    },
+    {
+      "checkpoint_number": 14,
+      "user_lines_added": 948,
+      "user_lines_removed": 94,
+      "agent_lines_added": 1189,
+      "agent_lines_removed": 283,
+      "user_added_per_file": {
+        ".context/retros/2026-03-15-1.json": 36,
+        ".husky/commit-msg": 1,
+        ".husky/post-commit": 1,
+        ".husky/post-rewrite": 1,
+        ".husky/pre-push": 1,
+        ".husky/prepare-commit-msg": 1,
+        "tests/facility/services/locations/inventory/externalDeliveryEdit.spec.ts": 907
+      },
+      "user_removed_per_file": {
+        "tests/facility/services/locations/inventory/externalDeliveryEdit.spec.ts": 94
+      }
+    },
+    {
+      "checkpoint_number": 15,
+      "user_lines_added": 41,
+      "user_lines_removed": 0,
+      "agent_lines_added": 2015,
+      "agent_lines_removed": 283,
+      "user_added_per_file": {
+        ".context/retros/2026-03-15-1.json": 36,
+        ".husky/commit-msg": 1,
+        ".husky/post-commit": 1,
+        ".husky/post-rewrite": 1,
+        ".husky/pre-push": 1,
+        ".husky/prepare-commit-msg": 1
+      }
+    },
+    {
+      "checkpoint_number": 16,
+      "user_lines_added": 495,
+      "user_lines_removed": 234,
+      "agent_lines_added": 2107,
+      "agent_lines_removed": 305,
+      "user_added_per_file": {
+        ".context/retros/2026-03-15-1.json": 36,
+        ".husky/commit-msg": 1,
+        ".husky/post-commit": 1,
+        ".husky/post-rewrite": 1,
+        ".husky/pre-push": 1,
+        ".husky/prepare-commit-msg": 1,
+        "tests/facility/services/locations/inventory/externalDeliveryEdit.spec.ts": 454
+      },
+      "user_removed_per_file": {
+        "tests/facility/services/locations/inventory/externalDeliveryEdit.spec.ts": 234
+      }
+    },
+    {
+      "checkpoint_number": 17,
+      "user_lines_added": 508,
+      "user_lines_removed": 234,
+      "agent_lines_added": 2166,
+      "agent_lines_removed": 330,
+      "user_added_per_file": {
+        ".context/retros/2026-03-15-1.json": 36,
+        ".husky/commit-msg": 1,
+        ".husky/post-commit": 1,
+        ".husky/post-rewrite": 1,
+        ".husky/pre-push": 1,
+        ".husky/prepare-commit-msg": 1,
+        "tests/facility/services/locations/inventory/externalDeliveryEdit.spec.ts": 467
+      },
+      "user_removed_per_file": {
+        "tests/facility/services/locations/inventory/externalDeliveryEdit.spec.ts": 234
+      }
+    },
+    {
+      "checkpoint_number": 18,
+      "user_lines_added": 524,
+      "user_lines_removed": 234,
+      "agent_lines_added": 2127,
+      "agent_lines_removed": 330,
+      "user_added_per_file": {
+        ".context/retros/2026-03-15-1.json": 36,
+        ".husky/commit-msg": 1,
+        ".husky/post-commit": 1,
+        ".husky/post-rewrite": 1,
+        ".husky/pre-push": 1,
+        ".husky/prepare-commit-msg": 1,
+        "tests/facility/services/locations/inventory/externalDeliveryEdit.spec.ts": 483
+      },
+      "user_removed_per_file": {
+        "tests/facility/services/locations/inventory/externalDeliveryEdit.spec.ts": 234
+      }
+    },
+    {
+      "checkpoint_number": 19,
+      "user_lines_added": 524,
+      "user_lines_removed": 234,
+      "agent_lines_added": 2127,
+      "agent_lines_removed": 330,
+      "user_added_per_file": {
+        ".context/retros/2026-03-15-1.json": 36,
+        ".husky/commit-msg": 1,
+        ".husky/post-commit": 1,
+        ".husky/post-rewrite": 1,
+        ".husky/pre-push": 1,
+        ".husky/prepare-commit-msg": 1,
+        "tests/facility/services/locations/inventory/externalDeliveryEdit.spec.ts": 483
+      },
+      "user_removed_per_file": {
+        "tests/facility/services/locations/inventory/externalDeliveryEdit.spec.ts": 234
+      }
+    },
+    {
+      "checkpoint_number": 20,
+      "user_lines_added": 524,
+      "user_lines_removed": 234,
+      "agent_lines_added": 2127,
+      "agent_lines_removed": 330,
+      "user_added_per_file": {
+        ".context/retros/2026-03-15-1.json": 36,
+        ".husky/commit-msg": 1,
+        ".husky/post-commit": 1,
+        ".husky/post-rewrite": 1,
+        ".husky/pre-push": 1,
+        ".husky/prepare-commit-msg": 1,
+        "tests/facility/services/locations/inventory/externalDeliveryEdit.spec.ts": 483
+      },
+      "user_removed_per_file": {
+        "tests/facility/services/locations/inventory/externalDeliveryEdit.spec.ts": 234
+      }
+    }
+  ]
+}
