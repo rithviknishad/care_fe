@@ -1,0 +1,47 @@
+Copilot reviews:
+
+After removing a prefilled organization, `currentOrganizations` still contains it because `TagConfigForm` supplies that prop from `existingConfig`. `handleSelect`
+ therefore rejects the removed organization as already selected, 
+preventing users from undoing a clear before saving. Use the active `selectedOrganizations` IDs for both the duplicate check (lines 70–72) and the `isDisabled` check (lines 247–253), rather than the original organization list.
+
+Initializing the selection from saved organizations exposes their remove button inside `TagConfigForm`. That button (line 280) has no `type="button"`, and the shared `Button`
+ component does not supply one, so clicking Remove also submits the 
+form. If validation passes, the cleared organization and any pending 
+edits are saved without clicking Update. Add `type="button"` so removal only changes local form state.
+
+
+But from what I've checked, neither are correct.
+
+So after a user adds role, clicking on cross shows the selector with the earlier item as selected.
+
+For 2nd, no it doesn't submit it.
+
+---
+
+why isDisabled and what change?
+
+---
+
+done both changes
+
+---
+
+<system_notification>
+Shell command "Typecheck" (shellId: 20) has completed successfully.
+</system_notification>
+
+---
+
+test db should. be present somewhere; spin up BE on a different port and ruen
+
+---
+
+status?
+
+---
+
+are you stuck with testing?
+
+---
+
+oh, waiting on me? I'm done
