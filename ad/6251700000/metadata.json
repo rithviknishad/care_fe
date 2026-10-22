@@ -1,0 +1,30 @@
+{
+  "cli_version": "0.9.0",
+  "checkpoint_id": "ad6251700000",
+  "strategy": "manual-commit",
+  "branch": "ENG-1098-add-print-all-prescriptions-option",
+  "checkpoints_count": 2,
+  "files_touched": [
+    "public/locale/en.json",
+    "src/pages/Facility/locations/LocationLayout.tsx",
+    "src/pages/Facility/services/pharmacy/DispenseOrderView.tsx",
+    "src/pages/Facility/services/pharmacy/PrescriptionQueue.tsx",
+    "src/pages/Facility/services/pharmacy/PrescriptionsPreviewPage.tsx"
+  ],
+  "sessions": [
+    {
+      "metadata": "/ad/6251700000/0/metadata.json",
+      "transcript": "/ad/6251700000/0/full.jsonl",
+      "compact_transcript": "/ad/6251700000/0/transcript.jsonl",
+      "content_hash": "/ad/6251700000/0/content_hash.txt",
+      "prompt": "/ad/6251700000/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 28,
+    "cache_creation_tokens": 68072,
+    "cache_read_tokens": 1006719,
+    "output_tokens": 7504,
+    "api_call_count": 14
+  }
+}

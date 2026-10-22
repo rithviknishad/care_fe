@@ -1,0 +1,9 @@
+Let's add support for print selected prescriptions as well in @src/pages/Facility/services/pharmacy/PrescriptionQueue.tsx  and  @src/pages/Facility/services/pharmacy/PrescriptionsPreviewPage.tsx 
+
+We can simply redirect to @src/components/Prescription/PrintPrescriptions.tsx  page. 
+
+Thoughtfully place the buttons
+
+---
+
+let's also have the print prescriptions similar to how we have preview rx in @src/pages/Facility/services/pharmacy/DispenseOrderView.tsx
