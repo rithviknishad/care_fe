@@ -1,0 +1,19 @@
+so we are displaying two different lines for blood pressure (one for systolic, one for diastolic). However, the tooltip here only displays systolic and not diastolic. Why is that? Nothing obvious from checking recharts examples.
+
+---
+
+ah yea, the diff is in ms (populated in db) even though both are entered as same time.
+
+before grouping, we can strip out the ms no? only use upto minutes.
+
+---
+
+here
+
+---
+
+would bucketing by minutre be fine? even for an inpatient case, is it likely nurses will constantly be updating the same values
+
+---
+
+dw about duplicates
