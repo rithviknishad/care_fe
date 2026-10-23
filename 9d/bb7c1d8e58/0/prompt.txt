@@ -1,0 +1,14 @@
+### What blocks
+
+1. **`RoleOrgSelector` line 47 — the initializer cannot fire with data.** `currentOrganizations` comes from an ungated `useQuery` in `TagConfigForm`; the form renders before it resolves, so `useState(currentOrganizations || [])` captures `[]`. The edit case this PR exists to fix still shows an empty selector on a cold cache. `FacilityOrganizationSelector` already has the sync-effect pattern for this.
+2. **`RoleOrgSelector` line 285 — Remove submits the form.** The shared `Button` has no default `type`, so the newly-reachable X chip is a submit button inside `TagConfigForm`'s `<form>`. The dropdown trigger 30 lines down already carries `type="button"` with a comment explaining exactly this.
+3. **`RoleOrgSelector` line 82 — the `.includes(org)` fix wasn't mirrored.** The PR fixes reference-identity in the sibling selector but leaves the same bug in `handleConfirmSelection` here, where seeding from a different fetch makes it *more* likely to bite.
+4. **`isDisabled` (line 252) still ORs in `currentOrganizations`**, so it disagrees with the line-70 check you just changed: a removed org stays un-reselectable until save.
+
+Also flagged: `facility_organization` kept `?` while `organization` lost it (same change, two contracts), and the archive mutation you're editing in `TagConfigView` has no `onError`
+
+---
+
+adding type button, adjusting the types file, isDisabled change and changing the check to use .some are all fne.
+
+but adding key isn't - that is not something we do anywhere in the codebase, I don't see the need for it. But don't accept it just because I say it either

@@ -1,0 +1,28 @@
+{
+  "cli_version": "0.11.5",
+  "checkpoint_id": "9dbb7c1d8e58",
+  "strategy": "manual-commit",
+  "branch": "jacobjeevan-potential-fiesta",
+  "checkpoints_count": 2,
+  "files_touched": [
+    "src/components/Common/RoleOrgSelector.tsx",
+    "src/pages/Admin/TagConfig/TagConfigForm.tsx",
+    "src/types/emr/tagConfig/tagConfig.ts"
+  ],
+  "sessions": [
+    {
+      "metadata": "/9d/bb7c1d8e58/0/metadata.json",
+      "transcript": "/9d/bb7c1d8e58/0/full.jsonl",
+      "compact_transcript": "/9d/bb7c1d8e58/0/transcript.jsonl",
+      "content_hash": "/9d/bb7c1d8e58/0/content_hash.txt",
+      "prompt": "/9d/bb7c1d8e58/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 0,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 0,
+    "output_tokens": 0,
+    "api_call_count": 0
+  }
+}
