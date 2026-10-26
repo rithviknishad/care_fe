@@ -1,0 +1,61 @@
+{
+  "cli_version": "0.9.0",
+  "checkpoint_id": "13b1b610d658",
+  "session_id": "01a1759e-a79b-7121-a39d-cf79b0d50129",
+  "strategy": "manual-commit",
+  "created_at": "2026-10-26T05:48:44.254702Z",
+  "branch": "codex/careui-migration",
+  "checkpoints_count": 1,
+  "save_step_count": 1,
+  "files_touched": [
+    "src/Routers/routes/FacilityRoutes.tsx",
+    "src/components/Tags/TagAssignmentSheet.tsx",
+    "src/pages/Encounters/EncounterShow.tsx",
+    "src/pages/Encounters/workspace/useEncounterWorkspaces.ts",
+    "src/pages/Facility/services/inventory/SupplyDeliveryTable.tsx",
+    "src/pages/Facility/services/inventory/externalSupply/deliveryOrder/AddSupplyDeliveryForm.tsx",
+    "src/pages/Facility/services/inventory/externalSupply/deliveryOrder/DeliveryOrderFormContent.tsx",
+    "src/pages/Facility/services/inventory/externalSupply/deliveryOrder/SmartExternalDeliveryRow.tsx",
+    "src/pages/Facility/services/pharmacy/billMedications/BillMedicationsShell.tsx",
+    "src/types/billing/chargeItemDefinition/chargeItemDefinition.ts",
+    "src/types/billing/chargeItemDefinition/chargeItemDefinitionApi.ts",
+    "tests/facility/patient/encounter/encounterShortcuts.spec.ts",
+    "tests/facility/patient/encounter/encounterWorkspace.spec.ts",
+    "tests/facility/services/locations/inventory/externalDeliveryEdit.spec.ts"
+  ],
+  "agent": "Codex",
+  "model": "gpt-6.1-sol",
+  "turn_id": "70ac0c81c5a2",
+  "compact_transcript_start": 0,
+  "token_usage": {
+    "input_tokens": 2413638,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 312471296,
+    "output_tokens": 590158,
+    "api_call_count": 1007
+  },
+  "session_metrics": {
+    "turn_count": 6
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-10-26T05:48:43.729735Z",
+    "agent_lines": 0,
+    "agent_removed": 0,
+    "human_added": 19085,
+    "human_modified": 525,
+    "human_removed": 0,
+    "total_committed": 19085,
+    "total_lines_changed": 24134,
+    "agent_percentage": 0,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 2,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0
+    }
+  ]
+}

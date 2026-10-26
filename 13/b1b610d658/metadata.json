@@ -1,0 +1,39 @@
+{
+  "cli_version": "0.9.0",
+  "checkpoint_id": "13b1b610d658",
+  "strategy": "manual-commit",
+  "branch": "codex/careui-migration",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "src/Routers/routes/FacilityRoutes.tsx",
+    "src/components/Tags/TagAssignmentSheet.tsx",
+    "src/pages/Encounters/EncounterShow.tsx",
+    "src/pages/Encounters/workspace/useEncounterWorkspaces.ts",
+    "src/pages/Facility/services/inventory/SupplyDeliveryTable.tsx",
+    "src/pages/Facility/services/inventory/externalSupply/deliveryOrder/AddSupplyDeliveryForm.tsx",
+    "src/pages/Facility/services/inventory/externalSupply/deliveryOrder/DeliveryOrderFormContent.tsx",
+    "src/pages/Facility/services/inventory/externalSupply/deliveryOrder/SmartExternalDeliveryRow.tsx",
+    "src/pages/Facility/services/pharmacy/billMedications/BillMedicationsShell.tsx",
+    "src/types/billing/chargeItemDefinition/chargeItemDefinition.ts",
+    "src/types/billing/chargeItemDefinition/chargeItemDefinitionApi.ts",
+    "tests/facility/patient/encounter/encounterShortcuts.spec.ts",
+    "tests/facility/patient/encounter/encounterWorkspace.spec.ts",
+    "tests/facility/services/locations/inventory/externalDeliveryEdit.spec.ts"
+  ],
+  "sessions": [
+    {
+      "metadata": "/13/b1b610d658/0/metadata.json",
+      "transcript": "/13/b1b610d658/0/full.jsonl",
+      "compact_transcript": "/13/b1b610d658/0/transcript.jsonl",
+      "content_hash": "/13/b1b610d658/0/content_hash.txt",
+      "prompt": "/13/b1b610d658/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 2413638,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 312471296,
+    "output_tokens": 590158,
+    "api_call_count": 1007
+  }
+}
