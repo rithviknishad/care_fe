@@ -1,0 +1,39 @@
+{
+  "cli_version": "0.9.0",
+  "checkpoint_id": "d4eec78c5627",
+  "strategy": "manual-commit",
+  "branch": "codex/careui-migration",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "src/components/QuestionnaireV2/fill/FillHeader.tsx",
+    "src/components/QuestionnaireV2/fill/FillOutlineOverlay.tsx",
+    "src/components/QuestionnaireV2/fill/FillPageBody.tsx",
+    "src/components/QuestionnaireV2/fill/FillSessionTabs.tsx",
+    "src/components/QuestionnaireV2/fill/FillShell.tsx",
+    "src/components/QuestionnaireV2/fill/scrollFillQuestionIntoView.ts",
+    "src/components/QuestionnaireV2/fill/submit/useSubmitFillSession.ts",
+    "src/components/QuestionnaireV2/form/RepeatingGroup.tsx",
+    "src/components/QuestionnaireV2/form/SectionCard.tsx",
+    "src/components/QuestionnaireV2/groups/RegisteredGroupSlot.tsx",
+    "src/hooks/useSidebarAutoCollapse.tsx",
+    "src/pages/Encounters/EncounterShow.tsx",
+    "tests/facility/patient/encounter/encounterNavigation.spec.ts",
+    "tests/facility/patient/encounter/fill/fillPage.spec.ts"
+  ],
+  "sessions": [
+    {
+      "metadata": "/d4/eec78c5627/0/metadata.json",
+      "transcript": "/d4/eec78c5627/0/full.jsonl",
+      "compact_transcript": "/d4/eec78c5627/0/transcript.jsonl",
+      "content_hash": "/d4/eec78c5627/0/content_hash.txt",
+      "prompt": "/d4/eec78c5627/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 2160822,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 273079680,
+    "output_tokens": 522216,
+    "api_call_count": 821
+  }
+}
