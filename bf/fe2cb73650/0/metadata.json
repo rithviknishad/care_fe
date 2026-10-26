@@ -1,0 +1,89 @@
+{
+  "cli_version": "0.9.0",
+  "checkpoint_id": "bffe2cb73650",
+  "session_id": "571dcb34-bb2c-4227-bf8d-5caf795ae468",
+  "strategy": "manual-commit",
+  "created_at": "2026-10-26T07:07:44.423502Z",
+  "branch": "ENG-827-implement-diagnostic-report-tab-component-level-ui",
+  "checkpoints_count": 4,
+  "save_step_count": 4,
+  "files_touched": [
+    "public/locale/en.json"
+  ],
+  "agent": "Copilot CLI",
+  "model": "",
+  "turn_id": "526e0c588c69",
+  "compact_transcript_start": 0,
+  "token_usage": {
+    "input_tokens": 0,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 0,
+    "output_tokens": 0,
+    "api_call_count": 0
+  },
+  "session_metrics": {
+    "turn_count": 4
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-10-26T07:07:44.417645Z",
+    "agent_lines": 0,
+    "agent_removed": 0,
+    "human_added": 18860,
+    "human_modified": 11,
+    "human_removed": 0,
+    "total_committed": 18862,
+    "total_lines_changed": 25579,
+    "agent_percentage": 0,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 46,
+      "user_lines_removed": 21,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        "src/components/Users/UserListAndCard.tsx": 39,
+        "src/types/user/user.ts": 7
+      },
+      "user_removed_per_file": {
+        "src/components/Users/UserListAndCard.tsx": 14,
+        "src/types/user/user.ts": 7
+      }
+    },
+    {
+      "checkpoint_number": 2,
+      "user_lines_added": 1,
+      "user_lines_removed": 1,
+      "agent_lines_added": 39,
+      "agent_lines_removed": 14,
+      "user_added_per_file": {
+        "src/components/Users/UserListAndCard.tsx": 1
+      },
+      "user_removed_per_file": {
+        "src/components/Users/UserListAndCard.tsx": 1
+      }
+    },
+    {
+      "checkpoint_number": 3,
+      "user_lines_added": 2,
+      "user_lines_removed": 8,
+      "agent_lines_added": 8,
+      "agent_lines_removed": 2,
+      "user_added_per_file": {
+        "src/components/Users/UserListAndCard.tsx": 2
+      },
+      "user_removed_per_file": {
+        "src/components/Users/UserListAndCard.tsx": 8
+      }
+    },
+    {
+      "checkpoint_number": 4,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 2,
+      "agent_lines_removed": 1
+    }
+  ]
+}
