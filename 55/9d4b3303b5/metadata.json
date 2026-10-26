@@ -1,0 +1,36 @@
+{
+  "cli_version": "0.9.0",
+  "checkpoint_id": "559d4b3303b5",
+  "strategy": "manual-commit",
+  "branch": "codex/careui-migration",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "public/locale/en.json",
+    "src/Routers/AppRouter.tsx",
+    "src/Routers/PatientRouter.tsx",
+    "src/components/Common/ScrollableSidebarContent.tsx",
+    "src/components/ui/breadcrumb.tsx",
+    "src/components/ui/sidebar.tsx",
+    "src/components/ui/sidebar/app-sidebar-provider.tsx",
+    "src/components/ui/sidebar/patient-switcher.tsx",
+    "src/components/ui/sidebar/sidebar-toggle.tsx",
+    "src/components/ui/sidebar/workspace-header.tsx",
+    "tests/facility/services/service.spec.ts"
+  ],
+  "sessions": [
+    {
+      "metadata": "/55/9d4b3303b5/0/metadata.json",
+      "transcript": "/55/9d4b3303b5/0/full.jsonl",
+      "compact_transcript": "/55/9d4b3303b5/0/transcript.jsonl",
+      "content_hash": "/55/9d4b3303b5/0/content_hash.txt",
+      "prompt": "/55/9d4b3303b5/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 1468360,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 179747968,
+    "output_tokens": 337536,
+    "api_call_count": 452
+  }
+}

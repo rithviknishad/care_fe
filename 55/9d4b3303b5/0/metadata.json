@@ -1,0 +1,58 @@
+{
+  "cli_version": "0.9.0",
+  "checkpoint_id": "559d4b3303b5",
+  "session_id": "01a1759e-a79b-7121-a39d-cf79b0d50129",
+  "strategy": "manual-commit",
+  "created_at": "2026-10-26T03:25:03.198424Z",
+  "branch": "codex/careui-migration",
+  "checkpoints_count": 1,
+  "save_step_count": 1,
+  "files_touched": [
+    "public/locale/en.json",
+    "src/Routers/AppRouter.tsx",
+    "src/Routers/PatientRouter.tsx",
+    "src/components/Common/ScrollableSidebarContent.tsx",
+    "src/components/ui/breadcrumb.tsx",
+    "src/components/ui/sidebar.tsx",
+    "src/components/ui/sidebar/app-sidebar-provider.tsx",
+    "src/components/ui/sidebar/patient-switcher.tsx",
+    "src/components/ui/sidebar/sidebar-toggle.tsx",
+    "src/components/ui/sidebar/workspace-header.tsx",
+    "tests/facility/services/service.spec.ts"
+  ],
+  "agent": "Codex",
+  "model": "gpt-6.1-sol",
+  "turn_id": "213f06605e6a",
+  "compact_transcript_start": 0,
+  "token_usage": {
+    "input_tokens": 1468360,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 179747968,
+    "output_tokens": 337536,
+    "api_call_count": 452
+  },
+  "session_metrics": {
+    "turn_count": 4
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-10-26T03:25:02.947047Z",
+    "agent_lines": 0,
+    "agent_removed": 0,
+    "human_added": 165,
+    "human_modified": 155,
+    "human_removed": 0,
+    "total_committed": 165,
+    "total_lines_changed": 517,
+    "agent_percentage": 0,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 2,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0
+    }
+  ]
+}
