@@ -3,9 +3,12 @@
   "checkpoint_id": "bffe2cb73650",
   "strategy": "manual-commit",
   "branch": "ENG-827-implement-diagnostic-report-tab-component-level-ui",
-  "checkpoints_count": 4,
+  "checkpoints_count": 12,
   "files_touched": [
-    "public/locale/en.json"
+    "public/locale/en.json",
+    "tests/facility/patient/encounter/serviceRequests/ServiceRequestCreate.spec.ts",
+    "tests/facility/patient/encounter/structuredQuestions/diagnosis.spec.ts",
+    "tests/facility/patient/encounter/structuredQuestions/medicationRequest.spec.ts"
   ],
   "sessions": [
     {
@@ -14,6 +17,13 @@
       "compact_transcript": "/bf/fe2cb73650/0/transcript.jsonl",
       "content_hash": "/bf/fe2cb73650/0/content_hash.txt",
       "prompt": "/bf/fe2cb73650/0/prompt.txt"
+    },
+    {
+      "metadata": "/bf/fe2cb73650/1/metadata.json",
+      "transcript": "/bf/fe2cb73650/1/full.jsonl",
+      "compact_transcript": "/bf/fe2cb73650/1/transcript.jsonl",
+      "content_hash": "/bf/fe2cb73650/1/content_hash.txt",
+      "prompt": "/bf/fe2cb73650/1/prompt.txt"
     }
   ],
   "token_usage": {

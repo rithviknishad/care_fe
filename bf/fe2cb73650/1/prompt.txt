@@ -1,0 +1,1248 @@
+how to replicate this navigation in browser
+
+---
+
+After sumbiting the Questionnaire the page  should fall back into the same previous page, not to updates page
+
+---
+
+review this branch the issue is  already i mentioned before, so review the changes ..check if it breaks anything and code quality
+
+---
+
+this is a code review from code rabbit :
+**Functional Correctness** | **🟡 Minor** | **⚡ Quick win**
+
+🔎 Supported by static analysis
+
+```
+
+```
+
+---
+
+```
+
+```
+
+---
+
+**Check the previous history entry before using `goBack`.**
+
+`goBack` uses `history.back()` whenever the history length is greater than one. It does not validate the previous URL against the supplied updates path. The questionnaire has multiple entrypoints, so submission can return to an unrelated page instead of the matching updates page. Navigate to the matching updates path when the previous entry does not match.
+
+is this valid
+
+---
+
+fix it
+
+---
+
+fix the playwright test
+
+---
+
+fix the playwright test with and run test iteratively if it again broken like i run in locally by clicking the play button on testing tab of corresponding test
+
+---
+
+Error: expect(locator).toBeVisible() failed
+
+Locator: locator('.toaster.group').getByText(/file uploaded successfully/i)
+Expected: visible
+Timeout: 10000ms
+Error: element(s) not found
+
+Call log:
+  - Expect "toBeVisible" with timeout 10000ms
+  - waiting for locator('.toaster.group').getByText(/file uploaded successfully/i)
+
+    at expectToast (tests/helper/ui.ts:523:41)
+    at tests/facility/patient/encounter/serviceRequests/ServiceRequestCreate.spec.ts:267:41
+
+Context for AI# Instructions
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: facility/patient/encounter/serviceRequests/ServiceRequestCreate.spec.ts >> should fill result value, capture a photo and save results
+- Location: tests/facility/patient/encounter/serviceRequests/ServiceRequestCreate.spec.ts:189:5
+
+# Error details
+
+```
+Error: expect(locator).toBeVisible() failed
+
+Locator: locator('.toaster.group').getByText(/file uploaded successfully/i)
+Expected: visible
+Timeout: 10000ms
+Error: element(s) not found
+
+Call log:
+  - Expect "toBeVisible" with timeout 10000ms
+  - waiting for locator('.toaster.group').getByText(/file uploaded successfully/i)
+```
+
+```
+- region "Notifications alt+T"
+- dialog "Upload File":
+  - heading "Upload File" [level=2]
+  - img "Preview"
+  - img
+  - text: capture.png
+  - button:
+    - img
+  - textbox "Enter File Name": capture.png
+  - paragraph: "Error Uploading File: Network Error"
+  - button "Discard":
+    - img
+    - text: Discard
+  - button "Upload":
+    - img
+    - text: Upload
+  - button "Close"
+```
+
+# Test source
+
+```
+  423 |   itemIndex?: number;
+  424 | }
+  425 | 
+  426 | /**
+  427 |  * Helper for ResourceDefinitionCategoryPicker component
+  428 |  * This is different from selectFromCategoryPicker and handles definition selection
+  429 |  * (used for activity definitions, etc.)
+  430 |  *
+  431 |  * @example
+  432 |  * await selectFromDefinitionCategoryPicker(page, trigger, {
+  433 |  *   navigateCategories: ["Lab Tests"],
+  434 |  *   search: "Complete Blood Count",
+  435 |  *   itemIndex: 0
+  436 |  * });
+  437 |  */
+  438 | export async function selectFromDefinitionCategoryPicker(
+  439 |   page: Page,
+  440 |   trigger: Locator,
+  441 |   {
+  442 |     search,
+  443 |     navigateCategories = [],
+  444 |     itemIndex = 0,
+  445 |   }: SelectFromDefinitionCategoryPickerOptions = {},
+  446 | ) {
+  447 |   await trigger.waitFor({ state: "visible" });
+  448 |   await trigger.scrollIntoViewIfNeeded();
+  449 | 
+  450 |   // Close any existing popovers before opening
+  451 |   await closeAnyOpenPopovers(page);
+  452 | 
+  453 |   await trigger.click();
+  454 | 
+  455 |   // Wait for the picker to open (could be dialog or popover)
+  456 |   const dialog = page.getByRole("dialog").last();
+  457 |   const hasDialog = await dialog.isVisible().catch(() => false);
+  458 |   const popper = page.locator("[data-radix-popper-content-wrapper]").last();
+  459 |   const scope = hasDialog ? dialog : popper;
+  460 | 
+  461 |   await scope.waitFor({ state: "visible" });
+  462 | 
+  463 |   // Navigate through categories if specified
+  464 |   for (const categoryTitle of navigateCategories) {
+  465 |     // Wait for the category to appear
+  466 |     const categoryItem = scope.getByRole("option", {
+  467 |       name: new RegExp(categoryTitle, "i"),
+  468 |     });
+  469 |     await categoryItem.waitFor({ state: "attached" });
+  470 |     await categoryItem.waitFor({ state: "visible" });
+  471 |     await categoryItem.click();
+  472 | 
+  473 |     // Wait for navigation to complete - wait for new options to load after category click
+  474 |     const items = scope.getByRole("option");
+  475 |     await items.first().waitFor({ state: "attached" });
+  476 |   }
+  477 | 
+  478 |   // If search is provided, use search to filter items
+  479 |   if (search) {
+  480 |     const input = scope.locator('[data-slot="command-input"]').first();
+  481 |     await input.waitFor({ state: "visible" });
+  482 |     await input.fill("");
+  483 |     await input.fill(search);
+  484 | 
+  485 |     // Wait for search results to load - options will be updated after input change
+  486 |     const items = scope.getByRole("option");
+  487 |     await items.first().waitFor({ state: "attached" });
+  488 |   }
+  489 | 
+  490 |   // Wait for items to load
+  491 |   const items = scope.getByRole("option");
+  492 |   await items.first().waitFor({ state: "attached" });
+  493 |   await items.first().waitFor({ state: "visible" });
+  494 | 
+  495 |   const count = await items.count();
+  496 |   if (count === 0) {
+  497 |     throw new Error("No items found in definition category picker");
+  498 |   }
+  499 | 
+  500 |   // Select item at itemIndex
+  501 |   const targetItem = items.nth(itemIndex);
+  502 |   await targetItem.waitFor({ state: "attached" });
+  503 |   await targetItem.waitFor({ state: "visible" });
+  504 |   await targetItem.scrollIntoViewIfNeeded();
+  505 |   await targetItem.click();
+  506 | 
+  507 |   // Wait for selection to register and dialog to close
+  508 |   await scope.waitFor({ state: "hidden" }).catch(() => {});
+  509 | }
+  510 | 
+  511 | /**
+  512 |  * Checks if a toast notification with the given text is visible
+  513 |  * @param page - Playwright page object
+  514 |  * @param text - Text to search for in the toast (can be string or RegExp)
+  515 |  * @param options - Additional options for the toast check
+  516 |  */
+  517 | export async function expectToast(
+  518 |   page: Page,
+  519 |   text: string | RegExp,
+  520 |   options: { timeout?: number } = {},
+  521 | ) {
+  522 |   const toaster = page.locator(".toaster.group");
+> 523 |   await expect(toaster.getByText(text)).toBeVisible(options);
+      |                                         ^ Error: expect(locator).toBeVisible() failed
+  524 | }
+  525 | 
+  526 | /**
+  527 |  * Gets a card element by its title
+  528 |  * @param page - Playwright page object
+  529 |  * @param title - Card title to search for (can be string or RegExp)
+  530 |  * @returns Locator for the card element
+  531 |  */
+  532 | export function getCardByTitle(page: Page, title: string | RegExp) {
+  533 |   return page.locator('[data-slot="card"]').filter({
+  534 |     has: page.locator('[data-slot="card-title"]', { hasText: title }),
+  535 |   });
+  536 | }
+  537 | 
+  538 | export async function clearFilter(page: Page) {
+  539 |   const clearButton = page
+  540 |     .getByRole("button")
+  541 |     .filter({ has: page.locator("svg.lucide-x") })
+  542 |     .first();
+  543 |   await clearButton.click();
+  544 | }
+  545 | 
+  546 | /**
+  547 |  * Helper to select a value from a FilterSelect component
+  548 |  * FilterSelect uses a Select component with a combobox trigger that shows the label
+  549 |  *
+  550 |  * @param page - Playwright page object
+  551 |  * @param label - The label text of the FilterSelect (e.g., "status", "category")
+  552 |  * @param value - The value to select (will be matched case-insensitively)
+  553 |  *
+  554 |  * @example
+  555 |  * await selectFromFilterSelect(page, "status", "active");
+  556 |  * await selectFromFilterSelect(page, "category", "laboratory");
+  557 |  */
+  558 | export async function selectFromFilterSelect(
+  559 |   page: Page,
+  560 |   label: string | RegExp,
+  561 |   value: string,
+  562 | ) {
+  563 |   // Find the FilterSelect combobox by its label text
+  564 |   const filterSelect = page
+  565 |     .getByRole("combobox")
+  566 |     .filter({ hasText: label })
+  567 |     .first();
+  568 |   await filterSelect.waitFor({ state: "visible" });
+  569 |   await filterSelect.scrollIntoViewIfNeeded();
+  570 |   await filterSelect.click();
+  571 | 
+  572 |   // Select the option by value (case-insensitive match)
+  573 |   const option = page.getByRole("option", {
+  574 |     name: new RegExp(value, "i"),
+  575 |   });
+  576 |   await option.waitFor({ state: "visible" });
+  577 |   await option.click();
+  578 | }
+  579 | 
+  580 | /**
+  581 |  * Apply a filter to a table view with navigation and filter selection
+  582 |  * @param page - Playwright page object
+  583 |  * @param url - Full URL to navigate to
+  584 |  * @param filterLabel - Filter label regex (e.g., /status/i, /category/i)
+  585 |  * @param filterValue - Value to filter by
+  586 |  *
+  587 |  * @example
+  588 |  * await applyTableFilter(page, "/facility/123/settings/definitions", /status/i, "Active");
+  589 |  */
+  590 | export async function applyTableFilter(
+  591 |   page: Page,
+  592 |   url: string,
+  593 |   filterLabel: RegExp,
+  594 |   filterValue: string,
+  595 | ) {
+  596 |   await page.goto(url);
+  597 |   await clearFilter(page);
+  598 |   await page.locator('[data-slot="table-body"]').waitFor({ state: "visible" });
+  599 | 
+  600 |   await selectFromFilterSelect(page, filterLabel, filterValue);
+  601 |   await page.waitForLoadState("networkidle");
+  602 | 
+  603 |   const tableBody = page.locator('[data-slot="table-body"]');
+  604 |   await tableBody.waitFor({ state: "visible" });
+  605 | 
+  606 |   const tableBodyRows = tableBody.locator('[data-slot="table-row"]');
+  607 |   await tableBodyRows.first().waitFor({ state: "visible" });
+  608 | }
+  609 | 
+  610 | /**
+  611 |  * Verify all badges in table match expected text and optionally verify specific row exists
+  612 |  * @param page - Playwright page object
+  613 |  * @param badgeText - Expected badge text to verify
+  614 |  * @param specificRowText - Optional text to find specific row
+  615 |  *
+  616 |  * @example
+  617 |  * await verifyTableBadges(page, "Active", "My Activity");
+  618 |  * await verifyTableBadges(page, "Laboratory"); // Without specific row check
+  619 |  */
+  620 | export async function verifyTableBadges(
+  621 |   page: Page,
+  622 |   badgeText: string,
+  623 |   specificRowText?: string,
+```
+
+fix this too
+
+---
+
+similarly all these tests are failed fix these tests too
+
+---
+
+[Terminal c18a3efd-0ba3-48ed-816c-61dd5aa0df2a notification: command completed with exit code 1. The terminal has been cleaned up.]
+Terminal output:
+  27) [chromium] › tests/facility/patient/encounter/forms/enableWhen/string.spec.ts:341:9 › Enable When — String Operators › 'not_equals' operator › T2: source = match → dependent hidden [optional] → submits › Form submits successfully 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: locator('.toaster.group').getByText(/questionnaire submitted successfully/i)
+    Expected: visible
+    Timeout: 10000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" with timeout 10000ms
+      - waiting for locator('.toaster.group').getByText(/questionnaire submitted successfully/i)
+
+
+       at helper/ui.ts:523
+
+      521 | ) {
+      522 |   const toaster = page.locator(".toaster.group");
+    > 523 |   await expect(toaster.getByText(text)).toBeVisible(options);
+          |                                         ^
+      524 | }
+      525 |
+      526 | /**
+        at expectToast (/Users/nikhilac/ohc.network/care_fe/tests/helper/ui.ts:523:41)
+        at submitAndExpectSuccess (/Users/nikhilac/ohc.network/care_fe/tests/helper/questionnaire.ts:79:20)
+        at /Users/nikhilac/ohc.network/care_fe/tests/facility/patient/encounter/forms/enableWhen/string.spec.ts:350:9
+        at /Users/nikhilac/ohc.network/care_fe/tests/facility/patient/encounter/forms/enableWhen/string.spec.ts:349:7
+
+    Error Context: test-results/facility-patient-encounter-dd0ef-t-hidden-optional-→-submits-chromium/error-context.md
+
+  28) [chromium] › tests/facility/patient/encounter/forms/enableWhen/string.spec.ts:372:9 › Enable When — String Operators › 'not_equals' operator › T4: source non-match → dependent visible [required] + filled → submits › Form submits successfully 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: locator('.toaster.group').getByText(/questionnaire submitted successfully/i)
+    Expected: visible
+    Timeout: 10000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" with timeout 10000ms
+      - waiting for locator('.toaster.group').getByText(/questionnaire submitted successfully/i)
+
+
+       at helper/ui.ts:523
+
+      521 | ) {
+      522 |   const toaster = page.locator(".toaster.group");
+    > 523 |   await expect(toaster.getByText(text)).toBeVisible(options);
+          |                                         ^
+      524 | }
+      525 |
+      526 | /**
+        at expectToast (/Users/nikhilac/ohc.network/care_fe/tests/helper/ui.ts:523:41)
+        at submitAndExpectSuccess (/Users/nikhilac/ohc.network/care_fe/tests/helper/questionnaire.ts:79:20)
+        at /Users/nikhilac/ohc.network/care_fe/tests/facility/patient/encounter/forms/enableWhen/string.spec.ts:384:9
+        at /Users/nikhilac/ohc.network/care_fe/tests/facility/patient/encounter/forms/enableWhen/string.spec.ts:383:7
+
+    Error Context: test-results/facility-patient-encounter-d3812-e-required-filled-→-submits-chromium/error-context.md
+
+  29) [chromium] › tests/facility/patient/encounter/forms/enableWhen/string.spec.ts:392:9 › Enable When — String Operators › 'not_equals' operator › T5: source non-match → dependent visible [optional] + empty → submits › Form submits successfully 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: locator('.toaster.group').getByText(/questionnaire submitted successfully/i)
+    Expected: visible
+    Timeout: 10000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" with timeout 10000ms
+      - waiting for locator('.toaster.group').getByText(/questionnaire submitted successfully/i)
+
+
+       at helper/ui.ts:523
+
+      521 | ) {
+      522 |   const toaster = page.locator(".toaster.group");
+    > 523 |   await expect(toaster.getByText(text)).toBeVisible(options);
+          |                                         ^
+      524 | }
+      525 |
+      526 | /**
+        at expectToast (/Users/nikhilac/ohc.network/care_fe/tests/helper/ui.ts:523:41)
+        at submitAndExpectSuccess (/Users/nikhilac/ohc.network/care_fe/tests/helper/questionnaire.ts:79:20)
+        at /Users/nikhilac/ohc.network/care_fe/tests/facility/patient/encounter/forms/enableWhen/string.spec.ts:407:9
+        at /Users/nikhilac/ohc.network/care_fe/tests/facility/patient/encounter/forms/enableWhen/string.spec.ts:406:7
+
+    Error Context: test-results/facility-patient-encounter-ff974-le-optional-empty-→-submits-chromium/error-context.md
+
+  30) [chromium] › tests/facility/patient/encounter/forms/enableWhen/string.spec.ts:415:9 › Enable When — String Operators › 'not_equals' operator › T6: source non-match → match → dependent hides → hidden data not on overview › Submit and verify hidden values not on overview 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: locator('.toaster.group').getByText(/questionnaire submitted successfully/i)
+    Expected: visible
+    Timeout: 10000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" with timeout 10000ms
+      - waiting for locator('.toaster.group').getByText(/questionnaire submitted successfully/i)
+
+
+       at helper/ui.ts:523
+
+      521 | ) {
+      522 |   const toaster = page.locator(".toaster.group");
+    > 523 |   await expect(toaster.getByText(text)).toBeVisible(options);
+          |                                         ^
+      524 | }
+      525 |
+      526 | /**
+        at expectToast (/Users/nikhilac/ohc.network/care_fe/tests/helper/ui.ts:523:41)
+        at submitAndExpectSuccess (/Users/nikhilac/ohc.network/care_fe/tests/helper/questionnaire.ts:79:20)
+        at /Users/nikhilac/ohc.network/care_fe/tests/facility/patient/encounter/forms/enableWhen/string.spec.ts:439:9
+        at /Users/nikhilac/ohc.network/care_fe/tests/facility/patient/encounter/forms/enableWhen/string.spec.ts:438:7
+
+    Error Context: test-results/facility-patient-encounter-4e71e-hidden-data-not-on-overview-chromium/error-context.md
+
+  30 failed
+    [chromium] › tests/facility/patient/encounter/forms/enableWhen/boolean.spec.ts:42:9 › Enable When — Boolean Operators › 'exists' operator › T1: source unanswered → dependent hidden [required] → submits 
+    [chromium] › tests/facility/patient/encounter/forms/enableWhen/boolean.spec.ts:64:9 › Enable When — Boolean Operators › 'exists' operator › T2: source unanswered → dependent hidden [optional] → submits 
+    [chromium] › tests/facility/patient/encounter/forms/enableWhen/boolean.spec.ts:100:9 › Enable When — Boolean Operators › 'exists' operator › T4: source answered → dependent visible [required] + filled → submits 
+    [chromium] › tests/facility/patient/encounter/forms/enableWhen/boolean.spec.ts:120:9 › Enable When — Boolean Operators › 'exists' operator › T5: source answered → dependent visible [optional] + empty → submits 
+    [chromium] › tests/facility/patient/encounter/forms/enableWhen/boolean.spec.ts:143:9 › Enable When — Boolean Operators › 'exists' operator › T6: source answered then cleared → dependent hides → hidden data not on overview 
+    [chromium] › tests/facility/patient/encounter/forms/enableWhen/boolean.spec.ts:189:9 › Enable When — Boolean Operators › 'equals' operator › T1: source = No → dependent hidden [required] → submits 
+    [chromium] › tests/facility/patient/encounter/forms/enableWhen/boolean.spec.ts:211:9 › Enable When — Boolean Operators › 'equals' operator › T2: source = No → dependent hidden [optional] → submits 
+    [chromium] › tests/facility/patient/encounter/forms/enableWhen/boolean.spec.ts:247:9 › Enable When — Boolean Operators › 'equals' operator › T4: source = Yes → dependent visible [required] + filled → submits 
+    [chromium] › tests/facility/patient/encounter/forms/enableWhen/boolean.spec.ts:267:9 › Enable When — Boolean Operators › 'equals' operator › T5: source = Yes → dependent visible [optional] + empty → submits 
+    [chromium] › tests/facility/patient/encounter/forms/enableWhen/boolean.spec.ts:294:9 › Enable When — Boolean Operators › 'equals' operator › T6: source = Yes → changed to No → dependent hides → hidden data not on overview 
+    [chromium] › tests/facility/patient/encounter/forms/enableWhen/boolean.spec.ts:336:9 › Enable When — Boolean Operators › 'not_equals' operator › T1: source = Yes → dependent hidden [required] → submits 
+    [chromium] › tests/facility/patient/encounter/forms/enableWhen/boolean.spec.ts:358:9 › Enable When — Boolean Operators › 'not_equals' operator › T2: source = Yes → dependent hidden [optional] → submits 
+    [chromium] › tests/facility/patient/encounter/forms/enableWhen/boolean.spec.ts:394:9 › Enable When — Boolean Operators › 'not_equals' operator › T4: source = No → dependent visible [required] + filled → submits 
+    [chromium] › tests/facility/patient/encounter/forms/enableWhen/boolean.spec.ts:414:9 › Enable When — Boolean Operators › 'not_equals' operator › T5: source = No → dependent visible [optional] + empty → submits 
+    [chromium] › tests/facility/patient/encounter/forms/enableWhen/boolean.spec.ts:441:9 › Enable When — Boolean Operators › 'not_equals' operator › T6: source = No → changed to Yes → dependent hides → hidden data not on overview 
+    [chromium] › tests/facility/patient/encounter/forms/enableWhen/string.spec.ts:44:9 › Enable When — String Operators › 'exists' operator › T1: source empty → dependent hidden [required] → submits 
+    [chromium] › tests/facility/patient/encounter/forms/enableWhen/string.spec.ts:62:9 › Enable When — String Operators › 'exists' operator › T2: source empty → dependent hidden [optional] → submits 
+    [chromium] › tests/facility/patient/encounter/forms/enableWhen/string.spec.ts:96:9 › Enable When — String Operators › 'exists' operator › T4: source filled → dependent visible [required] + filled → submits 
+    [chromium] › tests/facility/patient/encounter/forms/enableWhen/string.spec.ts:117:9 › Enable When — String Operators › 'exists' operator › T5: source filled → dependent visible [optional] + empty → submits 
+    [chromium] › tests/facility/patient/encounter/forms/enableWhen/string.spec.ts:141:9 › Enable When — String Operators › 'exists' operator › T6: source filled then cleared → dependent hides → hidden data not on overview 
+    [chromium] › tests/facility/patient/encounter/forms/enableWhen/string.spec.ts:188:9 › Enable When — String Operators › 'equals' operator › T1: source non-match → dependent hidden [required] → submits 
+    [chromium] › tests/facility/patient/encounter/forms/enableWhen/string.spec.ts:205:9 › Enable When — String Operators › 'equals' operator › T2: source non-match → dependent hidden [optional] → submits 
+    [chromium] › tests/facility/patient/encounter/forms/enableWhen/string.spec.ts:236:9 › Enable When — String Operators › 'equals' operator › T4: source = match → dependent visible [required] + filled → submits 
+    [chromium] › tests/facility/patient/encounter/forms/enableWhen/string.spec.ts:256:9 › Enable When — String Operators › 'equals' operator › T5: source = match → dependent visible [optional] + empty → submits 
+    [chromium] › tests/facility/patient/encounter/forms/enableWhen/string.spec.ts:279:9 › Enable When — String Operators › 'equals' operator › T6: source match → non-match → dependent hides → hidden data not on overview 
+    [chromium] › tests/facility/patient/encounter/forms/enableWhen/string.spec.ts:324:9 › Enable When — String Operators › 'not_equals' operator › T1: source = match → dependent hidden [required] → submits 
+    [chromium] › tests/facility/patient/encounter/forms/enableWhen/string.spec.ts:341:9 › Enable When — String Operators › 'not_equals' operator › T2: source = match → dependent hidden [optional] → submits 
+    [chromium] › tests/facility/patient/encounter/forms/enableWhen/string.spec.ts:372:9 › Enable When — String Operators › 'not_equals' operator › T4: source non-match → dependent visible [required] + filled → submits 
+    [chromium] › tests/facility/patient/encounter/forms/enableWhen/string.spec.ts:392:9 › Enable When — String Operators › 'not_equals' operator › T5: source non-match → dependent visible [optional] + empty → submits 
+    [chromium] › tests/facility/patient/encounter/forms/enableWhen/string.spec.ts:415:9 › Enable When — String Operators › 'not_equals' operator › T6: source non-match → match → dependent hides → hidden data not on overview 
+  14 passed (1.3m)
+
+…ENG-1115-requesting-sr-should-fall-back-into-the-same-page [$!] via  v24.18.0 
+rg -n -C 2 "Running  |failed|Error:|Failed|passed \(" "/Users/nikhilac/Library/Application Support/Code/copilot-terminal-output/copilot-terminal-output-a1b13e70-ba46-4520-92c9-5324b1dd5e6e.txt"
+28-es → dependent visible [optional] + empty → submits › Form submits successfully 
+29-
+30:    Error: expect(locator).toBeVisible() failed
+31-
+32-    Locator: locator('.toaster.group').getByText(/questionnaire submitted succes
+--
+34-    Expected: visible
+35-    Timeout: 10000ms
+36:    Error: element(s) not found
+37-
+38-    Call log:
+--
+68-alues and submit 
+69-
+70:    Error: expect(locator).toBeVisible() failed
+71-
+72-    Locator: locator('.toaster.group').getByText(/questionnaire submitted succes
+--
+74-    Expected: visible
+75-    Timeout: 10000ms
+76:    Error: element(s) not found
+77-
+78-    Call log:
+--
+112- verify hidden values not on overview 
+113-
+114:    Error: expect(locator).toBeVisible() failed
+115-
+116-    Locator: locator('.toaster.group').getByText(/questionnaire submitted succes
+--
+118-    Expected: visible
+119-    Timeout: 10000ms
+120:    Error: element(s) not found
+121-
+122-    Call log:
+--
+156-alues and submit 
+157-
+158:    Error: expect(locator).toBeVisible() failed
+159-
+160-    Locator: locator('.toaster.group').getByText(/questionnaire submitted succes
+--
+162-    Expected: visible
+163-    Timeout: 10000ms
+164:    Error: element(s) not found
+165-
+166-    Call log:
+--
+199-ully 
+200-
+201:    Error: expect(locator).toBeVisible() failed
+202-
+203-    Locator: locator('.toaster.group').getByText(/questionnaire submitted succes
+--
+205-    Expected: visible
+206-    Timeout: 10000ms
+207:    Error: element(s) not found
+208-
+209-    Call log:
+--
+243-lly 
+244-
+245:    Error: expect(locator).toBeVisible() failed
+246-
+247-    Locator: locator('.toaster.group').getByText(/questionnaire submitted succes
+--
+249-    Expected: visible
+250-    Timeout: 10000ms
+251:    Error: element(s) not found
+252-
+253-    Call log:
+--
+285- and verify hidden values not on overview 
+286-
+287:    Error: expect(locator).toBeVisible() failed
+288-
+289-    Locator: locator('.toaster.group').getByText(/questionnaire submitted succes
+--
+291-    Expected: visible
+292-    Timeout: 10000ms
+293:    Error: element(s) not found
+294-
+295-    Call log:
+--
+329-nd submit 
+330-
+331:    Error: expect(locator).toBeVisible() failed
+332-
+333-    Locator: locator('.toaster.group').getByText(/questionnaire submitted succes
+--
+335-    Expected: visible
+336-    Timeout: 10000ms
+337:    Error: element(s) not found
+338-
+339-    Call log:
+--
+369-nd submit 
+370-
+371:    Error: expect(locator).toBeVisible() failed
+372-
+373-    Locator: locator('.toaster.group').getByText(/questionnaire submitted succes
+--
+375-    Expected: visible
+376-    Timeout: 10000ms
+377:    Error: element(s) not found
+378-
+379-    Call log:
+--
+414-d → dependent visible [required] + filled → submits › Form submits successfully 
+415-
+416:    Error: expect(locator).toBeVisible() failed
+417-
+418-    Locator: locator('.toaster.group').getByText(/questionnaire submitted succes
+--
+420-    Expected: visible
+421-    Timeout: 10000ms
+422:    Error: element(s) not found
+423-
+424-    Call log:
+--
+457-ify hidden values not on overview 
+458-
+459:    Error: expect(locator).toBeVisible() failed
+460-
+461-    Locator: locator('.toaster.group').getByText(/questionnaire submitted succes
+--
+463-    Expected: visible
+464-    Timeout: 10000ms
+465:    Error: element(s) not found
+466-
+467-    Call log:
+--
+498-match → dependent hidden [required] → submits › Form submits successfully 
+499-
+500:    Error: expect(locator).toBeVisible() failed
+501-
+502-    Locator: locator('.toaster.group').getByText(/questionnaire submitted succes
+--
+504-    Expected: visible
+505-    Timeout: 10000ms
+506:    Error: element(s) not found
+507-
+508-    Call log:
+--
+541- overview 
+542-
+543:    TimeoutError: page.waitForURL: Timeout 15000ms exceeded.
+544-    =========================== logs ===========================
+545-    waiting for navigation until "load"
+--
+570-match → dependent hidden [optional] → submits › Form submits successfully 
+571-
+572:    Error: expect(locator).toBeVisible() failed
+573-
+574-    Locator: locator('.toaster.group').getByText(/questionnaire submitted succes
+--
+576-    Expected: visible
+577-    Timeout: 10000ms
+578:    Error: element(s) not found
+579-
+580-    Call log:
+--
+616-y 
+617-
+618:    Error: expect(locator).toBeVisible() failed
+619-
+620-    Locator: locator('.toaster.group').getByText(/questionnaire submitted succes
+--
+622-    Expected: visible
+623-    Timeout: 10000ms
+624:    Error: element(s) not found
+625-
+626-    Call log:
+--
+656- 
+657-
+658:    Error: expect(locator).toBeVisible() failed
+659-
+660-    Locator: locator('.toaster.group').getByText(/questionnaire submitted succes
+--
+662-    Expected: visible
+663-    Timeout: 10000ms
+664:    Error: element(s) not found
+665-
+666-    Call log:
+--
+701-y hidden values not on overview 
+702-
+703:    Error: expect(locator).toBeVisible() failed
+704-
+705-    Locator: locator('.toaster.group').getByText(/questionnaire submitted succes
+--
+707-    Expected: visible
+708-    Timeout: 10000ms
+709:    Error: element(s) not found
+710-
+711-    Call log:
+--
+740-= match → dependent hidden [required] → submits › Form submits successfully 
+741-
+742:    Error: expect(locator).toBeVisible() failed
+743-
+744-    Locator: locator('.toaster.group').getByText(/questionnaire submitted succes
+--
+746-    Expected: visible
+747-    Timeout: 10000ms
+748:    Error: element(s) not found
+749-
+750-    Call log:
+--
+779-= match → dependent hidden [optional] → submits › Form submits successfully 
+780-
+781:    Error: expect(locator).toBeVisible() failed
+782-
+783-    Locator: locator('.toaster.group').getByText(/questionnaire submitted succes
+--
+785-    Expected: visible
+786-    Timeout: 10000ms
+787:    Error: element(s) not found
+788-
+789-    Call log:
+--
+819-ssfully 
+820-
+821:    Error: expect(locator).toBeVisible() failed
+822-
+823-    Locator: locator('.toaster.group').getByText(/questionnaire submitted succes
+--
+825-    Expected: visible
+826-    Timeout: 10000ms
+827:    Error: element(s) not found
+828-
+829-    Call log:
+--
+859-sfully 
+860-
+861:    Error: expect(locator).toBeVisible() failed
+862-
+863-    Locator: locator('.toaster.group').getByText(/questionnaire submitted succes
+--
+865-    Expected: visible
+866-    Timeout: 10000ms
+867:    Error: element(s) not found
+868-
+869-    Call log:
+--
+899-erify hidden values not on overview 
+900-
+901:    Error: expect(locator).toBeVisible() failed
+902-
+903-    Locator: locator('.toaster.group').getByText(/questionnaire submitted succes
+--
+905-    Expected: visible
+906-    Timeout: 10000ms
+907:    Error: element(s) not found
+908-
+909-    Call log:
+--
+934--on-overview-chromium/error-context.md
+935-
+936:  30 failed
+937-    [chromium] › tests/facility/patient/encounter/forms/enableWhen/boolean.spec.
+938-ts:42:9 › Enable When — Boolean Operators › 'exists' operator › T1: source unans
+--
+1025-s:415:9 › Enable When — String Operators › 'not_equals' operator › T6: source no
+1026-n-match → match → dependent hides → hidden data not on overview 
+1027:  14 passed (1.3m)
+1028-
+1029-…ENG-1115-requesting-sr-should-fall-back-into-the-same-page [$!] via  v24.18.0 
+
+…ENG-1115-requesting-sr-should-fall-back-into-the-same-page [$!] via  v24.18.0 
+sed -n '500,570p' "/Users/nikhilac/Library/Application Support/Code/copilot-terminal-output/copilot-terminal-output-a1b13e70-ba46-4520-92c9-5324b1dd5e6e.txt"
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: locator('.toaster.group').getByText(/questionnaire submitted succes
+sfully/i)
+    Expected: visible
+    Timeout: 10000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" with timeout 10000ms
+      - waiting for locator('.toaster.group').getByText(/questionnaire submitted
+ successfully/i)
+
+
+       at helper/ui.ts:523
+
+      521 | ) {
+      522 |   const toaster = page.locator(".toaster.group");
+    > 523 |   await expect(toaster.getByText(text)).toBeVisible(options);
+          |                                         ^
+      524 | }
+      525 |
+      526 | /**
+        at expectToast (/Users/nikhilac/ohc.network/care_fe/tests/helper/ui.ts:5
+23:41)
+        at submitAndExpectSuccess (/Users/nikhilac/ohc.network/care_fe/tests/hel
+per/questionnaire.ts:79:20)
+        at /Users/nikhilac/ohc.network/care_fe/tests/facility/patient/encounter/
+forms/enableWhen/string.spec.ts:197:9
+        at /Users/nikhilac/ohc.network/care_fe/tests/facility/patient/encounter/
+forms/enableWhen/string.spec.ts:196:7
+
+    Error Context: test-results/facility-patient-encounter-9969a-t-hidden-requir
+ed-→-submits-chromium/error-context.md
+
+◇ injected env (0) from .env.local // tip: ⌘ custom filepath { path: '/custom/pa
+th/.env' }
+◇ injected env (0) from .env // tip: ◈ secrets for agents [www.dotenvx.com]
+  21) [chromium] › tests/facility/patient/encounter/forms/enableWhen/string.spec
+.ts:117:9 › Enable When — String Operators › 'exists' operator › T5: source fill
+ed → dependent visible [optional] + empty → submits › Verify submitted values on
+ overview 
+
+    TimeoutError: page.waitForURL: Timeout 15000ms exceeded.
+    =========================== logs ===========================
+    waiting for navigation until "load"
+      navigated to "about:blank"
+    ============================================================
+
+       at helper/questionnaire.ts:92
+
+      90 |   excludedValues: string[] = [],
+      91 | ) {
+    > 92 |   await page.waitForURL(/\/encounter\/[^/]+\/updates/);
+         |              ^
+      93 |   await page.waitForLoadState("networkidle");
+      94 |
+      95 |   for (const val of expectedValues) {
+        at verifySubmittedValues (/Users/nikhilac/ohc.network/care_fe/tests/help
+er/questionnaire.ts:92:14)
+        at /Users/nikhilac/ohc.network/care_fe/tests/facility/patient/encounter/
+forms/enableWhen/string.spec.ts:137:36
+        at /Users/nikhilac/ohc.network/care_fe/tests/facility/patient/encounter/
+forms/enableWhen/string.spec.ts:136:7
+
+    Error Context: test-results/facility-patient-encounter-8d863-le-optional-emp
+ty-→-submits-chromium/error-context.md
+
+  22) [chromium] › tests/facility/patient/encounter/forms/enableWhen/string.spec
+.ts:205:9 › Enable When — String Operators › 'equals' operator › T2: source non-
+match → dependent hidden [optional] → submits › Form submits successfully 
+
+…ENG-1115-requesting-sr-should-fall-back-into-the-same-page [$!] via  v24.18.0 
+npx playwright test tests/facility/patient/encounter/forms/enableWhen/boolean.spec.ts tests/facility/patient/encounter/forms/enableWhen/string.spec.ts --project=chromium --reporter=line
+◇ injected env (10) from .env.local // tip: ⌘ suppress logs { quiet: true }
+◇ injected env (16) from .env // tip: ⌘ custom filepath { path: '/custom/path/.env' }
+⚠️ No DB snapshot found. Run 'npm run playwright:db-reset' to create one.
+🔄 Refreshing authentication tokens...
+✅ Tokens refreshed successfully
+
+Running 44 tests using 6 workers
+◇ injected env (0) from .env.local // tip: ⌘ suppress logs { quiet: true }
+◇ injected env (0) from .env // tip: ⌘ multiple files { path: ['.env.local', '.env'] }
+◇ injected env (0) from .env.local // tip: ⌘ enable debugging { debug: true }
+◇ injected env (0) from .env // tip: ⌘ multiple files { path: ['.env.local', '.env'] }
+◇ injected env (0) from .env.local // tip: ⌘ suppress logs { quiet: true }
+◇ injected env (0) from .env // tip: ◈ secrets for agents [www.dotenvx.com]
+◇ injected env (0) from .env.local // tip: ⌘ suppress logs { quiet: true }
+◇ injected env (0) from .env // tip: ⌘ enable debugging { debug: true }
+◇ injected env (0) from .env.local // tip: ⌁ auth for agents [www.vestauth.com]
+◇ injected env (0) from .env // tip: ◈ secrets for agents [www.dotenvx.com]
+◇ injected env (0) from .env.local // tip: ⌁ auth for agents [www.vestauth.com]
+◇ injected env (0) from .env // tip: ⌘ override existing { override: true }
+… tests/setup/facility.setup.ts:6:5 › enter facility via UI and save facility id
+✅ Facility ID saved: 067527fb-f91f-4dd8-b163-5cf58d43fd80
+…ests/setup/questionnaire.setup.ts:8:5 › ensure enable-when questionnaire exists
+♻️ Questionnaire version changed (0.1 → 2.1), updating: enable-when-test
+✅ Questionnaire updated: enable-when-test
+…tient.setup.ts:8:5 › navigate to an encounter and save patient and encounter id
+✅ Patient ID saved: fb268039-b6e6-4049-a7c8-f41ba3e1c415
+✅ Encounter ID saved: 8870b8e8-3e50-4485-904a-19e5679c033d
+…ientAccount.setup.ts:10:5 › navigate to an patient - create and save account id
+✅ Account created and saved: eb99f4e8-b401-4e1e-82b9-d585169e00f3
+◇ injected env (0) from .env.local // tip: ◈ encrypted .env [www.dotenvx.com]
+◇ injected env (0) from .env // tip: ⌘ suppress logs { quiet: true }
+◇ injected env (0) from .env.local // tip: ⌘ custom filepath { path: '/custom/path/.env' }
+◇ injected env (0) from .env // tip: ⌘ custom filepath { path: '/custom/path/.env' }
+◇ injected env (0) from .env.local // tip: ◈ secrets for agents [www.dotenvx.com]
+◇ injected env (0) from .env // tip: ⌘ override existing { override: true }
+◇ injected env (0) from .env.local // tip: ⌘ custom filepath { path: '/custom/path/.env' }
+◇ injected env (0) from .env.local // tip: ⌘ enable debugging { debug: true }
+◇ injected env (0) from .env // tip: ⌘ enable debugging { debug: true }
+◇ injected env (0) from .env // tip: ◈ encrypted .env [www.dotenvx.com]
+◇ injected env (0) from .env.local // tip: ⌘ suppress logs { quiet: true }
+◇ injected env (0) from .env // tip: ◈ secrets for agents [www.dotenvx.com]
+  1) [chromium] › tests/facility/patient/encounter/forms/enableWhen/boolean.spec.ts:45:9 › Enable When — Boolean Operators › 'exists' operator › T1: source unanswered → dependent hidden [required] → submits › Verify submitted values on overview and hidden dependent absent 
+
+    Error: expect(locator).not.toBeVisible() failed
+
+    Locator: getByText('List Known Allergies', { exact: true })
+    Expected: not visible
+    Error: strict mode violation: getByText('List Known Allergies', { exact: true }) resolved to 2 elements:
+        1) <div class="text-sm text-gray-600 break-words whitespace-normal">List Known Allergies</div> aka locator('#radix-_r_3l_').getByText('List Known Allergies')
+        2) <div class="text-sm text-gray-600 break-words whitespace-normal">List Known Allergies</div> aka locator('#radix-_r_47_').getByText('List Known Allergies')
+
+    Call log:
+      - Expect "not toBeVisible" with timeout 10000ms
+      - waiting for getByText('List Known Allergies', { exact: true })
+
+
+       at helper/questionnaire.ts:102
+
+      100 |
+      101 |   for (const val of excludedValues) {
+    > 102 |     await expect(page.getByText(val, { exact: true })).not.toBeVisible();
+          |                                                            ^
+      103 |   }
+      104 | }
+      105 |
+        at verifySubmittedValues (/Users/nikhilac/ohc.network/care_fe/tests/helper/questionnaire.ts:102:60)
+        at /Users/nikhilac/ohc.network/care_fe/tests/facility/patient/encounter/forms/enableWhen/boolean.spec.ts:63:9
+        at /Users/nikhilac/ohc.network/care_fe/tests/facility/patient/encounter/forms/enableWhen/boolean.spec.ts:58:7
+
+    Error Context: test-results/facility-patient-encounter-ed75b-t-hidden-required-→-submits-chromium/error-context.md
+
+◇ injected env (0) from .env.local // tip: ◈ encrypted .env [www.dotenvx.com]
+◇ injected env (0) from .env // tip: ⌘ multiple files { path: ['.env.local', '.env'] }
+  1 failed
+    [chromium] › tests/facility/patient/encounter/forms/enableWhen/boolean.spec.ts:45:9 › Enable When — Boolean Operators › 'exists' operator › T1: source unanswered → dependent hidden [required] → submits 
+  43 passed (1.1m)
+
+…ENG-1115-requesting-sr-should-fall-back-into-the-same-page [$!] via  v24.18.0 
+npx playwright test tests/facility/patient/encounter/forms/enableWhen/boolean.spec.ts -g "T1: source unanswered" --project=chromium --reporter=line
+◇ injected env (10) from .env.local // tip: ⌘ custom filepath { path: '/custom/path/.env' }
+◇ injected env (16) from .env // tip: ⌘ override existing { override: true }
+⚠️ No DB snapshot found. Run 'npm run playwright:db-reset' to create one.
+🔄 Refreshing authentication tokens...
+✅ Tokens refreshed successfully
+
+Running 9 tests using 6 workers
+◇ injected env (0) from .env.local // tip: ⌘ enable debugging { debug: true }
+◇ injected env (0) from .env // tip: ⌘ override existing { override: true }
+◇ injected env (0) from .env.local // tip: ⌁ auth for agents [www.vestauth.com]
+◇ injected env (0) from .env // tip: ◈ secrets for agents [www.dotenvx.com]
+◇ injected env (0) from .env.local // tip: ⌁ auth for agents [www.vestauth.com]
+◇ injected env (0) from .env // tip: ⌘ custom filepath { path: '/custom/path/.env' }
+◇ injected env (0) from .env.local // tip: ⌘ enable debugging { debug: true }
+◇ injected env (0) from .env // tip: ⌘ suppress logs { quiet: true }
+◇ injected env (0) from .env.local // tip: ⌘ multiple files { path: ['.env.local', '.env'] }
+◇ injected env (0) from .env // tip: ◈ encrypted .env [www.dotenvx.com]
+◇ injected env (0) from .env.local // tip: ⌁ auth for agents [www.vestauth.com]
+◇ injected env (0) from .env // tip: ⌘ enable debugging { debug: true }
+… tests/setup/facility.setup.ts:6:5 › enter facility via UI and save facility id
+✅ Facility ID saved: 067527fb-f91f-4dd8-b163-5cf58d43fd80
+…ests/setup/questionnaire.setup.ts:8:5 › ensure enable-when questionnaire exists
+♻️ Questionnaire version changed (0.1 → 2.1), updating: enable-when-test
+✅ Questionnaire updated: enable-when-test
+…tient.setup.ts:8:5 › navigate to an encounter and save patient and encounter id
+✅ Patient ID saved: fb268039-b6e6-4049-a7c8-f41ba3e1c415
+✅ Encounter ID saved: 8870b8e8-3e50-4485-904a-19e5679c033d
+…ientAccount.setup.ts:10:5 › navigate to an patient - create and save account id
+✅ Account created and saved: eb99f4e8-b401-4e1e-82b9-d585169e00f3
+◇ injected env (0) from .env.local // tip: ◈ encrypted .env [www.dotenvx.com]
+◇ injected env (0) from .env // tip: ◈ secrets for agents [www.dotenvx.com]
+  9 passed (10.2s)
+
+…ENG-1115-requesting-sr-should-fall-back-into-the-same-page [$!] via  v24.18.0 
+npx playwright test tests/facility/patient/encounter/forms/enableWhen/boolean.spec.ts tests/facility/patient/encounter/forms/enableWhen/string.spec.ts tests/facility/patient/encounter/structuredQuestions/diagnosis.spec.ts tests/facility/patient/encounter/structuredQuestions/medicationRequest.spec.ts tests/facility/patient/encounter/structuredQuestions/symptom.spec.ts tests/facility/patient/encounter/structuredQuestions/chargeItem.spec.ts --project=chromium --reporter=line
+◇ injected env (10) from .env.local // tip: ⌘ custom filepath { path: '/custom/path/.env' }
+◇ injected env (16) from .env // tip: ◈ encrypted .env [www.dotenvx.com]
+⚠️ No DB snapshot found. Run 'npm run playwright:db-reset' to create one.
+🔄 Refreshing authentication tokens...
+✅ Tokens refreshed successfully
+
+Running 53 tests using 6 workers
+◇ injected env (0) from .env.local // tip: ⌘ enable debugging { debug: true }
+◇ injected env (0) from .env // tip: ⌘ custom filepath { path: '/custom/path/.env' }
+◇ injected env (0) from .env.local // tip: ◈ encrypted .env [www.dotenvx.com]
+◇ injected env (0) from .env // tip: ⌘ custom filepath { path: '/custom/path/.env' }
+◇ injected env (0) from .env.local // tip: ⌘ multiple files { path: ['.env.local', '.env'] }
+◇ injected env (0) from .env // tip: ◈ encrypted .env [www.dotenvx.com]
+◇ injected env (0) from .env.local // tip: ⌘ multiple files { path: ['.env.local', '.env'] }
+◇ injected env (0) from .env // tip: ⌘ custom filepath { path: '/custom/path/.env' }
+◇ injected env (0) from .env.local // tip: ◈ encrypted .env [www.dotenvx.com]
+◇ injected env (0) from .env // tip: ⌘ suppress logs { quiet: true }
+◇ injected env (0) from .env.local // tip: ◈ encrypted .env [www.dotenvx.com]
+◇ injected env (0) from .env // tip: ◈ encrypted .env [www.dotenvx.com]
+… tests/setup/facility.setup.ts:6:5 › enter facility via UI and save facility id
+✅ Facility ID saved: 067527fb-f91f-4dd8-b163-5cf58d43fd80
+…ests/setup/questionnaire.setup.ts:8:5 › ensure enable-when questionnaire exists
+♻️ Questionnaire version changed (0.1 → 2.1), updating: enable-when-test
+✅ Questionnaire updated: enable-when-test
+…tient.setup.ts:8:5 › navigate to an encounter and save patient and encounter id
+✅ Patient ID saved: fb268039-b6e6-4049-a7c8-f41ba3e1c415
+✅ Encounter ID saved: 8870b8e8-3e50-4485-904a-19e5679c033d
+…ientAccount.setup.ts:10:5 › navigate to an patient - create and save account id
+✅ Account created and saved: eb99f4e8-b401-4e1e-82b9-d585169e00f3
+◇ injected env (0) from .env.local // tip: ◈ secrets for agents [www.dotenvx.com]
+◇ injected env (0) from .env // tip: ⌘ multiple files { path: ['.env.local', '.env'] }
+◇ injected env (0) from .env.local // tip: ⌘ suppress logs { quiet: true }
+◇ injected env (0) from .env // tip: ⌘ multiple files { path: ['.env.local', '.env'] }
+◇ injected env (0) from .env.local // tip: ⌘ custom filepath { path: '/custom/path/.env' }
+◇ injected env (0) from .env // tip: ◈ secrets for agents [www.dotenvx.com]
+◇ injected env (0) from .env.local // tip: ◈ secrets for agents [www.dotenvx.com]
+◇ injected env (0) from .env.local // tip: ◈ secrets for agents [www.dotenvx.com]
+◇ injected env (0) from .env // tip: ◈ secrets for agents [www.dotenvx.com]
+◇ injected env (0) from .env // tip: ⌘ multiple files { path: ['.env.local', '.env'] }
+◇ injected env (0) from .env.local // tip: ⌘ suppress logs { quiet: true }
+◇ injected env (0) from .env // tip: ◈ encrypted .env [www.dotenvx.com]
+  1) [chromium] › tests/facility/patient/encounter/forms/enableWhen/boolean.spec.ts:45:9 › Enable When — Boolean Operators › 'exists' operator › T1: source unanswered → dependent hidden [required] → submits › Verify submitted values on overview and hidden dependent absent 
+
+    Error: expect(locator).not.toBeVisible() failed
+
+    Locator:  getByText('List Known Allergies', { exact: true }).first()
+    Expected: not visible
+    Received: visible
+    Timeout:  10000ms
+
+    Call log:
+      - Expect "not toBeVisible" with timeout 10000ms
+      - waiting for getByText('List Known Allergies', { exact: true }).first()
+        24 × locator resolved to <div class="text-sm text-gray-600 break-words whitespace-normal">List Known Allergies</div>
+           - unexpected value "visible"
+
+
+       at helper/questionnaire.ts:104
+
+      102 |     const matches = page.getByText(val, { exact: true });
+      103 |     for (let index = 0; index < (await matches.count()); index += 1) {
+    > 104 |       await expect(matches.nth(index)).not.toBeVisible();
+          |                                            ^
+      105 |     }
+      106 |   }
+      107 | }
+        at verifySubmittedValues (/Users/nikhilac/ohc.network/care_fe/tests/helper/questionnaire.ts:104:44)
+        at /Users/nikhilac/ohc.network/care_fe/tests/facility/patient/encounter/forms/enableWhen/boolean.spec.ts:63:9
+        at /Users/nikhilac/ohc.network/care_fe/tests/facility/patient/encounter/forms/enableWhen/boolean.spec.ts:58:7
+
+    Error Context: test-results/facility-patient-encounter-ed75b-t-hidden-required-→-submits-chromium/error-context.md
+
+◇ injected env (0) from .env.local // tip: ◈ encrypted .env [www.dotenvx.com]
+◇ injected env (0) from .env // tip: ⌘ override existing { override: true }
+  2) [chromium] › tests/facility/patient/encounter/forms/enableWhen/string.spec.ts:144:9 › Enable When — String Operators › 'exists' operator › T6: source filled then cleared → dependent hides → hidden data not on overview › Submit and verify hidden values not on overview 
+
+    Error: expect(locator).not.toBeVisible() failed
+
+    Locator:  getByText('Dior', { exact: true }).first()
+    Expected: not visible
+    Received: visible
+    Timeout:  10000ms
+
+    Call log:
+      - Expect "not toBeVisible" with timeout 10000ms
+      - waiting for getByText('Dior', { exact: true }).first()
+        23 × locator resolved to <div class="text-sm font-medium break-words whitespace-pre-wrap">Dior</div>
+           - unexpected value "visible"
+
+
+       at helper/questionnaire.ts:104
+
+      102 |     const matches = page.getByText(val, { exact: true });
+      103 |     for (let index = 0; index < (await matches.count()); index += 1) {
+    > 104 |       await expect(matches.nth(index)).not.toBeVisible();
+          |                                            ^
+      105 |     }
+      106 |   }
+      107 | }
+        at verifySubmittedValues (/Users/nikhilac/ohc.network/care_fe/tests/helper/questionnaire.ts:104:44)
+        at /Users/nikhilac/ohc.network/care_fe/tests/facility/patient/encounter/forms/enableWhen/string.spec.ts:175:9
+        at /Users/nikhilac/ohc.network/care_fe/tests/facility/patient/encounter/forms/enableWhen/string.spec.ts:173:7
+
+    Error Context: test-results/facility-patient-encounter-690ba-hidden-data-not-on-overview-chromium/error-context.md
+
+◇ injected env (0) from .env.local // tip: ⌘ custom filepath { path: '/custom/path/.env' }
+◇ injected env (0) from .env // tip: ⌘ suppress logs { quiet: true }
+  2 failed
+    [chromium] › tests/facility/patient/encounter/forms/enableWhen/boolean.spec.ts:45:9 › Enable When — Boolean Operators › 'exists' operator › T1: source unanswered → dependent hidden [required] → submits 
+    [chromium] › tests/facility/patient/encounter/forms/enableWhen/string.spec.ts:144:9 › Enable When — String Operators › 'exists' operator › T6: source filled then cleared → dependent hides → hidden data not on overview 
+  51 passed (1.3m)
+
+…ENG-1115-requesting-sr-should-fall-back-into-the-same-page [$!] via  v24.18.0 
+npx playwright test tests/facility/patient/encounter/forms/enableWhen/boolean.spec.ts -g "T1: source unanswered" tests/facility/patient/encounter/forms/enableWhen/string.spec.ts -g "T6: source filled then cleared" --project=chromium --reporter=line
+◇ injected env (10) from .env.local // tip: ◈ secrets for agents [www.dotenvx.com]
+◇ injected env (16) from .env // tip: ⌁ auth for agents [www.vestauth.com]
+⚠️ No DB snapshot found. Run 'npm run playwright:db-reset' to create one.
+🔄 Refreshing authentication tokens...
+✅ Tokens refreshed successfully
+
+Running 9 tests using 6 workers
+◇ injected env (0) from .env.local // tip: ⌘ custom filepath { path: '/custom/path/.env' }
+◇ injected env (0) from .env // tip: ⌘ override existing { override: true }
+◇ injected env (0) from .env.local // tip: ⌘ enable debugging { debug: true }
+◇ injected env (0) from .env // tip: ⌘ override existing { override: true }
+◇ injected env (0) from .env.local // tip: ◈ encrypted .env [www.dotenvx.com]
+◇ injected env (0) from .env // tip: ◈ secrets for agents [www.dotenvx.com]
+◇ injected env (0) from .env.local // tip: ⌘ suppress logs { quiet: true }
+◇ injected env (0) from .env // tip: ⌁ auth for agents [www.vestauth.com]
+◇ injected env (0) from .env.local // tip: ⌘ custom filepath { path: '/custom/path/.env' }
+◇ injected env (0) from .env // tip: ⌁ auth for agents [www.vestauth.com]
+◇ injected env (0) from .env.local // tip: ◈ encrypted .env [www.dotenvx.com]
+◇ injected env (0) from .env // tip: ⌘ override existing { override: true }
+… tests/setup/facility.setup.ts:6:5 › enter facility via UI and save facility id
+✅ Facility ID saved: 067527fb-f91f-4dd8-b163-5cf58d43fd80
+…ests/setup/questionnaire.setup.ts:8:5 › ensure enable-when questionnaire exists
+♻️ Questionnaire version changed (0.1 → 2.1), updating: enable-when-test
+✅ Questionnaire updated: enable-when-test
+…tient.setup.ts:8:5 › navigate to an encounter and save patient and encounter id
+✅ Patient ID saved: fb268039-b6e6-4049-a7c8-f41ba3e1c415
+✅ Encounter ID saved: 8870b8e8-3e50-4485-904a-19e5679c033d
+…ientAccount.setup.ts:10:5 › navigate to an patient - create and save account id
+✅ Account created and saved: eb99f4e8-b401-4e1e-82b9-d585169e00f3
+◇ injected env (0) from .env.local // tip: ◈ encrypted .env [www.dotenvx.com]
+◇ injected env (0) from .env // tip: ⌘ multiple files { path: ['.env.local', '.env'] }
+  9 passed (11.1s)
+
+…ENG-1115-requesting-sr-should-fall-back-into-the-same-page [$!] via  v24.18.0 
+npx playwright test tests/facility/patient/encounter/forms/enableWhen/boolean.spec.ts tests/facility/patient/encounter/forms/enableWhen/string.spec.ts tests/facility/patient/encounter/structuredQuestions/diagnosis.spec.ts tests/facility/patient/encounter/structuredQuestions/medicationRequest.spec.ts tests/facility/patient/encounter/structuredQuestions/symptom.spec.ts tests/facility/patient/encounter/structuredQuestions/chargeItem.spec.ts --project=chromium --workers=1 --reporter=line
+◇ injected env (10) from .env.local // tip: ⌘ multiple files { path: ['.env.local', '.env'] }
+◇ injected env (16) from .env // tip: ◈ secrets for agents [www.dotenvx.com]
+⚠️ No DB snapshot found. Run 'npm run playwright:db-reset' to create one.
+🔄 Refreshing authentication tokens...
+✅ Tokens refreshed successfully
+
+Running 53 tests using 1 worker
+◇ injected env (0) from .env.local // tip: ⌘ custom filepath { path: '/custom/path/.env' }
+◇ injected env (0) from .env // tip: ⌘ multiple files { path: ['.env.local', '.env'] }
+… tests/setup/facility.setup.ts:6:5 › enter facility via UI and save facility id
+✅ Facility ID saved: 067527fb-f91f-4dd8-b163-5cf58d43fd80
+…tient.setup.ts:8:5 › navigate to an encounter and save patient and encounter id
+✅ Patient ID saved: fb268039-b6e6-4049-a7c8-f41ba3e1c415
+✅ Encounter ID saved: 8870b8e8-3e50-4485-904a-19e5679c033d
+…ientAccount.setup.ts:10:5 › navigate to an patient - create and save account id
+✅ Account created and saved: eb99f4e8-b401-4e1e-82b9-d585169e00f3
+…ests/setup/questionnaire.setup.ts:8:5 › ensure enable-when questionnaire exists
+♻️ Questionnaire version changed (0.1 → 2.1), updating: enable-when-test
+✅ Questionnaire updated: enable-when-test
+◇ injected env (0) from .env.local // tip: ⌘ override existing { override: true }
+◇ injected env (0) from .env // tip: ⌘ suppress logs { quiet: true }
+  1) [chromium] › tests/facility/patient/encounter/structuredQuestions/diagnosis.spec.ts:140:7 › Diagnosis › verify duplicate diagnosis cannot be added 
+
+    TimeoutError: page.waitForURL: Timeout 15000ms exceeded.
+    =========================== logs ===========================
+    waiting for navigation until "load"
+    ============================================================
+
+      153 |     await page.getByRole("button", { name: "Submit" }).click();
+      154 |
+    > 155 |     await page.waitForURL(/\/encounter\/[^/]+\/updates/);
+          |                ^
+      156 |
+      157 |     await page.goto(questionnaireUrl);
+      158 |     await page.waitForLoadState("networkidle");
+        at /Users/nikhilac/ohc.network/care_fe/tests/facility/patient/encounter/structuredQuestions/diagnosis.spec.ts:155:16
+
+    Error Context: test-results/facility-patient-encounter-e6682-e-diagnosis-cannot-be-added-chromium/error-context.md
+
+◇ injected env (0) from .env.local // tip: ⌘ multiple files { path: ['.env.local', '.env'] }
+◇ injected env (0) from .env // tip: ⌘ override existing { override: true }
+  1 failed
+    [chromium] › tests/facility/patient/encounter/structuredQuestions/diagnosis.spec.ts:140:7 › Diagnosis › verify duplicate diagnosis cannot be added 
+  52 passed (3.1m)
+
+---
+
+[Terminal deced3b4-1b48-40dd-a50d-a25e05ebb5cd notification: command completed. The terminal has been cleaned up.]
+Terminal output:
+Using Node v24.18.0
+
+fish is running in private mode, history will not be persisted.
+
+…ENG-1115-requesting-sr-should-fall-back-into-the-same-page [$!] via  v24.18.0 
+npx playwright test tests/facility/patient/encounter/structuredQuestions/diagnosis.spec.ts --project=chromium --workers=1 --reporter=line
+◇ injected env (10) from .env.local // tip: ⌘ suppress logs { quiet: true }
+◇ injected env (16) from .env // tip: ⌘ suppress logs { quiet: true }
+⚠️ No DB snapshot found. Run 'npm run playwright:db-reset' to create one.
+🔄 Refreshing authentication tokens...
+✅ Tokens refreshed successfully
+
+Running 11 tests using 1 worker
+◇ injected env (0) from .env.local // tip: ◈ secrets for agents [www.dotenvx.com]
+◇ injected env (0) from .env // tip: ⌘ override existing { override: true }
+… tests/setup/facility.setup.ts:6:5 › enter facility via UI and save facility id
+✅ Facility ID saved: 067527fb-f91f-4dd8-b163-5cf58d43fd80
+…tient.setup.ts:8:5 › navigate to an encounter and save patient and encounter id
+✅ Patient ID saved: fb268039-b6e6-4049-a7c8-f41ba3e1c415
+✅ Encounter ID saved: 8870b8e8-3e50-4485-904a-19e5679c033d
+…ientAccount.setup.ts:10:5 › navigate to an patient - create and save account id
+✅ Account created and saved: eb99f4e8-b401-4e1e-82b9-d585169e00f3
+…ests/setup/questionnaire.setup.ts:8:5 › ensure enable-when questionnaire exists
+♻️ Questionnaire version changed (0.1 → 2.1), updating: enable-when-test
+✅ Questionnaire updated: enable-when-test
+◇ injected env (0) from .env.local // tip: ⌘ enable debugging { debug: true }
+◇ injected env (0) from .env // tip: ⌘ enable debugging { debug: true }
+  11 passed (28.2s)
+
+…ENG-1115-requesting-sr-should-fall-back-into-the-same-page [$!] via  v24.18.0 
+npx playwright test tests/facility/patient/encounter/forms/enableWhen/boolean.spec.ts tests/facility/patient/encounter/forms/enableWhen/string.spec.ts tests/facility/patient/encounter/structuredQuestions/diagnosis.spec.ts tests/facility/patient/encounter/structuredQuestions/medicationRequest.spec.ts tests/facility/patient/encounter/structuredQuestions/symptom.spec.ts tests/facility/patient/encounter/structuredQuestions/chargeItem.spec.ts --project=chromium --workers=1 --reporter=line
+◇ injected env (10) from .env.local // tip: ◈ secrets for agents [www.dotenvx.com]
+◇ injected env (16) from .env // tip: ◈ secrets for agents [www.dotenvx.com]
+⚠️ No DB snapshot found. Run 'npm run playwright:db-reset' to create one.
+🔄 Refreshing authentication tokens...
+✅ Tokens refreshed successfully
+
+Running 53 tests using 1 worker
+◇ injected env (0) from .env.local // tip: ◈ encrypted .env [www.dotenvx.com]
+◇ injected env (0) from .env // tip: ⌘ custom filepath { path: '/custom/path/.env' }
+… tests/setup/facility.setup.ts:6:5 › enter facility via UI and save facility id
+✅ Facility ID saved: 067527fb-f91f-4dd8-b163-5cf58d43fd80
+…tient.setup.ts:8:5 › navigate to an encounter and save patient and encounter id
+✅ Patient ID saved: fb268039-b6e6-4049-a7c8-f41ba3e1c415
+✅ Encounter ID saved: 8870b8e8-3e50-4485-904a-19e5679c033d
+…ientAccount.setup.ts:10:5 › navigate to an patient - create and save account id
+✅ Account created and saved: eb99f4e8-b401-4e1e-82b9-d585169e00f3
+…ests/setup/questionnaire.setup.ts:8:5 › ensure enable-when questionnaire exists
+♻️ Questionnaire version changed (0.1 → 2.1), updating: enable-when-test
+✅ Questionnaire updated: enable-when-test
+◇ injected env (0) from .env.local // tip: ⌘ custom filepath { path: '/custom/path/.env' }
+◇ injected env (0) from .env // tip: ◈ encrypted .env [www.dotenvx.com]
+  53 passed (2.9m)
+
+---
+
+what was the bug with questionnaire ?
+
+---
+
+my pr fix is every questionnaire submit should nav back to the page the user came from.. it should not always return back to updates expect it has no previous history..so the test should match the fix ... like the every form submission should return back to the previous page
+
+---
+
+why it is always goto this page :  await page.goto(
+      `/facility/${facilityId}/patient/${patientId}/encounter/${encounterId}/responses`,
+    );
+
+    await expect(
+          page.getByText("Questionnaire submitted successfully"),
+        ).toBeVisible();
+
+        also why do you delete this toast..because this toast will present everytime after submiting the questionnaire
+
+---
+
+in this situation.. if there is no previous history it should fallback to the updates page..but it is return to the blank page given in the screenshot.. fix it this same problem in @file:string.spec.ts  too
+
+---
+
+in this situation.. if there is no previous history it should fallback to the updates page..but it is return to the blank page given in the screenshot.. fix it this same problem in @file:string.spec.ts  too.. solution : update the test that it should come to the updates page before going the form submission so that it will go to the updates page
+
+---
+
+now it return to the updates page but the toast is not present why?
+
+---
+
+fix this too
+Error: expect(locator).toBeVisible() failedLocator: getByText('Questionnaire submitted')Expected: visibleTimeout: 10000msError: element(s) not foundCall log:  - Expect "toBeVisible" with timeout 10000ms  - waiting for getByText('Questionnaire submitted')    at tests/facility/patient/encounter/structuredQuestions/chargeItem.spec.ts:43:61Context for AIHelper is back to original (no diff), and the DB status confirms my diagnosis.Why the toast wasn't thereYour two page.goto() calls create two separate documents. So history.back() is a cross-document navigation — a real page load. The app remounts, and the toast (rendered in the questionnaire's document by QuestionnaireForm.tsx:415) is destroyed before it can be asserted.In real usage there's only one document: users reach the form via raviger's Link/navigate() (pushState), so history.back() is just a popstate. React re-renders the route, the Toaster stays mounted, and the toast survives. Your fix is correct — the test was simply exercising it in a way a user never would.What I changedBoth specs now open the form through the UI, matching the existing pattern in formSubmissionAndDisplay.spec.ts:71:Result: 42/44 passed, and every toast assertion now passes. questionnaire.ts:77 is untouched — the toast check stays.The 2 remaining failures are unrelatednpm run playwright:db-status reports "No snapshot found". Without it, the shared encounter accumulates responses across runs, so a label from an earlier submission is legitimately still on the overview. These assertions scan the whole page, so they trip on old data.I tried scoping to the "newest response card" and it made things worse (8 failures) — these specs run in parallel against one shared encounter, so "newest" isn't reliably yours. I reverted that; the helper is unchanged.The intended fix is the snapshot system: npm run playwright:db-reset (needs CARE_BACKEND_DIR). That rebuilds your local backend DB from fixtures, so I didn't run it without checking — want me to?Starting: Fix toast visibility issue (4/4)2:18 PM10m 57s•Claude Opus 5 • 954.9 creditsnow it return to the updates page but the toast is not present why?
+
+---
+
+fix this too
+
+---
+
+fix this too, apply the same changes here and @file:diagnosis.spec.ts ,@file:medicationRequest.spec.ts  @file:symptom.spec.ts  and @file:questionnaire.ts
+
+---
+
+fix this too, apply the same changes here and @file:diagnosis.spec.ts ,@file:medicationRequest.spec.ts  @file:symptom.spec.ts  and @file:questionnaire.ts  and run the browser check whether the test iteratively if it is failing or not .... not only in the npm command
+
+---
+
+fix this too, apply the same changes here and @file:diagnosis.spec.ts ,@file:medicationRequest.spec.ts  @file:symptom.spec.ts  and @file:questionnaire.ts  and run it in  the chrome  browser check whether the test iteratively if it is failing or not .... not only in the npm command
+
+---
+
+fix this too, apply the same changes here and @file:diagnosis.spec.ts ,@file:medicationRequest.spec.ts  @file:symptom.spec.ts  and @file:questionnaire.ts  and run it in  the chrome  browser as i i open the test in in chrome by clicking the play button on the test tab section on left side and  check whether the test  it iteratively is failing or not .
