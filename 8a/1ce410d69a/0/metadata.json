@@ -1,0 +1,91 @@
+{
+  "cli_version": "0.9.0",
+  "checkpoint_id": "8a1ce410d69a",
+  "session_id": "01a1759e-a79b-7121-a39d-cf79b0d50129",
+  "strategy": "manual-commit",
+  "created_at": "2026-10-26T03:49:20.336686Z",
+  "branch": "codex/careui-migration",
+  "checkpoints_count": 1,
+  "save_step_count": 1,
+  "files_touched": [
+    "src/components/Users/UserHome.tsx",
+    "src/components/Users/UserThemeTab.tsx",
+    "src/components/Users/appearance/AppearanceChoiceCard.tsx",
+    "src/components/Users/appearance/MotionPreview.tsx",
+    "src/components/Users/appearance/ThemePreview.tsx",
+    "src/context/AppearanceContext.tsx",
+    "tests/facility/users/userScheduleCreation.spec.ts",
+    "tests/profile/userTheme.spec.ts"
+  ],
+  "agent": "Codex",
+  "model": "gpt-6.1-sol",
+  "turn_id": "2e08e977a20f",
+  "compact_transcript_start": 0,
+  "token_usage": {
+    "input_tokens": 1643530,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 201668992,
+    "output_tokens": 378065,
+    "api_call_count": 575
+  },
+  "session_metrics": {
+    "turn_count": 5
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-10-26T03:49:20.018735Z",
+    "agent_lines": 0,
+    "agent_removed": 0,
+    "human_added": 3142,
+    "human_modified": 148,
+    "human_removed": 0,
+    "total_committed": 3142,
+    "total_lines_changed": 3336,
+    "agent_percentage": 0,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 2,
+      "user_lines_added": 2317,
+      "user_lines_removed": 118,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        ".playwright-cli/console-2026-10-26T00-48-00-192Z.log": 8,
+        ".playwright-cli/console-2026-10-26T03-36-57-498Z.log": 23,
+        ".playwright-cli/console-2026-10-26T03-37-02-215Z.log": 100,
+        ".playwright-cli/console-2026-10-26T03-43-08-355Z.log": 23,
+        ".playwright-cli/console-2026-10-26T03-43-20-374Z.log": 70,
+        ".playwright-cli/page-2026-10-26T03-26-16-483Z.yml": 349,
+        ".playwright-cli/page-2026-10-26T03-36-57-611Z.yml": 1,
+        ".playwright-cli/page-2026-10-26T03-37-02-265Z.yml": 1,
+        ".playwright-cli/page-2026-10-26T03-43-08-447Z.yml": 1,
+        ".playwright-cli/page-2026-10-26T03-43-20-418Z.yml": 1,
+        "public/locale/en.json": 49,
+        "src/App.tsx": 36,
+        "src/Providers/AuthUserProvider.tsx": 11,
+        "src/components/Users/UserBanner.tsx": 6,
+        "src/components/Users/UserHome.tsx": 88,
+        "src/components/Users/UserThemeTab.tsx": 491,
+        "src/components/Users/appearance/AppearanceChoiceCard.tsx": 39,
+        "src/components/Users/appearance/MotionPreview.tsx": 92,
+        "src/components/Users/appearance/ThemePreview.tsx": 81,
+        "src/components/ui/sonner.tsx": 4,
+        "src/context/AppearanceContext.tsx": 418,
+        "src/pages/Encounters/tabs/overview/quick-actions.tsx": 29,
+        "tests/facility/referrals/referrals.spec.ts": 4,
+        "tests/facility/users/userScheduleCreation.spec.ts": 1,
+        "tests/profile/userTheme.spec.ts": 391
+      },
+      "user_removed_per_file": {
+        "src/App.tsx": 34,
+        "src/Providers/AuthUserProvider.tsx": 5,
+        "src/components/Users/UserBanner.tsx": 3,
+        "src/components/Users/UserHome.tsx": 50,
+        "src/components/ui/sonner.tsx": 4,
+        "src/pages/Encounters/tabs/overview/quick-actions.tsx": 21,
+        "tests/facility/users/userScheduleCreation.spec.ts": 1
+      }
+    }
+  ]
+}

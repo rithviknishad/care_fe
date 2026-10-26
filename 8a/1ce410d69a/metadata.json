@@ -1,0 +1,33 @@
+{
+  "cli_version": "0.9.0",
+  "checkpoint_id": "8a1ce410d69a",
+  "strategy": "manual-commit",
+  "branch": "codex/careui-migration",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "src/components/Users/UserHome.tsx",
+    "src/components/Users/UserThemeTab.tsx",
+    "src/components/Users/appearance/AppearanceChoiceCard.tsx",
+    "src/components/Users/appearance/MotionPreview.tsx",
+    "src/components/Users/appearance/ThemePreview.tsx",
+    "src/context/AppearanceContext.tsx",
+    "tests/facility/users/userScheduleCreation.spec.ts",
+    "tests/profile/userTheme.spec.ts"
+  ],
+  "sessions": [
+    {
+      "metadata": "/8a/1ce410d69a/0/metadata.json",
+      "transcript": "/8a/1ce410d69a/0/full.jsonl",
+      "compact_transcript": "/8a/1ce410d69a/0/transcript.jsonl",
+      "content_hash": "/8a/1ce410d69a/0/content_hash.txt",
+      "prompt": "/8a/1ce410d69a/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 1643530,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 201668992,
+    "output_tokens": 378065,
+    "api_call_count": 575
+  }
+}
