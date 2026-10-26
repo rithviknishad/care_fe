@@ -1,0 +1,27 @@
+{
+  "cli_version": "0.9.0",
+  "checkpoint_id": "82b561fcbc53",
+  "strategy": "manual-commit",
+  "branch": "codex/careui-migration",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "src/pages/Encounters/tabs/overview/quick-actions.tsx",
+    "tests/facility/referrals/referrals.spec.ts"
+  ],
+  "sessions": [
+    {
+      "metadata": "/82/b561fcbc53/0/metadata.json",
+      "transcript": "/82/b561fcbc53/0/full.jsonl",
+      "compact_transcript": "/82/b561fcbc53/0/transcript.jsonl",
+      "content_hash": "/82/b561fcbc53/0/content_hash.txt",
+      "prompt": "/82/b561fcbc53/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 1645263,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 202445952,
+    "output_tokens": 378774,
+    "api_call_count": 580
+  }
+}
