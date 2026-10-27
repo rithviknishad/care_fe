@@ -1,0 +1,29 @@
+{
+  "cli_version": "0.11.5",
+  "checkpoint_id": "2e392fc07f34",
+  "strategy": "manual-commit",
+  "branch": "ENG-580-tag-managing-org",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "src/components/Common/RoleOrgSelector.tsx",
+    "src/pages/Admin/TagConfig/TagConfigForm.tsx",
+    "src/pages/Admin/TagConfig/TagConfigView.tsx",
+    "src/types/emr/tagConfig/tagConfig.ts"
+  ],
+  "sessions": [
+    {
+      "metadata": "/2e/392fc07f34/0/metadata.json",
+      "transcript": "/2e/392fc07f34/0/full.jsonl",
+      "compact_transcript": "/2e/392fc07f34/0/transcript.jsonl",
+      "content_hash": "/2e/392fc07f34/0/content_hash.txt",
+      "prompt": "/2e/392fc07f34/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 0,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 0,
+    "output_tokens": 0,
+    "api_call_count": 0
+  }
+}

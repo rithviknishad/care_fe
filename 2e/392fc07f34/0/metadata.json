@@ -1,0 +1,29 @@
+{
+  "cli_version": "0.11.5",
+  "checkpoint_id": "2e392fc07f34",
+  "session_id": "aaf61f83-2b6d-4e12-bf4d-1d2936a1a5f1",
+  "strategy": "manual-commit",
+  "created_at": "2026-10-27T17:30:04.951686Z",
+  "branch": "ENG-580-tag-managing-org",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "src/components/Common/RoleOrgSelector.tsx",
+    "src/pages/Admin/TagConfig/TagConfigForm.tsx",
+    "src/pages/Admin/TagConfig/TagConfigView.tsx",
+    "src/types/emr/tagConfig/tagConfig.ts"
+  ],
+  "agent": "Copilot CLI",
+  "model": "claude-opus-5.5",
+  "turn_id": "6aaa5f0cfdb4",
+  "compact_transcript_start": 0,
+  "token_usage": {
+    "input_tokens": 0,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 0,
+    "output_tokens": 0,
+    "api_call_count": 0
+  },
+  "session_metrics": {
+    "turn_count": 1
+  }
+}
