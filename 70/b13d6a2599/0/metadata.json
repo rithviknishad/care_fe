@@ -1,0 +1,48 @@
+{
+  "cli_version": "0.9.0",
+  "checkpoint_id": "70b13d6a2599",
+  "session_id": "a0d799d4-890d-483a-80a5-2be2e08ef4ba",
+  "strategy": "manual-commit",
+  "created_at": "2026-10-28T12:45:45.599457Z",
+  "branch": "ENG-1174-fix-dispenses-not-listed-when-incomplete-filter-is-applied-in-prescription-preview-table",
+  "checkpoints_count": 1,
+  "save_step_count": 1,
+  "files_touched": [
+    "src/pages/Facility/services/pharmacy/components/PrescriptionsPreviewTable.tsx"
+  ],
+  "agent": "Claude Code",
+  "model": "claude-opus-5-5[1m]",
+  "turn_id": "0c9be8a45f80",
+  "compact_transcript_start": 0,
+  "token_usage": {
+    "input_tokens": 22,
+    "cache_creation_tokens": 34860,
+    "cache_read_tokens": 516115,
+    "output_tokens": 3358,
+    "api_call_count": 10
+  },
+  "session_metrics": {
+    "turn_count": 1
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-10-28T12:45:45.5852Z",
+    "agent_lines": 3,
+    "agent_removed": 1,
+    "human_added": 0,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 3,
+    "total_lines_changed": 4,
+    "agent_percentage": 100,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0
+    }
+  ]
+}
