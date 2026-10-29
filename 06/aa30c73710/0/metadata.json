@@ -1,0 +1,72 @@
+{
+  "cli_version": "0.9.0",
+  "checkpoint_id": "06aa30c73710",
+  "session_id": "413ebee1-ef79-4048-b879-0af90d6ae4fb",
+  "strategy": "manual-commit",
+  "created_at": "2026-10-29T08:46:40.443346Z",
+  "branch": "ENG-193-slug-value-schema-3.1",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "public/locale/en.json",
+    "src/Utils/slug.ts",
+    "src/Utils/utils.ts",
+    "src/components/Common/ResourceCategoryForm.tsx",
+    "src/components/QuestionnaireV2/manage/CloneQuestionnaireDialog.tsx",
+    "src/components/QuestionnaireV2/manage/QuestionnaireCreatePage.tsx",
+    "src/components/QuestionnaireV2/manage/questionnaireFormSchema.ts",
+    "src/components/ValueSet/ValueSetBasedOnFields.tsx",
+    "src/components/ValueSet/ValueSetBasicFields.tsx",
+    "src/components/ValueSet/useValueSetEditorForm.ts",
+    "src/components/ValueSet/valueSetFormTypes.ts",
+    "src/pages/Encounters/TemplateBuilder/TemplateBuilder.tsx",
+    "src/pages/Facility/settings/activityDefinition/ActivityDefinitionForm.tsx",
+    "src/pages/Facility/settings/chargeItemDefinitions/ChargeItemDefinitionForm.tsx",
+    "src/pages/Facility/settings/observationDefinition/ObservationDefinitionForm.tsx",
+    "src/pages/Facility/settings/productKnowledge/ProductKnowledgeForm.tsx",
+    "src/pages/Facility/settings/specimen-definitions/SpecimenDefinitionForm.tsx",
+    "src/types/base/slug/schema.ts",
+    "tests/admin/valueset/valuesetConstants.ts",
+    "tests/admin/valueset/valuesetCreate.spec.ts",
+    "tests/facility/settings/activityDefinition/activityDefinitionCreate.spec.ts",
+    "tests/facility/settings/activityDefinition/categoryList.spec.ts",
+    "tests/facility/settings/chargeItemDefinition/chargeItemDefinitionsCreate.spec.ts",
+    "tests/facility/settings/chargeItemDefinition/chargeItemDefinitionsDelete.spec.ts",
+    "tests/facility/settings/productKnowledge/productKnowledgeCreate.spec.ts",
+    "tests/facility/settings/productKnowledge/productKnowledgeDelete.spec.ts",
+    "tests/facility/settings/specimenDefinitions/specimenDefinitionConstants.ts",
+    "tests/facility/settings/specimenDefinitions/specimenDefinitionCreate.spec.ts",
+    "tests/helper/utils.ts"
+  ],
+  "agent": "Claude Code",
+  "model": "claude-sonnet-5-5",
+  "turn_id": "6a12c4bab921",
+  "compact_transcript_start": 0,
+  "token_usage": {
+    "input_tokens": 48,
+    "cache_creation_tokens": 80907,
+    "cache_read_tokens": 1872447,
+    "output_tokens": 11494,
+    "api_call_count": 24
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-10-29T08:46:40.420408Z",
+    "agent_lines": 184,
+    "agent_removed": 178,
+    "human_added": 0,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 184,
+    "total_lines_changed": 362,
+    "agent_percentage": 100,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0
+    }
+  ]
+}
